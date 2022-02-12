@@ -1,25 +1,108 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'list_search.dart';
 
-bool group_tap = false;
+import 'package:flutter_app/classes/Patient_name_list.dart';
+
+
+
 
 class AddPatient extends StatefulWidget {
+
+  Patient_name_data_list patient_data;
+
+  AddPatient({this.patient_data});
+
+
+
+
   @override
   _AddPatientState createState() => _AddPatientState();
 }
 
 class _AddPatientState extends State<AddPatient> {
-  @override
+
+ File file;
+
+ String name='';
+
+ Patient_name_data_list data;
+
+ var name_edit = TextEditingController();
+ var age_edit = TextEditingController();
+ var address_edit = TextEditingController();
+ var email_edit = TextEditingController();
+ var mobile_edit = TextEditingController();
+
+
+ Future imagepicker() async{
+
+   final image = await ImagePicker().pickImage(source: ImageSource.camera);
+
+   if(image==null)
+     return;
+
+   setState(() {
+     this.file = File(image.path);
+   });
+
+
+ }
+
+
+
+
+ bool male = false , female = false;
+
+
+ @override
+ void initState() {
+   // TODO: implement initState
+   super.initState();
+   data  = widget.patient_data;
+
+   if(data!=null)
+   {
+     setState(() {
+
+       age_edit.text=data.age.toString();
+
+
+     });
+
+
+   }
+
+
+
+ }
+
+
+
+
+
+
+
+ @override
   Widget build(BuildContext context) {
+
+
+
+
+
+
+
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.teal,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('New '),
+            Text('Patient'),
             TextButton.icon(
                 onPressed: () {},
                 icon: Icon(
@@ -32,117 +115,245 @@ class _AddPatientState extends State<AddPatient> {
       ),
       body: SingleChildScrollView(
         child: Column(
+
           children: [
-            Row(
-              children: [
-                Icon(Icons.person),
-                Container(
-                  width: 200,
-                  child: TextField(
-                      // controller: patient_name,
+            SizedBox(height: 20,),
+            CircleAvatar(
+              radius:MediaQuery.of(context).size.height*0.1,
 
-                      ),
-                )
-              ],
+              child: file==null?Icon(Icons.person_add_outlined , color: Colors.white,):Image.file(file),
+              backgroundColor: Colors.grey,
             ),
+            SizedBox(height: 5,),
+
+
+
+            txtfield(text_edit: name_edit, hint: "Name", keyboard: TextInputType.text , icon: Icon(Icons.person_outline),),
+
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Icon(Icons.person),
-                GestureDetector(
-                  onTap: () {
-                    print('male');
-                    //patient_gender="male";
-                  },
-                  child: Container(
-                    child: Text('male'),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    print('female');
-                    //patient_gender="female";
-                  },
-                  child: Container(
-                    child: Text('female'),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    print('other');
-                    //  patient_gender="other";
-                  },
-                  child: Container(
-                    child: Text('other'),
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.7,
-                  child: TextField(
+                ChoiceChip(label: Text('Male'), selected:male,selectedColor: Colors.teal,onSelected: (bool selected){
+                  setState(() {
+                    male=true;
+                    female=false;
+
+
+
+                  });
+
+                }, ),
+
+                ChoiceChip(label: Text('Female'), selected:female ,selectedColor: Colors.teal,onSelected: (bool a){
+                  setState(() {
+                    male=false;
+                    female=true;
+
+                  });
+                }, ),
+
+                SizedBox(
+                    width: MediaQuery.of(context).size.width*0.400,
+                    height: 70,
+                    child: TextField(
+                      controller: age_edit,
                       decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Colors.grey,
-                            width: 2,
-                          
 
 
-                        ),
-                      borderRadius: BorderRadius.circular(10),
-                      gapPadding: 20
-
-
-                      
-
-
-                    ),
-                        focusedBorder: OutlineInputBorder(
+                          enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                              color: Colors.black,
-                              width: 2,
+                              color: Colors.grey,
+                              width: 2,),
+                            borderRadius: BorderRadius.circular(10),),
 
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.teal,
+                              width: 2,),
+                            borderRadius: BorderRadius.circular(10),),
 
-
-                            ),
-                            borderRadius: BorderRadius.circular(10),
-
-
-
-
-
-
-                        ),
-
-
-                  )
+                          hintText: "Age",
+                          prefixIcon: Icon(Icons.cake_outlined),
 
 
 
 
-                  ),
+
+
+
+                    )
+                    ,
+                      keyboardType: TextInputType.number,
+                    )
+
                 ),
-                TextButton.icon(
-                    onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (context) => Padding(
-                                padding: const EdgeInsets.all(20.0),
-                                child: ListSearch(),
-                              ));
 
-                      // showSearch(context: context, delegate: Search());
-                    },
-                    icon: Icon(Icons.arrow_drop_down_circle),
-                    label: Text(''))
+
               ],
             ),
+
+
+            txtfield(text_edit: address_edit, hint: "Address", keyboard: TextInputType.text , icon: Icon(Icons.place_outlined), ),
+            txtfield(text_edit: email_edit, hint: "Email", keyboard:TextInputType.emailAddress , icon: Icon(Icons.email),),
+            txtfield(text_edit: mobile_edit, hint: "Mobile no.", keyboard:TextInputType.number , icon: Icon(Icons.call),),
+            SizedBox(height: 10,),
+
+
+
+
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0 , horizontal: 20),
+              child:TextField(
+                autofocus: false,
+                decoration: InputDecoration(
+
+
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.grey,
+                        width: 2,),
+                      borderRadius: BorderRadius.circular(10),),
+
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.teal,
+                        width: 2,),
+                      borderRadius: BorderRadius.circular(10),),
+
+                    hintText: "Group",
+                    prefixIcon: Icon(Icons.medication),
+                     suffixIcon: IconButton(icon: Icon(Icons.arrow_drop_down_circle_outlined),onPressed: (){
+                       showDialog(
+                           context: context,
+                           builder: (context) => Padding(
+                             padding: const EdgeInsets.all(20.0),
+                             child: ListSearch(),
+                           ));
+                     },)
+                ),
+
+
+
+
+
+
+
+
+
+
+              )
+            ),
+            Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0 , horizontal: 20),
+                child:TextField(
+                  autofocus: false,
+                  decoration: InputDecoration(
+
+
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.grey,
+                          width: 2,),
+                        borderRadius: BorderRadius.circular(10),),
+
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.teal,
+                          width: 2,),
+                        borderRadius: BorderRadius.circular(10),),
+
+                      hintText: "Blood-group",
+                      prefixIcon: Icon(Icons.water_drop_outlined),
+                      suffixIcon: IconButton(icon: Icon(Icons.arrow_drop_down_circle_outlined),onPressed: (){
+
+                      },)
+                  ),
+
+
+
+
+
+
+
+
+
+
+                )
+            ),
+
+
+
+            SizedBox(height: 10,),
+
+
+//            SizedBox(height: 5,),
+//            Padding(
+//              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+//              child: Divider( color: Colors.grey,thickness: 0.5,),
+//            ),
+
+
+
+
+
           ],
         ),
+      ),
+    );
+  }
+}
+
+class txtfield extends StatefulWidget {
+   txtfield({
+    Key key,
+    @required this.text_edit,
+    @required this.hint,
+    @required this.keyboard,
+     @required this.icon,
+  }) : super(key: key);
+
+  TextEditingController text_edit;
+  String hint;
+  TextInputType keyboard;
+  Icon icon;
+
+  @override
+  State<txtfield> createState() => _txtfieldState();
+}
+
+class _txtfieldState extends State<txtfield> {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0 , horizontal:  20),
+      child: TextField(
+        controller: widget.text_edit,
+          decoration: InputDecoration(
+
+
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: Colors.grey,
+                  width: 2,),
+                borderRadius: BorderRadius.circular(10),),
+
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: Colors.teal,
+                  width: 2,),
+                borderRadius: BorderRadius.circular(10),),
+
+              hintText: widget.hint,
+          prefixIcon: widget.icon),
+
+
+        keyboardType: widget.keyboard ,
+
+
+
+
+
+
       ),
     );
   }

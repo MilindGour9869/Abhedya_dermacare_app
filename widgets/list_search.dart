@@ -4,6 +4,11 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'package:flutter_app/classes/Group_data_list.dart';
+
 class ListSearch extends StatefulWidget {
   ListSearchState createState() => ListSearchState();
 }
@@ -14,6 +19,69 @@ class ListSearchState extends State<ListSearch> {
 
 
   TextEditingController _textController_group = TextEditingController();
+  var edit = TextEditingController();
+
+  Widget Tile(Group_data_list data){
+
+
+
+
+    return ListTile(
+      leading: ChoiceChip(
+
+        label: Icon(Icons.adjust),
+        selectedColor: Colors.teal,
+        selected: false,
+        onSelected: (bool a){
+          setState(() {
+
+
+
+
+          });
+        },
+
+
+      ),
+      title: Text(data.group),
+      trailing: IconButton(
+        icon: Icon(Icons.edit_outlined),
+        onPressed: (){
+          showDialog(context: context, builder: (context)=>Padding(
+            padding: const EdgeInsets.symmetric(vertical: 220.0 , horizontal: 50),
+            child: TextField(
+              controller: edit,
+              autofocus: true,
+              onEditingComplete: (){
+                setState(() {
+                  this.fileContent.remove(data);
+                  groupDataList.remove(data);
+                  this.newDataList.remove(data);
+                  this.newDataList.add(edit.text);
+
+                  groupDataList.add(edit.text);
+                  //writeToFile(_editing_controller.text);
+
+                  Navigator.pop(context);
+
+                });
+
+              },
+
+
+
+
+
+
+
+
+
+            ),
+          ));
+        },
+      ),
+    );
+  }
 
 
   File jsonFile;
@@ -24,12 +92,55 @@ class ListSearchState extends State<ListSearch> {
 
   static List groupDataList = [];
 
+  static List grouplist=[];
+
+
+
+  Future GroupData(@required String group) async{
+
+    final doc = await FirebaseFirestore.instance.collection("Group").doc();
+
+    final json = {
+      'group' : group,
+    };
+
+    await doc.set(json);
+
+  }
+
+
+  Stream<List<Group_data_list>> group_data() =>  FirebaseFirestore.instance.collection('Group').snapshots().map(
+
+          (snapshot) {
+            print('dfb');
+
+
+
+              groupDataList = snapshot.docs.map((doc) => Group_data_list.fromJson(doc.data()) ).toList();
+           // grouplist=groupDataList.map( (d)=> d.group);
+
+
+
+
+            print(groupDataList);
+            print(grouplist);
+
+
+
+
+
+
+
+            return groupDataList;
+
+          } );
+
 
 
 
 
   // Copy Main List into New List.
-  List newDataList = List.from(groupDataList);
+  List newDataList = List.from(grouplist);
 
   onItemChanged(String value) {
     setState(() {
@@ -37,10 +148,18 @@ class ListSearchState extends State<ListSearch> {
           .where((string) => string.toLowerCase().contains(value.toLowerCase()))
           .toList();
       if(newDataList.isEmpty)
-        {
-          newDataList=[];
-        }
+      {
+        newDataList=[];
+      }
     });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    group_data();
+
   }
 
   @override
@@ -56,8 +175,8 @@ class ListSearchState extends State<ListSearch> {
             child: TextField(
               controller: _textController_group,
               decoration: InputDecoration(
-                hintText: 'Search / Add ',
-                prefixIcon: Icon(Icons.search)
+                  hintText: 'Search / Add ',
+                  prefixIcon: Icon(Icons.search)
               ),
               onChanged: onItemChanged,
             ),
@@ -66,76 +185,49 @@ class ListSearchState extends State<ListSearch> {
             child: ListView(
               padding: EdgeInsets.all(12.0),
               children: newDataList.isNotEmpty==true?newDataList.map((data) {
-                var _editing_controller = TextEditingController(text: data);
-
-                return ListTile(
-
-                  title:Container(
-
-                      alignment: Alignment.topLeft,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          TextButton.icon(onPressed: (){
 
 
-                          }, icon: Icon(Icons.check_box ,   ), label:Text(data , overflow: TextOverflow.fade,) ,),
-
-                          IconButton(onPressed: (){
-
-                            showDialog(context: context, builder: (context)=>Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 220.0 , horizontal: 50),
-                              child: Container(
-
-                                child: Material(
-
-                                  child: TextFormField(
-                                    controller: _editing_controller,
-                                    autofocus: true,
-                                    onEditingComplete: (){
-                                    setState(() {
-                                      this.fileContent.remove(data);
-                                      groupDataList.remove(data);
-                                      this.newDataList.remove(data);
-                                      this.newDataList.add(_editing_controller.text);
-
-                                      groupDataList.add(_editing_controller.text);
-                                      //writeToFile(_editing_controller.text);
-
-                                      Navigator.pop(context);
-
-                                    });
-
-                                    },
+                return SizedBox(
+                  height: 500,
+                  child: StreamBuilder(
+                    stream: group_data(),
+                    builder: (context,snapshot){
 
 
 
+                      if(snapshot.hasData)
+                      {
+                        return ListView(
+                          children: snapshot.data.map<Widget>(Tile).toList(),
+                        );
+                      }
 
+                      if(snapshot.data==null)
+                      {
+                        return Center(child: CircularProgressIndicator());
 
-
-
-
-
-                                  ),
-                                ),
-                              ),
-                            ));
-
-                          }, icon: Icon(Icons.edit))
-                        ],
-                      )
-
+                      }
+                    },
                   ),
-                  onTap: ()=> print(data),);
-              }).toList() : [
+                );
+              }).toList()
+
+                  : [
+
+
                 TextButton.icon(onPressed: (){
 
                   setState(() {
+                    group_data();
+
                     var data = _textController_group.text;
 
                     this.newDataList.add(data);
 
-                    groupDataList.add(data);
+                    grouplist.add(data);
+
+                    GroupData(_textController_group.text);
+
 
 
 
@@ -143,7 +235,7 @@ class ListSearchState extends State<ListSearch> {
 
                     _textController_group.clear();
 
-                   // writeToFile(data);
+                    // writeToFile(data);
 
 
 

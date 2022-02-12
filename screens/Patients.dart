@@ -3,12 +3,90 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/widgets/add_patient.dart';
 import 'package:flutter_app/default.dart';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
+
+import 'package:flutter_app/classes/Patient_name_list.dart';
+
 class Patient extends StatefulWidget {
 @override
 _State createState() => _State();
 }
 
 class _State extends State<Patient> {
+
+ Widget Tile(Patient_name_data_list data) => GestureDetector(
+   onTap: (){
+     Navigator.push(context , MaterialPageRoute(builder: (context)=>AddPatient(patient_data:data)));
+
+
+
+   },
+   child: Padding(
+     padding: const EdgeInsets.all(8.0),
+     child: Container(
+       decoration: BoxDecoration(
+         borderRadius: BorderRadius.circular(10),
+         color: AppTheme.notWhite,
+
+       ),
+       child: ListTile(
+         title: Text(data.name==null?"?":data.name),
+
+
+         subtitle: Column(
+           crossAxisAlignment: CrossAxisAlignment.start,
+
+           children: [
+             SizedBox(height: 10,),
+             Row(
+               mainAxisAlignment: MainAxisAlignment.start,
+               children: [
+                 Icon(Icons.cake_outlined , color: Colors.grey,size: 20,),
+                 SizedBox(width: 5,),
+                 Text(data.age==null?"?":data.age.toString()),
+                 SizedBox(width: 10,),
+                 Icon(Icons.call , color: Colors.grey,size: 20,),
+                 SizedBox(width: 5,),
+                 Text(data.mobile==null?"?":data.mobile.toString())
+               ],
+             ),
+
+
+             SizedBox(height: 10,),
+             Text('last visited on : ${data.date==null?"?":data.date}' , style: TextStyle(fontStyle: FontStyle.italic),),
+
+             Row(
+               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+               children: [
+                 TextButton(onPressed: (){}, child: Text('Visits')),
+                 TextButton(onPressed: (){}, child: Text('Payment')),
+                 TextButton(onPressed: (){}, child: Text('Documents')),
+               ],
+             )
+
+           ],
+         ),
+
+         leading: CircleAvatar(
+           child: Text(data.name==null?"?":data.name[0].toUpperCase()),
+
+         ),
+
+
+
+
+       ),
+     ),
+   ),
+ );
+
+
+ Stream<List<Patient_name_data_list>> patient_data() => FirebaseFirestore.instance.collection('Patients').snapshots().map(
+
+         (snapshot) => snapshot.docs.map((doc) => Patient_name_data_list.fromJson(doc.data()) ).toList() );
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,107 +114,38 @@ class _State extends State<Patient> {
         children: [
           Container(
             width: double.infinity,
-            height: double.infinity,
+            height: 500,
            color: Colors.white,
             child:SingleChildScrollView(
 
-              child: Column(
+              child: StreamBuilder(
+                stream: patient_data(),
+                // ignore: missing_return
+                builder: (context,snapshot){
 
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
+                  if(snapshot.hasData)
+                    {
+                     // print(snapshot.data.map(Patient_name_data_list(age:21)).toList());
 
-                children: [
+                      return Container(
+                        height: 500,
+                        child: ListView(
+                          children: snapshot.data.map<Widget>(Tile).toList(),
+                        ),
+                      );
+                    }
 
-                  Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Container(
+                  if(snapshot.hasError) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
 
+                  if(snapshot.hasData==false)
+                    return Text('sdsv');
 
-                      child: Patient_Tile( name:'Spidy', age: 21, mobile: 9828226511, date: '18/11/200',),
-
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: AppTheme.notWhite,
-
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-
-
-                      child: Patient_Tile( name:'Spidy', age: 21, mobile: 9828226511, date: '18/11/200',),
-
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: AppTheme.notWhite,
-
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-
-
-                      child: Patient_Tile( name:'Spidy', age: 21, mobile: 9828226511, date: '18/11/200',),
-
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: AppTheme.notWhite,
-
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-
-
-                      child: Patient_Tile( name:'Spidy', age: 21, mobile: 9828226511, date: '18/11/200',),
-
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: AppTheme.notWhite,
-
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-
-
-                      child: Patient_Tile( name:'Spidy', age: 21, mobile: 9828226511, date: '18/11/200',),
-
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: AppTheme.notWhite,
-
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-
-
-                      child: Patient_Tile( name:'Spidy', age: 21, mobile: 9828226511, date: '18/11/200',),
-
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: AppTheme.notWhite,
-
-                      ),
-                    ),
-                  ),
-
-
-
-
-                ],
-              ),
+                  if(snapshot.connectionState==ConnectionState.waiting)
+                    return Text('tf');
+                },
+              )
             ),
           ),
           Padding(
@@ -198,7 +207,7 @@ class Patient_Tile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(name),
+      title: Text(name==null?"?":name),
 
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -208,15 +217,19 @@ class Patient_Tile extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text(age.toString()),
+              Icon(Icons.cake_outlined , color: Colors.grey,size: 20,),
+              SizedBox(width: 5,),
+              Text(age==null?"?":age.toString()),
               SizedBox(width: 10,),
-              Text(mobile.toString())
+              Icon(Icons.call , color: Colors.grey,size: 20,),
+              SizedBox(width: 5,),
+              Text(mobile==null?"?":mobile.toString())
             ],
           ),
 
 
           SizedBox(height: 10,),
-          Text('last visited on : ${date}' , style: TextStyle(fontStyle: FontStyle.italic),),
+          Text('last visited on : ${date==null?"?":date}' , style: TextStyle(fontStyle: FontStyle.italic),),
 
           Row(
            mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -241,3 +254,10 @@ class Patient_Tile extends StatelessWidget {
     );
   }
 }
+
+
+
+
+
+
+

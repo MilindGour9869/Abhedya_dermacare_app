@@ -144,13 +144,13 @@ class _HomePageState extends State<HomePage> {
       menuItem(4, "Services", Icons.medication,
           currentPage == DrawerSections.Services ? true : false),
       Divider(),
-      menuItem(5, "Setting", Icons.remove_red_eye,
+      menuItem(5, "Setting", Icons.settings,
           currentPage == DrawerSections.Settings ? true : false),
 
-      menuItem(6, "Reception", Icons.image,
+      menuItem(6, "Reception", Icons.remove_red_eye,
           currentPage == DrawerSections.Reception ? true : false),
       Divider(),
-      menuItem(7, "Send Feedback", Icons.settings,
+      menuItem(7, "Send Feedback", Icons.call_made_outlined,
           currentPage == DrawerSections.send_feedback ? true : false),
 
     ]),
