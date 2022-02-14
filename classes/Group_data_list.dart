@@ -15,4 +15,9 @@ class Group_data_list {
 
     );
   }
+
+
+  static String list (Group_data_list grp){
+    return grp.group;
+  }
 }

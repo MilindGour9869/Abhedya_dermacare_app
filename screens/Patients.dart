@@ -8,6 +8,8 @@ import 'package:firebase_core/firebase_core.dart';
 
 import 'package:flutter_app/classes/Patient_name_list.dart';
 
+
+import 'package:flutter_app/widgets/list_search.dart';
 class Patient extends StatefulWidget {
 @override
 _State createState() => _State();
@@ -17,6 +19,9 @@ class _State extends State<Patient> {
 
  Widget Tile(Patient_name_data_list data) => GestureDetector(
    onTap: (){
+
+
+
      Navigator.push(context , MaterialPageRoute(builder: (context)=>AddPatient(patient_data:data)));
 
 
@@ -143,7 +148,7 @@ class _State extends State<Patient> {
                     return Text('sdsv');
 
                   if(snapshot.connectionState==ConnectionState.waiting)
-                    return Text('tf');
+                    return Center(child: CircularProgressIndicator());
                 },
               )
             ),
@@ -159,6 +164,9 @@ class _State extends State<Patient> {
                   child: TextButton.icon(onPressed: (){
 
                     print('add pateint');
+
+
+
 
                     Navigator.push(context , MaterialPageRoute(builder: (context)=>AddPatient()));
 

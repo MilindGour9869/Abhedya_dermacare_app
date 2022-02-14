@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/widgets/add_patient.dart';
 
 import 'dart:convert';
 import 'dart:io';
@@ -8,8 +9,16 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter_app/classes/Group_data_list.dart';
+import 'package:flutter_app/default.dart';
 
 class ListSearch extends StatefulWidget {
+
+  String Group , group , name;
+  List selected;
+
+  ListSearch({@required this.group , @required this.Group , @required this.name , this.selected});
+
+
   ListSearchState createState() => ListSearchState();
 }
 
@@ -19,54 +28,15 @@ class ListSearchState extends State<ListSearch> {
 
 
   TextEditingController _textController_group = TextEditingController();
-  var edit = TextEditingController();
-
-  Widget Tile(Group_data_list data){
-
-
-
-
-    return ListTile(
-      leading: ChoiceChip(
-
-        label: Icon(Icons.adjust),
-        selectedColor: Colors.teal,
-        selected: false,
-        onSelected: (bool a){
-          setState(() {
+  List group_all_data_list =[] ;
+  List group_search_data_list=[];
+  int group_size=0;
+  Map<String,bool> group_search_color_map={};
+  List group_result=[];
 
 
 
-
-          });
-        },
-
-
-      ),
-      title: Text(data.group),
-      trailing: IconButton(
-        icon: Icon(Icons.edit_outlined),
-        onPressed: (){
-          showDialog(context: context, builder: (context)=>Padding(
-            padding: const EdgeInsets.symmetric(vertical: 220.0 , horizontal: 50),
-            child: TextField(
-              controller: edit,
-              autofocus: true,
-              onEditingComplete: (){
-                setState(() {
-                  this.fileContent.remove(data);
-                  groupDataList.remove(data);
-                  this.newDataList.remove(data);
-                  this.newDataList.add(edit.text);
-
-                  groupDataList.add(edit.text);
-                  //writeToFile(_editing_controller.text);
-
-                  Navigator.pop(context);
-
-                });
-
-              },
+  Future f;
 
 
 
@@ -74,82 +44,239 @@ class ListSearchState extends State<ListSearch> {
 
 
 
+  static List group_mapData_list = [];
 
 
-            ),
-          ));
-        },
-      ),
-    );
-  }
+  Future GroupDataAdd(@required String group) async{
+
+    final doc = await FirebaseFirestore.instance.collection(widget.Group).doc(group_size.toString());
 
 
-  File jsonFile;
-  Directory dir;
-  var fileName = "group.json";
-  bool fileExists = false;
-  List fileContent;
-
-  static List groupDataList = [];
-
-  static List grouplist=[];
-
-
-
-  Future GroupData(@required String group) async{
-
-    final doc = await FirebaseFirestore.instance.collection("Group").doc();
 
     final json = {
-      'group' : group,
+      widget.group : group,
+      'id': group_size,
+
     };
 
     await doc.set(json);
 
   }
 
+  Future GroupDataUpdate(@required String group , @required int id) async{
 
-  Stream<List<Group_data_list>> group_data() =>  FirebaseFirestore.instance.collection('Group').snapshots().map(
+    final doc = await FirebaseFirestore.instance.collection(widget.Group).doc(id.toString());
 
-          (snapshot) {
-            print('dfb');
+    print(id);
 
+    
+    doc.update({
+      widget.group:group,
 
-
-              groupDataList = snapshot.docs.map((doc) => Group_data_list.fromJson(doc.data()) ).toList();
-           // grouplist=groupDataList.map( (d)=> d.group);
-
-
-
-
-            print(groupDataList);
-            print(grouplist);
+    });
 
 
+    
+
+  }
+
+  Future GroupDataDelete (@required String group)async{
+    final doc = await FirebaseFirestore.instance.collection(widget.Group).doc(group);
+
+    doc.delete();
+
+
+  }
+
+  Future Add_GroupDataList_to_Patient(List group)async{
+
+    final doc =await FirebaseFirestore.instance.collection('Patients').doc(widget.name);
+
+
+
+    doc.update({
+
+      widget.group : [],
+
+    });
+
+    doc.update({
+      widget.group : FieldValue.arrayUnion(group)
+    });
+
+  }
+
+
+    Future<dynamic> group_data() async{
+
+    print(group_result);
+
+      await FirebaseFirestore.instance
+          .collection(widget.Group)
+          .get()
+          .then((QuerySnapshot querySnapshot) async {
+
+            setState(() {
+              group_size=querySnapshot.size;
+
+            });
+
+
+
+           await querySnapshot.docs.forEach((doc) {
+             group_mapData_list.add(doc.data());
+
+           });
+           print('map');
+           print(group_mapData_list);
+           
+           
+           
+           group_all_data_list = group_mapData_list.map((d) {
+
+             print('ss');
+             return d[widget.group];
+
+           }).toList();
 
 
 
 
 
-            return groupDataList;
 
-          } );
+
+
+
+
+
+
+
+           print(group_search_data_list);
+
+
+          try{
+            group_all_data_list.forEach((element) {
+
+              print(element);
+
+
+              group_search_color_map[element.toString()]=false;
+
+            });
+
+            print(group_search_color_map);
+
+            try{
+             await FirebaseFirestore.instance.collection('Patients').doc(widget.name).get().then((value) {
+
+
+                if(value.data()!=null)
+                  {
+                    if(value.data().containsKey('group'))
+                      {
+                        if(value.data()['group']!=[])
+                          {
+                            List a = value.data()['group'];
+                            a.forEach((element) {
+                              group_search_color_map[element]=true;
+                              group_result.add(element);
+
+
+                            });
+                          }
+                      }
+                  }
+                else
+                  {
+                    print('lk');
+
+                  }
+
+
+
+              });
+
+
+
+            }
+            catch (e){
+              print(e);
+            }
+
+
+
+
+            print(group_search_color_map);
+          }
+          catch(e){
+            print(e);
+
+          }
+
+            if(group_result.isNotEmpty){
+              group_result.forEach((element) {
+                group_all_data_list.remove(element);
+                group_all_data_list.add(element);
+
+              });
+            }
+
+            print(group_all_data_list);
+
+
+
+
+
+
+
+            group_search_data_list = group_all_data_list.reversed.toList();
+
+
+
+
+
+
+
+
+
+
+
+
+      });
+
+      var a;
+
+
+
+
+      return a;
+
+
+    }
+
+
+
+
+
+
+
+
 
 
 
 
 
   // Copy Main List into New List.
-  List newDataList = List.from(grouplist);
+
 
   onItemChanged(String value) {
     setState(() {
-      newDataList = groupDataList
+      group_search_data_list = group_all_data_list
           .where((string) => string.toLowerCase().contains(value.toLowerCase()))
           .toList();
-      if(newDataList.isEmpty)
+      if(group_search_data_list.isEmpty)
       {
-        newDataList=[];
+        group_search_data_list=[];
       }
     });
   }
@@ -158,143 +285,322 @@ class ListSearchState extends State<ListSearch> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    group_data();
+    f = group_data();
 
   }
+
+  @override
+  void dispose() async {
+    // TODO: implement dispose
+    super.dispose();
+
+     group_search_data_list=[];
+     group_all_data_list=[];
+     group_mapData_list=[];
+     group_size=0;
+    print(group_result);
+
+   await  Add_GroupDataList_to_Patient(group_result);
+
+    group_result=[];
+    group_search_color_map={};
+
+
+
+
+
+
+
+
+
+
+  }
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
 
 
-    return Scaffold(
 
-      body: Column(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(12.0),
+
+
+    return Padding(
+      padding: const EdgeInsets.all(0.0),
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          leading: Icon(Icons.search , color: Colors.black,),
+          title: Padding(
+            padding: const EdgeInsets.all(0),
             child: TextField(
               controller: _textController_group,
               decoration: InputDecoration(
                   hintText: 'Search / Add ',
-                  prefixIcon: Icon(Icons.search)
+
               ),
               onChanged: onItemChanged,
             ),
           ),
-          Expanded(
-            child: ListView(
-              padding: EdgeInsets.all(12.0),
-              children: newDataList.isNotEmpty==true?newDataList.map((data) {
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 4.0),
+              child: CircleAvatar(child: Text(group_size==null?"":group_size.toString()),),
+            )
+          ],
+        ),
+        body: FutureBuilder(
+          future: f,
+          builder: (context,snapshot){
+            print('snapshot');
+
+            print(snapshot.data);
+
+            if(group_search_data_list.isNotEmpty)
+              {
+                return Container(
+                  height: MediaQuery.of(context).size.height*0.81,
+                  color: Colors.transparent,
+                  child: ListView(
+                    children: group_search_data_list.isNotEmpty?
+                    group_search_data_list.map(
+
+                        (data){
+
+                          print(group_search_data_list);
 
 
-                return SizedBox(
-                  height: 500,
-                  child: StreamBuilder(
-                    stream: group_data(),
-                    builder: (context,snapshot){
+
+
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10)
+                              ),
+                              child: ListTile(
+                                selectedColor: Colors.white,
+                                selectedTileColor: Colors.blue,
+                                selected: group_search_color_map[data]==null?false:group_search_color_map[data.toString()],
+                                onTap: (){
+
+                                  setState(() {
+
+                                    group_search_color_map[data.toString()]=!group_search_color_map[data.toString()];
+
+                                    if(group_search_color_map[data.toString()]==true)
+                                      {
+                                        group_result.add(data.toString());
+
+                                      }
+                                    else if(group_search_color_map[data.toString()]==false)
+                                    {
+                                      group_result.remove(data.toString());
+
+                                    }
+
+
+                                  });
 
 
 
-                      if(snapshot.hasData)
-                      {
-                        return ListView(
-                          children: snapshot.data.map<Widget>(Tile).toList(),
-                        );
-                      }
 
-                      if(snapshot.data==null)
-                      {
-                        return Center(child: CircularProgressIndicator());
 
-                      }
-                    },
-                  ),
+                                },
+
+                                leading: CircleAvatar(
+                                  child: Text(data==""?"":data[0].toString().toUpperCase()),
+
+                                ),
+
+                                title: Text(data, overflow: TextOverflow.ellipsis,) ,
+
+                                trailing: Container(
+                                  color: Colors.transparent,
+                                  width: MediaQuery.of(context).size.width*0.27,
+                                  child: Row(
+                                    children: [
+                                      IconButton(onPressed: (){
+
+                                        int i;
+
+
+                                     group_mapData_list.forEach((element) {
+                                       if(element[widget.group]==data.toString())
+                                         {
+                                           i=element['id'];
+
+                                         }
+
+
+
+                                     });
+
+                                     print(i);
+
+                                     GroupDataDelete(i.toString());
+                                    setState(() {
+                                      group_search_data_list.remove(data.toString());
+                                      group_all_data_list.remove(data.toString());
+                                      --group_size;
+                                      group_result.remove(data.toString());
+
+
+
+
+                                    });
+
+
+
+
+
+
+                                      }, icon: Icon(Icons.delete_outline)),
+                                      IconButton(onPressed: (){
+
+
+                                        int i;
+
+
+                                        group_mapData_list.forEach((element) {
+                                          if(element[widget.group]==data.toString())
+                                          {
+                                            i=element['id'];
+
+                                          }
+                                        });
+
+                                        showDialog(context: context, builder: (context){
+
+                                          var text = TextEditingController(text: data.toString());
+                                          return Padding(
+                                            padding: const EdgeInsets.symmetric(horizontal: 40.0 , vertical: 220),
+                                            child: Container(
+                                              child: Material(
+                                                child: TextField(
+                                                  controller: text,
+                                                  autofocus: true,
+                                                  onEditingComplete: (){
+
+                                                    int i;
+
+
+                                                    group_mapData_list.forEach((element) {
+                                                      if(element[widget.group]==data.toString())
+                                                      {
+                                                        i=element['id'];
+
+                                                      }
+
+
+
+                                                    });
+
+                                                    print('editing complete');
+
+
+
+                                                 setState(() {
+                                                   group_search_data_list.remove(data.toString());
+                                                   group_search_data_list.add(text.text);
+
+                                                   group_all_data_list.remove(data);
+                                                   group_all_data_list.add(text.toString());
+
+                                                   group_search_color_map.remove(data.toString());
+                                                   group_search_color_map[text.text]=false;
+
+                                                   GroupDataUpdate(text.text, i);
+                                                 });
+
+
+
+                                                    Navigator.pop(context);
+
+
+
+
+
+
+
+                                                  },
+
+                                                )
+                                              ),
+                                            ),
+                                          );
+                                        });
+
+                                      }, icon: Icon(Icons.edit_outlined)),
+
+                                    ],
+                                  ),
+                                ),
+
+                                tileColor: AppTheme.notWhite ,
+                              ),
+                            ),
+                          );
+
+
+                        }
+                    ).toList():Text('List is empty')),
                 );
-              }).toList()
 
-                  : [
+              }
+            if(_textController_group.text.isNotEmpty )
+              {
+                return Center(
+                  child: TextButton.icon(onPressed: (){
 
+                    setState(() {
 
-                TextButton.icon(onPressed: (){
-
-                  setState(() {
-                    group_data();
-
-                    var data = _textController_group.text;
-
-                    this.newDataList.add(data);
-
-                    grouplist.add(data);
-
-                    GroupData(_textController_group.text);
+                      ++group_size;
 
 
+                      GroupDataAdd(_textController_group.text);
+                      group_all_data_list.add(_textController_group.text);
+                      group_search_data_list.add(_textController_group.text);
+                      print(group_search_data_list);
+
+                      group_search_color_map[_textController_group.text]=false;
+                      print(group_search_color_map);
 
 
 
-
-                    _textController_group.clear();
-
-                    // writeToFile(data);
+                      _textController_group.clear();
 
 
 
 
-                  });
 
 
 
+                    });
 
-                }, icon: Icon(Icons.add), label: Text(_textController_group.text))
-              ],
-            ),
-          )
-        ],
+
+
+                  }, icon: Icon(Icons.add), label: Text(_textController_group.text)),
+                );
+
+              }
+            else{
+              print('else');
+
+              return Center(child:CircularProgressIndicator() );
+            }
+
+          },
+        ),
       ),
     );
+
   }
+
+
+
 }
 
-// Search bar in app bar flutter
-class SearchAppBar extends StatefulWidget {
-  @override
-  _SearchAppBarState createState() => new _SearchAppBarState();
-}
-
-class _SearchAppBarState extends State<SearchAppBar> {
-  Widget appBarTitle = new Text("AppBar Title");
-  Icon actionIcon = new Icon(Icons.search);
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-          centerTitle: true,
-          title:appBarTitle,
-          actions: <Widget>[
-            new IconButton(icon: actionIcon,onPressed:(){
-              setState(() {
-                if ( this.actionIcon.icon == Icons.search){
-                  this.actionIcon = new Icon(Icons.close);
-                  this.appBarTitle = new TextField(
-                    style: new TextStyle(
-                      color: Colors.white,
-
-                    ),
-                    decoration: new InputDecoration(
-                        prefixIcon: new Icon(Icons.search,color: Colors.white),
-                        hintText: "Search...",
-                        hintStyle: new TextStyle(color: Colors.white)
-                    ),
-                  );}
-                else {
-                  this.actionIcon = new Icon(Icons.search);
-                  this.appBarTitle = new Text("AppBar Title");
-                }
-
-
-              });
-            } ,),]
-      ),
-    );
-  }
-}

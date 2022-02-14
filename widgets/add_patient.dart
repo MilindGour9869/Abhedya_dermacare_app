@@ -15,7 +15,7 @@ class AddPatient extends StatefulWidget {
 
   Patient_name_data_list patient_data;
 
-  AddPatient({this.patient_data});
+  AddPatient({this.patient_data });
 
 
 
@@ -37,6 +37,9 @@ class _AddPatientState extends State<AddPatient> {
  var address_edit = TextEditingController();
  var email_edit = TextEditingController();
  var mobile_edit = TextEditingController();
+ var group_edit = TextEditingController();
+ var blood_group_edit=TextEditingController();
+
 
 
  Future imagepicker() async{
@@ -70,6 +73,8 @@ class _AddPatientState extends State<AddPatient> {
      setState(() {
 
        age_edit.text=data.age.toString();
+       name_edit.text=data.name.toString();
+
 
 
      });
@@ -223,12 +228,26 @@ class _AddPatientState extends State<AddPatient> {
                     hintText: "Group",
                     prefixIcon: Icon(Icons.medication),
                      suffixIcon: IconButton(icon: Icon(Icons.arrow_drop_down_circle_outlined),onPressed: (){
-                       showDialog(
-                           context: context,
-                           builder: (context) => Padding(
-                             padding: const EdgeInsets.all(20.0),
-                             child: ListSearch(),
-                           ));
+
+
+
+                     if(name_edit!=null && name_edit.text.isNotEmpty)
+                       {
+                         return   showDialog(
+                             context: context,
+                             builder: (context) => Padding(
+                               padding: const EdgeInsets.all(20.0),
+                               child: ListSearch(group: 'group', Group: 'Group', name: name_edit.text, selected: widget.patient_data.group,),
+                             ));
+                       }
+                     else
+                       {
+                         return showDialog(
+                             context: context,
+                             builder: (context) =>AlertDialog(
+                               title: Text('Please enter Name of Patient'),
+                             ));
+                       }
                      },)
                 ),
 
@@ -246,6 +265,7 @@ class _AddPatientState extends State<AddPatient> {
             Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0 , horizontal: 20),
                 child:TextField(
+
                   autofocus: false,
                   decoration: InputDecoration(
 
@@ -264,7 +284,27 @@ class _AddPatientState extends State<AddPatient> {
 
                       hintText: "Blood-group",
                       prefixIcon: Icon(Icons.water_drop_outlined),
+                      // ignore: void_checks
                       suffixIcon: IconButton(icon: Icon(Icons.arrow_drop_down_circle_outlined),onPressed: (){
+
+                        if(name_edit!=null && name_edit.text.isNotEmpty )
+                        {
+                          return   showDialog(
+                              context: context,
+                              builder: (context) => Padding(
+                                padding: const EdgeInsets.all(20.0),
+                                child: ListSearch(group: 'group', Group: 'Blood-Group', name: name_edit.text,),
+                              ));
+                        }
+                        else
+                        {
+                          return showDialog(
+                              context: context,
+                              builder: (context) =>AlertDialog(
+                                title: Text('Please enter Name of Patient'),
+                              ));
+                        }
+
 
                       },)
                   ),
