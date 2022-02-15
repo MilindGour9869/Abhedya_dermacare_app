@@ -1,22 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/widgets/add_patient.dart';
 
-import 'dart:convert';
-import 'dart:io';
-import 'package:path_provider/path_provider.dart';
-
-import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'package:flutter_app/classes/Group_data_list.dart';
 import 'package:flutter_app/default.dart';
 
 class ListSearch extends StatefulWidget {
 
   String Group , group , name;
-  List selected;
 
-  ListSearch({@required this.group , @required this.Group , @required this.name , this.selected});
+
+  ListSearch({@required this.group , @required this.Group , @required this.name});
 
 
   ListSearchState createState() => ListSearchState();
@@ -28,13 +21,17 @@ class ListSearchState extends State<ListSearch> {
 
 
   TextEditingController _textController_group = TextEditingController();
+  var text = TextEditingController();
+
+  List group_mapData_list = [];
   List group_all_data_list =[] ;
   List group_search_data_list=[];
+
   int group_size=0;
+
   Map<String,bool> group_search_color_map={};
+
   List group_result=[];
-
-
 
   Future f;
 
@@ -44,7 +41,7 @@ class ListSearchState extends State<ListSearch> {
 
 
 
-  static List group_mapData_list = [];
+
 
 
   Future GroupDataAdd(@required String group) async{
@@ -67,7 +64,7 @@ class ListSearchState extends State<ListSearch> {
 
     final doc = await FirebaseFirestore.instance.collection(widget.Group).doc(id.toString());
 
-    print(id);
+
 
     
     doc.update({
@@ -106,10 +103,11 @@ class ListSearchState extends State<ListSearch> {
 
   }
 
-
-    Future<dynamic> group_data() async{
+  Future<dynamic> group_data() async{
 
     print(group_result);
+
+
 
       await FirebaseFirestore.instance
           .collection(widget.Group)
@@ -121,50 +119,32 @@ class ListSearchState extends State<ListSearch> {
 
             });
 
-
-
-           await querySnapshot.docs.forEach((doc) {
+            await querySnapshot.docs.forEach((doc) {
              group_mapData_list.add(doc.data());
 
            });
-           print('map');
-           print(group_mapData_list);
-           
-           
-           
-           group_all_data_list = group_mapData_list.map((d) {
 
-             print('ss');
+            group_all_data_list = group_mapData_list.map((d) {
              return d[widget.group];
-
            }).toList();
 
 
-
-
-
-
-
-
-
-
-
-
-
-           print(group_search_data_list);
-
-
-          try{
+           try{
             group_all_data_list.forEach((element) {
 
-              print(element);
+
 
 
               group_search_color_map[element.toString()]=false;
 
             });
+          }
+          catch(e){
+            print(e);
 
-            print(group_search_color_map);
+          }
+
+
 
             try{
              await FirebaseFirestore.instance.collection('Patients').doc(widget.name).get().then((value) {
@@ -172,11 +152,11 @@ class ListSearchState extends State<ListSearch> {
 
                 if(value.data()!=null)
                   {
-                    if(value.data().containsKey('group'))
+                    if(value.data().containsKey(widget.group))
                       {
-                        if(value.data()['group']!=[])
+                        if(value.data()[widget.group]!=[])
                           {
-                            List a = value.data()['group'];
+                            List a = value.data()[widget.group];
                             a.forEach((element) {
                               group_search_color_map[element]=true;
                               group_result.add(element);
@@ -188,30 +168,15 @@ class ListSearchState extends State<ListSearch> {
                   }
                 else
                   {
-                    print('lk');
+                    print('Patient doc called , in else');
 
                   }
-
-
-
-              });
-
-
-
+             });
             }
             catch (e){
               print(e);
             }
 
-
-
-
-            print(group_search_color_map);
-          }
-          catch(e){
-            print(e);
-
-          }
 
             if(group_result.isNotEmpty){
               group_result.forEach((element) {
@@ -221,52 +186,14 @@ class ListSearchState extends State<ListSearch> {
               });
             }
 
-            print(group_all_data_list);
-
-
-
-
-
-
-
             group_search_data_list = group_all_data_list.reversed.toList();
+          });
 
-
-
-
-
-
-
-
-
-
-
-
-      });
 
       var a;
-
-
-
-
       return a;
+  }
 
-
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-  // Copy Main List into New List.
 
 
   onItemChanged(String value) {
@@ -280,6 +207,8 @@ class ListSearchState extends State<ListSearch> {
       }
     });
   }
+
+
 
   @override
   void initState() {
@@ -298,9 +227,9 @@ class ListSearchState extends State<ListSearch> {
      group_all_data_list=[];
      group_mapData_list=[];
      group_size=0;
-    print(group_result);
 
-   await  Add_GroupDataList_to_Patient(group_result);
+
+     await  Add_GroupDataList_to_Patient(group_result);
 
     group_result=[];
     group_search_color_map={};
@@ -315,8 +244,6 @@ class ListSearchState extends State<ListSearch> {
 
 
   }
-
-
 
 
 
@@ -355,9 +282,7 @@ class ListSearchState extends State<ListSearch> {
         body: FutureBuilder(
           future: f,
           builder: (context,snapshot){
-            print('snapshot');
 
-            print(snapshot.data);
 
             if(group_search_data_list.isNotEmpty)
               {
@@ -365,15 +290,11 @@ class ListSearchState extends State<ListSearch> {
                   height: MediaQuery.of(context).size.height*0.81,
                   color: Colors.transparent,
                   child: ListView(
-                    children: group_search_data_list.isNotEmpty?
+
+                    children: group_search_data_list.isNotEmpty ?
                     group_search_data_list.map(
 
                         (data){
-
-                          print(group_search_data_list);
-
-
-
 
                           return Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -439,10 +360,10 @@ class ListSearchState extends State<ListSearch> {
 
                                      });
 
-                                     print(i);
 
                                      GroupDataDelete(i.toString());
                                     setState(() {
+
                                       group_search_data_list.remove(data.toString());
                                       group_all_data_list.remove(data.toString());
                                       --group_size;
@@ -463,8 +384,6 @@ class ListSearchState extends State<ListSearch> {
 
 
                                         int i;
-
-
                                         group_mapData_list.forEach((element) {
                                           if(element[widget.group]==data.toString())
                                           {
@@ -473,9 +392,11 @@ class ListSearchState extends State<ListSearch> {
                                           }
                                         });
 
+
                                         showDialog(context: context, builder: (context){
 
-                                          var text = TextEditingController(text: data.toString());
+                                          text.text=data.toString();
+
                                           return Padding(
                                             padding: const EdgeInsets.symmetric(horizontal: 40.0 , vertical: 220),
                                             child: Container(
@@ -495,15 +416,10 @@ class ListSearchState extends State<ListSearch> {
 
                                                       }
 
-
-
                                                     });
 
-                                                    print('editing complete');
 
-
-
-                                                 setState(() {
+                                                    setState(() {
                                                    group_search_data_list.remove(data.toString());
                                                    group_search_data_list.add(text.text);
 
@@ -514,19 +430,13 @@ class ListSearchState extends State<ListSearch> {
                                                    group_search_color_map[text.text]=false;
 
                                                    GroupDataUpdate(text.text, i);
-                                                 });
+                                                               });
 
 
 
                                                     Navigator.pop(context);
 
-
-
-
-
-
-
-                                                  },
+                                                    },
 
                                                 )
                                               ),
@@ -588,7 +498,7 @@ class ListSearchState extends State<ListSearch> {
 
               }
             else{
-              print('else');
+              print('in future builder , else');
 
               return Center(child:CircularProgressIndicator() );
             }

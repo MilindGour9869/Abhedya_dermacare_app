@@ -17,9 +17,13 @@ class Patient_name_data_list{
     print(json);
 
     return Patient_name_data_list(
-      age : json['age'],
-      name: json['name'],
-      group: json['group'],
+
+     name: json['name'],
+
+
+
+
+
 
 
 

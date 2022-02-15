@@ -1,9 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:convert';
+
 import 'dart:io';
-import 'package:path_provider/path_provider.dart';
+
 import 'list_search.dart';
 
 import 'package:flutter_app/classes/Patient_name_list.dart';
@@ -74,6 +75,8 @@ class _AddPatientState extends State<AddPatient> {
 
        age_edit.text=data.age.toString();
        name_edit.text=data.name.toString();
+       mobile_edit.text=data.mobile.toString();
+
 
 
 
@@ -108,13 +111,31 @@ class _AddPatientState extends State<AddPatient> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text('Patient'),
-            TextButton.icon(
-                onPressed: () {},
+            IconButton(
+                onPressed: () async {
+
+                  if(name_edit.text!=null)
+                    {
+                       await FirebaseFirestore.instance.collection('Patient').doc(name_edit.text).set({
+                        'name':name_edit.text,
+                        'age' : age_edit.text==null?"":age_edit.text,
+                        'gender':male==true?'Male':female==true?'Female':"",
+                        'address': address_edit.text==null?"":address_edit.text,
+
+                      });
+                      Navigator.pop(context);
+                    }
+                  else
+                    {
+
+                    }
+
+                },
                 icon: Icon(
                   Icons.save,
                   color: Colors.white,
                 ),
-                label: Text(''))
+            )
           ],
         ),
       ),
@@ -237,7 +258,7 @@ class _AddPatientState extends State<AddPatient> {
                              context: context,
                              builder: (context) => Padding(
                                padding: const EdgeInsets.all(20.0),
-                               child: ListSearch(group: 'group', Group: 'Group', name: name_edit.text, selected: widget.patient_data.group,),
+                               child: ListSearch(group: 'group', Group: 'Group', name: name_edit.text),
                              ));
                        }
                      else
@@ -293,7 +314,7 @@ class _AddPatientState extends State<AddPatient> {
                               context: context,
                               builder: (context) => Padding(
                                 padding: const EdgeInsets.all(20.0),
-                                child: ListSearch(group: 'group', Group: 'Blood-Group', name: name_edit.text,),
+                                child: ListSearch(group: 'blood-group', Group: 'Blood-Group', name: name_edit.text,),
                               ));
                         }
                         else

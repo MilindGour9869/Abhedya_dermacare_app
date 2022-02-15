@@ -4,12 +4,10 @@ import 'package:flutter_app/widgets/add_patient.dart';
 import 'package:flutter_app/default.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 import 'package:flutter_app/classes/Patient_name_list.dart';
 
 
-import 'package:flutter_app/widgets/list_search.dart';
 class Patient extends StatefulWidget {
 @override
 _State createState() => _State();
@@ -19,8 +17,6 @@ class _State extends State<Patient> {
 
  Widget Tile(Patient_name_data_list data) => GestureDetector(
    onTap: (){
-
-
 
      Navigator.push(context , MaterialPageRoute(builder: (context)=>AddPatient(patient_data:data)));
 
@@ -87,7 +83,7 @@ class _State extends State<Patient> {
  );
 
 
- Stream<List<Patient_name_data_list>> patient_data() => FirebaseFirestore.instance.collection('Patients').snapshots().map(
+ Stream<List<Patient_name_data_list>> patient_data()  =>  FirebaseFirestore.instance.collection('Patient').snapshots().map(
 
          (snapshot) => snapshot.docs.map((doc) => Patient_name_data_list.fromJson(doc.data()) ).toList() );
 
@@ -128,31 +124,45 @@ class _State extends State<Patient> {
                 // ignore: missing_return
                 builder: (context,snapshot){
 
-                  if(snapshot.hasData)
-                    {
-                     // print(snapshot.data.map(Patient_name_data_list(age:21)).toList());
+                  if(!snapshot.hasData)
+                    return Text('loading');
 
-                      return Container(
-                        height: 500,
-                        child: ListView(
-                          children: snapshot.data.map<Widget>(Tile).toList(),
+
+                  if(snapshot.data==[])
+                    return Container(
+                        height: 100,
+                        width: 200,
+
+
+                        decoration: BoxDecoration(
+                            color: Colors.redAccent,
+                            borderRadius: BorderRadius.circular(10)
                         ),
-                      );
-                    }
+                        child: Text('No Patients Added'));
 
-                  if(snapshot.hasError) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
 
-                  if(snapshot.hasData==false)
-                    return Text('sdsv');
+
+
 
                   if(snapshot.connectionState==ConnectionState.waiting)
                     return Center(child: CircularProgressIndicator());
+
+                  if(snapshot.hasError) {
+                    return const Center(child: Text('Something Went Wrong'));
+                  }
+
+
+                  return Container(
+                    height: 500,
+                    child: ListView(
+                      children: snapshot.data.map<Widget>(Tile).toList(),
+                    ),
+                  );
                 },
               )
             ),
           ),
+
           Padding(
             padding: const EdgeInsets.only(bottom: 8.0),
             child: Container(
@@ -182,15 +192,10 @@ class _State extends State<Patient> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            TextButton.icon(onPressed: (){
-              print('fdf');
-            }, icon: Icon(Icons.home , color: Colors.white,), label: Text('Home' , style: TextStyle(color: Colors.white),)),
-            TextButton.icon(onPressed: (){
-              print('fdf');
-            }, icon: Icon(Icons.home , color: Colors.white,), label: Text('Home' , style: TextStyle(color: Colors.white),)),
-            TextButton.icon(onPressed: (){
-              print('fdf');
-            }, icon: Icon(Icons.home , color: Colors.white,), label: Text('Home' , style: TextStyle(color: Colors.white),)),
+
+            IconButton(onPressed: (){}, icon: Icon(Icons.home)),
+            IconButton(onPressed: (){}, icon: Icon(Icons.home)),
+            IconButton(onPressed: (){}, icon: Icon(Icons.home)),
 
 
 
