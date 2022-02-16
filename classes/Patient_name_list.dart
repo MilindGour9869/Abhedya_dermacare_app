@@ -15,10 +15,16 @@ class Patient_name_data_list{
   static Patient_name_data_list fromJson(Map<String , dynamic> json){
 
     print(json);
+    print('qq');
 
     return Patient_name_data_list(
 
      name: json['name'],
+      age:json['age'],
+
+
+
+
 
 
 

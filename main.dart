@@ -69,39 +69,9 @@ class _HomePageState extends State<HomePage> {
       container = SendFeedback();
     }
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        iconTheme: IconThemeData(
-          color: Colors.black,
+      resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.green,
 
-        ),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            AnimSearchBar(
-                color: Color(0xFFEDF0F2),
-                closeSearchOnSuffixTap: true,
-                autoFocus: true,
-                style: TextStyle(
-
-                ),
-                animationDurationInMilli: 150,
-
-
-
-
-
-                width: MediaQuery.of(context).size.width*0.75,
-                textController: search_text,
-                onSuffixTap:(){
-                  print('evv');
-                }
-
-            ),
-          ],
-        )
-      ),
       body: container,
       drawer: Drawer(
         child: SingleChildScrollView(

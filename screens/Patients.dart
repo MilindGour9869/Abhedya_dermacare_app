@@ -15,7 +15,26 @@ _State createState() => _State();
 
 class _State extends State<Patient> {
 
- Widget Tile(Patient_name_data_list data) => GestureDetector(
+  bool today =false , all = false;
+
+  Future f;
+
+  List<Patient_name_data_list> patient_instance_list=[];
+  List all_patient_name_list=[];
+  List search_patient_list=[];
+  Map<String , Patient_name_data_list> map_name_patientInstance_list={};
+
+
+  var textcontroller = TextEditingController();
+
+
+
+
+
+
+
+
+ Widget Tile(Patient_name_data_list data ) => GestureDetector(
    onTap: (){
 
      Navigator.push(context , MaterialPageRoute(builder: (context)=>AddPatient(patient_data:data)));
@@ -31,177 +50,268 @@ class _State extends State<Patient> {
          color: AppTheme.notWhite,
 
        ),
-       child: ListTile(
-         title: Text(data.name==null?"?":data.name),
+       child: Material(
+         elevation: 2,
+         borderRadius: BorderRadius.circular(10),
+         child: ListTile(
+
+           title: Text(data.name==null?"?":data.name , style: TextStyle(fontSize: 15),),
+           dense: true,
 
 
-         subtitle: Column(
-           crossAxisAlignment: CrossAxisAlignment.start,
+           subtitle: Column(
+             crossAxisAlignment: CrossAxisAlignment.start,
 
-           children: [
-             SizedBox(height: 10,),
-             Row(
-               mainAxisAlignment: MainAxisAlignment.start,
-               children: [
-                 Icon(Icons.cake_outlined , color: Colors.grey,size: 20,),
-                 SizedBox(width: 5,),
-                 Text(data.age==null?"?":data.age.toString()),
-                 SizedBox(width: 10,),
-                 Icon(Icons.call , color: Colors.grey,size: 20,),
-                 SizedBox(width: 5,),
-                 Text(data.mobile==null?"?":data.mobile.toString())
-               ],
-             ),
+             children: [
+               SizedBox(height: 10,),
+               Row(
+                 mainAxisAlignment: MainAxisAlignment.start,
+                 children: [
+                   Icon(Icons.cake_outlined , color: Colors.grey,size: 20,),
+                   SizedBox(width: 5,),
+                   Text(data.age==null?"20":data.age.toString()),
+                   SizedBox(width: 10,),
+                   Icon(Icons.call , color: Colors.grey,size: 20,),
+                   SizedBox(width: 5,),
+                   Text(data.mobile==null?"?91":data.mobile.toString())
+                 ],
+               ),
 
 
-             SizedBox(height: 10,),
-             Text('last visited on : ${data.date==null?"?":data.date}' , style: TextStyle(fontStyle: FontStyle.italic),),
+               SizedBox(height: 10,),
+               Text('last visited on : ${data.date==null?"?":data.date}' , style: TextStyle(fontStyle: FontStyle.italic), overflow:TextOverflow.ellipsis,),
 
-             Row(
-               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-               children: [
-                 TextButton(onPressed: (){}, child: Text('Visits')),
-                 TextButton(onPressed: (){}, child: Text('Payment')),
-                 TextButton(onPressed: (){}, child: Text('Documents')),
-               ],
-             )
 
-           ],
+
+
+               Row(
+                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                 children: [
+                   TextButton(onPressed: (){}, child: Text('Visits')),
+                   TextButton(onPressed: (){}, child: Text('Payment')),
+                   TextButton(onPressed: (){}, child: Text('Documents')),
+                 ],
+               )
+
+             ],
+           ),
+
+           leading: CircleAvatar(
+             child: Text(data.name==null?"?":data.name[0].toUpperCase() , style: TextStyle(color: Colors.black),),
+             backgroundColor: AppTheme.green,
+
+           ),
+
+
+
+
          ),
-
-         leading: CircleAvatar(
-           child: Text(data.name==null?"?":data.name[0].toUpperCase()),
-
-         ),
-
-
-
-
        ),
      ),
    ),
  );
 
 
- Stream<List<Patient_name_data_list>> patient_data()  =>  FirebaseFirestore.instance.collection('Patient').snapshots().map(
+  Future<dynamic> patient_data() async  => await FirebaseFirestore.instance.collection('Patient').get().then(
 
-         (snapshot) => snapshot.docs.map((doc) => Patient_name_data_list.fromJson(doc.data()) ).toList() );
+          (QuerySnapshot querySnapshot)
+
+  {
+
+    querySnapshot.docs.forEach((element) {
+
+      patient_instance_list.add(Patient_name_data_list.fromJson(element.data()));
+
+    });
+
+    print(patient_instance_list);
+
+    all_patient_name_list=patient_instance_list.map((e) => e.name).toList();
+
+   int n = all_patient_name_list.length;
+
+
+   for(int i=0;i<n;i++)
+     {
+       map_name_patientInstance_list[all_patient_name_list[i]]=patient_instance_list[i];
+     }
+
+    print(all_patient_name_list);
+
+    search_patient_list=all_patient_name_list;
+
+
+    var q;
+
+
+    return q;
+
+
+
+
+  }
+  );
+
+  onItemChanged(String value) {
+    setState(() {
+      search_patient_list= all_patient_name_list
+          .where((string) => string.toLowerCase().contains(value.toLowerCase()))
+          .toList();
+      if(search_patient_list.isEmpty)
+      {
+        search_patient_list=[];
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    print('\ninit\n');
+    f=patient_data();
+
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    patient_instance_list=[];
+    all_patient_name_list=[];
+    search_patient_list=[];
+
+  }
+
 
 
   @override
   Widget build(BuildContext context) {
+    print('builder');
+
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            TextButton.icon(onPressed: (){
-              print('fdf');
-            }, icon: Icon(Icons.adjust, color: Colors.black,), label: Text('Today' , style: TextStyle(color: Colors.black),)),
-            TextButton.icon(onPressed: (){
-              print('fdf');
-            }, icon: Icon(Icons.adjust , color: Colors.black,), label: Text('All' , style: TextStyle(color: Colors.black),)),
 
-
-
-          ],
-        ),
       ),
 
-      body: Stack(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            width: double.infinity,
-            height: 500,
-           color: Colors.white,
-            child:SingleChildScrollView(
-
-              child: StreamBuilder(
-                stream: patient_data(),
-                // ignore: missing_return
-                builder: (context,snapshot){
-
-                  if(!snapshot.hasData)
-                    return Text('loading');
-
-
-                  if(snapshot.data==[])
-                    return Container(
-                        height: 100,
-                        width: 200,
-
-
-                        decoration: BoxDecoration(
-                            color: Colors.redAccent,
-                            borderRadius: BorderRadius.circular(10)
-                        ),
-                        child: Text('No Patients Added'));
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0),
+            child: SizedBox(
+              height: 50,
+              child: TextField(
+                controller: textcontroller,
+                onChanged: onItemChanged,
+                decoration: InputDecoration(
 
 
 
 
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.grey,
+                        width: 2,),
+                      borderRadius: BorderRadius.circular(10),),
 
-                  if(snapshot.connectionState==ConnectionState.waiting)
-                    return Center(child: CircularProgressIndicator());
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.teal,
+                        width: 2,),
+                      borderRadius: BorderRadius.circular(10),),
 
-                  if(snapshot.hasError) {
-                    return const Center(child: Text('Something Went Wrong'));
-                  }
+                    hintText:'Search',
+                    prefixIcon: Icon(Icons.search)),
 
 
-                  return Container(
-                    height: 500,
-                    child: ListView(
-                      children: snapshot.data.map<Widget>(Tile).toList(),
-                    ),
-                  );
-                },
-              )
+                keyboardType: TextInputType.name ,
+
+
+
+
+
+
+              ),
             ),
           ),
 
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
-            child: Container(
-                alignment: Alignment.bottomCenter,
-
-                child: Material(
-                  elevation: 5,
-                  borderRadius:BorderRadius.circular(30) ,
-                  child: TextButton.icon(onPressed: (){
-
-                    print('add pateint');
 
 
 
+          Container(
+            width: double.infinity,
+            height: MediaQuery.of(context).size.height*0.7,
+           color: Colors.red,
+            child:SingleChildScrollView(
 
-                    Navigator.push(context , MaterialPageRoute(builder: (context)=>AddPatient()));
+              child: FutureBuilder(
+                future: f,
+
+                  builder: (context,snapshot){
+
+                  print(snapshot.data);
+
+                    if(search_patient_list.isEmpty)
+                      {return Text('loadin');}
 
 
-                  }, icon: Icon(Icons.add , color: Colors.red,), label: Text('Add Patient' , style: TextStyle(color: Colors.black),) ),
-                )),
-          )
+
+
+
+
+
+                    if(snapshot.connectionState==ConnectionState.waiting)
+                      {
+                        return Center(child: CircularProgressIndicator());
+                      }
+
+                    if(snapshot.hasError) {
+                      return const Center(child: Text('Something Went Wrong'));
+                    }
+
+
+                    return Container(
+                      height: 500,
+                      child: ListView(
+                        children: search_patient_list.map<Widget>((e)=>Tile(map_name_patientInstance_list[e])).toList(),
+                      ),
+                    );
+                  }
+              )
+            ),
+          ),
         ],
       ),
 
-      bottomNavigationBar: Container(
 
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-
-            IconButton(onPressed: (){}, icon: Icon(Icons.home)),
-            IconButton(onPressed: (){}, icon: Icon(Icons.home)),
-            IconButton(onPressed: (){}, icon: Icon(Icons.home)),
-
-
-
-          ],
+      floatingActionButton: FloatingActionButton(
+        elevation: 15,
+        splashColor: AppTheme.notWhite,
+        onPressed: (){
+          Navigator.push(context , MaterialPageRoute(builder: (context)=>AddPatient()));
+        },
+        child: Icon(Icons.add , color: Colors.black,),
+        backgroundColor: AppTheme.green,
+      ),
+      bottomNavigationBar: BottomAppBar(
+        color: Colors.white,
+        child: Container(
+          height:MediaQuery.of(context).size.height*0.08,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topRight: Radius.circular(5),
+              topLeft:Radius.circular(5),
+            )
+          ),
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
 
 
     );
