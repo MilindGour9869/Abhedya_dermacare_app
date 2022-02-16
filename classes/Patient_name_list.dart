@@ -1,9 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Patient_name_data_list{
 
-  String name , DOB , gender , email , address   , image   , date ;
+  String name , DOB , gender , email , address   , image   ;
   int age , mobile ;
 
   List  group  , blood_group;
+  Timestamp date;
+
 
 
 
@@ -20,7 +24,10 @@ class Patient_name_data_list{
     return Patient_name_data_list(
 
      name: json['name'],
-      age:json['age'],
+      age: json['age']==""?00:json['age'],
+      date: json['date']==""?"?":json['date'],
+      mobile: json['mobile']==""?00:json['mobile']
+
 
 
 

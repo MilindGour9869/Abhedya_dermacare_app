@@ -115,13 +115,19 @@ class _AddPatientState extends State<AddPatient> {
             IconButton(
                 onPressed: () async {
 
+                  print(Timestamp.now());
+
+
                   if(name_edit.text!=null)
                     {
                        await FirebaseFirestore.instance.collection('Patient').doc(name_edit.text).set({
                         'name':name_edit.text,
-                        'age' : age_edit.text==null?"":age_edit.text,
+                        'age' : age_edit.text,
                         'gender':male==true?'Male':female==true?'Female':"",
-                        'address': address_edit.text==null?"":address_edit.text,
+                        'address': address_edit.text,
+                         'mobile':mobile_edit.text,
+                         'date':Timestamp.now(),
+
 
                       });
                       Navigator.pop(context);

@@ -7,6 +7,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter_app/classes/Patient_name_list.dart';
 
+import 'package:date_format/date_format.dart';
+
+
 
 class Patient extends StatefulWidget {
 @override
@@ -28,6 +31,14 @@ class _State extends State<Patient> {
   var textcontroller = TextEditingController();
 
 
+  Future PatientDataDelete (@required String group)async{
+    final doc = await FirebaseFirestore.instance.collection('Patient').doc(group);
+
+    doc.delete();
+
+
+  }
+
 
 
 
@@ -47,7 +58,7 @@ class _State extends State<Patient> {
      child: Container(
        decoration: BoxDecoration(
          borderRadius: BorderRadius.circular(10),
-         color: AppTheme.notWhite,
+         color: AppTheme.white,
 
        ),
        child: Material(
@@ -55,7 +66,67 @@ class _State extends State<Patient> {
          borderRadius: BorderRadius.circular(10),
          child: ListTile(
 
-           title: Text(data.name==null?"?":data.name , style: TextStyle(fontSize: 15),),
+           title: Row(
+             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+             children: [
+               Text(data.name==null?"?":data.name , style: TextStyle(fontSize: 15),),
+               IconButton(onPressed: (){
+                 showDialog(context: context, builder: (context)=>AlertDialog(
+
+                   titlePadding: EdgeInsets.all(0),
+                   title: Center(child: Text('Are you Sure ?')),
+
+
+
+                   actions: [
+                     Row(
+
+                       children: [
+                       Container(
+
+                           child: TextButton(onPressed: (){
+
+                             setState(() {
+                               patient_instance_list.remove(data);
+                               all_patient_name_list.remove(data.name);
+                               search_patient_list.remove(data.name);
+                               map_name_patientInstance_list.remove(data.name);
+                               PatientDataDelete(data.name);
+                             });
+
+                             Navigator.pop(context);
+
+
+
+
+                           }, child:Text('yes' ,style: TextStyle(color: Colors.white),)),
+                           decoration: BoxDecoration(
+                             borderRadius: BorderRadius.circular(15),
+                             color:Colors.redAccent,
+                           ),
+                       ),
+                         Container(
+
+                           child: TextButton(onPressed: (){
+                             Navigator.pop(context);
+
+                           }, child:Text('no' ,style: TextStyle(color: Colors.white),)),
+                           decoration: BoxDecoration(
+                             borderRadius: BorderRadius.circular(15),
+                             color:Colors.grey,
+                           ),
+                         ),
+                     ],
+
+                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                     )
+
+                   ],
+                 ));
+               }, icon: Icon(Icons.delete_outline))
+             ],
+           ),
            dense: true,
 
 
@@ -63,7 +134,7 @@ class _State extends State<Patient> {
              crossAxisAlignment: CrossAxisAlignment.start,
 
              children: [
-               SizedBox(height: 10,),
+
                Row(
                  mainAxisAlignment: MainAxisAlignment.start,
                  children: [
@@ -79,7 +150,7 @@ class _State extends State<Patient> {
 
 
                SizedBox(height: 10,),
-               Text('last visited on : ${data.date==null?"?":data.date}' , style: TextStyle(fontStyle: FontStyle.italic), overflow:TextOverflow.ellipsis,),
+               Text('last visited on : ${formatDate(data.date.toDate(),[dd, '-', mm, '-', yyyy])}' , style: TextStyle(fontStyle: FontStyle.italic),),
 
 
 
@@ -192,18 +263,29 @@ class _State extends State<Patient> {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
+      backgroundColor: AppTheme.offwhite,
 
+      appBar: PreferredSize(
+
+        preferredSize: Size.fromHeight(150.0),
+
+        child: AppBar(
+          backgroundColor: AppTheme.orange,
+          elevation: 0,
+          title: Text('My Patients' , style: TextStyle(color: Colors.black),),
+
+
+
+        ),
       ),
+
+
 
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 8.0),
+            padding: const EdgeInsets.symmetric( horizontal: 8.0),
             child: SizedBox(
               height: 50,
               child: TextField(
@@ -244,21 +326,28 @@ class _State extends State<Patient> {
 
 
 
-          Container(
-            width: double.infinity,
-            height: MediaQuery.of(context).size.height*0.7,
-           color: Colors.red,
-            child:SingleChildScrollView(
+          Expanded(
+            child: Container(
+             
+             
+             color: Colors.transparent,
+              child:SingleChildScrollView(
 
-              child: FutureBuilder(
-                future: f,
+                child: FutureBuilder(
+                  future: f,
 
-                  builder: (context,snapshot){
+                    builder: (context,snapshot){
 
-                  print(snapshot.data);
+                    print(snapshot.data);
 
-                    if(search_patient_list.isEmpty)
-                      {return Text('loadin');}
+                      if(search_patient_list.isEmpty)
+                        {return Center(child: Card(
+                          color: AppTheme.notWhite,
+
+                            child: Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Text('loadin'),
+                            )));}
 
 
 
@@ -266,24 +355,25 @@ class _State extends State<Patient> {
 
 
 
-                    if(snapshot.connectionState==ConnectionState.waiting)
-                      {
-                        return Center(child: CircularProgressIndicator());
+                      if(snapshot.connectionState==ConnectionState.waiting)
+                        {
+                          return Center(child: CircularProgressIndicator());
+                        }
+
+                      if(snapshot.hasError) {
+                        return const Center(child: Text('Something Went Wrong'));
                       }
 
-                    if(snapshot.hasError) {
-                      return const Center(child: Text('Something Went Wrong'));
+
+                      return Container(
+                        height: MediaQuery.of(context).size.height*0.727,
+                        child: ListView(
+                          children: search_patient_list.map<Widget>((e)=>Tile(map_name_patientInstance_list[e])).toList(),
+                        ),
+                      );
                     }
-
-
-                    return Container(
-                      height: 500,
-                      child: ListView(
-                        children: search_patient_list.map<Widget>((e)=>Tile(map_name_patientInstance_list[e])).toList(),
-                      ),
-                    );
-                  }
-              )
+                )
+              ),
             ),
           ),
         ],
@@ -292,6 +382,7 @@ class _State extends State<Patient> {
 
       floatingActionButton: FloatingActionButton(
         elevation: 15,
+
         splashColor: AppTheme.notWhite,
         onPressed: (){
           Navigator.push(context , MaterialPageRoute(builder: (context)=>AddPatient()));
@@ -300,14 +391,49 @@ class _State extends State<Patient> {
         backgroundColor: AppTheme.green,
       ),
       bottomNavigationBar: BottomAppBar(
-        color: Colors.white,
+
+        color: AppTheme.offwhite,
         child: Container(
           height:MediaQuery.of(context).size.height*0.08,
+
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
-              topRight: Radius.circular(5),
-              topLeft:Radius.circular(5),
-            )
+              topRight: Radius.circular(10),
+              topLeft:Radius.circular(10),
+
+            ),
+
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Container(
+
+                    child: TextButton(onPressed: (){}, child: Text('Today' , style: TextStyle(color: Colors.black),)),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: AppTheme.notWhite,
+
+                    ),
+
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Container(
+
+                  child: TextButton(onPressed: (){}, child: Text('All' , style: TextStyle(color: Colors.black),)),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: AppTheme.notWhite,
+
+                  ),
+
+                ),
+              ),
+            ],
           ),
         ),
       ),

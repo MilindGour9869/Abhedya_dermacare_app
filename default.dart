@@ -5,6 +5,8 @@ class AppTheme{
   static const Color green = Colors.greenAccent;
   static const Color white = Colors.white;
   static const Color orange = Colors.deepOrangeAccent;
+  static const Color offwhite = Color.fromRGBO(232, 231, 230,1);
+
 
 
 }
