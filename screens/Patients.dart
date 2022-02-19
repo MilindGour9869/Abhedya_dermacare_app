@@ -272,7 +272,7 @@ class _State extends State<Patient> {
         child: AppBar(
           backgroundColor: AppTheme.orange,
           elevation: 0,
-          title: Text('My Patients' , style: TextStyle(color: Colors.black),),
+          title: Text(' • My Patients' , style: TextStyle(color: Colors.black),),
 
 
 
