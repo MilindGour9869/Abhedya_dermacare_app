@@ -17,6 +17,24 @@ _State createState() => _State();
 
 class _State extends State<Setting> {
 
+Map<String,Map<String,dynamic>> map={
+
+  'aa':{
+    'dosage':12,
+    'duration':98,
+
+  },
+
+
+  'qqw':{
+    'dosage':12,
+    'duration':98,
+
+  }
+};
+
+
+
 
 
 
@@ -24,12 +42,17 @@ class _State extends State<Setting> {
 Widget build(BuildContext context) {
 
 
+
+
 return Center(
   child:   Container(
 
     child: PdfPreview(
 
-      build: ((format)=>PdfInvoiceApi.generatePdf(format, 'aaa')),
+      build: ((format)=>PdfInvoiceApi.generatePdf(
+        diagnosis: ['qqq' , 'eretur' ,'nnnsn'],
+        medicinces: map
+      )),
 
 
 

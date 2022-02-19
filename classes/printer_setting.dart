@@ -12,12 +12,15 @@ class PdfInvoiceApi {
 
 
 
-  static Future<Uint8List> generatePdf(PdfPageFormat format, String title) async {
+  static Future<Uint8List> generatePdf( {String date ,  String id , String name ,String gender ,  int age, int mobile ,String notes , List diagnosis , Map<String,Map<String,dynamic>> medicinces , List advice }) async {
     final pdf = pw.Document(version: PdfVersion.pdf_1_5 , compress: true);
 
     final image = await imageFromAssetBundle('images/logo_without_background.png');
     final font = await fontFromAssetBundle('font/GIST-DVOTMohini.ttf');
     final font1 = await fontFromAssetBundle('font/DevanagariBold.ttf');
+
+    int row=1;
+
 
 
 
@@ -553,7 +556,79 @@ class PdfInvoiceApi {
                               width: 14*PdfPageFormat.cm,
                               height: 23*PdfPageFormat.cm,
                               color: PdfColors.white,
-                              child: pw.Center(child: pw.Text('ajbjlllllllllllllll'))
+                              child:pw.Padding(
+                                padding: pw.EdgeInsets.only(left: 1*PdfPageFormat.cm),
+                                child:  pw.Column(
+                                    crossAxisAlignment: pw.CrossAxisAlignment.start,
+
+                                    children: [
+
+                                      pw.Text('Date : ${date==null?'122':date}' , style: pw.TextStyle(fontSize: 0.3*PdfPageFormat.cm)),
+                                      pw.Text('Name : ${name==null?'122':name}' , style: pw.TextStyle(fontSize: 0.3*PdfPageFormat.cm)),
+                                      pw.Text('Age : ${age==null?'122':age}' , style: pw.TextStyle(fontSize: 0.3*PdfPageFormat.cm)),
+                                      pw.Text('Mobile No. : ${mobile==null?'122':mobile}' , style: pw.TextStyle(fontSize: 0.3*PdfPageFormat.cm)),
+
+                                      pw.SizedBox(height:0.5*PdfPageFormat.cm),
+
+                                      pw.Text('Notes:'),
+                                      pw.Text(notes , style: pw.TextStyle(fontSize: 0.3*PdfPageFormat.cm)),
+
+                                      pw.SizedBox(height:0.5*PdfPageFormat.cm),
+
+                                      pw.Text('Diagnosis:'),
+                                      pw.Column(
+                                        children: diagnosis.map((e) {
+
+                                          return pw.Bullet(
+                                            text: e.toString().toUpperCase(),
+                                            style: pw.TextStyle(fontSize: 0.3*PdfPageFormat.cm),
+                                            bulletSize: 0.1*PdfPageFormat.cm,
+                                           padding: pw.EdgeInsets.only(left: 0)
+
+
+
+                                          );
+                                        } ).toList()
+                                      ),
+
+                                      pw.SizedBox(height:0.5*PdfPageFormat.cm),
+
+
+                                      pw.Table(
+                                        children: []
+                                      )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                    ]
+                                ),
+                              )
 
 
 
