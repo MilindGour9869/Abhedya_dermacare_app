@@ -322,7 +322,7 @@ class _AddPatientState extends State<AddPatient> {
                               context: context,
                               builder: (context) => Padding(
                                 padding: const EdgeInsets.all(20.0),
-                                child: ListSearch(group: 'blood-group', Group: 'Blood-Group', name: name_edit.text,),
+                                child: ListSearch(group: 'blood-group', Group: 'Blood-Group', name: name_edit.text, ),
                               ));
                         }
                         else

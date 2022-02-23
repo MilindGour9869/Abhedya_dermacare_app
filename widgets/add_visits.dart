@@ -26,13 +26,30 @@ class AddVisits extends StatefulWidget {
 class _AddVisitsState extends State<AddVisits> {
 
 
-  String complaints="Complaintes";
+  String complaints="Complaints";
   String diagnosis="Diagnosis";
   String advices="Advices";
   String investigation="Investigation";
   String allergies="Allergies";
-  String medicines="Medicines";
   String clinical_findings="Clinical Findings";
+  String group = "Group";
+  String blood_group="Blood Group";
+
+  String medicines="Medicines";
+
+  Map<String,bool> map={
+    'complaints' : false,
+    'diagnosis' : false,
+    'advices':false,
+    'investigation':false,
+    'allergies':false,
+    'clinical_findings':false,
+    'group':false,
+    'blood_group':false,
+   };
+
+  String s = "  ,  ";
+
 
 
 
@@ -49,74 +66,118 @@ setState(() {
   visit_date = widget.data.visit_date;
 
 
-  if(widget.data.diagnosis !=null)
+  if(widget.data.diagnosis !=null && widget.data.diagnosis.isNotEmpty)
   {
+    map['diagnosis']=true;
+
+    print('diagnosis not null');
+    diagnosis="";
     widget.data.diagnosis.forEach((element) {
-      diagnosis+=element+" ";
+      diagnosis+=element + s ;
 
     });
   }
 
 
-  if(widget.data.complaints != null)
+  if(widget.data.complaints != null && widget.data.complaints.isNotEmpty)
   {
+    map['complaints']=true;
+
     print('complaint not null');
     complaints="";
 
 
     widget.data.complaints.forEach((element) {
-      complaints += element +" ";
+      complaints += element + s;
 
     });
   }
 
-  if(widget.data.investigation != null)
+  if(widget.data.investigation != null && widget.data.investigation.isNotEmpty)
   {
-    print('complaint not null');
+    map['investigation']=true;
+
+    print('investigation not null');
     investigation="";
 
 
     widget.data.investigation.forEach((element) {
-      investigation += element +" ";
+      investigation += element + s;
 
     });
   }
 
-  if(widget.data.advices != null)
+  if(widget.data.advices != null && widget.data.advices.isNotEmpty)
   {
-    print('complaint not null');
+    map['advices']=true;
+
+    print('advices not null');
     advices="";
 
 
     widget.data.advices.forEach((element) {
-      advices += element +" ";
+      advices += element + s;
+
 
     });
   }
 
-  if(widget.data.allergies != null)
+  if(widget.data.allergies != null && widget.data.allergies.isNotEmpty )
   {
-    print('complaint not null');
+    map['allergies']=true;
+
+    print('allergies not null');
     allergies="";
 
 
     widget.data.allergies.forEach((element) {
-      allergies += element +" ";
+      allergies += element + s;
+
 
     });
   }
 
-  if(widget.data.clinical_finding != null)
+  if(widget.data.clinical_finding != null && widget.data.clinical_finding.isNotEmpty)
   {
-    print('complaint not null');
+    map['clinical_findings']=true;
+    print('clinical finding not null');
     clinical_findings="";
 
 
     widget.data.clinical_finding.forEach((element) {
-      clinical_findings += element +" ";
+      clinical_findings += element + s;
 
     });
   }
+
+  if(widget.data.group != null && widget.data.group.isNotEmpty)
+  {
+    map['group']=true;
+
+    print('group not null');
+    group="";
+
+
+    widget.data.group.forEach((element) {
+      group += element + s;
+
+    });
+  }
+
+  if(widget.data.blood_group != null && widget.data.blood_group.isNotEmpty)
+  {
+    map['blood_group']=true;
+    print('blood-group not null');
+    blood_group="";
+
+
+    widget.data.blood_group.forEach((element) {
+      blood_group += element + s ;
+
+    });
+  }
+
+
 
 
 
@@ -227,7 +288,7 @@ setState(() {
                               width:  MediaQuery.of(context).size.width*0.7,
                               child: SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
-                                child: Text(complaints==""?"Complaints":complaints),
+                                child: Text(complaints , style: TextStyle(color: map['complaints']?Colors.black:Colors.grey),),
                               ),
                             ),
                           ),
@@ -264,15 +325,28 @@ setState(() {
                               complaints='';
                               a.forEach((element) {
 
-                                complaints+=element +" ";
+                                complaints+=element + s;
 
 
                               });
 
-                              setState(() {
-                                complaints=complaints;
+                              if(complaints != "")
+                                {
+                                  setState(() {
+                                    complaints=complaints;
+                                    map['complaints']=true;
 
-                              });
+                                  });
+                                }
+                              else
+                                {
+                                  setState(() {
+                                    complaints="Complaints";
+                                    map['complaints']=false;
+
+                                  });
+
+                                }
 
 
 
@@ -329,7 +403,7 @@ setState(() {
                               width:  MediaQuery.of(context).size.width*0.7,
                               child: SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
-                                child: Text(clinical_findings==""?"Clinical_findings":clinical_findings),
+                                child: Text(clinical_findings , style: TextStyle(color:map['clinical_findings']?Colors.black:Colors.grey),),
                               ),
                             ),
                           ),
@@ -366,15 +440,28 @@ setState(() {
                               clinical_findings='';
                               a.forEach((element) {
 
-                                clinical_findings+=element +" ";
+                                clinical_findings+=element + s;
 
 
                               });
 
+                            if(clinical_findings != "")
+                            {
                               setState(() {
                                 clinical_findings=clinical_findings;
+                                map['clinical_findings']=true;
 
                               });
+                            }
+                            else
+                            {
+                              setState(() {
+                                clinical_findings="Clinical Finding";
+                                map['clinical_findings']=false;
+
+                              });
+
+                            }
 
 
 
@@ -431,7 +518,7 @@ setState(() {
                               width:  MediaQuery.of(context).size.width*0.7,
                               child: SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
-                                child: Text(diagnosis==""?"Diagnosis":diagnosis),
+                                child: Text(diagnosis , style: TextStyle(color: map['diagnosis']?Colors.black:Colors.grey),),
                               ),
                             ),
                           ),
@@ -468,16 +555,28 @@ setState(() {
                               diagnosis='';
                               a.forEach((element) {
 
-                                diagnosis+=element +" ";
+                                diagnosis+=element + s;
 
 
                               });
 
+                            if(diagnosis!= "")
+                            {
                               setState(() {
                                 diagnosis=diagnosis;
+                                map['diagnosis']=true;
+
+                              });
+                            }
+                            else
+                            {
+                              setState(() {
+                                diagnosis="Diagnosis";
+                                map['diagnosis']=false;
 
                               });
 
+                            }
 
 
 
@@ -533,7 +632,7 @@ setState(() {
                               width:  MediaQuery.of(context).size.width*0.7,
                               child: SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
-                                child: Text(investigation==""?"Investigation":investigation),
+                                child: Text(investigation , style: TextStyle(color: map['investigation']?Colors.black:Colors.grey),),
                               ),
                             ),
                           ),
@@ -576,18 +675,33 @@ setState(() {
 
                               a.forEach((element) {
 
-                                investigation+=element +" ";
+                                investigation+=element + s;
 
 
                               });
 
                               print(investigation);
 
-
+                            if(investigation!= "")
+                            {
                               setState(() {
                                 investigation=investigation;
+                                map['investigation']=true;
 
                               });
+                            }
+                            else
+                            {
+                              setState(() {
+                                investigation="Investigation";
+                                map['investigation']=false;
+
+                              });
+
+                            }
+
+
+
 
 
 
@@ -644,7 +758,7 @@ setState(() {
                               width:  MediaQuery.of(context).size.width*0.7,
                               child: SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
-                                child: Text(allergies==""?"Allergies":allergies),
+                                child: Text(allergies, style: TextStyle(color: map['allergies']?Colors.black:Colors.grey),),
                               ),
                             ),
                           ),
@@ -681,15 +795,28 @@ setState(() {
                               allergies='';
                               a.forEach((element) {
 
-                                allergies+=element +" ";
+                                allergies+=element + s;
 
 
                               });
 
+                            if(allergies!= "")
+                            {
                               setState(() {
                                 allergies=allergies;
+                                map['allergies']=true;
 
                               });
+                            }
+                            else
+                            {
+                              setState(() {
+                                allergies="Allergies";
+                                map['allergies']=false;
+
+                              });
+
+                            }
 
 
 
@@ -746,7 +873,7 @@ setState(() {
                               width:  MediaQuery.of(context).size.width*0.7,
                               child: SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
-                                child: Text(advices==""?"Advices":advices),
+                                child: Text(advices , style:  TextStyle(color: map['advices']?Colors.black:Colors.grey),),
                               ),
                             ),
                           ),
@@ -783,15 +910,28 @@ setState(() {
                               advices='';
                               a.forEach((element) {
 
-                                advices+=element +" ";
+                                advices+=element + s;
 
 
                               });
 
+                            if(advices!= "")
+                            {
                               setState(() {
                                 advices=advices;
+                                map['advices']=true;
 
                               });
+                            }
+                            else
+                            {
+                              setState(() {
+                                advices="Advices";
+                                map['advices']=false;
+
+                              });
+
+                            }
 
 
 
@@ -817,6 +957,236 @@ setState(() {
                     ),
                   ),
                 ), // Advice
+
+                SizedBox(
+                  height: MediaQuery.of(context).size.height*0.1,
+                  width: MediaQuery.of(context).size.width*0.9,
+                  child: Card(
+                    color: AppTheme.white,
+                    child: Row(
+                      children: [
+                        SizedBox(width: 7,),
+                        Icon(Icons.seven_k),
+                        SizedBox(width: 7,),
+
+                        Flexible(
+                          flex: 2,
+                          child: GestureDetector(
+                            onTap: (){
+                              showDialog(
+                                  context: context,
+                                  builder: (context){
+
+                                    return Column(
+                                        children: []
+                                    );
+
+                                  }
+                              );
+                            },
+                            child: Container(
+                              width:  MediaQuery.of(context).size.width*0.7,
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Text(group , style: TextStyle(color: map['group']?Colors.black:Colors.grey),),
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        SizedBox(width: 4,),
+
+
+                        IconButton(onPressed: ()async{
+
+
+
+                          print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
+
+
+                          showDialog(
+                              context: context,
+                              builder: (context)  {
+
+
+
+                                return  ListSearch(group: 'group', Group: 'Group', name: widget.name, date: formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
+
+                          ).then((value)async{
+
+                            print(value);
+
+                            List a =  await value;
+
+                            print(a);
+
+
+
+                            group='';
+                            a.forEach((element) {
+
+                              group+=element + s;
+
+
+                            });
+
+                            if(group!= "")
+                            {
+                              setState(() {
+                                group=group;
+                                map['group']=true;
+
+                              });
+                            }
+                            else
+                            {
+                              setState(() {
+                                group="Group";
+                                map['group']=false;
+
+                              });
+
+                            }
+
+
+
+
+
+                          });
+
+
+
+
+
+
+
+
+
+
+                        }, icon: Icon(Icons.arrow_drop_down_circle_outlined))
+
+
+
+
+                      ],
+                    ),
+                  ),
+                ), // Group
+
+                SizedBox(
+                  height: MediaQuery.of(context).size.height*0.1,
+                  width: MediaQuery.of(context).size.width*0.9,
+                  child: Card(
+                    color: AppTheme.white,
+                    child: Row(
+                      children: [
+                        SizedBox(width: 7,),
+                        Icon(Icons.seven_k),
+                        SizedBox(width: 7,),
+
+                        Flexible(
+                          flex: 2,
+                          child: GestureDetector(
+                            onTap: (){
+                              showDialog(
+                                  context: context,
+                                  builder: (context){
+
+                                    return Column(
+                                        children: []
+                                    );
+
+                                  }
+                              );
+                            },
+                            child: Container(
+                              width:  MediaQuery.of(context).size.width*0.7,
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child:  Text(blood_group , style: TextStyle(color: map['blood_group']?Colors.black:Colors.grey),),
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        SizedBox(width: 4,),
+
+
+                        IconButton(onPressed: ()async{
+
+
+
+                          print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
+
+
+                          showDialog(
+                              context: context,
+                              builder: (context)  {
+
+
+
+                                return  ListSearch(group: 'blood-group', Group: 'Blood-Group', name: widget.name, date: formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
+
+                          ).then((value)async{
+
+                            print(value);
+
+                            List a =  await value;
+
+                            print(a);
+
+
+
+                            blood_group='';
+                            a.forEach((element) {
+
+                              blood_group+=element + s;
+
+
+                            });
+
+                            if(blood_group!= "")
+                            {
+                              setState(() {
+                                blood_group=blood_group;
+                                map['blood_group']=true;
+
+                              });
+                            }
+                            else
+                            {
+                              setState(() {
+                                blood_group="Blood Group";
+                                map['blood_group']=false;
+
+                              });
+
+                            }
+
+
+
+
+                          });
+
+
+
+
+
+
+
+
+
+
+                        }, icon: Icon(Icons.arrow_drop_down_circle_outlined))
+
+
+
+
+                      ],
+                    ),
+                  ),
+                ), // Blood-Group
+
 
 
 
