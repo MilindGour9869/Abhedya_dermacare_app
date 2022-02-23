@@ -570,12 +570,12 @@ class PdfInvoiceApi {
 
                                       pw.SizedBox(height:0.5*PdfPageFormat.cm),
 
-                                      pw.Text('Notes:'),
+                                      pw.Text('Notes:',  style: pw.TextStyle(fontSize: 0.3*PdfPageFormat.cm),),
                                       pw.Text(notes , style: pw.TextStyle(fontSize: 0.3*PdfPageFormat.cm)),
 
                                       pw.SizedBox(height:0.5*PdfPageFormat.cm),
 
-                                      pw.Text('Diagnosis:'),
+                                      pw.Text('Diagnosis:' ,  style: pw.TextStyle(fontSize: 0.3*PdfPageFormat.cm),),
                                       pw.Column(
                                         children: diagnosis.map((e) {
 

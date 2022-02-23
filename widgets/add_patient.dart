@@ -129,6 +129,7 @@ class _AddPatientState extends State<AddPatient> {
                          'date':Timestamp.now(),
 
 
+
                       });
                       Navigator.pop(context);
                     }

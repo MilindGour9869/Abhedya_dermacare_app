@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/screens/visits_date.dart';
 import 'package:flutter_app/widgets/add_patient.dart';
 import 'package:flutter_app/default.dart';
 
@@ -158,7 +159,11 @@ class _State extends State<Patient> {
                Row(
                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                  children: [
-                   TextButton(onPressed: (){}, child: Text('Visits')),
+                   TextButton(onPressed: (){
+
+                     Navigator.push(context , MaterialPageRoute(builder: (context)=>VisitsDate(data)));
+
+                   }, child: Text('Visits')),
                    TextButton(onPressed: (){}, child: Text('Payment')),
                    TextButton(onPressed: (){}, child: Text('Documents')),
                  ],
@@ -190,6 +195,9 @@ class _State extends State<Patient> {
   {
 
     querySnapshot.docs.forEach((element) {
+
+      print(element.data());
+
 
       patient_instance_list.add(Patient_name_data_list.fromJson(element.data()));
 
@@ -265,18 +273,82 @@ class _State extends State<Patient> {
       resizeToAvoidBottomInset: false,
       backgroundColor: AppTheme.offwhite,
 
-      appBar: PreferredSize(
+      appBar: AppBar(
+        backgroundColor: AppTheme.green,
+        elevation: 0,
+        title: Text(' • My Patients' , style: TextStyle(color: Colors.black),),
+        actions: [
+          Padding(
+            padding: EdgeInsets.only(right: 10),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Container(
 
-        preferredSize: Size.fromHeight(150.0),
+                child: TextButton(onPressed: (){}, child: Text('Today' , style: TextStyle(color: Colors.black),)),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: AppTheme.notWhite,
 
-        child: AppBar(
-          backgroundColor: AppTheme.orange,
-          elevation: 0,
-          title: Text(' • My Patients' , style: TextStyle(color: Colors.black),),
+                ),
+
+              ),
+            ),
+          )
+        ],
+
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(100),
+
+          child:  Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+
+              )
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric( horizontal: 8.0),
+              child: SizedBox(
+                height: 50,
+                child: TextField(
+                  controller: textcontroller,
+                  onChanged: onItemChanged,
+                  decoration: InputDecoration(
 
 
 
+
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.grey,
+                          width: 2,),
+                        borderRadius: BorderRadius.circular(30),),
+
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.teal,
+                          width: 2,),
+                        borderRadius: BorderRadius.circular(10),),
+
+                      hintText:'Search',
+                      prefixIcon: Icon(Icons.search)),
+
+
+                  keyboardType: TextInputType.name ,
+
+
+
+
+
+
+                ),
+              ),
+            ),
+          ),
         ),
+
+
+
+
       ),
 
 
@@ -284,44 +356,7 @@ class _State extends State<Patient> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric( horizontal: 8.0),
-            child: SizedBox(
-              height: 50,
-              child: TextField(
-                controller: textcontroller,
-                onChanged: onItemChanged,
-                decoration: InputDecoration(
 
-
-
-
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.grey,
-                        width: 2,),
-                      borderRadius: BorderRadius.circular(10),),
-
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.teal,
-                        width: 2,),
-                      borderRadius: BorderRadius.circular(10),),
-
-                    hintText:'Search',
-                    prefixIcon: Icon(Icons.search)),
-
-
-                keyboardType: TextInputType.name ,
-
-
-
-
-
-
-              ),
-            ),
-          ),
 
 
 
@@ -396,45 +431,7 @@ class _State extends State<Patient> {
         child: Container(
           height:MediaQuery.of(context).size.height*0.08,
 
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-              topRight: Radius.circular(10),
-              topLeft:Radius.circular(10),
 
-            ),
-
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: Container(
-
-                    child: TextButton(onPressed: (){}, child: Text('Today' , style: TextStyle(color: Colors.black),)),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: AppTheme.notWhite,
-
-                    ),
-
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: Container(
-
-                  child: TextButton(onPressed: (){}, child: Text('All' , style: TextStyle(color: Colors.black),)),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: AppTheme.notWhite,
-
-                  ),
-
-                ),
-              ),
-            ],
-          ),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
