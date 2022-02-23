@@ -372,11 +372,13 @@ class ListSearchState extends State<ListSearch> {
 
                                 ),
 
-                                title: Text(data, overflow: TextOverflow.ellipsis,) ,
+                                title: Container(
+
+                                    child: Text(data, style: TextStyle(fontSize: 15),)) ,
 
                                 trailing: Container(
-                                  color: Colors.transparent,
-                                  width: MediaQuery.of(context).size.width*0.27,
+
+                                  width: MediaQuery.of(context).size.width*0.25,
                                   child: Row(
                                     children: [
                                       IconButton(onPressed: (){
@@ -486,6 +488,7 @@ class ListSearchState extends State<ListSearch> {
                                 ),
 
                                 tileColor: AppTheme.notWhite ,
+                                contentPadding: EdgeInsets.symmetric(horizontal: 0),
                               ),
                             ),
                           );

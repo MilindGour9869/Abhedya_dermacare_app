@@ -32,6 +32,8 @@ class _AddVisitsState extends State<AddVisits> {
   String investigation="Investigation";
   String allergies="Allergies";
   String medicines="Medicines";
+  String clinical_findings="Clinical Findings";
+
 
 
 
@@ -44,7 +46,7 @@ class _AddVisitsState extends State<AddVisits> {
 
 setState(() {
 
-  visit_date = widget.data.date;
+  visit_date = widget.data.visit_date;
 
 
   if(widget.data.diagnosis !=null)
@@ -68,17 +70,63 @@ setState(() {
     });
   }
 
+  if(widget.data.investigation != null)
+  {
+    print('complaint not null');
+    investigation="";
 
 
-//
-//    widget.data.advices.forEach((element) {
-//
-//    });
-//    widget.data.medicines.forEach((element) { });
-//    widget.data.allergies.forEach((element) { });
-//    widget.data.investigation.forEach((element) { });
+    widget.data.investigation.forEach((element) {
+      investigation += element +" ";
 
-      visit_date=widget.data.visit_date;
+    });
+  }
+
+  if(widget.data.advices != null)
+  {
+    print('complaint not null');
+    advices="";
+
+
+    widget.data.advices.forEach((element) {
+      advices += element +" ";
+
+    });
+  }
+
+  if(widget.data.allergies != null)
+  {
+    print('complaint not null');
+    allergies="";
+
+
+    widget.data.allergies.forEach((element) {
+      allergies += element +" ";
+
+    });
+  }
+
+  if(widget.data.clinical_finding != null)
+  {
+    print('complaint not null');
+    clinical_findings="";
+
+
+    widget.data.clinical_finding.forEach((element) {
+      clinical_findings += element +" ";
+
+    });
+  }
+
+
+
+
+
+
+
+
+
+
 
 
 });
@@ -139,7 +187,15 @@ setState(() {
 
               children: [
 
-                Card(child: Text('${formatDate(visit_date.toDate(),[dd, '-', mm, '-', yyyy])}')),
+                SizedBox(
+                    height: MediaQuery.of(context).size.height*0.08,
+                    width: MediaQuery.of(context).size.width*0.3,
+
+                    child: Card(child: Center(child: Text('${formatDate(visit_date.toDate(),[dd, '-', mm, '-', yyyy])}')))), //date
+
+
+
+
 
                 SizedBox(
                   height: MediaQuery.of(context).size.height*0.1,
@@ -149,7 +205,7 @@ setState(() {
                     child: Row(
                       children: [
                         SizedBox(width: 7,),
-                        Icon(Icons.seven_k),
+                        Icon(Icons.comment),
                         SizedBox(width: 7,),
 
                         Flexible(
@@ -203,16 +259,21 @@ setState(() {
 
                             print(a);
 
-                            setState(() {
+
 
                               complaints='';
                               a.forEach((element) {
 
-                                complaints=element +" ";
+                                complaints+=element +" ";
 
 
                               });
-                            });
+
+                              setState(() {
+                                complaints=complaints;
+
+                              });
+
 
 
 
@@ -236,7 +297,527 @@ setState(() {
                       ],
                     ),
                   ),
-                ),
+                ), // Complaint
+
+                SizedBox(
+                  height: MediaQuery.of(context).size.height*0.1,
+                  width: MediaQuery.of(context).size.width*0.9,
+                  child: Card(
+                    color: AppTheme.white,
+                    child: Row(
+                      children: [
+                        SizedBox(width: 7,),
+                        Icon(Icons.note),
+                        SizedBox(width: 7,),
+
+                        Flexible(
+                          flex: 2,
+                          child: GestureDetector(
+                            onTap: (){
+                              showDialog(
+                                  context: context,
+                                  builder: (context){
+
+                                    return Column(
+                                        children: []
+                                    );
+
+                                  }
+                              );
+                            },
+                            child: Container(
+                              width:  MediaQuery.of(context).size.width*0.7,
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Text(clinical_findings==""?"Clinical_findings":clinical_findings),
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        SizedBox(width: 4,),
+
+
+                        IconButton(onPressed: ()async{
+
+
+
+                          print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
+
+
+                          showDialog(
+                              context: context,
+                              builder: (context)  {
+
+
+
+                                return  ListSearch(group: 'clinical_finding', Group: 'Clinical_finding', name: widget.name, date: formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
+
+                          ).then((value)async{
+
+                            print(value);
+
+                            List a =  await value;
+
+                            print(a);
+
+
+
+                              clinical_findings='';
+                              a.forEach((element) {
+
+                                clinical_findings+=element +" ";
+
+
+                              });
+
+                              setState(() {
+                                clinical_findings=clinical_findings;
+
+                              });
+
+
+
+
+
+                          });
+
+
+
+
+
+
+
+
+
+
+                        }, icon: Icon(Icons.arrow_drop_down_circle_outlined))
+
+
+
+
+                      ],
+                    ),
+                  ),
+                ), // Clinical finding
+
+                SizedBox(
+                  height: MediaQuery.of(context).size.height*0.1,
+                  width: MediaQuery.of(context).size.width*0.9,
+                  child: Card(
+                    color: AppTheme.white,
+                    child: Row(
+                      children: [
+                        SizedBox(width: 7,),
+                        Icon(Icons.seven_k),
+                        SizedBox(width: 7,),
+
+                        Flexible(
+                          flex: 2,
+                          child: GestureDetector(
+                            onTap: (){
+                              showDialog(
+                                  context: context,
+                                  builder: (context){
+
+                                    return Column(
+                                        children: []
+                                    );
+
+                                  }
+                              );
+                            },
+                            child: Container(
+                              width:  MediaQuery.of(context).size.width*0.7,
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Text(diagnosis==""?"Diagnosis":diagnosis),
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        SizedBox(width: 4,),
+
+
+                        IconButton(onPressed: ()async{
+
+
+
+                          print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
+
+
+                          showDialog(
+                              context: context,
+                              builder: (context)  {
+
+
+
+                                return  ListSearch(group: 'diagnosis', Group: 'Diagnosis', name: widget.name, date: formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
+
+                          ).then((value)async{
+
+                            print(value);
+
+                            List a =  await value;
+
+                            print(a);
+
+
+
+                              diagnosis='';
+                              a.forEach((element) {
+
+                                diagnosis+=element +" ";
+
+
+                              });
+
+                              setState(() {
+                                diagnosis=diagnosis;
+
+                              });
+
+
+
+
+
+                          });
+
+
+
+
+
+
+
+
+
+
+                        }, icon: Icon(Icons.arrow_drop_down_circle_outlined))
+
+
+
+
+                      ],
+                    ),
+                  ),
+                ), // Diagnosis
+
+                SizedBox(
+                  height: MediaQuery.of(context).size.height*0.1,
+                  width: MediaQuery.of(context).size.width*0.9,
+                  child: Card(
+                    color: AppTheme.white,
+                    child: Row(
+                      children: [
+                        SizedBox(width: 7,),
+                        Icon(Icons.seven_k),
+                        SizedBox(width: 7,),
+
+                        Flexible(
+                          flex: 2,
+                          child: GestureDetector(
+                            onTap: (){
+                              showDialog(
+                                  context: context,
+                                  builder: (context){
+
+                                    return Column(
+                                        children: []
+                                    );
+
+                                  }
+                              );
+                            },
+                            child: Container(
+                              width:  MediaQuery.of(context).size.width*0.7,
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Text(investigation==""?"Investigation":investigation),
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        SizedBox(width: 4,),
+
+
+                        IconButton(onPressed: ()async{
+
+
+
+                          print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
+
+
+                          showDialog(
+                              context: context,
+                              builder: (context)  {
+
+
+
+                                return  ListSearch(group: 'investigation', Group: 'Investigation', name: widget.name, date: formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
+
+                          ).then((value)async{
+
+                            print(value);
+
+                            List a =  await value;
+
+                            print('anccew');
+
+
+                            print(a);
+
+
+                             investigation='';
+
+
+
+
+                              a.forEach((element) {
+
+                                investigation+=element +" ";
+
+
+                              });
+
+                              print(investigation);
+
+
+                              setState(() {
+                                investigation=investigation;
+
+                              });
+
+
+
+
+
+                          });
+
+
+
+
+
+
+
+
+
+
+                        }, icon: Icon(Icons.arrow_drop_down_circle_outlined))
+
+
+
+
+                      ],
+                    ),
+                  ),
+                ), // Investigation
+
+                SizedBox(
+                  height: MediaQuery.of(context).size.height*0.1,
+                  width: MediaQuery.of(context).size.width*0.9,
+                  child: Card(
+                    color: AppTheme.white,
+                    child: Row(
+                      children: [
+                        SizedBox(width: 7,),
+                        Icon(Icons.seven_k),
+                        SizedBox(width: 7,),
+
+                        Flexible(
+                          flex: 2,
+                          child: GestureDetector(
+                            onTap: (){
+                              showDialog(
+                                  context: context,
+                                  builder: (context){
+
+                                    return Column(
+                                        children: []
+                                    );
+
+                                  }
+                              );
+                            },
+                            child: Container(
+                              width:  MediaQuery.of(context).size.width*0.7,
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Text(allergies==""?"Allergies":allergies),
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        SizedBox(width: 4,),
+
+
+                        IconButton(onPressed: ()async{
+
+
+
+                          print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
+
+
+                          showDialog(
+                              context: context,
+                              builder: (context)  {
+
+
+
+                                return  ListSearch(group: 'allergie', Group: 'Allergie', name: widget.name, date: formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
+
+                          ).then((value)async{
+
+                            print(value);
+
+                            List a =  await value;
+
+                            print(a);
+
+
+
+                              allergies='';
+                              a.forEach((element) {
+
+                                allergies+=element +" ";
+
+
+                              });
+
+                              setState(() {
+                                allergies=allergies;
+
+                              });
+
+
+
+
+
+                          });
+
+
+
+
+
+
+
+
+
+
+                        }, icon: Icon(Icons.arrow_drop_down_circle_outlined))
+
+
+
+
+                      ],
+                    ),
+                  ),
+                ), // Allergie
+
+                SizedBox(
+                  height: MediaQuery.of(context).size.height*0.1,
+                  width: MediaQuery.of(context).size.width*0.9,
+                  child: Card(
+                    color: AppTheme.white,
+                    child: Row(
+                      children: [
+                        SizedBox(width: 7,),
+                        Icon(Icons.seven_k),
+                        SizedBox(width: 7,),
+
+                        Flexible(
+                          flex: 2,
+                          child: GestureDetector(
+                            onTap: (){
+                              showDialog(
+                                  context: context,
+                                  builder: (context){
+
+                                    return Column(
+                                        children: []
+                                    );
+
+                                  }
+                              );
+                            },
+                            child: Container(
+                              width:  MediaQuery.of(context).size.width*0.7,
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Text(advices==""?"Advices":advices),
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        SizedBox(width: 4,),
+
+
+                        IconButton(onPressed: ()async{
+
+
+
+                          print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
+
+
+                          showDialog(
+                              context: context,
+                              builder: (context)  {
+
+
+
+                                return  ListSearch(group: 'advice', Group: 'advice', name: widget.name, date: formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
+
+                          ).then((value)async{
+
+                            print(value);
+
+                            List a =  await value;
+
+                            print(a);
+
+
+
+                              advices='';
+                              a.forEach((element) {
+
+                                advices+=element +" ";
+
+
+                              });
+
+                              setState(() {
+                                advices=advices;
+
+                              });
+
+
+
+
+
+                          });
+
+
+
+
+
+
+
+
+
+
+                        }, icon: Icon(Icons.arrow_drop_down_circle_outlined))
+
+
+
+
+                      ],
+                    ),
+                  ),
+                ), // Advice
+
 
 
 

@@ -94,6 +94,7 @@ class Patient_name_data_list{
       complaints: json['complaint'],
       advices: json['advices'],
       allergies: json['allergies'],
+      investigation: json['investigation'],
 
       visit_date: json['visit_date'],
 
