@@ -5,6 +5,8 @@ import 'package:flutter_app/widgets/list_search.dart';
 
 import 'package:date_format/date_format.dart';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 
 class AddMedicine extends StatefulWidget {
@@ -19,6 +21,10 @@ class _AddMedicineState extends State<AddMedicine> {
   String company_name ="Company Name";
   String tab = "TAB/CAP/SYP";
 
+  var medicine_name=TextEditingController();
+  var medicine_notes=TextEditingController();
+
+
 
   Map<String,bool> map ={
 
@@ -31,6 +37,8 @@ class _AddMedicineState extends State<AddMedicine> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+
 
       appBar: AppBar(
         title: Text('Add Medicines'),
@@ -39,7 +47,24 @@ class _AddMedicineState extends State<AddMedicine> {
             padding: const EdgeInsets.only(right: 8.0),
             child: IconButton(
               icon: Icon(Icons.save),
-              onPressed: (){
+              onPressed: ()async{
+                var a =await FirebaseFirestore.instance.collection('Medicines').get();
+                int n=a.size;
+                n=n+1;
+
+                await FirebaseFirestore.instance.collection('Medicines').doc(n.toString()).set({
+                  'id':n,
+                  'medicine_name':medicine_name.text,
+                  'tab':tab,
+                  'composition':composition,
+                  'company_name':company_name,
+                  'notes':medicine_notes.text,
+
+
+
+                });
+
+
                 Navigator.pop(context);
 
               },
@@ -55,6 +80,7 @@ class _AddMedicineState extends State<AddMedicine> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             TextField(
+              controller: medicine_name,
               decoration: InputDecoration(
                 labelText: 'Medicine Name',
 
@@ -420,6 +446,7 @@ class _AddMedicineState extends State<AddMedicine> {
             SizedBox(height: 10,),
 
             TextField(
+              controller: medicine_notes,
               decoration: InputDecoration(
                   labelText: 'Medicine Notes',
 
