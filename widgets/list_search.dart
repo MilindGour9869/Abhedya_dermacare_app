@@ -18,7 +18,7 @@ class ListSearch extends StatefulWidget {
 
 
 
-  ListSearch({@required this.group , @required this.Group , @required this.name , this.date , });
+  ListSearch({@required this.group , @required this.Group ,  this.name , this.date , });
 
 
   ListSearchState createState() => ListSearchState();
@@ -167,37 +167,43 @@ class ListSearchState extends State<ListSearch> {
 
 
 
-            try{
-             await FirebaseFirestore.instance.collection('Patient').doc(widget.name).collection('visits').doc(widget.date).get().then((value) {
+            if(widget.name != null )
+              {
+                try{
+                  await FirebaseFirestore.instance.collection('Patient').doc(widget.name).collection('visits').doc(widget.date).get().then((value) {
 
 
-                if(value.data()!=null)
-                  {
-                    if(value.data().containsKey(widget.group))
+                    if(value.data()!=null)
+                    {
+                      if(value.data().containsKey(widget.group))
                       {
                         if(value.data()[widget.group]!=[])
-                          {
-                            List a = value.data()[widget.group];
-                            a.forEach((element) {
-                              group_search_color_map[element]=true;
-                              group_updated_result.add(element);
-                              group_result.add(element);
+                        {
+                          List a = value.data()[widget.group];
+                          a.forEach((element) {
+                            group_search_color_map[element]=true;
+                            group_updated_result.add(element);
+                            group_result.add(element);
 
 
 
-                            });
-                          }
+                          });
+                        }
                       }
-                  }
-                else
-                  {
-                    print('Patient doc called , in else');
+                    }
+                    else
+                    {
+                      print('Patient doc called , in else');
 
-                  }
-             });
-            }
-            catch (e){
-              print(e);
+                    }
+                  });
+                }
+                catch (e){
+                  print(e);
+                }
+              }
+            else{
+              print('widget.name is null');
             }
 
 
@@ -255,7 +261,11 @@ class ListSearchState extends State<ListSearch> {
      group_size=0;
 
 
-     await  Add_GroupDataList_to_Patient(group_updated_result);
+     if(widget.name != null)
+       {
+         await Add_GroupDataList_to_Patient(group_updated_result);
+
+       }
 
 
 

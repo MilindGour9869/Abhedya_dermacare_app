@@ -412,7 +412,7 @@ class _txtfieldState extends State<txtfield> {
                   width: 2,),
                 borderRadius: BorderRadius.circular(10),),
 
-              hintText: widget.hint,
+              labelText: widget.hint,
           prefixIcon: widget.icon),
 
 
