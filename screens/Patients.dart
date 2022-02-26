@@ -269,120 +269,158 @@ class _State extends State<Patient> {
   Widget build(BuildContext context) {
     print('builder');
 
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: AppTheme.offwhite,
+    return SafeArea(
 
-      appBar: AppBar(
-        backgroundColor: AppTheme.green,
-        elevation: 0,
-        title: Text(' • My Patients' , style: TextStyle(color: Colors.black),),
-        actions: [
-          Padding(
-            padding: EdgeInsets.only(right: 10),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: AppTheme.offwhite,
+
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(200),
+          child: Container(
+          decoration: BoxDecoration(
+          color: AppTheme.green,
+          borderRadius: BorderRadius.only(
+          bottomRight:Radius.circular(20),
+          bottomLeft:Radius.circular(20),
+
+
+
+          )),
+
+              height: 190,
+              child: Column(
+
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    color: Colors.transparent,
+                    height: 45,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                      children: [
+                        IconButton(onPressed: (){}, icon: Icon(Icons.menu),),
+
+                        // ignore: prefer_const_constructors
+                        Padding(
+                          padding: EdgeInsets.only(right: 10),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child:ChoiceChip(
+                              backgroundColor: AppTheme.notWhite,
+                              label: Text('Today'), selected:false,selectedColor: Colors.teal,onSelected: (bool selected){
+
+
+
+
+                            }, ),
+
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 40.0),
+                    child: Container(
+                      color: Colors.transparent,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+
+                        children: [
+                          Text('good Morning ,' , style: TextStyle(fontSize: 15),),
+                          SizedBox(height: 5,),
+
+                          Text('Dr. Mahi Ram Bishnoi' , style: TextStyle(
+                            fontSize: 23
+                          ),),
+
+                          SizedBox(height: 5,),
+
+
+
+
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.only( top: 30.0 , right: 8 , left: 8 ),
+                    child: SizedBox(
+                      height: 45,
+                      child: TextField(
+                        controller: textcontroller,
+                        onChanged: onItemChanged,
+                        decoration: InputDecoration(
+
+
+
+
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.grey,
+                                width: 2,),
+                              borderRadius: BorderRadius.circular(30),),
+
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.teal,
+                                width: 2,),
+                              borderRadius: BorderRadius.circular(10),),
+
+                            hintText:'Search',
+                            prefixIcon: Icon(Icons.search)),
+
+
+                        keyboardType: TextInputType.name ,
+
+
+
+
+
+
+                      ),
+                    ),
+                  ),
+                ],
+              )),
+
+        ),
+
+
+
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+
+
+
+
+
+            Expanded(
               child: Container(
 
-                child: TextButton(onPressed: (){}, child: Text('Today' , style: TextStyle(color: Colors.black),)),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: AppTheme.notWhite,
 
-                ),
+               color: Colors.transparent,
+                child:SingleChildScrollView(
 
-              ),
-            ),
-          )
-        ],
+                  child: FutureBuilder(
+                    future: f,
 
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(100),
+                      builder: (context,snapshot){
 
-          child:  Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
+                      print(snapshot.data);
 
-              )
-            ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric( horizontal: 8.0),
-              child: SizedBox(
-                height: 50,
-                child: TextField(
-                  controller: textcontroller,
-                  onChanged: onItemChanged,
-                  decoration: InputDecoration(
+                        if(search_patient_list.isEmpty)
+                          {return Center(child: Card(
+                            color: AppTheme.notWhite,
 
-
-
-
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.grey,
-                          width: 2,),
-                        borderRadius: BorderRadius.circular(30),),
-
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.teal,
-                          width: 2,),
-                        borderRadius: BorderRadius.circular(10),),
-
-                      hintText:'Search',
-                      prefixIcon: Icon(Icons.search)),
-
-
-                  keyboardType: TextInputType.name ,
-
-
-
-
-
-
-                ),
-              ),
-            ),
-          ),
-        ),
-
-
-
-
-      ),
-
-
-
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-
-
-
-
-
-          Expanded(
-            child: Container(
-             
-             
-             color: Colors.transparent,
-              child:SingleChildScrollView(
-
-                child: FutureBuilder(
-                  future: f,
-
-                    builder: (context,snapshot){
-
-                    print(snapshot.data);
-
-                      if(search_patient_list.isEmpty)
-                        {return Center(child: Card(
-                          color: AppTheme.notWhite,
-
-                            child: Padding(
-                              padding: const EdgeInsets.all(20.0),
-                              child: Text('loadin'),
-                            )));}
+                              child: Padding(
+                                padding: const EdgeInsets.all(20.0),
+                                child: Text('loadin'),
+                              )));}
 
 
 
@@ -390,53 +428,54 @@ class _State extends State<Patient> {
 
 
 
-                      if(snapshot.connectionState==ConnectionState.waiting)
-                        {
-                          return Center(child: CircularProgressIndicator());
+                        if(snapshot.connectionState==ConnectionState.waiting)
+                          {
+                            return Center(child: CircularProgressIndicator());
+                          }
+
+                        if(snapshot.hasError) {
+                          return const Center(child: Text('Something Went Wrong'));
                         }
 
-                      if(snapshot.hasError) {
-                        return const Center(child: Text('Something Went Wrong'));
+
+                        return Container(
+                          height: MediaQuery.of(context).size.height*0.727,
+                          child: ListView(
+                            children: search_patient_list.map<Widget>((e)=>Tile(map_name_patientInstance_list[e])).toList(),
+                          ),
+                        );
                       }
-
-
-                      return Container(
-                        height: MediaQuery.of(context).size.height*0.727,
-                        child: ListView(
-                          children: search_patient_list.map<Widget>((e)=>Tile(map_name_patientInstance_list[e])).toList(),
-                        ),
-                      );
-                    }
-                )
+                  )
+                ),
               ),
             ),
-          ),
-        ],
-      ),
-
-
-      floatingActionButton: FloatingActionButton(
-        elevation: 15,
-
-        splashColor: AppTheme.notWhite,
-        onPressed: (){
-          Navigator.push(context , MaterialPageRoute(builder: (context)=>AddPatient()));
-        },
-        child: Icon(Icons.add , color: Colors.black,),
-        backgroundColor: AppTheme.green,
-      ),
-      bottomNavigationBar: BottomAppBar(
-
-        color: AppTheme.offwhite,
-        child: Container(
-          height:MediaQuery.of(context).size.height*0.08,
-
-
+          ],
         ),
+
+
+        floatingActionButton: FloatingActionButton(
+          elevation: 15,
+
+          splashColor: AppTheme.notWhite,
+          onPressed: (){
+            Navigator.push(context , MaterialPageRoute(builder: (context)=>AddPatient()));
+          },
+          child: Icon(Icons.add , color: Colors.black,),
+          backgroundColor: AppTheme.green,
+        ),
+        bottomNavigationBar: BottomAppBar(
+
+          color: AppTheme.offwhite,
+          child: Container(
+            height:MediaQuery.of(context).size.height*0.08,
+
+
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+
+
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-
-
     );
 }
 }
