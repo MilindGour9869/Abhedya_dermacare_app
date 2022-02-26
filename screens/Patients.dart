@@ -55,15 +55,15 @@ class _State extends State<Patient> {
 
    },
    child: Padding(
-     padding: const EdgeInsets.all(8.0),
+     padding: const EdgeInsets.symmetric(horizontal: 10.0 , vertical: 8),
      child: Container(
        decoration: BoxDecoration(
-         borderRadius: BorderRadius.circular(10),
+         borderRadius: BorderRadius.circular(20),
          color: AppTheme.white,
 
        ),
        child: Material(
-         elevation: 2,
+         elevation: 4,
          borderRadius: BorderRadius.circular(10),
          child: ListTile(
 
@@ -281,14 +281,14 @@ class _State extends State<Patient> {
           decoration: BoxDecoration(
           color: AppTheme.green,
           borderRadius: BorderRadius.only(
-          bottomRight:Radius.circular(20),
-          bottomLeft:Radius.circular(20),
+          bottomRight:Radius.circular(30),
+          bottomLeft:Radius.circular(30),
 
 
 
           )),
 
-              height: 190,
+              height: MediaQuery.of(context).size.height*0.28,
               child: Column(
 
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -347,34 +347,30 @@ class _State extends State<Patient> {
                   ),
 
                   Padding(
-                    padding: const EdgeInsets.only( top: 30.0 , right: 8 , left: 8 ),
-                    child: SizedBox(
-                      height: 45,
+                    padding: const EdgeInsets.only( top: 23.0 , right: 40 , left: 40 ),
+                    child: Container(
+
+                      height: 40,
+                      decoration: BoxDecoration(
+                          color: AppTheme.notWhite,
+                        borderRadius: BorderRadius.circular(30)
+                      ),
                       child: TextField(
                         controller: textcontroller,
                         onChanged: onItemChanged,
+
                         decoration: InputDecoration(
 
-
-
-
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Colors.grey,
-                                width: 2,),
-                              borderRadius: BorderRadius.circular(30),),
-
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Colors.teal,
-                                width: 2,),
-                              borderRadius: BorderRadius.circular(10),),
+                            border: InputBorder.none,
 
                             hintText:'Search',
+
+                            hintStyle: TextStyle(),
                             prefixIcon: Icon(Icons.search)),
 
 
                         keyboardType: TextInputType.name ,
+
 
 
 

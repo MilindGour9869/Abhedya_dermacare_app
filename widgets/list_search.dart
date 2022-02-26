@@ -296,7 +296,7 @@ class ListSearchState extends State<ListSearch> {
 
 
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.all(10.0),
       child: Scaffold(
 
         appBar: AppBar(

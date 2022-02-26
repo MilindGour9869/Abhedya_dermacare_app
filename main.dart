@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 import 'package:anim_search_bar/anim_search_bar.dart';
@@ -29,6 +31,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: HomePage(),
+      routes: {
+
+      },
     );
   }
 }
@@ -190,3 +195,84 @@ enum DrawerSections {
   Reception,
   send_feedback,
 }
+
+class NavigationDrawer extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: SingleChildScrollView(
+
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Header(context),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+Widget Header(BuildContext context){
+  return Container(
+  padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),);
+}
+
+Widget Menu(BuildContext context){
+
+  return Wrap(
+    runSpacing: 24,
+
+    children: [
+
+      ListTile(
+      title: Text('Profile'),
+      leading: Icon(Icons.person_outline),
+      onTap: (){
+
+        Navigator.push(context , MaterialPageRoute(builder: (context)=>Profile()) );
+      },
+
+    ), // Profile
+
+      Divider(),
+
+      ListTile(
+        title: Text('Patients'),
+        leading: Icon(Icons.people_alt_outlined),
+        onTap: (){
+
+          Navigator.push(context , MaterialPageRoute(builder: (context)=>Patient()) );
+        },
+
+      ), // Patient
+      ListTile(
+        title: Text('Medicine'),
+        leading: Icon(Icons.medical_services_outlined),
+        onTap: (){
+
+          Navigator.push(context , MaterialPageRoute(builder: (context)=>Medicines()) );
+        },
+
+      ), // Medicine
+      ListTile(
+        title: Text('Services'),
+        leading: Icon(Icons.room_service),
+        onTap: (){
+
+          Navigator.push(context , MaterialPageRoute(builder: (context)=>Services()) );
+        },
+
+      ), // Services
+
+      Divider(),
+
+
+
+
+    ],
+  );
+
+
+}
+
