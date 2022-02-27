@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/default.dart';
 
 import 'package:flutter_app/widgets/drop_down_menu_button.dart';
 
@@ -57,7 +58,7 @@ return Scaffold(
             icon: Icon(Icons.add),
             onPressed: (){
 
-              showDialog(context: context, builder: (context)=>showDialogue('Consultation'));
+              showDialog(context: context, builder: (context)=>showDialogue(service_name: 'Consultation' , service: service , charges: charges , context: context));
 
             },
           ),
@@ -115,36 +116,105 @@ return Scaffold(
 }
 
 
-Widget showDialogue (String service_name){
+Widget showDialogue ({String service_name , TextEditingController service , TextEditingController charges , BuildContext context}){
 
   return Padding(
-    padding: EdgeInsets.symmetric(horizontal: 40 , vertical:  120),
+    padding: EdgeInsets.symmetric(horizontal: 40 , vertical:  150),
     child: Container(
       color: Colors.white,
 
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
 
-        children: [
+          children: [
 
-          SizedBox(height: 10,),
+            SizedBox(height: 10,),
 
-          Text(service_name),
-          SizedBox(height: 10,),
+            Text(service_name , style: TextStyle(fontWeight: FontWeight.bold),),
+            SizedBox(height: 20,),
 
-          Material(
-            child:TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
+            Material(
+              child:TextField(
+                controller: service,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+
+                  ),
+                  labelText: 'Add Service',
 
                 ),
-                labelText: 'AdddService',
+              ) ,
+            ),
+            SizedBox(height: 20,),
 
-              ),
-            ) ,
-          ),
+            Material(
 
-        ]),
+              child:TextField(
+                controller: charges,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+
+
+                  ),
+                  labelText: 'Charges',
+                  prefixText: '₹ ',
+
+
+
+
+                ),
+
+                keyboardType: TextInputType.number,
+              ) ,
+            ),
+
+            SizedBox(height: 20,),
+
+            Container(
+              alignment: Alignment.bottomCenter,
+              child: Row(
+
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+               Container(
+                 decoration: BoxDecoration(
+                   borderRadius: BorderRadius.circular(10),
+                   color: Colors.grey
+                 ),
+                 child: TextButton(
+                   child: Text('Cancel' , style:  TextStyle(
+                     color: Colors.black
+                   ),),
+                   onPressed: (){
+
+                     Navigator.pop(context);
+
+
+                   },
+                 ),
+               ),
+                  Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: AppTheme.green
+                    ),
+                    child: TextButton(
+                      child: Text('Done' , style:  TextStyle(
+                          color: Colors.black
+                      ),),
+                      onPressed: (){
+
+                      },
+                    ),
+                  ),
+              ],),
+            )
+
+          ]),
+      ),
     ));
 }
