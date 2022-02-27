@@ -206,6 +206,7 @@ class NavigationDrawer extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Header(context),
+            Menu(context),
           ],
         ),
       ),
@@ -215,7 +216,24 @@ class NavigationDrawer extends StatelessWidget {
 
 Widget Header(BuildContext context){
   return Container(
-  padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),);
+    decoration: BoxDecoration(
+      color: Colors.red,
+
+    ),
+  padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+  child: Column(
+    children: [
+      CircleAvatar(
+        child: IconButton(icon: Icon(Icons.person_add_outlined),
+        onPressed: (){},),
+
+      ),
+      Text('ss'),
+
+    ],
+  ),
+
+  );
 }
 
 Widget Menu(BuildContext context){
@@ -242,7 +260,7 @@ Widget Menu(BuildContext context){
         leading: Icon(Icons.people_alt_outlined),
         onTap: (){
 
-          Navigator.push(context , MaterialPageRoute(builder: (context)=>Patient()) );
+          Navigator.pushReplacement(context , MaterialPageRoute(builder: (context)=>Patient()) );
         },
 
       ), // Patient
@@ -266,6 +284,39 @@ Widget Menu(BuildContext context){
       ), // Services
 
       Divider(),
+
+      ListTile(
+        title: Text('Setting'),
+        leading: Icon(Icons.settings_accessibility_outlined),
+        onTap: (){
+
+          Navigator.push(context , MaterialPageRoute(builder: (context)=>Setting()) );
+        },
+
+      ),
+
+      ListTile(
+        title: Text('Reception'),
+        leading: Icon(Icons.remove_red_eye_outlined),
+        onTap: (){
+
+          Navigator.push(context , MaterialPageRoute(builder: (context)=>Reception()) );
+        },
+
+      ),
+
+      Divider(),
+
+//      ListTile(
+//        title: Text('Services'),
+//        leading: Icon(Icons.room_service),
+//        onTap: (){
+//
+//          Navigator.push(context , MaterialPageRoute(builder: (context)=>Services()) );
+//        },
+//
+//      ),
+
 
 
 

@@ -363,7 +363,8 @@ class _State extends State<Patient> {
 
                             border: InputBorder.none,
 
-                            hintText:'Search',
+                            hintText:'search',
+
 
                             hintStyle: TextStyle(),
                             prefixIcon: Icon(Icons.search)),
@@ -435,8 +436,9 @@ class _State extends State<Patient> {
 
 
                         return Container(
-                          height: MediaQuery.of(context).size.height*0.727,
+
                           child: ListView(
+                            shrinkWrap: true,
                             children: search_patient_list.map<Widget>((e)=>Tile(map_name_patientInstance_list[e])).toList(),
                           ),
                         );
