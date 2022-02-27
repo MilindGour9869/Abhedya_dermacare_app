@@ -3,12 +3,16 @@ import 'package:flutter_app/default.dart';
 
 import 'package:flutter_app/widgets/drop_down_menu_button.dart';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Services extends StatefulWidget {
 @override
 _State createState() => _State();
 }
 
 class _State extends State<Services> {
+
+  Future f;
 
   bool consultation = false;
   bool nursing = false;
@@ -18,6 +22,47 @@ class _State extends State<Services> {
 
   var service = TextEditingController();
   var charges = TextEditingController();
+
+
+
+
+  Map<String,String> map;
+
+
+  Map<String , Map<String,String>> consultation_map;
+
+
+  Future getServiceData()async{
+    await FirebaseFirestore.instance.collection('Consultation').get().then((QuerySnapshot querySnapshot){
+
+      querySnapshot.docs.forEach((element) {
+
+        print(element['service']);
+
+        map['service']=element['service'];
+        map['charge']=element['charge'];
+
+        consultation_map[element['service'].toString()]=map;
+
+        map={};
+
+
+      });
+
+     // print(consultation_map);
+
+    });
+
+
+  }
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getServiceData();
+  }
 
 
 
