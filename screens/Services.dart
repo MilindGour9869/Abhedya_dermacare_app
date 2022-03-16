@@ -26,16 +26,18 @@ class _State extends State<Services> {
 
 
 
-  Map<String,String> map;
+  Map<String,dynamic> map;
 
 
-  Map<String , Map<String,String>> consultation_map;
+  Map<String , Map<String,int>> consultation_map;
 
 
   Future getServiceData()async{
     await FirebaseFirestore.instance.collection('Consultation').get().then((QuerySnapshot querySnapshot){
 
       querySnapshot.docs.forEach((element) {
+
+        print('ss');
 
         print(element['service']);
 
@@ -49,7 +51,10 @@ class _State extends State<Services> {
 
       });
 
-     // print(consultation_map);
+      print('ddd');
+
+
+      print(consultation_map);
 
     });
 
@@ -116,7 +121,9 @@ return Scaffold(
 
               child: Container(
 
-                  child: DropDown(menu: ['aaa','wer'], color: Colors.black,))),
+                  child: consultation_map==null?
+                  CircularProgressIndicator():
+                  DropDown( menu: consultation_map,color: Colors.black,))),
 
 
 
@@ -143,7 +150,7 @@ return Scaffold(
 
               child: Container(
 
-                  child: DropDown(menu: ['aaa','wer'], color: Colors.black,))),
+                  child: DropDown( color: Colors.black,))),
 
 
 
