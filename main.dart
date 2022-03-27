@@ -75,7 +75,7 @@ class _HomePageState extends State<HomePage> {
     }
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.green,
+      backgroundColor: AppTheme.green,
 
       body: container,
       drawer: Drawer(

@@ -10,5 +10,12 @@ class AppTheme{
 
 
 
+  static const royal_blue = Color(0xff2CA3FA);
+  static const diff_blue = Color(0xff5BA2F4);
+
+
+
+
+
 
 }

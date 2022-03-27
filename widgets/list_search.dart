@@ -39,6 +39,8 @@ class ListSearchState extends State<ListSearch> {
   int group_size=0;
 
   Map<String,bool> group_search_color_map={};
+  Map<String,String> all_data ={};
+
 
   List group_updated_result=[];
   List group_result=[];
@@ -64,7 +66,7 @@ class ListSearchState extends State<ListSearch> {
 
     final json = {
       widget.group : group,
-      'id': group_size,
+      'id': doc.id ,    //group_size
 
     };
 
@@ -101,7 +103,7 @@ class ListSearchState extends State<ListSearch> {
 
     final doc =await FirebaseFirestore.instance.collection('Patient').doc(widget.name).collection('visits').doc(widget.date);
 
- print(group_result==group);
+// print(group_result==group);
 
 
  if(group!=group_result)
@@ -117,15 +119,15 @@ class ListSearchState extends State<ListSearch> {
      } );
    }
 
- print(group.isEmpty);
+// print(group.isEmpty);
 
 
   }
 
   Future<dynamic> group_data() async{
 
-    print(group_updated_result);
-    print(widget.date);
+//    print(group_updated_result);
+//    print(widget.date);
 
 
 
@@ -141,6 +143,7 @@ class ListSearchState extends State<ListSearch> {
             });
 
             await querySnapshot.docs.forEach((doc) {
+
              group_mapData_list.add(doc.data());
 
            });
@@ -148,6 +151,29 @@ class ListSearchState extends State<ListSearch> {
             group_all_data_list = group_mapData_list.map((d) {
              return d[widget.group];
            }).toList();
+
+            print('bgf');
+
+//
+//           var qwe = group_mapData_list.map((e) {
+//
+//             print('gfgf');
+//
+//
+//              print(e);
+//
+//
+//              all_data[e[widget.group]]= e['id'];
+//
+//            });
+//
+//            print('\n\naaa');
+//
+//
+//            print(all_data);
+
+
+
 
 
            try{
@@ -252,7 +278,7 @@ class ListSearchState extends State<ListSearch> {
     // TODO: implement dispose
     super.dispose();
 
-    print(widget.date);
+   // print(widget.date);
 
 
      group_search_data_list=[];
@@ -522,10 +548,10 @@ class ListSearchState extends State<ListSearch> {
                       GroupDataAdd(_textController_group.text);
                       group_all_data_list.add(_textController_group.text);
                       group_search_data_list.add(_textController_group.text);
-                      print(group_search_data_list);
+                     // print(group_search_data_list);
 
                       group_search_color_map[_textController_group.text]=false;
-                      print(group_search_color_map);
+                      // print(group_search_color_map);
 
 
 
