@@ -221,7 +221,20 @@ setState(() {
     return Scaffold(
       backgroundColor: AppTheme.notWhite,
       appBar: AppBar(
+        backgroundColor: AppTheme.dark_teal,
         title: Text('Add Visits'),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: IconButton(onPressed: (){
+
+              Navigator.of(context).pop();
+
+
+
+            }, icon: Icon(Icons.save)),
+          )
+        ],
       ),
       body: SingleChildScrollView(
         child: Center(
@@ -290,7 +303,7 @@ setState(() {
 
 
 
-                          print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
+                         // print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
 
 
                           showDialog(
@@ -299,7 +312,7 @@ setState(() {
 
 
 
-                                return  ListSearch(group: 'complaint', Group: 'Complaint', name: widget.name, date: formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
+                                return  ListSearch(group: 'complaint', Group: 'Complaint', name: widget.name, date: formatDate(visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
 
                           ).then((value)async{
 
@@ -405,7 +418,7 @@ setState(() {
 
 
 
-                          print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
+                          // print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
 
 
                           showDialog(
@@ -414,7 +427,7 @@ setState(() {
 
 
 
-                                return  ListSearch(group: 'clinical_finding', Group: 'Clinical_finding', name: widget.name, date: formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
+                                return  ListSearch(group: 'clinical_finding', Group: 'Clinical_finding', name: widget.name, date: formatDate(visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
 
                           ).then((value)async{
 
@@ -520,7 +533,7 @@ setState(() {
 
 
 
-                          print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
+                          print(formatDate(visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
 
 
                           showDialog(
@@ -529,7 +542,7 @@ setState(() {
 
 
 
-                                return  ListSearch(group: 'diagnosis', Group: 'Diagnosis', name: widget.name, date: formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
+                                return  ListSearch(group: 'diagnosis', Group: 'Diagnosis', name: widget.name, date: formatDate(visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
 
                           ).then((value)async{
 
@@ -634,7 +647,7 @@ setState(() {
 
 
 
-                          print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
+                        //  print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
 
 
                           showDialog(
@@ -643,7 +656,7 @@ setState(() {
 
 
 
-                                return  ListSearch(group: 'investigation', Group: 'Investigation', name: widget.name, date: formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
+                                return  ListSearch(group: 'investigation', Group: 'Investigation', name: widget.name, date: formatDate(visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
 
                           ).then((value)async{
 
@@ -760,7 +773,7 @@ setState(() {
 
 
 
-                          print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
+                          //print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
 
 
                           showDialog(
@@ -769,7 +782,7 @@ setState(() {
 
 
 
-                                return  ListSearch(group: 'allergie', Group: 'Allergie', name: widget.name, date: formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
+                                return  ListSearch(group: 'allergie', Group: 'Allergie', name: widget.name, date: formatDate(visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
 
                           ).then((value)async{
 
@@ -875,7 +888,7 @@ setState(() {
 
 
 
-                          print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
+                      //    print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
 
 
                           showDialog(
@@ -884,7 +897,7 @@ setState(() {
 
 
 
-                                return  ListSearch(group: 'advice', Group: 'advice', name: widget.name, date: formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
+                                return  ListSearch(group: 'advice', Group: 'advice', name: widget.name, date: formatDate(visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
 
                           ).then((value)async{
 
@@ -990,7 +1003,7 @@ setState(() {
 
 
 
-                          print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
+//                          print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
 
 
                           showDialog(
@@ -999,7 +1012,7 @@ setState(() {
 
 
 
-                                return  ListSearch(group: 'group', Group: 'Group', name: widget.name, date: formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
+                                return  ListSearch(group: 'group', Group: 'Group', name: widget.name, date: formatDate(visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
 
                           ).then((value)async{
 
@@ -1105,7 +1118,7 @@ setState(() {
 
 
 
-                          print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
+//                          print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
 
 
                           showDialog(
@@ -1114,7 +1127,7 @@ setState(() {
 
 
 
-                                return  ListSearch(group: 'blood-group', Group: 'Blood-Group', name: widget.name, date: formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
+                                return  ListSearch(group: 'blood-group', Group: 'Blood-Group', name: widget.name, date: formatDate(visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
 
                           ).then((value)async{
 

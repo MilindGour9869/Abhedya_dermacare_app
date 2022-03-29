@@ -42,17 +42,18 @@ class Patient_name_data_list{
 
   static Patient_name_data_list fromJson(Map<String , dynamic> json){
 
-    print(json['aaas']);
-    print('qq');
+
+    print(json['age']=="");
+
 
     return Patient_name_data_list(
 
       name: json['name'],
-      age: json['age'] =="" ? 00 : json['age'],
-      date: json['date'] =="" ? "?" : json['date'],
-      mobile: json['mobile'] =="" ? 00 : json['mobile'],
-      gender: json['gender'] =="" ? "": json['gender'],
-      email: json['email'] ==null ? "": json['email'],
+      age: json['age'] =="" ? 00 : int.parse(json['age']),
+      date:  json['date'],
+      mobile: json['mobile'] =="" ? 00 : int.parse(json['mobile']),
+      gender: json['gender'] =="" ? "?": json['gender'],
+      email: json['email'] =="" ? "?": json['email'],
     );
   }
 

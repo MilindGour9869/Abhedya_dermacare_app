@@ -60,7 +60,7 @@ class ListSearchState extends State<ListSearch> {
 
   Future GroupDataAdd(@required String group) async{
 
-    final doc = await FirebaseFirestore.instance.collection(widget.Group).doc(group_size.toString());
+    final doc = await FirebaseFirestore.instance.collection(widget.Group).doc();
 
 
 
@@ -74,7 +74,7 @@ class ListSearchState extends State<ListSearch> {
 
   }
 
-  Future GroupDataUpdate(@required String group , @required int id) async{
+  Future GroupDataUpdate(@required String group , @required String id) async{
 
     final doc = await FirebaseFirestore.instance.collection(widget.Group).doc(id.toString());
 
@@ -152,25 +152,34 @@ class ListSearchState extends State<ListSearch> {
              return d[widget.group];
            }).toList();
 
-            print('bgf');
 
-//
-//           var qwe = group_mapData_list.map((e) {
-//
-//             print('gfgf');
-//
-//
-//              print(e);
-//
-//
-//              all_data[e[widget.group]]= e['id'];
-//
-//            });
-//
-//            print('\n\naaa');
-//
-//
-//            print(all_data);
+
+
+            group_mapData_list.forEach((element) {
+
+              print('bgf');
+
+              print(element['group']);
+
+              all_data[element['group']] = element['id'].toString();
+
+
+
+
+
+
+
+            });
+
+
+
+
+
+
+            print('\n\naaa');
+
+
+            print(all_data);
 
 
 
@@ -419,13 +428,16 @@ class ListSearchState extends State<ListSearch> {
                                     children: [
                                       IconButton(onPressed: (){
 
-                                        int i;
+                                        String i;
 
 
                                      group_mapData_list.forEach((element) {
                                        if(element[widget.group]==data.toString())
                                          {
-                                           i=element['id'];
+
+                                           i  = all_data[data.toString()];
+
+
 
                                          }
 
@@ -502,7 +514,7 @@ class ListSearchState extends State<ListSearch> {
                                                    group_search_color_map.remove(data.toString());
                                                    group_search_color_map[text.text]=false;
 
-                                                   GroupDataUpdate(text.text, i);
+                                                   GroupDataUpdate(text.text, all_data[data.toString()]);
                                                                });
 
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class AppTheme{
   static const Color notWhite = Color.fromRGBO(252, 252, 252 , 1);
-  static const Color green = Color(0xff00FEA3);
+  static const Color green = Color(0xff019874);  //00FEA3
   static const Color white = Colors.white;
   static const Color orange = Colors.deepOrangeAccent;
   static const Color offwhite = Color.fromRGBO(232, 231, 230,1);
@@ -12,6 +12,16 @@ class AppTheme{
 
   static const royal_blue = Color(0xff2CA3FA);
   static const diff_blue = Color(0xff5BA2F4);
+
+  static const dark_teal = Color(0xff017D98);
+
+  static const material_black = Colors.black;
+  static const dark_black = Color(0xff17352E);
+  static const grey = Colors.blueGrey;
+
+
+
+
 
 
 

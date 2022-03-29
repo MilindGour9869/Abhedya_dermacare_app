@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/screens/Patients.dart';
+
 import 'package:image_picker/image_picker.dart';
 
 import 'dart:io';
@@ -17,7 +18,12 @@ class AddPatient extends StatefulWidget {
 
   Patient_name_data_list patient_data;
 
-  AddPatient({this.patient_data });
+  List all_patient_name_list=[];
+
+  bool icon_tap = false ;
+
+
+  AddPatient({this.patient_data , this.all_patient_name_list , this.icon_tap = false });
 
 
 
@@ -33,6 +39,10 @@ class _AddPatientState extends State<AddPatient> {
  String name='';
 
  Patient_name_data_list data;
+ List patient_list ;
+ bool icon_tap = false;
+
+
 
  var name_edit = TextEditingController();
  var age_edit = TextEditingController();
@@ -69,6 +79,19 @@ class _AddPatientState extends State<AddPatient> {
    // TODO: implement initState
    super.initState();
    data  = widget.patient_data;
+   print('gbfgf');
+
+   print(widget.all_patient_name_list);
+   print(icon_tap);
+
+   patient_list= widget.all_patient_name_list;
+   icon_tap= widget.icon_tap;
+
+   print('bgf');
+   
+
+   print(patient_list);
+
 
    if(data!=null)
    {
@@ -116,22 +139,65 @@ class _AddPatientState extends State<AddPatient> {
                 onPressed: () async {
 
                   print(Timestamp.now());
+                  print(icon_tap);
+
+                  print(age_edit.text);
+
+
 
 
                   if(name_edit.text!=null)
                     {
-                       await FirebaseFirestore.instance.collection('Patient').doc(name_edit.text).set({
-                        'name':name_edit.text,
-                        'age' : age_edit.text,
-                        'gender':male==true?'Male':female==true?'Female':"",
-                        'address': address_edit.text,
-                         'mobile':mobile_edit.text,
-                         'date':Timestamp.now(),
+                      bool isSame = false ;
+
+                      if(icon_tap)
+                        {
+                          for(int i =0 ;i<patient_list.length ;i++)
+                          {
+                            if(name_edit.text == patient_list[i])
+                            {
+                              isSame = true;
+                              break;
+                            }
+
+                          }
+                        }
 
 
 
-                      });
-                      Navigator.pop(context);
+
+                       if(isSame && icon_tap)
+                         {
+                           showDialog(context: context , builder: (context)=>Padding(
+                             padding: const EdgeInsets.symmetric(horizontal: 30.0   , vertical: 230),
+                             child: Card(
+
+                               child: Column(
+                                 children: [
+                                   Text('Name is similar to another patient name ' ),
+                                   Text('Please change the name' ),
+                                 ],
+                               ),
+                             ),
+                           ));
+                         }
+                       else
+                         {
+                           print('vrvea');
+                           await FirebaseFirestore.instance.collection('Patient').doc(name_edit.text).set({
+                             'name':name_edit.text,
+                             'age' : age_edit.text,
+                             'gender':male==true?'Male':female==true?'Female':"",
+                             'address': address_edit.text,
+                             'mobile':mobile_edit.text,
+                             'date':Timestamp.now(),
+                             'email':email_edit.text,
+
+
+
+                           });
+                           Navigator.pop(context);
+                         }
                     }
                   else
                     {
@@ -323,7 +389,9 @@ class _AddPatientState extends State<AddPatient> {
                               builder: (context) => Padding(
                                 padding: const EdgeInsets.all(20.0),
                                 child: ListSearch(group: 'blood-group', Group: 'Blood-Group', name: name_edit.text, ),
-                              ));
+                              )).then((value) {
+                                print(value);
+                          });
                         }
                         else
                         {
