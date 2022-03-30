@@ -4,7 +4,7 @@ class Patient_name_data_list{
 
   //basic
 
-  String name , DOB , gender , email , address   , image   ;
+  String name , DOB , gender , email , address   , image  , doc_id  ;
   int age , mobile ;
 
   List  group  , blood_group;
@@ -36,7 +36,8 @@ class Patient_name_data_list{
 
 
   Patient_name_data_list({
-    this.name  , this.DOB , this.date , this.gender , this.email , this.address  , this.age , this.mobile , this.group , this.blood_group , this.image,
+
+    this.doc_id , this.name  , this.DOB , this.date , this.gender , this.email , this.address  , this.age , this.mobile , this.group , this.blood_group , this.image,
     this.visit_date , this.complaints, this.clinical_finding , this.allergies , this.diagnosis , this.internal_notes , this.investigation , this.vital_info , this.medicines , this.advices
   });
 
@@ -54,6 +55,7 @@ class Patient_name_data_list{
       mobile: json['mobile'] =="" ? 00 : int.parse(json['mobile']),
       gender: json['gender'] =="" ? "?": json['gender'],
       email: json['email'] =="" ? "?": json['email'],
+      doc_id: json['id'],
     );
   }
 

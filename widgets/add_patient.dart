@@ -95,6 +95,7 @@ class _AddPatientState extends State<AddPatient> {
 
    if(data!=null)
    {
+     name = data.name;
      setState(() {
 
        age_edit.text=data.age.toString();
@@ -131,6 +132,10 @@ class _AddPatientState extends State<AddPatient> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.teal,
+        leading: IconButton(icon:Icon(Icons.arrow_back) , onPressed: (){
+          Navigator.pop(context);
+        },),
+
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -184,18 +189,44 @@ class _AddPatientState extends State<AddPatient> {
                        else
                          {
                            print('vrvea');
-                           await FirebaseFirestore.instance.collection('Patient').doc(name_edit.text).set({
-                             'name':name_edit.text,
-                             'age' : age_edit.text,
-                             'gender':male==true?'Male':female==true?'Female':"",
-                             'address': address_edit.text,
-                             'mobile':mobile_edit.text,
-                             'date':Timestamp.now(),
-                             'email':email_edit.text,
+                           if(icon_tap)
+                             {
+                               var doc = await FirebaseFirestore.instance.collection('Patient').doc();
+
+                               final json = {
+                                 'name':name_edit.text,
+                                 'age' : age_edit.text,
+                                 'gender':male==true?'Male':female==true?'Female':"",
+                                 'address': address_edit.text,
+                                 'mobile':mobile_edit.text,
+                                 'date':Timestamp.now(),
+                                 'email':email_edit.text,
+                                 'id' : doc.id,
+                               };
+
+                               doc.set(json);
+                             }
+                           else if(icon_tap == false)
+                             {
 
 
 
-                           });
+                               await FirebaseFirestore.instance.collection('Patient').doc(widget.patient_data.doc_id).update(
+                                   {
+                                     'name':name_edit.text,
+                                     'age' : age_edit.text,
+                                     'gender':male==true?'Male':female==true?'Female':"",
+                                     'address': address_edit.text,
+                                     'mobile':mobile_edit.text,
+                                     'date':Timestamp.now(),
+                                     'email':email_edit.text,
+
+
+
+
+
+                                   });
+                             }
                            Navigator.pop(context);
                          }
                     }

@@ -11,6 +11,8 @@ import 'package:flutter_app/classes/Patient_name_list.dart';
 import 'package:date_format/date_format.dart';
 
 class Patient extends StatefulWidget {
+
+
   @override
   _State createState() => _State();
 }
@@ -27,11 +29,22 @@ class _State extends State<Patient> {
 
   var textcontroller = TextEditingController();
 
-  Future PatientDataDelete(@required String group) async {
+  Future PatientDataDelete(@required String doc_Id) async {
     final doc =
-        await FirebaseFirestore.instance.collection('Patient').doc(group);
+        await FirebaseFirestore.instance.collection('Patient').doc(doc_Id);
 
     doc.delete();
+  }
+
+  String greeting() {
+    var hour = DateTime.now().hour;
+    if (hour < 12) {
+      return 'good Morning ,';
+    }
+    if (hour < 17) {
+      return 'good Afternoon ,';
+    }
+    return 'good Evening ,';
   }
 
   Widget Tile(Patient_name_data_list data) => GestureDetector(
@@ -84,7 +97,7 @@ class _State extends State<Patient> {
                                                     map_name_patientInstance_list
                                                         .remove(data.name);
                                                     PatientDataDelete(
-                                                        data.name);
+                                                        data.doc_id);
                                                   });
 
                                                   Navigator.pop(context);
@@ -278,6 +291,8 @@ class _State extends State<Patient> {
     search_patient_list = [];
   }
 
+
+
   @override
   Widget build(BuildContext context) {
    // print('builder');
@@ -335,7 +350,7 @@ class _State extends State<Patient> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'good Morning ,',
+                            greeting(),
                             style: TextStyle(fontSize: 15),
                           ),
                           SizedBox(
@@ -434,7 +449,10 @@ class _State extends State<Patient> {
           splashColor: AppTheme.notWhite,
           onPressed: () {
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => AddPatient(all_patient_name_list: all_patient_name_list, icon_tap: true,)));
+                context, MaterialPageRoute(builder: (context) => AddPatient(all_patient_name_list: all_patient_name_list, icon_tap: true,))).then((value) {
+
+
+            });
           },
           child: Icon(
             Icons.add,
