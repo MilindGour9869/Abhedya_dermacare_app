@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/default.dart';
@@ -55,6 +56,11 @@ class _AddPatientState extends State<AddPatient> {
 
 
 
+
+
+
+
+
  Future imagepicker() async{
 
    final image = await ImagePicker().pickImage(source: ImageSource.camera);
@@ -102,6 +108,22 @@ class _AddPatientState extends State<AddPatient> {
        age_edit.text=data.age.toString();
        name_edit.text=data.name.toString();
        mobile_edit.text=data.mobile.toString();
+
+       if(data.gender != null)
+         {
+           print(data.gender);
+
+           if(data.gender == "Male")
+            {
+
+              male=true;}
+           else
+             {
+
+               female = true;
+             }
+
+         }
 
 
 
@@ -355,6 +377,7 @@ class _AddPatientState extends State<AddPatient> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0 , horizontal: 20),
               child:TextField(
+                controller: group_edit,
                 autofocus: false,
                 decoration: InputDecoration(
 
@@ -371,8 +394,9 @@ class _AddPatientState extends State<AddPatient> {
                         width: 2,),
                       borderRadius: BorderRadius.circular(10),),
 
-                    hintText: "Group",
+                    labelText: "Group",
                     prefixIcon: Icon(Icons.medication),
+                     // ignore: void_checks
                      suffixIcon: IconButton(icon: Icon(Icons.arrow_drop_down_circle_outlined),onPressed: (){
 
 
@@ -383,9 +407,22 @@ class _AddPatientState extends State<AddPatient> {
                              context: context,
                              builder: (context) => Padding(
                                padding: const EdgeInsets.all(20.0),
-                               child: ListSearch(group: 'group', Group: 'Group', patient_doc_id: name_edit.text),
+                               child: ListSearch(group: 'group', Group: 'Group', patient_doc_id: data.doc_id , date: formatDate(data.recent_visit.toDate(), [dd, '-', mm, '-', yyyy ]).toString()),
                              )).then((value){
                                print('ff');
+
+                               setState(() {
+                                 group_edit.text ="";
+                               });
+
+                               value.forEach((e){
+                                 group_edit.text = e + " , " + group_edit.text ;
+                               });
+
+                               setState(() {
+                                 group_edit = group_edit;
+
+                               });
                          });
                        }
                      else
@@ -410,12 +447,14 @@ class _AddPatientState extends State<AddPatient> {
 
               )
             ),
+
             Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0 , horizontal: 20),
                 child:TextField(
-
+                  controller: blood_group_edit,
                   autofocus: false,
                   decoration: InputDecoration(
+
 
 
                       enabledBorder: OutlineInputBorder(
@@ -430,20 +469,37 @@ class _AddPatientState extends State<AddPatient> {
                           width: 2,),
                         borderRadius: BorderRadius.circular(10),),
 
-                      hintText: "Blood-group",
-                      prefixIcon: Icon(Icons.water_drop_outlined),
+                      labelText: "Blood Group",
+                      prefixIcon: Icon(Icons.medication),
                       // ignore: void_checks
                       suffixIcon: IconButton(icon: Icon(Icons.arrow_drop_down_circle_outlined),onPressed: (){
 
-                        if(name_edit!=null && name_edit.text.isNotEmpty )
+                        setState(() {
+                          blood_group_edit.text ="";
+
+                        });
+
+
+
+                        if(name_edit!=null && name_edit.text.isNotEmpty)
                         {
+
                           return   showDialog(
                               context: context,
                               builder: (context) => Padding(
                                 padding: const EdgeInsets.all(20.0),
-                                child: ListSearch(group: 'blood-group', Group: 'Blood-Group', patient_doc_id: name_edit.text, ),
-                              )).then((value) {
-                                print(value);
+                                child: ListSearch(group: 'blood-group', Group: 'Blood-Group', patient_doc_id: data.doc_id , date: formatDate(data.recent_visit.toDate(), [dd, '-', mm, '-', yyyy ]).toString()),
+                              )).then((value){
+                            print('ff');
+
+                            value.forEach((e){
+                              blood_group_edit.text = e ;
+                            });
+
+                            setState(() {
+                              blood_group_edit = blood_group_edit;
+
+                            });
                           });
                         }
                         else
@@ -454,8 +510,6 @@ class _AddPatientState extends State<AddPatient> {
                                 title: Text('Please enter Name of Patient'),
                               ));
                         }
-
-
                       },)
                   ),
 
@@ -470,6 +524,10 @@ class _AddPatientState extends State<AddPatient> {
 
                 )
             ),
+
+
+
+
 
 
 
@@ -549,52 +607,6 @@ class _txtfieldState extends State<txtfield> {
   }
 }
 
-//class Search extends SearchDelegate<String> {
-//
-//
-//
-//
-//
-//  @override
-//  List<Widget> buildActions(BuildContext context) {
-//    return [
-//      IconButton(
-//        icon: Icon(Icons.clear),
-//        onPressed: () {
-//
-//        },
-//      )
-//    ];
-//  }
-//
-//  @override
-//  Widget buildLeading(BuildContext context) {
-//    return null;
-//  }
-//
-//  @override
-//  Widget buildResults(BuildContext context) {
-//    return null;
-//  }
-//
-//  @override
-//  Widget buildSuggestions(BuildContext context) {
-//    final suggestions = query.isEmpty ? ['qq' , 'ecc' , 'ec']: [];
-//    return Container(
-//      height: 200,
-//
-//      child: ListView.builder(
-//        itemCount: suggestions.length,
-//        itemBuilder: (content, index) => ListTile(
-//            leading: IconButton(
-//              icon: Icon(Icons.adjust),
-//              onPressed: (){
-//                group_tap=!group_tap;
-//
-//
-//              },
-//            ), title: Text(suggestions[index])),
-//      ),
-//    );
-//  }
-//}
+
+
+

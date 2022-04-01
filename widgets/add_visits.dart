@@ -56,19 +56,6 @@ class _AddVisitsState extends State<AddVisits> {
 
 
 
-  Map<String,bool> map={
-    'complaints' : false,
-    'diagnosis' : false,
-    'advices':false,
-    'investigation':false,
-    'allergies':false,
-    'clinical_findings':false,
-    'group':false,
-    'blood_group':false,
-   };
-
-  String s = "  ,  ";
-
 
 
 
@@ -87,12 +74,12 @@ setState(() {
 
   if(widget.visit_data.diagnosis !=null && widget.visit_data.diagnosis.isNotEmpty)
   {
-    map['diagnosis']=true;
 
-    print('diagnosis not null');
-    diagnosis="";
+
+
+
     widget.visit_data.diagnosis.forEach((element) {
-      diagnosis+=element + s ;
+
       Diagnosis.add(element);
 
     });
@@ -101,14 +88,14 @@ setState(() {
 
   if(widget.visit_data.complaints != null && widget.visit_data.complaints.isNotEmpty)
   {
-    map['complaints']=true;
 
-    print('complaint not null');
-    complaints="";
+
+
+
 
 
     widget.visit_data.complaints.forEach((element) {
-      complaints += element + s;
+
       Complaint.add(element);
 
 
@@ -117,14 +104,14 @@ setState(() {
 
   if(widget.visit_data.investigation != null && widget.visit_data.investigation.isNotEmpty)
   {
-    map['investigation']=true;
 
-    print('investigation not null');
-    investigation="";
+
+    // print('investigation not null');
+
 
 
     widget.visit_data.investigation.forEach((element) {
-      investigation += element + s;
+
       Investigation.add(element);
 
     });
@@ -132,14 +119,11 @@ setState(() {
 
   if(widget.visit_data.advices != null && widget.visit_data.advices.isNotEmpty)
   {
-    map['advices']=true;
 
-    print('advices not null');
-    advices="";
 
 
     widget.visit_data.advices.forEach((element) {
-      advices += element + s;
+
       Advices.add(element);
 
 
@@ -148,14 +132,10 @@ setState(() {
 
   if(widget.visit_data.allergies != null && widget.visit_data.allergies.isNotEmpty )
   {
-    map['allergies']=true;
-
-    print('allergies not null');
-    allergies="";
 
 
     widget.visit_data.allergies.forEach((element) {
-      allergies += element + s;
+
       Allergies.add(element);
 
 
@@ -164,13 +144,11 @@ setState(() {
 
   if(widget.visit_data.clinical_finding != null && widget.visit_data.clinical_finding.isNotEmpty)
   {
-    map['clinical_findings']=true;
-    print('clinical finding not null');
-    clinical_findings="";
+
 
 
     widget.visit_data.clinical_finding.forEach((element) {
-      clinical_findings += element + s;
+
       Clinical_findings.add(element);
 
     });
@@ -178,14 +156,10 @@ setState(() {
 
   if(widget.visit_data.group != null && widget.visit_data.group.isNotEmpty)
   {
-    map['group']=true;
-
-    print('group not null');
-    group="";
 
 
     widget.visit_data.group.forEach((element) {
-      group += element + s;
+
       Group.add(element);
 
     });
@@ -193,13 +167,11 @@ setState(() {
 
   if(widget.visit_data.blood_group != null && widget.visit_data.blood_group.isNotEmpty)
   {
-    map['blood_group']=true;
-    print('blood-group not null');
-    blood_group="";
+
 
 
     widget.visit_data.blood_group.forEach((element) {
-      blood_group += element + s ;
+
       Blood_group.add(element);
 
 
@@ -299,7 +271,7 @@ setState(() {
         child: Center(
           child: Container(
             color: Colors.transparent,
-            height: MediaQuery.of(context).size.height*0.9,
+           // height: MediaQuery.of(context).size.height*0.9,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 
@@ -319,111 +291,49 @@ setState(() {
 
 
 
-                SizedBox(
-                  height: MediaQuery.of(context).size.height*0.1,
-                  width: MediaQuery.of(context).size.width*0.9,
-                  child: Card(
-                    color: AppTheme.white,
-                    child: Row(
-                      children: [
-                        SizedBox(width: 7,),
-                        Icon(Icons.comment),
-                        SizedBox(width: 7,),
-
-                        Flexible(
-                          flex: 2,
-                          child: GestureDetector(
-                            onTap: (){
-                              showDialog(
-                                context: context,
-                                builder: (context){
-
-                                  return Column(
-                                    children: []
-                                  );
-
-                                }
-                              );
-                            },
-                            child: Container(
-                              width:  MediaQuery.of(context).size.width*0.7,
-                              child: SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Text(complaints , style: TextStyle(color: map['complaints']?Colors.black:Colors.grey),),
-                              ),
-                            ),
-                          ),
-                        ),
-
-                        SizedBox(width: 4,),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Material(
+                    borderRadius: BorderRadius.circular(10),
+                    elevation: 2,
 
 
-                        IconButton(onPressed: ()async{
+                    child: ListTile(
+
+                      title: Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Text(complaints),
+                      ),
+                      leading: Icon(Icons.add),
+
+                      trailing: IconButton(onPressed: ()async{
 
 
 
-                         // print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
+                        // print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
 
 
-                          showDialog(
-                              context: context,
-                              builder: (context)  {
-
-
-
-                                return  ListSearch(group: 'complaint', Group: 'Complaint', patient_doc_id: widget.patient_data.doc_id, date: formatDate(visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
-
-                          ).then((value)async{
-
-                            print(value);
-
-                            if(value != null)
-                              {
-                                Complaint = value;
-
-
-                              }
-
-                            List a =  await value;
-
-                            print(a);
+                        showDialog(
+                            context: context,
+                            builder: (context)  {
 
 
 
-                              complaints='';
-                              a.forEach((element) {
+                              return  ListSearch(group: 'complaint', Group: 'Complaint', patient_doc_id: widget.patient_data.doc_id, date: formatDate(visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
 
-                                complaints+=element + s;
+                        ).then((value)async{
 
+                          print(value);
 
-                              });
-
-                              if(complaints != "")
-                                {
-                                  setState(() {
-                                    complaints=complaints;
-                                    map['complaints']=true;
-
-                                  });
-                                }
-                              else
-                                {
-                                  setState(() {
-                                    complaints="Complaints";
-                                    map['complaints']=false;
-
-                                  });
-
-                                }
+                          if(value != null)
+                          {
+                            setState(() {
+                              Complaint = value;
+                            });
 
 
-
-
-
-                          });
-
-
-                         
+                          }
+                        });
 
 
 
@@ -431,738 +341,275 @@ setState(() {
 
 
 
-                        }, icon: Icon(Icons.arrow_drop_down_circle_outlined))
 
 
 
+                      }, icon: Icon(Icons.arrow_drop_down_circle_outlined , color: Colors.black,)),
 
-                      ],
+                     subtitle: Padding(
+                       padding: const EdgeInsets.only(top: 8.0),
+                       child: Container(
+
+                         child: Column(
+                           crossAxisAlignment: CrossAxisAlignment.start,
+                           children: Complaint.map<Widget>((e)=>DropDown(e) ).toList(),
+                         ),
+                       ),
+                     ),
                     ),
                   ),
                 ), // Complaint
 
-                SizedBox(
-                  height: MediaQuery.of(context).size.height*0.1,
-                  width: MediaQuery.of(context).size.width*0.9,
-                  child: Card(
-                    color: AppTheme.white,
-                    child: Row(
-                      children: [
-                        SizedBox(width: 7,),
-                        Icon(Icons.note),
-                        SizedBox(width: 7,),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Material(
+                    borderRadius: BorderRadius.circular(10),
+                    elevation: 2,
 
-                        Flexible(
-                          flex: 2,
-                          child: GestureDetector(
-                            onTap: (){
-                              showDialog(
-                                  context: context,
-                                  builder: (context){
 
-                                    return Column(
-                                        children: []
-                                    );
+                    child: ListTile(
 
-                                  }
-                              );
-                            },
-                            child: Container(
-                              width:  MediaQuery.of(context).size.width*0.7,
-                              child: SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Text(clinical_findings , style: TextStyle(color:map['clinical_findings']?Colors.black:Colors.grey),),
-                              ),
-                            ),
+                      title: Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Text(clinical_findings),
+                      ),
+                      leading: Icon(Icons.add),
+
+                      trailing: IconButton(onPressed: ()async{
+
+
+
+                        // print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
+
+
+                        showDialog(
+                            context: context,
+                            builder: (context)  {
+
+
+
+                              return  ListSearch(group: 'clinical_finding', Group: 'Clinical_finding', patient_doc_id: widget.patient_data.doc_id, date: formatDate(visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
+
+                        ).then((value)async{
+
+                          print(value);
+
+                          if(value != null)
+                          {
+                            setState(() {
+                              Clinical_findings = value;
+                            });
+
+
+                          }
+                        });
+
+
+
+
+
+
+
+
+
+
+                      }, icon: Icon(Icons.arrow_drop_down_circle_outlined , color: Colors.black,)),
+
+                      subtitle: Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Container(
+
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: Clinical_findings.map<Widget>((e)=>DropDown(e) ).toList(),
                           ),
                         ),
-
-                        SizedBox(width: 4,),
-
-
-                        IconButton(onPressed: ()async{
-
-
-
-                          // print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
-
-
-                          showDialog(
-                              context: context,
-                              builder: (context)  {
-
-
-
-                                return  ListSearch(group: 'clinical_finding', Group: 'Clinical_finding', patient_doc_id: widget.patient_data.doc_id, date: formatDate(visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
-
-                          ).then((value)async{
-
-                            print(value);
-
-                            if(value != null)
-                            {
-                              Clinical_findings = value;
-
-
-                            }
-
-                            List a =  await value;
-
-                            print(a);
-
-
-
-                              clinical_findings='';
-                              a.forEach((element) {
-
-                                clinical_findings+=element + s;
-
-
-                              });
-
-                            if(clinical_findings != "")
-                            {
-                              setState(() {
-                                clinical_findings=clinical_findings;
-                                map['clinical_findings']=true;
-
-                              });
-                            }
-                            else
-                            {
-                              setState(() {
-                                clinical_findings="Clinical Finding";
-                                map['clinical_findings']=false;
-
-                              });
-
-                            }
-
-
-
-
-
-                          });
-
-
-
-
-
-
-
-
-
-
-                        }, icon: Icon(Icons.arrow_drop_down_circle_outlined))
-
-
-
-
-                      ],
+                      ),
                     ),
                   ),
-                ), // Clinical finding
+                ), // Clinical Finding
 
-                SizedBox(
-                  height: MediaQuery.of(context).size.height*0.1,
-                  width: MediaQuery.of(context).size.width*0.9,
-                  child: Card(
-                    color: AppTheme.white,
-                    child: Row(
-                      children: [
-                        SizedBox(width: 7,),
-                        Icon(Icons.seven_k),
-                        SizedBox(width: 7,),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Material(
+                    borderRadius: BorderRadius.circular(10),
+                    elevation: 2,
 
-                        Flexible(
-                          flex: 2,
-                          child: GestureDetector(
-                            onTap: (){
-                              showDialog(
-                                  context: context,
-                                  builder: (context){
 
-                                    return Column(
-                                        children: []
-                                    );
+                    child: ListTile(
 
-                                  }
-                              );
-                            },
-                            child: Container(
-                              width:  MediaQuery.of(context).size.width*0.7,
-                              child: SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Text(diagnosis , style: TextStyle(color: map['diagnosis']?Colors.black:Colors.grey),),
-                              ),
-                            ),
+                      title: Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Text(diagnosis),
+                      ),
+                      leading: Icon(Icons.add),
+
+                      trailing: IconButton(onPressed: ()async{
+
+
+
+                        // print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
+
+
+                        showDialog(
+                            context: context,
+                            builder: (context)  {
+
+
+
+                              return  ListSearch(group: 'diagnosis', Group: 'Diagnosis', patient_doc_id: widget.patient_data.doc_id, date: formatDate(visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
+
+                        ).then((value)async{
+
+                          print(value);
+
+                          if(value != null)
+                          {
+                            setState(() {
+                              Diagnosis = value;
+                            });
+
+
+                          }
+                        });
+
+
+
+
+
+
+
+
+
+
+                      }, icon: Icon(Icons.arrow_drop_down_circle_outlined , color: Colors.black,)),
+
+                      subtitle: Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Container(
+
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: Diagnosis.map<Widget>((e)=>DropDown(e) ).toList(),
                           ),
                         ),
-
-                        SizedBox(width: 4,),
-
-
-                        IconButton(onPressed: ()async{
-
-
-
-                          print(formatDate(visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
-
-
-                          showDialog(
-                              context: context,
-                              builder: (context)  {
-
-
-
-                                return  ListSearch(group: 'diagnosis', Group: 'Diagnosis', patient_doc_id: widget.patient_data.doc_id, date: formatDate(visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
-
-                          ).then((value)async{
-
-                            print(value);
-
-                            if(value != null)
-                            {
-                              Diagnosis = value;
-
-
-                            }
-
-                            List a =  await value;
-
-                            print(a);
-
-
-
-                              diagnosis='';
-                              a.forEach((element) {
-
-                                diagnosis+=element + s;
-
-
-                              });
-
-                            if(diagnosis!= "")
-                            {
-                              setState(() {
-                                diagnosis=diagnosis;
-                                map['diagnosis']=true;
-
-                              });
-                            }
-                            else
-                            {
-                              setState(() {
-                                diagnosis="Diagnosis";
-                                map['diagnosis']=false;
-
-                              });
-
-                            }
-
-
-
-
-                          });
-
-
-
-
-
-
-
-
-
-
-                        }, icon: Icon(Icons.arrow_drop_down_circle_outlined))
-
-
-
-
-                      ],
+                      ),
                     ),
                   ),
                 ), // Diagnosis
 
-                SizedBox(
-                  height: MediaQuery.of(context).size.height*0.1,
-                  width: MediaQuery.of(context).size.width*0.9,
-                  child: Card(
-                    color: AppTheme.white,
-                    child: Row(
-                      children: [
-                        SizedBox(width: 7,),
-                        Icon(Icons.seven_k),
-                        SizedBox(width: 7,),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Material(
+                    borderRadius: BorderRadius.circular(10),
+                    elevation: 2,
 
-                        Flexible(
-                          flex: 2,
-                          child: GestureDetector(
-                            onTap: (){
-                              showDialog(
-                                  context: context,
-                                  builder: (context){
 
-                                    return Column(
-                                        children: []
-                                    );
+                    child: ListTile(
 
-                                  }
-                              );
-                            },
-                            child: Container(
-                              width:  MediaQuery.of(context).size.width*0.7,
-                              child: SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Text(investigation , style: TextStyle(color: map['investigation']?Colors.black:Colors.grey),),
-                              ),
-                            ),
+                      title: Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Text(investigation),
+                      ),
+                      leading: Icon(Icons.add),
+
+                      trailing: IconButton(onPressed: ()async{
+
+
+
+                        // print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
+
+
+                        showDialog(
+                            context: context,
+                            builder: (context)  {
+
+
+
+                              return  ListSearch(group: 'investigation', Group: 'Investigation', patient_doc_id: widget.patient_data.doc_id, date: formatDate(visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
+
+                        ).then((value)async{
+
+                          print(value);
+
+                          if(value != null)
+                          {
+                            setState(() {
+                              Investigation = value;
+                            });
+
+
+                          }
+                        });
+
+
+
+
+
+
+
+
+
+
+                      }, icon: Icon(Icons.arrow_drop_down_circle_outlined , color: Colors.black,)),
+
+                      subtitle: Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Container(
+
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: Investigation.map<Widget>((e)=>DropDown(e) ).toList(),
                           ),
                         ),
-
-                        SizedBox(width: 4,),
-
-
-                        IconButton(onPressed: ()async{
-
-
-
-                        //  print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
-
-
-                          showDialog(
-                              context: context,
-                              builder: (context)  {
-
-
-
-                                return  ListSearch(group: 'investigation', Group: 'Investigation', patient_doc_id: widget.patient_data.doc_id, date: formatDate(visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
-
-                          ).then((value)async{
-
-                            print(value);
-
-                            if(value != null)
-                            {
-                              Investigation = value;
-
-
-                            }
-
-                            List a =  await value;
-
-                            print('anccew');
-
-
-                            print(a);
-
-
-                             investigation='';
-
-
-
-
-                              a.forEach((element) {
-
-                                investigation+=element + s;
-
-
-                              });
-
-                              print(investigation);
-
-                            if(investigation!= "")
-                            {
-                              setState(() {
-                                investigation=investigation;
-                                map['investigation']=true;
-
-                              });
-                            }
-                            else
-                            {
-                              setState(() {
-                                investigation="Investigation";
-                                map['investigation']=false;
-
-                              });
-
-                            }
-
-
-
-
-
-
-
-
-                          });
-
-
-
-
-
-
-
-
-
-
-                        }, icon: Icon(Icons.arrow_drop_down_circle_outlined))
-
-
-
-
-                      ],
+                      ),
                     ),
                   ),
                 ), // Investigation
 
-                SizedBox(
-                  height: MediaQuery.of(context).size.height*0.1,
-                  width: MediaQuery.of(context).size.width*0.9,
-                  child: Card(
-                    color: AppTheme.white,
-                    child: Row(
-                      children: [
-                        SizedBox(width: 7,),
-                        Icon(Icons.seven_k),
-                        SizedBox(width: 7,),
-
-                        Flexible(
-                          flex: 2,
-                          child: GestureDetector(
-                            onTap: (){
-                              showDialog(
-                                  context: context,
-                                  builder: (context){
-
-                                    return Column(
-                                        children: []
-                                    );
-
-                                  }
-                              );
-                            },
-                            child: Container(
-                              width:  MediaQuery.of(context).size.width*0.7,
-                              child: SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Text(allergies, style: TextStyle(color: map['allergies']?Colors.black:Colors.grey),),
-                              ),
-                            ),
-                          ),
-                        ),
-
-                        SizedBox(width: 4,),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Material(
+                    borderRadius: BorderRadius.circular(10),
+                    elevation: 2,
 
 
-                        IconButton(onPressed: ()async{
+                    child: ListTile(
+
+                      title: Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Text(allergies),
+                      ),
+                      leading: Icon(Icons.add),
+
+                      trailing: IconButton(onPressed: ()async{
 
 
 
-                          //print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
+                        // print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
 
 
-                          showDialog(
-                              context: context,
-                              builder: (context)  {
+                        showDialog(
+                            context: context,
+                            builder: (context)  {
 
 
 
-                                return  ListSearch(group: 'allergie', Group: 'Allergie', patient_doc_id: widget.patient_data.doc_id, date: formatDate(visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
+                              return  ListSearch(group: 'allergies', Group: 'Allergies', patient_doc_id: widget.patient_data.doc_id, date: formatDate(visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
 
-                          ).then((value)async{
+                        ).then((value)async{
 
-                            print(value);
+                          print(value);
 
-                            if(value != null)
-                            {
+                          if(value != null)
+                          {
+                            setState(() {
                               Allergies = value;
-
-
-                            }
-
-                            List a =  await value;
-
-                            print(a);
-
-
-
-                              allergies='';
-                              a.forEach((element) {
-
-                                allergies+=element + s;
-
-
-                              });
-
-                            if(allergies!= "")
-                            {
-                              setState(() {
-                                allergies=allergies;
-                                map['allergies']=true;
-
-                              });
-                            }
-                            else
-                            {
-                              setState(() {
-                                allergies="Allergies";
-                                map['allergies']=false;
-
-                              });
-
-                            }
-
-
-
-
-
-                          });
-
-
-
-
-
-
-
-
-
-
-                        }, icon: Icon(Icons.arrow_drop_down_circle_outlined))
-
-
-
-
-                      ],
-                    ),
-                  ),
-                ), // Allergie
-
-                SizedBox(
-                  height: MediaQuery.of(context).size.height*0.1,
-                  width: MediaQuery.of(context).size.width*0.9,
-                  child: Card(
-                    color: AppTheme.white,
-                    child: Row(
-                      children: [
-                        SizedBox(width: 7,),
-                        Icon(Icons.seven_k),
-                        SizedBox(width: 7,),
-
-                        Flexible(
-                          flex: 2,
-                          child: GestureDetector(
-                            onTap: (){
-                              showDialog(
-                                  context: context,
-                                  builder: (context){
-
-                                    return Column(
-                                        children: []
-                                    );
-
-                                  }
-                              );
-                            },
-                            child: Container(
-                              width:  MediaQuery.of(context).size.width*0.7,
-                              child: SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Text(advices , style:  TextStyle(color: map['advices']?Colors.black:Colors.grey),),
-                              ),
-                            ),
-                          ),
-                        ),
-
-                        SizedBox(width: 4,),
-
-
-                        IconButton(onPressed: ()async{
-
-
-
-                      //    print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
-
-
-                          showDialog(
-                              context: context,
-                              builder: (context)  {
-
-
-
-                                return  ListSearch(group: 'advice', Group: 'advice', patient_doc_id: widget.patient_data.doc_id, date: formatDate(visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
-
-                          ).then((value)async{
-
-                            print(value);
-
-                            if(value != null)
-                            {
-                              Advices = value;
-
-
-                            }
-
-                            List a =  await value;
-
-                            print(a);
-
-
-
-                              advices='';
-                              a.forEach((element) {
-
-                                advices+=element + s;
-
-
-                              });
-
-                            if(advices!= "")
-                            {
-                              setState(() {
-                                advices=advices;
-                                map['advices']=true;
-
-                              });
-                            }
-                            else
-                            {
-                              setState(() {
-                                advices="Advices";
-                                map['advices']=false;
-
-                              });
-
-                            }
-
-
-
-
-
-                          });
-
-
-
-
-
-
-
-
-
-
-                        }, icon: Icon(Icons.arrow_drop_down_circle_outlined))
-
-
-
-
-                      ],
-                    ),
-                  ),
-                ), // Advice
-
-                SizedBox(
-                  height: MediaQuery.of(context).size.height*0.1,
-                  width: MediaQuery.of(context).size.width*0.9,
-                  child: Card(
-                    color: AppTheme.white,
-                    child: Row(
-                      children: [
-                        SizedBox(width: 7,),
-                        Icon(Icons.seven_k),
-                        SizedBox(width: 7,),
-
-                        Flexible(
-                          flex: 2,
-                          child: GestureDetector(
-                            onTap: (){
-                              showDialog(
-                                  context: context,
-                                  builder: (context){
-
-                                    return Column(
-                                        children: []
-                                    );
-
-                                  }
-                              );
-                            },
-                            child: Container(
-                              width:  MediaQuery.of(context).size.width*0.7,
-                              child: SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Text(group , style: TextStyle(color: map['group']?Colors.black:Colors.grey),),
-                              ),
-                            ),
-                          ),
-                        ),
-
-                        SizedBox(width: 4,),
-
-
-                        IconButton(onPressed: ()async{
-
-
-
-//                          print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
-
-
-                          showDialog(
-                              context: context,
-                              builder: (context)  {
-
-
-
-                                return  ListSearch(group: 'group', Group: 'Group', patient_doc_id: widget.patient_data.doc_id, date: formatDate(visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
-
-                          ).then((value)async{
-
-                            print(value);
-
-                            if(value != null)
-                            {
-                              Group = value;
-
-
-                            }
-
-                            List a =  await value;
-
-                            print(a);
-
-
-
-                            group='';
-                            a.forEach((element) {
-
-                              group+=element + s;
-
-
                             });
 
-                            if(group!= "")
-                            {
-                              setState(() {
-                                group=group;
-                                map['group']=true;
 
-                              });
-                            }
-                            else
-                            {
-                              setState(() {
-                                group="Group";
-                                map['group']=false;
-
-                              });
-
-                            }
-
-
-
-
-
-                          });
+                          }
+                        });
 
 
 
@@ -1173,117 +620,203 @@ setState(() {
 
 
 
-                        }, icon: Icon(Icons.arrow_drop_down_circle_outlined))
+                      }, icon: Icon(Icons.arrow_drop_down_circle_outlined , color: Colors.black,)),
+
+                      subtitle: Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Container(
+
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: Allergies.map<Widget>((e)=>DropDown(e) ).toList(),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ), // Allergies
+
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Material(
+                    borderRadius: BorderRadius.circular(10),
+                    elevation: 2,
+
+
+                    child: ListTile(
+
+                      title: Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Text(advices),
+                      ),
+                      leading: Icon(Icons.add),
+
+                      trailing: IconButton(onPressed: ()async{
+
+
+
+                        // print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
+
+
+                        showDialog(
+                            context: context,
+                            builder: (context)  {
+
+
+
+                              return  ListSearch(group: 'advices', Group: 'Advices', patient_doc_id: widget.patient_data.doc_id, date: formatDate(visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
+
+                        ).then((value)async{
+
+                          print(value);
+
+                          if(value != null)
+                          {
+                            setState(() {
+                              Advices = value;
+                            });
+
+
+                          }
+                        });
 
 
 
 
-                      ],
+
+
+
+
+
+
+                      }, icon: Icon(Icons.arrow_drop_down_circle_outlined , color: Colors.black,)),
+
+                      subtitle: Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Container(
+
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: Advices.map<Widget>((e)=>DropDown(e) ).toList(),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ), // Advices
+
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Material(
+                    borderRadius: BorderRadius.circular(10),
+                    elevation: 2,
+
+
+                    child: ListTile(
+
+                      title: Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Text(group),
+                      ),
+                      leading: Icon(Icons.add),
+
+                      trailing: IconButton(onPressed: ()async{
+
+
+
+                        // print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
+
+
+                        showDialog(
+                            context: context,
+                            builder: (context)  {
+
+
+
+                              return  ListSearch(group: 'group', Group: 'Group', patient_doc_id: widget.patient_data.doc_id, date: formatDate(visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
+
+                        ).then((value)async{
+
+                          print(value);
+
+                          if(value != null)
+                          {
+                            setState(() {
+                              Group = value;
+                            });
+
+
+                          }
+                        });
+
+
+
+
+
+
+
+
+
+
+                      }, icon: Icon(Icons.arrow_drop_down_circle_outlined , color: Colors.black,)),
+
+                      subtitle: Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Container(
+
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: Group.map<Widget>((e)=>DropDown(e) ).toList(),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ), // Group
 
-                SizedBox(
-                  height: MediaQuery.of(context).size.height*0.1,
-                  width: MediaQuery.of(context).size.width*0.9,
-                  child: Card(
-                    color: AppTheme.white,
-                    child: Row(
-                      children: [
-                        SizedBox(width: 7,),
-                        Icon(Icons.seven_k),
-                        SizedBox(width: 7,),
-
-                        Flexible(
-                          flex: 2,
-                          child: GestureDetector(
-                            onTap: (){
-                              showDialog(
-                                  context: context,
-                                  builder: (context){
-
-                                    return Column(
-                                        children: []
-                                    );
-
-                                  }
-                              );
-                            },
-                            child: Container(
-                              width:  MediaQuery.of(context).size.width*0.7,
-                              child: SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child:  Text(blood_group , style: TextStyle(color: map['blood_group']?Colors.black:Colors.grey),),
-                              ),
-                            ),
-                          ),
-                        ),
-
-                        SizedBox(width: 4,),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Material(
+                    borderRadius: BorderRadius.circular(10),
+                    elevation: 2,
 
 
-                        IconButton(onPressed: ()async{
+                    child: ListTile(
+
+                      title: Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Text(blood_group),
+                      ),
+                      leading: Icon(Icons.add),
+
+                      trailing: IconButton(onPressed: ()async{
 
 
 
-//                          print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
+                        // print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
 
 
-                          showDialog(
-                              context: context,
-                              builder: (context)  {
+                        showDialog(
+                            context: context,
+                            builder: (context)  {
 
 
 
-                                return  ListSearch(group: 'blood-group', Group: 'Blood-Group', patient_doc_id: widget.patient_data.doc_id, date: formatDate(visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
+                              return  ListSearch(group: 'blood-group', Group: 'Blood-Group', patient_doc_id: widget.patient_data.doc_id, date: formatDate(visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
 
-                          ).then((value)async{
+                        ).then((value)async{
 
-                            print(value);
+                          print(value);
 
-                            if(value != null)
-                            {
+                          if(value != null)
+                          {
+                            setState(() {
                               Blood_group = value;
-
-
-                            }
-
-                            List a =  await value;
-
-                            print(a);
-
-
-
-                            blood_group='';
-                            a.forEach((element) {
-
-                              blood_group+=element + s;
-
-
                             });
 
-                            if(blood_group!= "")
-                            {
-                              setState(() {
-                                blood_group=blood_group;
-                                map['blood_group']=true;
 
-                              });
-                            }
-                            else
-                            {
-                              setState(() {
-                                blood_group="Blood Group";
-                                map['blood_group']=false;
-
-                              });
-
-                            }
-
-
-
-
-                          });
+                          }
+                        });
 
 
 
@@ -1294,12 +827,18 @@ setState(() {
 
 
 
-                        }, icon: Icon(Icons.arrow_drop_down_circle_outlined))
+                      }, icon: Icon(Icons.arrow_drop_down_circle_outlined , color: Colors.black,)),
 
+                      subtitle: Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Container(
 
-
-
-                      ],
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: Blood_group.map<Widget>((e)=>DropDown(e) ).toList(),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ), // Blood-Group
@@ -1321,4 +860,10 @@ setState(() {
       ),
     );
   }
+}
+
+
+Widget DropDown (String menu)
+{
+  return Text(menu);
 }
