@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_app/default.dart';
 import 'package:flutter_app/widgets/list_search.dart';
 import 'package:flutter_app/classes/Patient_name_list.dart';
+
+
 
 import 'package:date_format/date_format.dart';
 
@@ -41,7 +44,16 @@ class _AddVisitsState extends State<AddVisits> {
 
   String medicines="Medicines";
 
+  //8
   List<String> Complaint =[];
+  List<String> Diagnosis =[];
+  List<String> Advices =[];
+  List<String> Investigation =[];
+  List<String> Allergies =[];
+  List<String> Clinical_findings =[];
+  List<String> Group =[];
+  List<String> Blood_group =[];
+
 
 
   Map<String,bool> map={
@@ -81,6 +93,7 @@ setState(() {
     diagnosis="";
     widget.visit_data.diagnosis.forEach((element) {
       diagnosis+=element + s ;
+      Diagnosis.add(element);
 
     });
   }
@@ -112,6 +125,7 @@ setState(() {
 
     widget.visit_data.investigation.forEach((element) {
       investigation += element + s;
+      Investigation.add(element);
 
     });
   }
@@ -126,6 +140,7 @@ setState(() {
 
     widget.visit_data.advices.forEach((element) {
       advices += element + s;
+      Advices.add(element);
 
 
     });
@@ -141,6 +156,7 @@ setState(() {
 
     widget.visit_data.allergies.forEach((element) {
       allergies += element + s;
+      Allergies.add(element);
 
 
     });
@@ -155,6 +171,7 @@ setState(() {
 
     widget.visit_data.clinical_finding.forEach((element) {
       clinical_findings += element + s;
+      Clinical_findings.add(element);
 
     });
   }
@@ -169,6 +186,7 @@ setState(() {
 
     widget.visit_data.group.forEach((element) {
       group += element + s;
+      Group.add(element);
 
     });
   }
@@ -182,6 +200,8 @@ setState(() {
 
     widget.visit_data.blood_group.forEach((element) {
       blood_group += element + s ;
+      Blood_group.add(element);
+
 
     });
   }
@@ -479,6 +499,13 @@ setState(() {
 
                             print(value);
 
+                            if(value != null)
+                            {
+                              Clinical_findings = value;
+
+
+                            }
+
                             List a =  await value;
 
                             print(a);
@@ -594,6 +621,13 @@ setState(() {
 
                             print(value);
 
+                            if(value != null)
+                            {
+                              Diagnosis = value;
+
+
+                            }
+
                             List a =  await value;
 
                             print(a);
@@ -707,6 +741,13 @@ setState(() {
                           ).then((value)async{
 
                             print(value);
+
+                            if(value != null)
+                            {
+                              Investigation = value;
+
+
+                            }
 
                             List a =  await value;
 
@@ -834,6 +875,13 @@ setState(() {
 
                             print(value);
 
+                            if(value != null)
+                            {
+                              Allergies = value;
+
+
+                            }
+
                             List a =  await value;
 
                             print(a);
@@ -948,6 +996,13 @@ setState(() {
                           ).then((value)async{
 
                             print(value);
+
+                            if(value != null)
+                            {
+                              Advices = value;
+
+
+                            }
 
                             List a =  await value;
 
@@ -1064,6 +1119,13 @@ setState(() {
 
                             print(value);
 
+                            if(value != null)
+                            {
+                              Group = value;
+
+
+                            }
+
                             List a =  await value;
 
                             print(a);
@@ -1178,6 +1240,13 @@ setState(() {
                           ).then((value)async{
 
                             print(value);
+
+                            if(value != null)
+                            {
+                              Blood_group = value;
+
+
+                            }
 
                             List a =  await value;
 
