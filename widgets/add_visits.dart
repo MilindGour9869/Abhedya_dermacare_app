@@ -9,14 +9,18 @@ import 'package:date_format/date_format.dart';
 
 class AddVisits extends StatefulWidget {
 
-  Patient_name_data_list data;
+  Patient_name_data_list visit_data;
+  Patient_name_data_list patient_data;
+
 
   String name;
 
+  bool icon_tap;
 
 
 
-  AddVisits(this.data , this.name);
+
+  AddVisits({this.visit_data , this.name , this.icon_tap = false  , this.patient_data});
 
 
   @override
@@ -36,6 +40,9 @@ class _AddVisitsState extends State<AddVisits> {
   String blood_group="Blood Group";
 
   String medicines="Medicines";
+
+  List<String> Complaint =[];
+
 
   Map<String,bool> map={
     'complaints' : false,
@@ -63,23 +70,23 @@ class _AddVisitsState extends State<AddVisits> {
 
 setState(() {
 
-  visit_date = widget.data.visit_date;
+  visit_date = widget.visit_data.visit_date;
 
 
-  if(widget.data.diagnosis !=null && widget.data.diagnosis.isNotEmpty)
+  if(widget.visit_data.diagnosis !=null && widget.visit_data.diagnosis.isNotEmpty)
   {
     map['diagnosis']=true;
 
     print('diagnosis not null');
     diagnosis="";
-    widget.data.diagnosis.forEach((element) {
+    widget.visit_data.diagnosis.forEach((element) {
       diagnosis+=element + s ;
 
     });
   }
 
 
-  if(widget.data.complaints != null && widget.data.complaints.isNotEmpty)
+  if(widget.visit_data.complaints != null && widget.visit_data.complaints.isNotEmpty)
   {
     map['complaints']=true;
 
@@ -87,13 +94,15 @@ setState(() {
     complaints="";
 
 
-    widget.data.complaints.forEach((element) {
+    widget.visit_data.complaints.forEach((element) {
       complaints += element + s;
+      Complaint.add(element);
+
 
     });
   }
 
-  if(widget.data.investigation != null && widget.data.investigation.isNotEmpty)
+  if(widget.visit_data.investigation != null && widget.visit_data.investigation.isNotEmpty)
   {
     map['investigation']=true;
 
@@ -101,13 +110,13 @@ setState(() {
     investigation="";
 
 
-    widget.data.investigation.forEach((element) {
+    widget.visit_data.investigation.forEach((element) {
       investigation += element + s;
 
     });
   }
 
-  if(widget.data.advices != null && widget.data.advices.isNotEmpty)
+  if(widget.visit_data.advices != null && widget.visit_data.advices.isNotEmpty)
   {
     map['advices']=true;
 
@@ -115,14 +124,14 @@ setState(() {
     advices="";
 
 
-    widget.data.advices.forEach((element) {
+    widget.visit_data.advices.forEach((element) {
       advices += element + s;
 
 
     });
   }
 
-  if(widget.data.allergies != null && widget.data.allergies.isNotEmpty )
+  if(widget.visit_data.allergies != null && widget.visit_data.allergies.isNotEmpty )
   {
     map['allergies']=true;
 
@@ -130,27 +139,27 @@ setState(() {
     allergies="";
 
 
-    widget.data.allergies.forEach((element) {
+    widget.visit_data.allergies.forEach((element) {
       allergies += element + s;
 
 
     });
   }
 
-  if(widget.data.clinical_finding != null && widget.data.clinical_finding.isNotEmpty)
+  if(widget.visit_data.clinical_finding != null && widget.visit_data.clinical_finding.isNotEmpty)
   {
     map['clinical_findings']=true;
     print('clinical finding not null');
     clinical_findings="";
 
 
-    widget.data.clinical_finding.forEach((element) {
+    widget.visit_data.clinical_finding.forEach((element) {
       clinical_findings += element + s;
 
     });
   }
 
-  if(widget.data.group != null && widget.data.group.isNotEmpty)
+  if(widget.visit_data.group != null && widget.visit_data.group.isNotEmpty)
   {
     map['group']=true;
 
@@ -158,20 +167,20 @@ setState(() {
     group="";
 
 
-    widget.data.group.forEach((element) {
+    widget.visit_data.group.forEach((element) {
       group += element + s;
 
     });
   }
 
-  if(widget.data.blood_group != null && widget.data.blood_group.isNotEmpty)
+  if(widget.visit_data.blood_group != null && widget.visit_data.blood_group.isNotEmpty)
   {
     map['blood_group']=true;
     print('blood-group not null');
     blood_group="";
 
 
-    widget.data.blood_group.forEach((element) {
+    widget.visit_data.blood_group.forEach((element) {
       blood_group += element + s ;
 
     });
@@ -196,8 +205,10 @@ setState(() {
     super.initState();
     print('init');
 
+    print(widget.visit_data.doc_id);
 
-    if(widget.data.visit_date !=null)
+
+    if(widget.visit_data.visit_date !=null)
       {
         print('visite date no null');
 
@@ -208,7 +219,7 @@ setState(() {
 
       }
 
-    print(widget.data.visit_date==null);
+    print(widget.visit_data.visit_date==null);
 
 
   }
@@ -227,6 +238,34 @@ setState(() {
           Padding(
             padding: const EdgeInsets.only(right: 8.0),
             child: IconButton(onPressed: (){
+
+              var visit_doc = FirebaseFirestore.instance.collection('Patient').doc(widget.visit_data.doc_id).collection('visits').doc(formatDate(visit_date.toDate(), [dd, '-', mm, '-', yyyy ]).toString());
+              var patient_doc = FirebaseFirestore.instance.collection('Patient').doc(widget.visit_data.doc_id);
+
+              final json = {
+                'complaint' : FieldValue.arrayUnion(Complaint),
+                 'visit_date' : visit_date,
+              };
+
+              if(widget.icon_tap == true)
+                {
+                  visit_doc.set(json);
+                  patient_doc.update({
+                    'recent_visit' : visit_date
+                  });
+
+                }
+              else if (widget.icon_tap == false)
+                {
+                  visit_doc.update(json);
+                  patient_doc.update({
+                    'recent_visit' : visit_date
+                  });
+
+
+                }
+
+
 
               Navigator.of(context).pop();
 
@@ -312,11 +351,18 @@ setState(() {
 
 
 
-                                return  ListSearch(group: 'complaint', Group: 'Complaint', name: widget.name, date: formatDate(visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
+                                return  ListSearch(group: 'complaint', Group: 'Complaint', patient_doc_id: widget.patient_data.doc_id, date: formatDate(visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
 
                           ).then((value)async{
 
                             print(value);
+
+                            if(value != null)
+                              {
+                                Complaint = value;
+
+
+                              }
 
                             List a =  await value;
 
@@ -427,7 +473,7 @@ setState(() {
 
 
 
-                                return  ListSearch(group: 'clinical_finding', Group: 'Clinical_finding', name: widget.name, date: formatDate(visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
+                                return  ListSearch(group: 'clinical_finding', Group: 'Clinical_finding', patient_doc_id: widget.patient_data.doc_id, date: formatDate(visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
 
                           ).then((value)async{
 
@@ -542,7 +588,7 @@ setState(() {
 
 
 
-                                return  ListSearch(group: 'diagnosis', Group: 'Diagnosis', name: widget.name, date: formatDate(visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
+                                return  ListSearch(group: 'diagnosis', Group: 'Diagnosis', patient_doc_id: widget.patient_data.doc_id, date: formatDate(visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
 
                           ).then((value)async{
 
@@ -656,7 +702,7 @@ setState(() {
 
 
 
-                                return  ListSearch(group: 'investigation', Group: 'Investigation', name: widget.name, date: formatDate(visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
+                                return  ListSearch(group: 'investigation', Group: 'Investigation', patient_doc_id: widget.patient_data.doc_id, date: formatDate(visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
 
                           ).then((value)async{
 
@@ -782,7 +828,7 @@ setState(() {
 
 
 
-                                return  ListSearch(group: 'allergie', Group: 'Allergie', name: widget.name, date: formatDate(visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
+                                return  ListSearch(group: 'allergie', Group: 'Allergie', patient_doc_id: widget.patient_data.doc_id, date: formatDate(visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
 
                           ).then((value)async{
 
@@ -897,7 +943,7 @@ setState(() {
 
 
 
-                                return  ListSearch(group: 'advice', Group: 'advice', name: widget.name, date: formatDate(visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
+                                return  ListSearch(group: 'advice', Group: 'advice', patient_doc_id: widget.patient_data.doc_id, date: formatDate(visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
 
                           ).then((value)async{
 
@@ -1012,7 +1058,7 @@ setState(() {
 
 
 
-                                return  ListSearch(group: 'group', Group: 'Group', name: widget.name, date: formatDate(visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
+                                return  ListSearch(group: 'group', Group: 'Group', patient_doc_id: widget.patient_data.doc_id, date: formatDate(visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
 
                           ).then((value)async{
 
@@ -1127,7 +1173,7 @@ setState(() {
 
 
 
-                                return  ListSearch(group: 'blood-group', Group: 'Blood-Group', name: widget.name, date: formatDate(visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
+                                return  ListSearch(group: 'blood-group', Group: 'Blood-Group', patient_doc_id: widget.patient_data.doc_id, date: formatDate(visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),);}
 
                           ).then((value)async{
 

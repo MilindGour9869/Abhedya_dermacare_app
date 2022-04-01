@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_app/default.dart';
 import 'package:flutter_app/screens/Patients.dart';
 
 import 'package:image_picker/image_picker.dart';
@@ -131,10 +132,15 @@ class _AddPatientState extends State<AddPatient> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.teal,
-        leading: IconButton(icon:Icon(Icons.arrow_back) , onPressed: (){
-          Navigator.pop(context);
-        },),
+        backgroundColor: AppTheme.dark_teal,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: (){
+            Navigator.pop(context);
+          },
+        ),
+
+
 
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -227,11 +233,25 @@ class _AddPatientState extends State<AddPatient> {
 
                                    });
                              }
-                           Navigator.pop(context);
+
                          }
+
+                      Navigator.pop(context);
                     }
                   else
                     {
+                      showDialog(context: context , builder: (context)=>Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 30.0   , vertical: 230),
+                        child: Card(
+
+                          child: Column(
+                            children: [
+                              Text('Name is Compulsory ' ),
+                              Text('Please write the name' ),
+                            ],
+                          ),
+                        ),
+                      ));
 
                     }
 
@@ -363,8 +383,10 @@ class _AddPatientState extends State<AddPatient> {
                              context: context,
                              builder: (context) => Padding(
                                padding: const EdgeInsets.all(20.0),
-                               child: ListSearch(group: 'group', Group: 'Group', name: name_edit.text),
-                             ));
+                               child: ListSearch(group: 'group', Group: 'Group', patient_doc_id: name_edit.text),
+                             )).then((value){
+                               print('ff');
+                         });
                        }
                      else
                        {
@@ -419,7 +441,7 @@ class _AddPatientState extends State<AddPatient> {
                               context: context,
                               builder: (context) => Padding(
                                 padding: const EdgeInsets.all(20.0),
-                                child: ListSearch(group: 'blood-group', Group: 'Blood-Group', name: name_edit.text, ),
+                                child: ListSearch(group: 'blood-group', Group: 'Blood-Group', patient_doc_id: name_edit.text, ),
                               )).then((value) {
                                 print(value);
                           });

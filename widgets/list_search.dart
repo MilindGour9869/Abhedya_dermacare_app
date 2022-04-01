@@ -9,7 +9,7 @@ import 'package:flutter_app/classes/Patient_name_list.dart';
 
 class ListSearch extends StatefulWidget {
 
-  String Group , group , name;
+  String Group , group , patient_doc_id;
 
   String date;
 
@@ -18,7 +18,7 @@ class ListSearch extends StatefulWidget {
 
 
 
-  ListSearch({@required this.group , @required this.Group ,  this.name , this.date , });
+  ListSearch({@required this.group , @required this.Group ,  this.patient_doc_id , this.date , });
 
 
   ListSearchState createState() => ListSearchState();
@@ -38,11 +38,12 @@ class ListSearchState extends State<ListSearch> {
 
   int group_size=0;
 
+
   Map<String,bool> group_search_color_map={};
   Map<String,String> all_data ={};
 
 
-  List group_updated_result=[];
+  List<String> group_updated_result=[];
   List group_result=[];
 
 
@@ -101,7 +102,7 @@ class ListSearchState extends State<ListSearch> {
 
   Future Add_GroupDataList_to_Patient(List group)async{
 
-    final doc =await FirebaseFirestore.instance.collection('Patient').doc(widget.name).collection('visits').doc(widget.date);
+    final doc =await FirebaseFirestore.instance.collection('Patient').doc(widget.patient_doc_id).collection('visits').doc(widget.date);
 
 // print(group_result==group);
 
@@ -159,9 +160,9 @@ class ListSearchState extends State<ListSearch> {
 
               print('bgf');
 
-              print(element['group']);
+              print(element[widget.group]);
 
-              all_data[element['group']] = element['id'].toString();
+              all_data[element[widget.group]] = element['id'].toString();
 
 
 
@@ -202,19 +203,24 @@ class ListSearchState extends State<ListSearch> {
 
 
 
-            if(widget.name != null )
+
+
+            if(widget.patient_doc_id != null )
               {
                 try{
-                  await FirebaseFirestore.instance.collection('Patient').doc(widget.name).collection('visits').doc(widget.date).get().then((value) {
+                  await FirebaseFirestore.instance.collection('Patient').doc(widget.patient_doc_id).collection('visits').doc(widget.date).get().then((value) {
 
 
                     if(value.data()!=null)
                     {
+                      print(value);
+
                       if(value.data().containsKey(widget.group))
-                      {
+                      { print('qq');
                         if(value.data()[widget.group]!=[])
-                        {
+                        { print('ww');
                           List a = value.data()[widget.group];
+                          print('Color change');
                           a.forEach((element) {
                             group_search_color_map[element]=true;
                             group_updated_result.add(element);
@@ -234,11 +240,12 @@ class ListSearchState extends State<ListSearch> {
                   });
                 }
                 catch (e){
+                  print('error in Color change');
                   print(e);
                 }
               }
             else{
-              print('widget.name is null');
+              print('widget.patient_doc_id is null');
             }
 
 
@@ -296,7 +303,7 @@ class ListSearchState extends State<ListSearch> {
      group_size=0;
 
 
-     if(widget.name != null)
+     if(widget.patient_doc_id != null)
        {
          await Add_GroupDataList_to_Patient(group_updated_result);
 

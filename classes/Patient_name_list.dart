@@ -8,7 +8,9 @@ class Patient_name_data_list{
   int age , mobile ;
 
   List  group  , blood_group;
-  Timestamp date;
+  Timestamp recent_visit;
+
+
 
 
   //visits
@@ -37,25 +39,26 @@ class Patient_name_data_list{
 
   Patient_name_data_list({
 
-    this.doc_id , this.name  , this.DOB , this.date , this.gender , this.email , this.address  , this.age , this.mobile , this.group , this.blood_group , this.image,
+    this.doc_id , this.name  , this.DOB , this.recent_visit , this.gender , this.email , this.address  , this.age , this.mobile , this.group , this.blood_group , this.image,
     this.visit_date , this.complaints, this.clinical_finding , this.allergies , this.diagnosis , this.internal_notes , this.investigation , this.vital_info , this.medicines , this.advices
   });
 
   static Patient_name_data_list fromJson(Map<String , dynamic> json){
 
 
-    print(json['age']=="");
+    print(json['id']);
 
 
     return Patient_name_data_list(
 
       name: json['name'],
       age: json['age'] =="" ? 00 : int.parse(json['age']),
-      date:  json['date'],
+      recent_visit:  json['recent_visit'],
       mobile: json['mobile'] =="" ? 00 : int.parse(json['mobile']),
       gender: json['gender'] =="" ? "?": json['gender'],
       email: json['email'] =="" ? "?": json['email'],
       doc_id: json['id'],
+
     );
   }
 
@@ -105,6 +108,7 @@ class Patient_name_data_list{
 
       medicines:  json['medicines'],
       vital_info: json['vital-info'],
+
     );
   }
 

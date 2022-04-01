@@ -52,7 +52,11 @@ class _State extends State<Patient> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => AddPatient(patient_data: data  , all_patient_name_list: all_patient_name_list , icon_tap: false,)));
+                  builder: (context) => AddPatient(patient_data: data  , all_patient_name_list: all_patient_name_list , icon_tap: false,))).then((value) {
+
+            print('ggb');
+
+          });
         },
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8),
@@ -175,7 +179,7 @@ class _State extends State<Patient> {
                       height: 10,
                     ),
                     Text(
-                      'last visited on : ${formatDate(data.date.toDate(), [dd, '-', mm, '-', yyyy ])}',
+                      'last visited on : ${formatDate(data.recent_visit.toDate(), [dd, '-', mm, '-', yyyy ])}',
                       style: TextStyle(fontStyle: FontStyle.italic),
                     ),
                     Row(
@@ -186,7 +190,9 @@ class _State extends State<Patient> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => VisitsDate(data)));
+                                      builder: (context) => VisitsDate(data))).then((value) {
+                                        print('sss');
+                              });
                             },
                             child: Text(
                               'Visits',
@@ -450,6 +456,8 @@ class _State extends State<Patient> {
           onPressed: () {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => AddPatient(all_patient_name_list: all_patient_name_list, icon_tap: true,))).then((value) {
+                print('ggb');
+
 
 
             });
@@ -458,7 +466,7 @@ class _State extends State<Patient> {
             Icons.add,
             color: Colors.black,
           ),
-          backgroundColor: AppTheme.green,
+          backgroundColor: AppTheme.dark_teal
         ),
         bottomNavigationBar: BottomAppBar(
           color: AppTheme.white,

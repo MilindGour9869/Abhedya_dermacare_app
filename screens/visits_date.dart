@@ -13,7 +13,7 @@ import 'package:date_format/date_format.dart';
 class VisitsDate extends StatefulWidget {
 
 
-  Patient_name_data_list data;
+  Patient_name_data_list patient_data;
 
 
 
@@ -22,7 +22,7 @@ class VisitsDate extends StatefulWidget {
 
 
 
-  VisitsDate(this.data);
+  VisitsDate(this.patient_data);
 
   @override
   _VisitsDateState createState() => _VisitsDateState();
@@ -45,7 +45,7 @@ class _VisitsDateState extends State<VisitsDate> {
 
   Future<dynamic> visist_date()async{
 
-    FirebaseFirestore.instance.collection('Patient').doc(widget.data.name).collection('visits').get().then((QuerySnapshot querySnapshot){
+    FirebaseFirestore.instance.collection('Patient').doc(widget.patient_data.doc_id).collection('visits').get().then((QuerySnapshot querySnapshot){
 
       querySnapshot.docs.forEach((element) {
 
@@ -60,7 +60,7 @@ class _VisitsDateState extends State<VisitsDate> {
       print('aaa');
       print(visits_instance_list);
 
-     print( visits_instance_list[0].complaints);
+    // print( visits_instance_list[0].complaints);
 
 
 
@@ -108,6 +108,8 @@ class _VisitsDateState extends State<VisitsDate> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    print(widget.patient_data.doc_id);
     f=visist_date();
 
   }
@@ -160,7 +162,7 @@ class _VisitsDateState extends State<VisitsDate> {
 
                             child: GestureDetector(
                               onTap: (){
-                                Navigator.push(context , MaterialPageRoute(builder: (context)=>AddVisits(date_instance[e.toString()] , widget.data.name)));
+                                Navigator.push(context , MaterialPageRoute(builder: (context)=>AddVisits(visit_data :date_instance[e.toString()] , name: widget.patient_data.name , icon_tap: false, patient_data: widget.patient_data,)));
 
 
                               },
@@ -188,7 +190,7 @@ class _VisitsDateState extends State<VisitsDate> {
 
         splashColor: AppTheme.notWhite,
         onPressed: (){
-          Navigator.push(context , MaterialPageRoute(builder: (context)=>AddVisits(widget.data , widget.data.name)));
+          Navigator.push(context , MaterialPageRoute(builder: (context)=>AddVisits(visit_data : widget.patient_data ,name : widget.patient_data.name , icon_tap:  true,)));
         },
         child: Icon(Icons.add , color: Colors.black,),
         backgroundColor: AppTheme.green,
