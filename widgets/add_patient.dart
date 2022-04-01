@@ -227,7 +227,7 @@ class _AddPatientState extends State<AddPatient> {
                                  'gender':male==true?'Male':female==true?'Female':"",
                                  'address': address_edit.text,
                                  'mobile':mobile_edit.text,
-                                 'date':Timestamp.now(),
+                                 'recent_visit':Timestamp.now(),
                                  'email':email_edit.text,
                                  'id' : doc.id,
                                };
@@ -246,7 +246,7 @@ class _AddPatientState extends State<AddPatient> {
                                      'gender':male==true?'Male':female==true?'Female':"",
                                      'address': address_edit.text,
                                      'mobile':mobile_edit.text,
-                                     'date':Timestamp.now(),
+                                     'recent_visit':Timestamp.now(),
                                      'email':email_edit.text,
 
 

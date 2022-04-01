@@ -38,6 +38,7 @@ class _State extends State<Services> {
 
 
 
+
   Map<String,dynamic> map={};
 
 
@@ -151,32 +152,45 @@ return Scaffold(
 
         children: [
 
-          ListTile(
-          title: Text('Consultation'),
-          leading: Icon(Icons.arrow_forward_ios , size: MediaQuery.of(context).size.height*0.03,),
-          onTap: (){
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              child: Material(
+                elevation: 2,
+                borderRadius: BorderRadius.circular(10),
 
-            setState(() {
+                child: ListTile(
+                title: Text('Consultation'),
+                leading: Icon(Icons.arrow_forward_ios , size: MediaQuery.of(context).size.height*0.03,),
+                onTap: (){
 
-              consultation = !consultation;
+                  setState(() {
 
-              print(consultation);
+                    consultation = !consultation;
+
+                    print(consultation);
 
 
 
-            });
+                  });
 
-          },
+                },
 
-          trailing: IconButton(
-            icon: Icon(Icons.add),
-            onPressed: (){
+                trailing: IconButton(
+                  icon: Icon(Icons.add),
+                  onPressed: (){
 
-              showDialog(context: context, builder: (context)=>showDialogue(service_name: 'Consultation' , service: service_edit , charges: charges_edit , context: context  ,  size: services_length));
+                    showDialog(context: context, builder: (context)=>showDialogue(service_name: 'Consultation' , service: service_edit , charges: charges_edit , context: context  ,  size: services_length));
 
-            },
-          ),
-        ), // Consultation
+                  },
+                ),
+
+
+
+        ),
+              ),
+            ),
+          ), // Consultation
 
 
           Visibility(
@@ -383,3 +397,9 @@ Widget showDialogue ({String service_name , TextEditingController service , Text
       ),
     ));
 }
+
+//Widget Drop_Down (String menu)
+//{
+//  return Text(menu);
+//}
+

@@ -190,7 +190,7 @@ class _VisitsDateState extends State<VisitsDate> {
 
         splashColor: AppTheme.notWhite,
         onPressed: (){
-          Navigator.push(context , MaterialPageRoute(builder: (context)=>AddVisits(visit_data : widget.patient_data ,name : widget.patient_data.name , icon_tap:  true,)));
+          Navigator.push(context , MaterialPageRoute(builder: (context)=>AddVisits( name: widget.patient_data.name , icon_tap: true, patient_data: widget.patient_data)));
         },
         child: Icon(Icons.add , color: Colors.black,),
         backgroundColor: AppTheme.green,

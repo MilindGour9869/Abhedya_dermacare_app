@@ -197,10 +197,10 @@ setState(() {
     super.initState();
     print('init');
 
-    print(widget.visit_data.doc_id);
+    print(widget.patient_data.doc_id);
 
 
-    if(widget.visit_data.visit_date !=null)
+    if(widget.visit_data !=null)
       {
         print('visite date no null');
 
@@ -210,8 +210,12 @@ setState(() {
 
 
       }
+    else
+      {
+        print(visit_date);
+      }
 
-    print(widget.visit_data.visit_date==null);
+
 
 
   }
@@ -231,8 +235,8 @@ setState(() {
             padding: const EdgeInsets.only(right: 8.0),
             child: IconButton(onPressed: (){
 
-              var visit_doc = FirebaseFirestore.instance.collection('Patient').doc(widget.visit_data.doc_id).collection('visits').doc(formatDate(visit_date.toDate(), [dd, '-', mm, '-', yyyy ]).toString());
-              var patient_doc = FirebaseFirestore.instance.collection('Patient').doc(widget.visit_data.doc_id);
+              var visit_doc = FirebaseFirestore.instance.collection('Patient').doc(widget.patient_data.doc_id).collection('visits').doc(formatDate(visit_date.toDate(), [dd, '-', mm, '-', yyyy ]).toString());
+              var patient_doc = FirebaseFirestore.instance.collection('Patient').doc(widget.patient_data.doc_id);
 
               final json = {
                 'complaint' : FieldValue.arrayUnion(Complaint),
@@ -310,7 +314,7 @@ setState(() {
 
 
 
-                        // print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
+                         print(widget.patient_data.doc_id);
 
 
                         showDialog(
