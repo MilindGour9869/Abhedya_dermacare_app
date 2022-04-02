@@ -16,14 +16,14 @@ class AddVisits extends StatefulWidget {
   Patient_name_data_list patient_data;
 
 
-  String name;
+
 
   bool icon_tap;
 
 
 
 
-  AddVisits({this.visit_data , this.name , this.icon_tap = false  , this.patient_data});
+  AddVisits({this.visit_data  , this.icon_tap = false  , this.patient_data});
 
 
   @override
@@ -228,7 +228,13 @@ setState(() {
     return Scaffold(
       backgroundColor: AppTheme.notWhite,
       appBar: AppBar(
-        backgroundColor: AppTheme.dark_teal,
+        backgroundColor: AppTheme.teal,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: (){
+            Navigator.pop(context , 'back');
+          },
+        ),
         title: Text('Add Visits'),
         actions: [
           Padding(
@@ -240,6 +246,16 @@ setState(() {
 
               final json = {
                 'complaint' : FieldValue.arrayUnion(Complaint),
+                'investigation' : FieldValue.arrayUnion(Investigation),
+                'diagnosis' : FieldValue.arrayUnion(Diagnosis),
+                'clinical_finding' : FieldValue.arrayUnion(Clinical_findings),
+                'advices' : FieldValue.arrayUnion(Advices),
+                'allergies': FieldValue.arrayUnion(Allergies),
+                'blood-group' : FieldValue.arrayUnion(Blood_group),
+                'group' : FieldValue.arrayUnion(Group),
+
+
+
                  'visit_date' : visit_date,
               };
 
@@ -263,7 +279,7 @@ setState(() {
 
 
 
-              Navigator.of(context).pop();
+              Navigator.pop(context , 'save');
 
 
 
@@ -289,7 +305,22 @@ setState(() {
                     height: MediaQuery.of(context).size.height*0.08,
                     width: MediaQuery.of(context).size.width*0.3,
 
-                    child: Card(child: Center(child: Text('${formatDate(visit_date.toDate(),[dd, '-', mm, '-', yyyy])}')))), //date
+                    child: Card(child: Center(child: TextButton(
+
+                        child: Text('${formatDate(visit_date.toDate(),[dd, '-', mm, '-', yyyy])}' , style: TextStyle(color: Colors.black),),
+                        onPressed:(){
+                          showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(1947), lastDate: DateTime(2050)).then((value){
+                            print(value);
+                            setState(() {
+                              visit_date = Timestamp.fromDate(value);
+                            });
+                          } );
+                        } ,
+
+                    )
+
+
+                    ))), //date
 
 
 

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/default.dart';
 import 'package:flutter_app/screens/Patients.dart';
+import 'package:flutter_app/classes/image_picker.dart';
 
 import 'package:image_picker/image_picker.dart';
 
@@ -46,6 +47,9 @@ class _AddPatientState extends State<AddPatient> {
 
 
 
+
+
+
  var name_edit = TextEditingController();
  var age_edit = TextEditingController();
  var address_edit = TextEditingController();
@@ -61,15 +65,20 @@ class _AddPatientState extends State<AddPatient> {
 
 
 
- Future imagepicker() async{
+ Future imagepicker(ImageSource source) async{
 
-   final image = await ImagePicker().pickImage(source: ImageSource.camera);
+
+
+   final image = await ImagePicker().pickImage(source: source);
 
    if(image==null)
      return;
 
    setState(() {
+
+
      this.file = File(image.path);
+
    });
 
 
@@ -154,11 +163,11 @@ class _AddPatientState extends State<AddPatient> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppTheme.dark_teal,
+        backgroundColor: AppTheme.teal,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: (){
-            Navigator.pop(context);
+            Navigator.pop(context , 'back');
           },
         ),
 
@@ -258,7 +267,7 @@ class _AddPatientState extends State<AddPatient> {
 
                          }
 
-                      Navigator.pop(context);
+                      Navigator.pop(context , 'save');
                     }
                   else
                     {
@@ -290,14 +299,39 @@ class _AddPatientState extends State<AddPatient> {
         child: Column(
 
           children: [
-            SizedBox(height: 20,),
-            CircleAvatar(
-              radius:MediaQuery.of(context).size.height*0.1,
+            SizedBox(height: MediaQuery.of(context).size.height*0.03,),
+            GestureDetector(
+              onTap: (){
+                showDialog(context: context, builder:(context)=>Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 30.0 , vertical: 240),
+                  child: Card(
+                    child: Column(
+                      children: [
+                        TextButton.icon(icon :Icon(Icons.camera) , onPressed: (){
+                          imagepicker(ImageSource.camera);
 
-              child: file==null?Icon(Icons.person_add_outlined , color: Colors.white,):Image.file(file),
-              backgroundColor: Colors.grey,
+                        }, label: Text('Camera')),
+                        TextButton.icon(
+                            icon: Icon(Icons.browse_gallery),
+                            onPressed: (){
+                          imagepicker(ImageSource.gallery);
+                        }, label: Text('Gallery'))
+                      ],
+                    ),
+                  ),
+                ));
+              },
+              child: ClipOval(
+                child: CircleAvatar(
+                  radius:MediaQuery.of(context).size.height*0.1,
+
+                  child: file==null?Icon(Icons.person_add_outlined , color: Colors.white,): Image.file(file , fit: BoxFit.fill,),
+                  backgroundColor: Colors.grey,
+
+                ),
+              ),
             ),
-            SizedBox(height: 5,),
+            SizedBox(height:  MediaQuery.of(context).size.height*0.01,),
 
 
 

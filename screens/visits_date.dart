@@ -47,6 +47,11 @@ class _VisitsDateState extends State<VisitsDate> {
 
     FirebaseFirestore.instance.collection('Patient').doc(widget.patient_data.doc_id).collection('visits').get().then((QuerySnapshot querySnapshot){
 
+      visits_instance_list=[];
+      date=[];
+      dt=[];
+      date_instance={};
+
       querySnapshot.docs.forEach((element) {
 
         print('ghjh');
@@ -63,24 +68,27 @@ class _VisitsDateState extends State<VisitsDate> {
     // print( visits_instance_list[0].complaints);
 
 
-
-
-      visits_instance_list.forEach((element) {
-        date.add(element.visit_date);
-
-        date_instance[element.visit_date.toString()]=element;
-
-      }
-      );
+     setState(() {
 
 
 
-      setState(() {
-        dt=date;
-      });
+       visits_instance_list.forEach((element) {
+         date.add(element.visit_date);
+
+         date_instance[element.visit_date.toString()]=element;
+
+       }
+       );
 
 
-      print(dt);
+
+
+       dt=date;
+     });
+
+
+
+
 
     } );
   }
@@ -121,6 +129,7 @@ class _VisitsDateState extends State<VisitsDate> {
 
       appBar: AppBar(
         title: Text('Visits'),
+        backgroundColor: AppTheme.teal,
       ),
       body: SingleChildScrollView(
 
@@ -144,34 +153,39 @@ class _VisitsDateState extends State<VisitsDate> {
             if(dt.isNotEmpty)
               {
                 return Center(
-                  child: Wrap(
-                      spacing: 10,
-                      runSpacing: 10,
-                      direction: Axis.horizontal,
+                  child: RefreshIndicator(
+                    onRefresh: visist_date,
+                    child: Wrap(
+                        spacing: 10,
+                        runSpacing: 10,
+                        direction: Axis.horizontal,
 
 
-                      children:dt.map((e) {
+                        children:dt.map((e) {
 
 
 
 
 
-                        return SizedBox(
-                            height: 100,
-                            width: 100,
+                          return SizedBox(
+                              height: 100,
+                              width: 100,
 
-                            child: GestureDetector(
-                              onTap: (){
-                                Navigator.push(context , MaterialPageRoute(builder: (context)=>AddVisits(visit_data :date_instance[e.toString()] , name: widget.patient_data.name , icon_tap: false, patient_data: widget.patient_data,)));
+                              child: GestureDetector(
+                                onTap: (){
+                                  Navigator.push(context , MaterialPageRoute(builder: (context)=>AddVisits(visit_data :date_instance[e.toString()] , icon_tap: false, patient_data: widget.patient_data,))).then((value) {
+
+                                  });
 
 
-                              },
+                                },
 
-                              child: Card(
+                                child: Card(
 
-                                  child: Center(child: Text('${formatDate(e.toDate(),[dd, '-', mm, '-', yyyy])}'))),
-                            ));
-                      }).toList()),
+                                    child: Center(child: Text('${formatDate(e.toDate(),[dd, '-', mm, '-', yyyy])}'))),
+                              ));
+                        }).toList()),
+                  ),
                 );
               }
 
@@ -190,14 +204,20 @@ class _VisitsDateState extends State<VisitsDate> {
 
         splashColor: AppTheme.notWhite,
         onPressed: (){
-          Navigator.push(context , MaterialPageRoute(builder: (context)=>AddVisits( name: widget.patient_data.name , icon_tap: true, patient_data: widget.patient_data)));
+          Navigator.push(context , MaterialPageRoute(builder: (context)=>AddVisits(  icon_tap: true, patient_data: widget.patient_data))).then((value) {
+             print("ascdve");
+            if(value == 'save')
+              {
+                visist_date();
+              }
+          });
         },
         child: Icon(Icons.add , color: Colors.black,),
         backgroundColor: AppTheme.green,
       ),
       bottomNavigationBar: BottomAppBar(
 
-        color: AppTheme.offwhite,
+        color: AppTheme.white,
         child: Container(
           height:MediaQuery.of(context).size.height*0.08,
 

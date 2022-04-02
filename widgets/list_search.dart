@@ -102,15 +102,17 @@ class ListSearchState extends State<ListSearch> {
 
   Future Add_GroupDataList_to_Patient(List group)async{
 
- if(widget.date != null )
+ if(widget.date != null && group != [])
    {
      final doc =await FirebaseFirestore.instance.collection('Patient').doc(widget.patient_doc_id).collection('visits').doc(widget.date);
 
 // print(group_result==group);
 
 
+
      if(group!=group_result)
      {
+       // if removed from the list
        doc.update({
 
          widget.group : [],

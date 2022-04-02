@@ -54,7 +54,27 @@ class _State extends State<Patient> {
               MaterialPageRoute(
                   builder: (context) => AddPatient(patient_data: data  , all_patient_name_list: all_patient_name_list , icon_tap: false,))).then((value) {
 
-            print('ggb');
+            print('\n\nka boom ');
+
+            print(value);
+
+         if(value == 'save')
+           {
+             patient_instance_list = [];
+             all_patient_name_list = [];
+             search_patient_list = [];
+             map_name_patientInstance_list = {};
+
+
+
+             patient_data();
+
+           }
+
+
+
+
+
 
           });
         },
@@ -219,7 +239,7 @@ class _State extends State<Patient> {
                     data.name == null ? "?" : data.name[0].toUpperCase(),
                     style: TextStyle(color: Colors.black),
                   ),
-                  backgroundColor: AppTheme.dark_teal,
+                  backgroundColor: AppTheme.teal,
                 ),
               ),
             ),
@@ -233,6 +253,11 @@ class _State extends State<Patient> {
           .then((QuerySnapshot querySnapshot) {
         querySnapshot.docs.forEach((element) {
 
+          patient_instance_list = [];
+          all_patient_name_list = [];
+          search_patient_list = [];
+          map_name_patientInstance_list = {};
+
           print(element.data());
 
           patient_instance_list
@@ -243,24 +268,28 @@ class _State extends State<Patient> {
 
         print(patient_instance_list);
 
-        all_patient_name_list =
-            patient_instance_list.map((e) => e.name).toList();
+
+
+        setState(() {
+          all_patient_name_list =
+              patient_instance_list.map((e) => e.name).toList();
 
 
 
-        int n = all_patient_name_list.length;
+          int n = all_patient_name_list.length;
 
-        for (int i = 0; i < n; i++) {
-          map_name_patientInstance_list[all_patient_name_list[i]] =
-              patient_instance_list[i];
-        }
+          for (int i = 0; i < n; i++) {
+            map_name_patientInstance_list[all_patient_name_list[i]] =
+            patient_instance_list[i];
+          }
 
-        print('rgg');
+          print('rgg');
 
-        print(all_patient_name_list);
+          print(all_patient_name_list);
 
-        search_patient_list = all_patient_name_list;
+          search_patient_list = all_patient_name_list;
 
+        });
 
 
         var q;
@@ -295,6 +324,7 @@ class _State extends State<Patient> {
     patient_instance_list = [];
     all_patient_name_list = [];
     search_patient_list = [];
+    map_name_patientInstance_list = {};
   }
 
 
@@ -304,177 +334,211 @@ class _State extends State<Patient> {
    // print('builder');
 
     return SafeArea(
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: AppTheme.offwhite,
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(200),
-          child: Container(
-              decoration: BoxDecoration(
-                  color: AppTheme.green,
-                  borderRadius: BorderRadius.only(
-                    bottomRight: Radius.circular(30),
-                    bottomLeft: Radius.circular(30),
-                  )),
-              height: MediaQuery.of(context).size.height * 0.28,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    color: Colors.transparent,
-                    height: 45,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                          onPressed: () {},
-                          icon: Icon(Icons.menu),
-                        ),
+      child: WillPopScope(
+        onWillPop: (){
+          FocusScopeNode currentFocus = FocusScope.of(context);
 
-                        // ignore: prefer_const_constructors
-                        Padding(
-                          padding: EdgeInsets.only(right: 10),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8.0),
-                            child: ChoiceChip(
-                              backgroundColor: AppTheme.notWhite,
-                              label: Text('Today'),
-                              selected: false,
-                              selectedColor: Colors.teal,
-                              onSelected: (bool selected) {},
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 40.0),
-                    child: Container(
+          if (!currentFocus.hasPrimaryFocus) {
+            textcontroller.clear();
+            onItemChanged('');
+
+
+            currentFocus.unfocus();
+
+          }
+
+        },
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          backgroundColor: AppTheme.offwhite,
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(200),
+            child: Container(
+                decoration: BoxDecoration(
+                    color: AppTheme.green,
+                    borderRadius: BorderRadius.only(
+                      bottomRight: Radius.circular(30),
+                      bottomLeft: Radius.circular(30),
+                    )),
+                height: MediaQuery.of(context).size.height * 0.28,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
                       color: Colors.transparent,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      height: 45,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            greeting(),
-                            style: TextStyle(fontSize: 15),
+                          IconButton(
+                            onPressed: () {},
+                            icon: Icon(Icons.menu),
                           ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Text(
-                            'Dr. Mahi Ram Bishnoi',
-                            style: TextStyle(fontSize: 23),
-                          ),
-                          SizedBox(
-                            height: 5,
+
+                          // ignore: prefer_const_constructors
+                          Padding(
+                            padding: EdgeInsets.only(right: 10),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 8.0),
+                              child: ChoiceChip(
+                                backgroundColor: AppTheme.offwhite,
+                                label: Text('Today'),
+                                selected: false,
+                                selectedColor: Colors.teal,
+                                onSelected: (bool selected) {},
+                              ),
+                            ),
                           ),
                         ],
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(top: 23.0, right: 40, left: 40),
-                    child: Container(
-                      height: 40,
-                      decoration: BoxDecoration(
-                          color: AppTheme.notWhite,
-                          borderRadius: BorderRadius.circular(10)),
-                      child: TextField(
-                        controller: textcontroller,
-                        onChanged: onItemChanged,
-                        decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: 'search',
-                            prefixText: "      ",
-                            hintStyle: TextStyle(),
-                            suffixIcon: Icon(Icons.search)),
-                        keyboardType: TextInputType.name,
+                    Padding(
+                      padding: const EdgeInsets.only(left: 40.0),
+                      child: Container(
+                        color: Colors.transparent,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              greeting(),
+                              style: TextStyle(fontSize: 15),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              'Dr. Mahi Ram Bishnoi',
+                              style: TextStyle(fontSize: 23),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              )),
-        ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Container(
-                color: Colors.transparent,
-                child: SingleChildScrollView(
-                    child: FutureBuilder(
-                        future: f,
-                        builder: (context, snapshot) {
-                          // print(snapshot.data);
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(top: 23.0, right: 40, left: 40),
+                      child: Container(
+                        height: 40,
+                        decoration: BoxDecoration(
+                            color: AppTheme.notWhite,
+                            borderRadius: BorderRadius.circular(10)),
+                        child: TextField(
+                          controller: textcontroller,
+                          onChanged: onItemChanged,
+                          decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: 'search',
+                              prefixText: "      ",
+                              hintStyle: TextStyle(),
+                              suffixIcon: Icon(Icons.search)),
+                          keyboardType: TextInputType.name,
 
-                          if (search_patient_list.isEmpty) {
-                            return Center(
-                                child: Card(
-                                    color: AppTheme.notWhite,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(20.0),
-                                      child: Text('loadin'),
-                                    )));
-                          }
+                        ),
+                      ),
+                    ),
+                  ],
+                )),
+          ),
+          body: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Container(
+                  color: Colors.transparent,
+                  child: SingleChildScrollView(
+                    clipBehavior: Clip.none,
+                      child: FutureBuilder(
+                          future: f,
+                          builder: (context, snapshot) {
+                            // print(snapshot.data);
 
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return Center(child: CircularProgressIndicator());
-                          }
+                            if (search_patient_list.isEmpty) {
+                              return Center(
+                                  child: Card(
+                                      color: AppTheme.notWhite,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(20.0),
+                                        child: Text('loading'),
+                                      )));
+                            }
 
-                          if (snapshot.hasError) {
-                            return const Center(
-                                child: Text('Something Went Wrong'));
-                          }
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Center(child: CircularProgressIndicator());
+                            }
 
-                          return Container(
+                            if (snapshot.hasError) {
+                              return const Center(
+                                  child: Text('Something Went Wrong'));
+                            }
 
-                            height: MediaQuery.of(context).size.height*0.6,
+                            return Container(
+
+                              height: MediaQuery.of(context).size.height*0.6,
 
 //                            color: Colors.red,
 
-                            child: ListView(
+                              child: RefreshIndicator(
+                                onRefresh: patient_data,
+                                color: AppTheme.teal,
+                                child: ListView(
 
-                              scrollDirection: Axis.vertical,
+                                  scrollDirection: Axis.vertical,
 
-                              children: search_patient_list
-                                  .map<Widget>((e) =>
-                                      Tile(map_name_patientInstance_list[e]))
-                                  .toList(),
-                            ),
-                          );
-                        })),
+                                  children: search_patient_list
+                                      .map<Widget>((e) =>
+                                          Tile(map_name_patientInstance_list[e]))
+                                      .toList(),
+                                ),
+                              ),
+                            );
+                          })),
+                ),
               ),
+            ],
+          ),
+          floatingActionButton: FloatingActionButton(
+            elevation: 15,
+            splashColor: AppTheme.notWhite,
+            onPressed: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => AddPatient(all_patient_name_list: all_patient_name_list, icon_tap: true,))).then((value) {
+                  print('ggb');
+
+                  if(value == 'save')
+                  {
+                    patient_instance_list = [];
+                    all_patient_name_list = [];
+                    search_patient_list = [];
+                    map_name_patientInstance_list = {};
+
+
+
+                    patient_data();
+
+                  }
+
+
+
+              });
+            },
+            child: Icon(
+              Icons.add,
+              color: Colors.black,
             ),
-          ],
-        ),
-        floatingActionButton: FloatingActionButton(
-          elevation: 15,
-          splashColor: AppTheme.notWhite,
-          onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => AddPatient(all_patient_name_list: all_patient_name_list, icon_tap: true,))).then((value) {
-                print('ggb');
-
-
-
-            });
-          },
-          child: Icon(
-            Icons.add,
-            color: Colors.black,
+            backgroundColor: AppTheme.teal
           ),
-          backgroundColor: AppTheme.dark_teal
-        ),
-        bottomNavigationBar: BottomAppBar(
-          color: AppTheme.white,
-          child: Container(
-            height: MediaQuery.of(context).size.height * 0.08,
+          bottomNavigationBar: BottomAppBar(
+            color: AppTheme.white,
+            child: Container(
+              height: MediaQuery.of(context).size.height * 0.08,
+            ),
           ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       ),
     );
   }
