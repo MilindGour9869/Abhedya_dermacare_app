@@ -22,12 +22,7 @@ class DropDown extends StatefulWidget {
 class _DropDownState extends State<DropDown> {
 
 
-  Future DeleteService(String doc_id)async
-  {
-    final doc = await FirebaseFirestore.instance.collection('Services').doc(doc_id);
-    doc.delete();
 
-  }
 
   var service = TextEditingController();
   var charge = TextEditingController();
@@ -53,43 +48,54 @@ class _DropDownState extends State<DropDown> {
           List b = widget.menu[doc_id[index]].values.toList();
           String c = b[0].toString();
 
-
-          return  Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0 , vertical: 2),
-            child: Container(
-              decoration: BoxDecoration(
-
-                borderRadius: BorderRadius.circular(7),
-              ),
-              height: MediaQuery.of(context).size.height * 0.06,
-
-              child: Material(
-                elevation: 2,
-                child: Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+          service.text = s;
+          charge.text  = c;
 
 
 
-                      Padding(
-                        padding: const EdgeInsets.only(left: 5.0),
-                        child: Text(
-                         s,
-                          style: TextStyle(color: Colors.black , fontSize: 15),
+          return  GestureDetector(
+            onTap: (){
 
+              showDialog(context: context, builder: (context)=>Dialogue(service_name: widget.service_id , service: service , context: context , charges: charge , doc_id: doc_id[index].toString() ));
+
+              },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0 , vertical: 2),
+              child: Container(
+                decoration: BoxDecoration(
+
+                  borderRadius: BorderRadius.circular(7),
+                ),
+                height: MediaQuery.of(context).size.height * 0.06,
+
+                child: Material(
+                  elevation: 2,
+                  child: Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+
+
+
+                        Padding(
+                          padding: const EdgeInsets.only(left: 5.0),
+                          child: Text(
+                           s,
+                            style: TextStyle(color: Colors.black , fontSize: 15),
+
+                          ),
                         ),
-                      ),
 
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(c+ ' Rs' , style: TextStyle(fontSize: 15),),
-                          SizedBox(width: 10,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(c+ ' Rs' , style: TextStyle(fontSize: 15),),
+                            SizedBox(width: 10,),
 
-                        ],
-                      ),
-                    ],
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -99,7 +105,7 @@ class _DropDownState extends State<DropDown> {
   }
 }
 
-Widget Dialogue ({String service_name , TextEditingController service , TextEditingController charges , BuildContext context , int size}){
+Widget Dialogue ({String service_name , TextEditingController service , TextEditingController charges , BuildContext context , String doc_id}){
 
   return Padding(
       padding: EdgeInsets.symmetric(horizontal: 40 , vertical:  150),
@@ -116,7 +122,18 @@ Widget Dialogue ({String service_name , TextEditingController service , TextEdit
 
                   SizedBox(height: 10,),
 
-                  Text(service_name , style: TextStyle(fontWeight: FontWeight.bold),),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(service_name , style: TextStyle(fontWeight: FontWeight.bold),),
+                      IconButton(onPressed: ()async{
+
+                        final doc = await FirebaseFirestore.instance.collection('Services').doc(doc_id);
+                        doc.delete();
+
+                      }, icon: Icon(Icons.delete_outline_outlined))
+                    ],
+                  ),
                   SizedBox(height: 20,),
 
                   Material(
@@ -127,7 +144,7 @@ Widget Dialogue ({String service_name , TextEditingController service , TextEdit
                           borderRadius: BorderRadius.circular(10),
 
                         ),
-                        labelText: 'Add Service',
+                        labelText: 'Service',
 
                       ),
                     ) ,
@@ -192,15 +209,10 @@ Widget Dialogue ({String service_name , TextEditingController service , TextEdit
                             ),),
                             onPressed: ()async{
 
-                              print(size);
 
 
-                              print('done');
 
-                              size=size+1;
-
-
-                              var doc =  await FirebaseFirestore.instance.collection('Services').doc();
+                              var doc =  await FirebaseFirestore.instance.collection('Services').doc(doc_id);
 
                               final json = {
                                 'id' : service_name,
@@ -211,7 +223,7 @@ Widget Dialogue ({String service_name , TextEditingController service , TextEdit
                               };
 
 
-                              doc.set(json);
+                              doc.update(json);
 
                               charges.clear();
                               service.clear();
