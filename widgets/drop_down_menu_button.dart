@@ -2,18 +2,22 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/git/screens/app_theme.dart';
 import 'package:flutter_app/default.dart';
+import 'package:flutter_app/screens/Services.dart';
 
 class DropDown extends StatefulWidget {
   Map<String , Map<String , int>> menu={};
 
   String service_id;
 
+  bool c;
 
 
 
 
 
-  DropDown({this.menu, this.service_id  });
+
+
+  DropDown({this.menu, this.service_id   , this.c});
 
   @override
   _DropDownState createState() => _DropDownState();
@@ -27,12 +31,25 @@ class _DropDownState extends State<DropDown> {
   var service = TextEditingController();
   var charge = TextEditingController();
 
+  List doc_id=[];
+
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    doc_id = widget.menu.keys.toList();
+  }
+
 
 
   @override
   Widget build(BuildContext context) {
 
-    List doc_id = widget.menu.keys.toList();
+
+
+
 
 
 
@@ -48,15 +65,26 @@ class _DropDownState extends State<DropDown> {
           List b = widget.menu[doc_id[index]].values.toList();
           String c = b[0].toString();
 
-          service.text = s;
-          charge.text  = c;
+
+
 
 
 
           return  GestureDetector(
             onTap: (){
 
-              showDialog(context: context, builder: (context)=>Dialogue(service_name: widget.service_id , service: service , context: context , charges: charge , doc_id: doc_id[index].toString() ));
+              service.text = s;
+              charge.text = c;
+
+
+              showDialog(context: context,
+                  builder: (context)=>
+                      Dialogue(service_name: widget.service_id , service: service , context: context , charges: charge , doc_id: doc_id[index].toString() )).then((value) {
+
+                        widget.c = true;
+
+
+              });
 
               },
             child: Padding(
@@ -192,6 +220,8 @@ Widget Dialogue ({String service_name , TextEditingController service , TextEdit
                             ),),
                             onPressed: (){
 
+
+
                               Navigator.pop(context);
 
 
@@ -228,7 +258,8 @@ Widget Dialogue ({String service_name , TextEditingController service , TextEdit
                               charges.clear();
                               service.clear();
 
-                              //  Services();
+
+
 
 
 

@@ -254,13 +254,19 @@ Widget Menu(BuildContext context) {
   return Wrap(
     runSpacing: 7,
     children: [
-      ListTile(
-        title: Text('Profile'),
-        leading: Icon(Icons.person_outline),
-        onTap: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => Profile()));
+      GestureDetector(
+        onTap: (){
+          print('yrhr');
         },
+        child: ListTile(
+          title: Text('Profile'),
+          leading: Icon(Icons.person_outline),
+          onTap: () {
+            print('ggg');
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => Profile()));
+          },
+        ),
       ), // Profile
 
       Dividerr(),

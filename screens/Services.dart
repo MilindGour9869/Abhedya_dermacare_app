@@ -9,6 +9,10 @@ import 'package:flutter_app/widgets/drop_down_menu_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Services extends StatefulWidget {
+
+ bool change ;
+
+
 @override
 _State createState() => _State();
 }
@@ -50,6 +54,13 @@ class _State extends State<Services> {
 
 
   Future getServiceData()async{
+
+    Consulation={};
+    Nursing={};
+    Procedures={};
+    Vaccination = {};
+    By_You={};
+
 
 
     await FirebaseFirestore.instance.collection('Services').get().then((QuerySnapshot querySnapshot){
@@ -148,7 +159,9 @@ class _State extends State<Services> {
   void didUpdateWidget(covariant Services oldWidget) {
     // TODO: implement didUpdateWidget
     super.didUpdateWidget(oldWidget);
-    getServiceData();
+
+   print('Did Update');
+
 
   }
 
@@ -227,7 +240,10 @@ return Scaffold(
 
                   child: service_map==null?
                   CircularProgressIndicator():
-                  DropDown( menu: Consulation, service_id: 'Consultation',))),
+                  DropDown( menu: Consulation, service_id: 'Consultation', c: widget.change, )
+
+
+              )),
 
 
 
