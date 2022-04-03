@@ -48,21 +48,23 @@ class _AddMedicineState extends State<AddMedicine> {
             child: IconButton(
               icon: Icon(Icons.save),
               onPressed: ()async{
-                var a =await FirebaseFirestore.instance.collection('Medicines').get();
-                int n=a.size;
-                n=n+1;
+                var doc =await FirebaseFirestore.instance.collection('Medicines').doc();
 
-                await FirebaseFirestore.instance.collection('Medicines').doc(n.toString()).set({
-                  'id':n,
-                  'medicine_name':medicine_name.text,
-                  'tab':tab,
-                  'composition':composition,
-                  'company_name':company_name,
-                  'notes':medicine_notes.text,
+                final json = {
+                  'id':doc.id,
+                'medicine_name':medicine_name.text,
+                'tab':tab,
+                'composition':composition,
+                'company_name':company_name,
+                'notes':medicine_notes.text,
+
+                };
+
+                doc.set(json);
 
 
 
-                });
+
 
 
                 Navigator.pop(context);

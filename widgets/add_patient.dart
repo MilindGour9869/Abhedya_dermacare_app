@@ -112,11 +112,31 @@ class _AddPatientState extends State<AddPatient> {
    if(data!=null)
    {
      name = data.name;
+
      setState(() {
 
        age_edit.text=data.age.toString();
        name_edit.text=data.name.toString();
        mobile_edit.text=data.mobile.toString();
+
+       if(data.group != null)
+         {
+
+           data.group.forEach((element) {
+             group_edit.text = element + " , " + group_edit.text ;
+
+           });
+         }
+
+       if(data.blood_group != null)
+         {
+           print('data.bloodgroup not emtpy');
+
+           data.blood_group.forEach((element) {
+             blood_group_edit.text = element;
+
+           });
+         }
 
        if(data.gender != null)
          {

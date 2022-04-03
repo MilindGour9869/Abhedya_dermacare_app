@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/default.dart';
 
@@ -25,11 +26,12 @@ class _State extends State<Services> {
   var service_edit = TextEditingController();
   var charges_edit = TextEditingController();
 
-  Map<String , int> Consulation ={};
-  Map<String , int> Nursing ={};
-  Map<String , int> Procedures ={};
-  Map<String , int> Vaccination ={};
-  Map<String , int> By_You ={};
+  Map<String ,  Map<String , int>> Consulation ={};
+  Map<String ,  Map<String , int>> Nursing ={};
+  Map<String ,  Map<String , int>> Procedures ={};
+  Map<String ,  Map<String , int>> Vaccination ={};
+  Map<String ,  Map<String , int>> By_You ={};
+
 
   int services_length;
 
@@ -60,35 +62,50 @@ class _State extends State<Services> {
         print('ss');
 
         print(element['id']);
+        print(element['doc_id']);
 
 
         if(element['id']=='Consultation')
           {
 
-            Consulation[element['service']] = element['charge'];
+            Consulation[element['doc_id']] = {
+              element['service'] : element['charge']
+            };
 
 
           }
         if(element['id']=='Nursing')
         {
-          Nursing[element['service']] = element['charge'];
+          Nursing[element['doc_id']] = {
+            element['service'] : element['charge']
+          };
+
 
         }
         if(element['id']=='Procedures')
         {
-          Procedures[element['service']] = element['charge'];
+          Procedures[element['doc_id']] = {
+            element['service'] : element['charge']
+          };
+
 
         }
         if(element['id']=='Vaccination')
         {
 
-          Vaccination[element['service']] = element['charge'];
+          Vaccination[element['doc_id']] = {
+            element['service'] : element['charge']
+          };
+
 
         }
         if(element['id']=='By You')
         {
 
-          By_You[element['service']] = element['charge'];
+          By_You[element['doc_id']] = {
+            element['service'] : element['charge']
+          };
+
 
         }
 
@@ -142,6 +159,7 @@ return Scaffold(
 
   appBar: AppBar(
     title: Text('Services'),
+    backgroundColor: AppTheme.teal,
   ),
 
   body:Center(
@@ -161,7 +179,7 @@ return Scaffold(
 
                 child: ListTile(
                 title: Text('Consultation'),
-                leading: Icon(Icons.arrow_forward_ios , size: MediaQuery.of(context).size.height*0.03,),
+                leading: Icon(Icons.arrow_forward_ios , size: MediaQuery.of(context).size.height*0.03, color: AppTheme.teal,),
                 onTap: (){
 
                   setState(() {
@@ -177,13 +195,21 @@ return Scaffold(
                 },
 
                 trailing: IconButton(
-                  icon: Icon(Icons.add),
+                  icon: Icon(Icons.add , color: AppTheme.teal,),
                   onPressed: (){
 
-                    showDialog(context: context, builder: (context)=>showDialogue(service_name: 'Consultation' , service: service_edit , charges: charges_edit , context: context  ,  size: services_length));
+                    showDialog(context: context, builder: (context)=>Dialogue(service_name: 'Consultation' , service: service_edit , charges: charges_edit , context: context  ,  size: services_length));
 
                   },
                 ),
+
+//                  subtitle: consultation==true?Padding(
+//                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+//                    child: Column(
+//                      crossAxisAlignment: CrossAxisAlignment.start,
+//                      children: Consulation.keys.map<Widget>((e) => drop(e , Consulation)).toList(),
+//                    ),
+//                  ):Container(),
 
 
 
@@ -201,34 +227,55 @@ return Scaffold(
 
                   child: service_map==null?
                   CircularProgressIndicator():
-                  DropDown( menu: Consulation,color: Colors.black,))),
+                  DropDown( menu: Consulation, service_id: 'Consultation',))),
 
 
 
-          ListTile(
-            title: Text('Nursing'),
-            leading: Icon(Icons.arrow_forward_ios , size: MediaQuery.of(context).size.height*0.03,),
-            onTap: (){
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 15.0 ,horizontal: 8),
+            child: Container(
+              child: Material(
+                elevation: 2,
+                borderRadius: BorderRadius.circular(10),
 
-              setState(() {
+                child: ListTile(
+                  title: Text('Nursing'),
+                  leading: Icon(Icons.arrow_forward_ios , size: MediaQuery.of(context).size.height*0.03, color: AppTheme.teal,),
+                  onTap: (){
 
-                nursing = !nursing;
+                    setState(() {
 
-                print(nursing);
+                      nursing = !nursing;
+
+                     // print(consultation);
 
 
 
-              });
+                    });
 
-            },
+                  },
 
-            trailing: IconButton(
-              icon: Icon(Icons.add),
-              onPressed: (){
+                  trailing: IconButton(
+                    icon: Icon(Icons.add ,color: AppTheme.teal,),
+                    onPressed: (){
 
-                showDialog(context: context, builder: (context)=>showDialogue(service_name: 'Nursing' , service: service_edit , charges: charges_edit , context: context , size: services_length));
+                      showDialog(context: context, builder: (context)=>Dialogue(service_name: 'Nursing' , service: service_edit , charges: charges_edit , context: context  ,  size: services_length));
 
-              },
+                    },
+                  ),
+
+//                  subtitle: consultation==true?Padding(
+//                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+//                    child: Column(
+//                      crossAxisAlignment: CrossAxisAlignment.start,
+//                      children: Consulation.keys.map<Widget>((e) => drop(e , Consulation)).toList(),
+//                    ),
+//                  ):Container(),
+
+
+
+                ),
+              ),
             ),
           ),  //Nursing
           Visibility(
@@ -237,7 +284,7 @@ return Scaffold(
 
               child: Container(
 
-                  child: DropDown( menu : Nursing,color: Colors.black,))),
+                  child: DropDown( menu : Nursing, service_id: 'Nursing',))),
 
 
 
@@ -255,151 +302,161 @@ return Scaffold(
 }
 
 
-Widget showDialogue ({String service_name , TextEditingController service , TextEditingController charges , BuildContext context , int size}){
+Widget Dialogue ({String service_name , TextEditingController service , TextEditingController charges , BuildContext context , int size}){
 
   return Padding(
     padding: EdgeInsets.symmetric(horizontal: 40 , vertical:  150),
-    child: Container(
-      color: Colors.white,
+    child: Material(
+      child: Container(
+        color: Colors.white,
 
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
 
-          children: [
+            children: [
 
-            SizedBox(height: 10,),
+              SizedBox(height: 10,),
 
-            Text(service_name , style: TextStyle(fontWeight: FontWeight.bold),),
-            SizedBox(height: 20,),
+              Text(service_name , style: TextStyle(fontWeight: FontWeight.bold),),
+              SizedBox(height: 20,),
 
-            Material(
-              child:TextField(
-                controller: service,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
+              Material(
+                child:TextField(
+                  controller: service,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
 
-                  ),
-                  labelText: 'Add Service',
-
-                ),
-              ) ,
-            ),
-            SizedBox(height: 20,),
-
-            Material(
-
-              child:TextField(
-                controller: charges,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-
-
-                  ),
-                  labelText: 'Charges',
-                  prefixText: '₹ ',
-
-
-
-
-                ),
-
-                keyboardType: TextInputType.number,
-              ) ,
-            ),
-
-            SizedBox(height: 20,),
-
-            Container(
-              alignment: Alignment.bottomCenter,
-              child: Row(
-
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-               Container(
-                 decoration: BoxDecoration(
-                   borderRadius: BorderRadius.circular(10),
-                   color: Colors.grey
-                 ),
-                 child: TextButton(
-                   child: Text('Cancel' , style:  TextStyle(
-                     color: Colors.black
-                   ),),
-                   onPressed: (){
-
-                     Navigator.pop(context);
-
-
-                   },
-                 ),
-               ),
-                  Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: AppTheme.green
                     ),
-                    child: TextButton(
-                      child: Text('Done' , style:  TextStyle(
-                          color: Colors.black
-                      ),),
-                      onPressed: ()async{
+                    labelText: 'Add Service',
 
-                        print(size);
-
-
-                        print('done');
-
-                        size=size+1;
-
-
-                        var doc =  await FirebaseFirestore.instance.collection('Services').doc();
-
-                        final json = {
-                          'id' : service_name,
-                          'charge' : int.parse(charges.text),
-                          'service' : service.text,
-
-                        };
-
-
-                        doc.set(json);
-
-                        charges.clear();
-                        service.clear();
-
-                        //  Services();
-
-
-
-
-
-
-
-                        Navigator.pop(context);
-
-
-
-
-
-
-
-
-                      },
-                    ),
                   ),
-              ],),
-            )
+                ) ,
+              ),
+              SizedBox(height: 20,),
 
-          ]),
+              Material(
+
+                child:TextField(
+                  controller: charges,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+
+
+                    ),
+                    labelText: 'Charges',
+                    prefixText: '₹ ',
+
+
+
+
+                  ),
+
+                  keyboardType: TextInputType.number,
+                ) ,
+              ),
+
+              SizedBox(height: 20,),
+
+              Container(
+                alignment: Alignment.bottomCenter,
+                child: Row(
+
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                 Container(
+                   decoration: BoxDecoration(
+                     borderRadius: BorderRadius.circular(10),
+                     color: Colors.grey
+                   ),
+                   child: TextButton(
+                     child: Text('Cancel' , style:  TextStyle(
+                       color: Colors.black
+                     ),),
+                     onPressed: (){
+
+                       Navigator.pop(context);
+
+
+                     },
+                   ),
+                 ),
+                    Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: AppTheme.green
+                      ),
+                      child: TextButton(
+                        child: Text('Done' , style:  TextStyle(
+                            color: Colors.black
+                        ),),
+                        onPressed: ()async{
+
+                          print(size);
+
+
+                          print('done');
+
+                          size=size+1;
+
+
+                          var doc =  await FirebaseFirestore.instance.collection('Services').doc();
+
+                          final json = {
+                            'id' : service_name,
+                            'charge' : int.parse(charges.text),
+                            'service' : service.text,
+                            'doc_id' : doc.id
+
+                          };
+
+
+                          doc.set(json);
+
+                          charges.clear();
+                          service.clear();
+
+                          //  Services();
+
+
+
+
+
+
+
+                          Navigator.pop(context);
+
+
+
+
+
+
+
+
+                        },
+                      ),
+                    ),
+                ],),
+              )
+
+            ]),
+        ),
       ),
     ));
 }
 
-//Widget Drop_Down (String menu)
-//{
-//  return Text(menu);
-//}
+Widget drop (String menu ,Map<String , int> map )
+{
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      Text(menu),
+      Text(map[menu].toString()),
+
+    ],
+  );
+}
 

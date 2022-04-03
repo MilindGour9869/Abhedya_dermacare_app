@@ -72,27 +72,8 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: AppTheme.green,
-      body: container,
-      drawer: Drawer(
-          child: SingleChildScrollView(
-              child: Container(
-        child: Column(
-          children: [
-            Container(
-              height: 200,
-              color: Colors.red,
-              child: CircleAvatar(
-                radius: MediaQuery.of(context).size.width * 0.150,
-                child: Icon(
-                  Icons.adjust,
-                  color: Colors.red,
-                ),
-              ),
-            ),
-            MyDrawerList(),
-          ],
-        ),
-      ))),
+      body:Patient(),
+      drawer:NavigationDrawer(),
     );
   }
 
@@ -106,19 +87,19 @@ class _HomePageState extends State<HomePage> {
           children: [
             menuItem(1, "Profile", Icons.person,
                 currentPage == DrawerSections.Profile ? true : false),
-            Divider(),
+            Dividerr(),
             menuItem(2, "Patients", Icons.people_alt_outlined,
                 currentPage == DrawerSections.Patients ? true : false),
             menuItem(3, "Medicines", Icons.health_and_safety,
                 currentPage == DrawerSections.Medicnes ? true : false),
             menuItem(4, "Services", Icons.medication,
                 currentPage == DrawerSections.Services ? true : false),
-            Divider(),
+            Dividerr(),
             menuItem(5, "Setting", Icons.settings,
                 currentPage == DrawerSections.Settings ? true : false),
             menuItem(6, "Reception", Icons.remove_red_eye,
                 currentPage == DrawerSections.Reception ? true : false),
-            Divider(),
+            Dividerr(),
             menuItem(7, "Send Feedback", Icons.call_made_outlined,
                 currentPage == DrawerSections.send_feedback ? true : false),
           ]),
@@ -208,56 +189,61 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            GestureDetector(
-              onTap: () {
-                showDialog(
-                    context: context,
-                    builder: (context) => Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 30.0, vertical: 240),
-                          child: Card(
-                            child: Column(
-                              children: [
-                                TextButton.icon(
-                                    icon: Icon(Icons.camera),
-                                    onPressed: () {
-                                      imagepicker(ImageSource.camera);
-                                    },
-                                    label: Text('Camera')),
-                                TextButton.icon(
-                                    icon: Icon(Icons.browse_gallery),
-                                    onPressed: () {
-                                      imagepicker(ImageSource.gallery);
-                                    },
-                                    label: Text('Gallery'))
-                              ],
+    return SafeArea(
+      child: Drawer(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: GestureDetector(
+                  onTap: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) => Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 30.0, vertical: 240),
+                              child: Card(
+                                child: Column(
+                                  children: [
+                                    TextButton.icon(
+                                        icon: Icon(Icons.camera),
+                                        onPressed: () {
+                                          imagepicker(ImageSource.camera);
+                                        },
+                                        label: Text('Camera')),
+                                    TextButton.icon(
+                                        icon: Icon(Icons.browse_gallery),
+                                        onPressed: () {
+                                          imagepicker(ImageSource.gallery);
+                                        },
+                                        label: Text('Gallery'))
+                                  ],
+                                ),
+                              ),
+                            ));
+                  },
+                  child: ClipOval(
+                    child: CircleAvatar(
+                      radius: MediaQuery.of(context).size.height * 0.1,
+                      child: file == null
+                          ? Icon(
+                              Icons.person_add_outlined,
+                              color: Colors.white,
+                            )
+                          : Image.file(
+                              file,
+                              fit: BoxFit.fill,
                             ),
-                          ),
-                        ));
-              },
-              child: ClipOval(
-                child: CircleAvatar(
-                  radius: MediaQuery.of(context).size.height * 0.1,
-                  child: file == null
-                      ? Icon(
-                          Icons.person_add_outlined,
-                          color: Colors.white,
-                        )
-                      : Image.file(
-                          file,
-                          fit: BoxFit.fill,
-                        ),
-                  backgroundColor: Colors.grey,
+                      backgroundColor: Colors.grey,
+                    ),
+                  ),
                 ),
               ),
-            ),
-            Menu(context),
-          ],
+              Menu(context),
+            ],
+          ),
         ),
       ),
     );
@@ -266,7 +252,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
 
 Widget Menu(BuildContext context) {
   return Wrap(
-    runSpacing: 24,
+    runSpacing: 7,
     children: [
       ListTile(
         title: Text('Profile'),
@@ -277,14 +263,13 @@ Widget Menu(BuildContext context) {
         },
       ), // Profile
 
-      Divider(),
+      Dividerr(),
 
       ListTile(
         title: Text('Patients'),
         leading: Icon(Icons.people_alt_outlined),
         onTap: () {
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => Patient()));
+         Navigator.pop(context);
         },
       ), // Patient
       ListTile(
@@ -304,7 +289,7 @@ Widget Menu(BuildContext context) {
         },
       ), // Services
 
-      Divider(),
+      Dividerr(),
 
       ListTile(
         title: Text('Setting'),
@@ -324,7 +309,7 @@ Widget Menu(BuildContext context) {
         },
       ),
 
-      Divider(),
+      Dividerr(),
 
 //      ListTile(
 //        title: Text('Services'),
@@ -337,4 +322,15 @@ Widget Menu(BuildContext context) {
 //      ),
     ],
   );
+}
+
+class Dividerr extends StatelessWidget {
+  const Dividerr({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Divider(thickness: 2,);
+  }
 }

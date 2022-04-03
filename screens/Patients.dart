@@ -11,8 +11,6 @@ import 'package:flutter_app/classes/Patient_name_list.dart';
 import 'package:date_format/date_format.dart';
 
 class Patient extends StatefulWidget {
-
-
   @override
   _State createState() => _State();
 }
@@ -52,30 +50,23 @@ class _State extends State<Patient> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => AddPatient(patient_data: data  , all_patient_name_list: all_patient_name_list , icon_tap: false,))).then((value) {
-
+                  builder: (context) => AddPatient(
+                        patient_data: data,
+                        all_patient_name_list: all_patient_name_list,
+                        icon_tap: false,
+                      ))).then((value) {
             print('\n\nka boom ');
 
             print(value);
 
-         if(value == 'save')
-           {
-             patient_instance_list = [];
-             all_patient_name_list = [];
-             search_patient_list = [];
-             map_name_patientInstance_list = {};
+            if (value == 'save') {
+              patient_instance_list = [];
+              all_patient_name_list = [];
+              search_patient_list = [];
+              map_name_patientInstance_list = {};
 
-
-
-             patient_data();
-
-           }
-
-
-
-
-
-
+              patient_data();
+            }
           });
         },
         child: Padding(
@@ -89,7 +80,6 @@ class _State extends State<Patient> {
               elevation: 4,
               borderRadius: BorderRadius.circular(10),
               child: ListTile(
-
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -199,7 +189,13 @@ class _State extends State<Patient> {
                       height: 10,
                     ),
                     Text(
-                      'last visited on : ${formatDate(data.recent_visit.toDate(), [dd, '-', mm, '-', yyyy ])}',
+                      'last visited on : ${formatDate(data.recent_visit.toDate(), [
+                            dd,
+                            '-',
+                            mm,
+                            '-',
+                            yyyy
+                          ])}',
                       style: TextStyle(fontStyle: FontStyle.italic),
                     ),
                     Row(
@@ -210,8 +206,9 @@ class _State extends State<Patient> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => VisitsDate(data))).then((value) {
-                                        print('sss');
+                                      builder: (context) =>
+                                          VisitsDate(data))).then((value) {
+                                print('sss');
                               });
                             },
                             child: Text(
@@ -252,7 +249,6 @@ class _State extends State<Patient> {
           .get()
           .then((QuerySnapshot querySnapshot) {
         querySnapshot.docs.forEach((element) {
-
           patient_instance_list = [];
           all_patient_name_list = [];
           search_patient_list = [];
@@ -268,19 +264,15 @@ class _State extends State<Patient> {
 
         print(patient_instance_list);
 
-
-
         setState(() {
           all_patient_name_list =
               patient_instance_list.map((e) => e.name).toList();
-
-
 
           int n = all_patient_name_list.length;
 
           for (int i = 0; i < n; i++) {
             map_name_patientInstance_list[all_patient_name_list[i]] =
-            patient_instance_list[i];
+                patient_instance_list[i];
           }
 
           print('rgg');
@@ -288,9 +280,7 @@ class _State extends State<Patient> {
           print(all_patient_name_list);
 
           search_patient_list = all_patient_name_list;
-
         });
-
 
         var q;
 
@@ -313,7 +303,7 @@ class _State extends State<Patient> {
     // TODO: implement initState
     super.initState();
 
-   // print('\ninit\n');
+    // print('\ninit\n');
     f = patient_data();
   }
 
@@ -327,26 +317,21 @@ class _State extends State<Patient> {
     map_name_patientInstance_list = {};
   }
 
-
-
   @override
   Widget build(BuildContext context) {
-   // print('builder');
+    // print('builder');
 
     return SafeArea(
       child: WillPopScope(
-        onWillPop: (){
+        onWillPop: () {
           FocusScopeNode currentFocus = FocusScope.of(context);
 
           if (!currentFocus.hasPrimaryFocus) {
             textcontroller.clear();
             onItemChanged('');
 
-
             currentFocus.unfocus();
-
           }
-
         },
         child: Scaffold(
           resizeToAvoidBottomInset: false,
@@ -371,7 +356,9 @@ class _State extends State<Patient> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Scaffold.of(context).openDrawer();
+                            },
                             icon: Icon(Icons.menu),
                           ),
 
@@ -379,7 +366,8 @@ class _State extends State<Patient> {
                           Padding(
                             padding: EdgeInsets.only(right: 10),
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 8.0),
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 8.0),
                               child: ChoiceChip(
                                 backgroundColor: AppTheme.offwhite,
                                 label: Text('Today'),
@@ -418,8 +406,8 @@ class _State extends State<Patient> {
                       ),
                     ),
                     Padding(
-                      padding:
-                          const EdgeInsets.only(top: 23.0, right: 40, left: 40),
+                      padding: const EdgeInsets.only(
+                          top: 23.0, right: 40, left: 40),
                       child: Container(
                         height: 40,
                         decoration: BoxDecoration(
@@ -435,7 +423,6 @@ class _State extends State<Patient> {
                               hintStyle: TextStyle(),
                               suffixIcon: Icon(Icons.search)),
                           keyboardType: TextInputType.name,
-
                         ),
                       ),
                     ),
@@ -449,7 +436,7 @@ class _State extends State<Patient> {
                 child: Container(
                   color: Colors.transparent,
                   child: SingleChildScrollView(
-                    clipBehavior: Clip.none,
+                      clipBehavior: Clip.none,
                       child: FutureBuilder(
                           future: f,
                           builder: (context, snapshot) {
@@ -467,7 +454,8 @@ class _State extends State<Patient> {
 
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
-                              return Center(child: CircularProgressIndicator());
+                              return Center(
+                                  child: CircularProgressIndicator());
                             }
 
                             if (snapshot.hasError) {
@@ -476,8 +464,8 @@ class _State extends State<Patient> {
                             }
 
                             return Container(
-
-                              height: MediaQuery.of(context).size.height*0.6,
+                              height:
+                                  MediaQuery.of(context).size.height * 0.6,
 
 //                            color: Colors.red,
 
@@ -485,12 +473,10 @@ class _State extends State<Patient> {
                                 onRefresh: patient_data,
                                 color: AppTheme.teal,
                                 child: ListView(
-
                                   scrollDirection: Axis.vertical,
-
                                   children: search_patient_list
-                                      .map<Widget>((e) =>
-                                          Tile(map_name_patientInstance_list[e]))
+                                      .map<Widget>((e) => Tile(
+                                          map_name_patientInstance_list[e]))
                                       .toList(),
                                 ),
                               ),
@@ -501,43 +487,41 @@ class _State extends State<Patient> {
             ],
           ),
           floatingActionButton: FloatingActionButton(
-            elevation: 15,
-            splashColor: AppTheme.notWhite,
-            onPressed: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => AddPatient(all_patient_name_list: all_patient_name_list, icon_tap: true,))).then((value) {
+              elevation: 15,
+              splashColor: AppTheme.notWhite,
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AddPatient(
+                              all_patient_name_list: all_patient_name_list,
+                              icon_tap: true,
+                            ))).then((value) {
                   print('ggb');
 
-                  if(value == 'save')
-                  {
+                  if (value == 'save') {
                     patient_instance_list = [];
                     all_patient_name_list = [];
                     search_patient_list = [];
                     map_name_patientInstance_list = {};
 
-
-
                     patient_data();
-
                   }
-
-
-
-              });
-            },
-            child: Icon(
-              Icons.add,
-              color: Colors.black,
-            ),
-            backgroundColor: AppTheme.teal
-          ),
+                });
+              },
+              child: Icon(
+                Icons.add,
+                color: Colors.black,
+              ),
+              backgroundColor: AppTheme.teal),
           bottomNavigationBar: BottomAppBar(
             color: AppTheme.white,
             child: Container(
               height: MediaQuery.of(context).size.height * 0.08,
             ),
           ),
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
         ),
       ),
     );
