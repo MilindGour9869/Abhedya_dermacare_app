@@ -10,6 +10,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 
 class AddMedicine extends StatefulWidget {
+
+  String composition , company_name , tab , doc_id , medicine_name ;
+
+  AddMedicine({this.company_name , this.composition , this.tab ,this.doc_id , this.medicine_name});
+
   @override
   _AddMedicineState createState() => _AddMedicineState();
 }
@@ -21,7 +26,8 @@ class _AddMedicineState extends State<AddMedicine> {
   String company_name ="Company Name";
   String tab = "TAB/CAP/SYP";
 
-  var medicine_name=TextEditingController();
+
+  var medicine_name_edit=TextEditingController();
   var medicine_notes=TextEditingController();
 
 
@@ -35,43 +41,120 @@ class _AddMedicineState extends State<AddMedicine> {
   };
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    if(widget.composition != null)
+      {
+        setState(() {
+          composition = widget.composition;
+          map['composition'] = true;
+
+
+
+        });
+      }
+    if(widget.company_name != null)
+    {
+      setState(() {
+
+        company_name=widget.company_name;
+        map['company_name']=true;
+
+
+
+      });
+    }
+    if(widget.tab != null)
+    {
+      setState(() {
+
+        tab=widget.tab;
+        map['tab'] = true;
+
+
+      });
+    }
+    if(widget.medicine_name != null)
+      {
+        setState(() {
+          medicine_name_edit.text = widget.medicine_name;
+        });
+
+      }
+
+
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
 
 
       appBar: AppBar(
-        title: Text('Add Medicines'),
+        title: Text('Add/Edit Medicines'),
         actions: [
+
           Padding(
             padding: const EdgeInsets.only(right: 8.0),
             child: IconButton(
               icon: Icon(Icons.save),
               onPressed: ()async{
-                var doc =await FirebaseFirestore.instance.collection('Medicines').doc();
-
-                final json = {
-                  'id':doc.id,
-                'medicine_name':medicine_name.text,
-                'tab':tab,
-                'composition':composition,
-                'company_name':company_name,
-                'notes':medicine_notes.text,
-
-                };
-
-                doc.set(json);
 
 
 
+                if(widget.doc_id == null)
+                  {
+                    var doc =await FirebaseFirestore.instance.collection('Medicines').doc();
+
+
+                    final json = {
+                      'id':doc.id,
+                      'medicine_name':medicine_name_edit.text,
+                      'tab':tab,
+                      'composition':composition,
+                      'company_name':company_name,
+                      'notes':medicine_notes.text,
+
+                    };
+
+
+                    doc.set(json);
+                  }
+                if(widget.doc_id != null)
+                {
+                  var doc =await FirebaseFirestore.instance.collection('Medicines').doc(widget.doc_id);
+
+
+                  final json = {
+                    'id':doc.id,
+                    'medicine_name':medicine_name_edit.text,
+                    'tab':tab,
+                    'composition':composition,
+                    'company_name':company_name,
+                    'notes':medicine_notes.text,
+
+                  };
+
+
+                  doc.update(json);
+                }
 
 
 
-                Navigator.pop(context);
+
+
+
+
+
+                Navigator.pop(context , 'save');
 
               },
             ),
-          )
+          ),
+
         ],
       ),
 
@@ -82,7 +165,7 @@ class _AddMedicineState extends State<AddMedicine> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             TextField(
-              controller: medicine_name,
+              controller: medicine_name_edit,
               decoration: InputDecoration(
                 labelText: 'Medicine Name',
 

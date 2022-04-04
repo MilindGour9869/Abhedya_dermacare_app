@@ -248,11 +248,15 @@ class _State extends State<Patient> {
           .collection('Patient')
           .get()
           .then((QuerySnapshot querySnapshot) {
+
+    patient_instance_list = [];
+    all_patient_name_list = [];
+    search_patient_list = [];
+    map_name_patientInstance_list = {};
+
+
         querySnapshot.docs.forEach((element) {
-          patient_instance_list = [];
-          all_patient_name_list = [];
-          search_patient_list = [];
-          map_name_patientInstance_list = {};
+
 
           print(element.data());
 
@@ -321,208 +325,197 @@ class _State extends State<Patient> {
   Widget build(BuildContext context) {
     // print('builder');
 
+
     return SafeArea(
-      child: WillPopScope(
-        onWillPop: () {
-          FocusScopeNode currentFocus = FocusScope.of(context);
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: AppTheme.offwhite,
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(200),
+          child: Container(
+              decoration: BoxDecoration(
+                  color: AppTheme.green,
+                  borderRadius: BorderRadius.only(
+                    bottomRight: Radius.circular(30),
+                    bottomLeft: Radius.circular(30),
+                  )),
+              height: MediaQuery.of(context).size.height * 0.28,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    color: Colors.transparent,
+                    height: 45,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            Scaffold.of(context).openDrawer();
+                          },
+                          icon: Icon(Icons.menu),
+                        ),
 
-          if (!currentFocus.hasPrimaryFocus) {
-            textcontroller.clear();
-            onItemChanged('');
-
-            currentFocus.unfocus();
-          }
-        },
-        child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          backgroundColor: AppTheme.offwhite,
-          appBar: PreferredSize(
-            preferredSize: Size.fromHeight(200),
-            child: Container(
-                decoration: BoxDecoration(
-                    color: AppTheme.green,
-                    borderRadius: BorderRadius.only(
-                      bottomRight: Radius.circular(30),
-                      bottomLeft: Radius.circular(30),
-                    )),
-                height: MediaQuery.of(context).size.height * 0.28,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      color: Colors.transparent,
-                      height: 45,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              Scaffold.of(context).openDrawer();
-                            },
-                            icon: Icon(Icons.menu),
-                          ),
-
-                          // ignore: prefer_const_constructors
-                          Padding(
-                            padding: EdgeInsets.only(right: 10),
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 8.0),
-                              child: ChoiceChip(
-                                backgroundColor: AppTheme.offwhite,
-                                label: Text('Today'),
-                                selected: false,
-                                selectedColor: Colors.teal,
-                                onSelected: (bool selected) {},
-                              ),
+                        // ignore: prefer_const_constructors
+                        Padding(
+                          padding: EdgeInsets.only(right: 10),
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(vertical: 8.0),
+                            child: ChoiceChip(
+                              backgroundColor: AppTheme.offwhite,
+                              label: Text('Today'),
+                              selected: false,
+                              selectedColor: Colors.teal,
+                              onSelected: (bool selected) {},
                             ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 40.0),
+                    child: Container(
+                      color: Colors.transparent,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            greeting(),
+                            style: TextStyle(fontSize: 15),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            'Dr. Mahi Ram Bishnoi',
+                            style: TextStyle(fontSize: 23),
+                          ),
+                          SizedBox(
+                            height: 5,
                           ),
                         ],
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 40.0),
-                      child: Container(
-                        color: Colors.transparent,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              greeting(),
-                              style: TextStyle(fontSize: 15),
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Text(
-                              'Dr. Mahi Ram Bishnoi',
-                              style: TextStyle(fontSize: 23),
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                          ],
-                        ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        top: 23.0, right: 40, left: 40),
+                    child: Container(
+                      height: 40,
+                      decoration: BoxDecoration(
+                          color: AppTheme.notWhite,
+                          borderRadius: BorderRadius.circular(10)),
+                      child: TextField(
+                        controller: textcontroller,
+                        onChanged: onItemChanged,
+                        decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'search',
+                            prefixText: "      ",
+                            hintStyle: TextStyle(),
+                            suffixIcon: Icon(Icons.search)),
+                        keyboardType: TextInputType.name,
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          top: 23.0, right: 40, left: 40),
-                      child: Container(
-                        height: 40,
-                        decoration: BoxDecoration(
-                            color: AppTheme.notWhite,
-                            borderRadius: BorderRadius.circular(10)),
-                        child: TextField(
-                          controller: textcontroller,
-                          onChanged: onItemChanged,
-                          decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: 'search',
-                              prefixText: "      ",
-                              hintStyle: TextStyle(),
-                              suffixIcon: Icon(Icons.search)),
-                          keyboardType: TextInputType.name,
-                        ),
-                      ),
-                    ),
-                  ],
-                )),
-          ),
-          body: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Container(
-                  color: Colors.transparent,
-                  child: SingleChildScrollView(
-                      clipBehavior: Clip.none,
-                      child: FutureBuilder(
-                          future: f,
-                          builder: (context, snapshot) {
-                            // print(snapshot.data);
+                  ),
+                ],
+              )),
+        ),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Container(
+                color: Colors.transparent,
+                child: SingleChildScrollView(
+                    clipBehavior: Clip.none,
+                    child: FutureBuilder(
+                        future: f,
+                        builder: (context, snapshot) {
+                          // print(snapshot.data);
 
-                            if (search_patient_list.isEmpty) {
-                              return Center(
-                                  child: Card(
-                                      color: AppTheme.notWhite,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(20.0),
-                                        child: Text('loading'),
-                                      )));
-                            }
+                          if (search_patient_list.isEmpty) {
+                            return Center(
+                                child: Card(
+                                    color: AppTheme.notWhite,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(20.0),
+                                      child: Text('loading'),
+                                    )));
+                          }
 
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return Center(
-                                  child: CircularProgressIndicator());
-                            }
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Center(
+                                child: CircularProgressIndicator());
+                          }
 
-                            if (snapshot.hasError) {
-                              return const Center(
-                                  child: Text('Something Went Wrong'));
-                            }
+                          if (snapshot.hasError) {
+                            return const Center(
+                                child: Text('Something Went Wrong'));
+                          }
 
-                            return Container(
-                              height:
-                                  MediaQuery.of(context).size.height * 0.6,
+                          return Container(
+                            height:
+                                MediaQuery.of(context).size.height * 0.6,
 
 //                            color: Colors.red,
 
-                              child: RefreshIndicator(
-                                onRefresh: patient_data,
-                                color: AppTheme.teal,
-                                child: ListView(
-                                  scrollDirection: Axis.vertical,
-                                  children: search_patient_list
-                                      .map<Widget>((e) => Tile(
-                                          map_name_patientInstance_list[e]))
-                                      .toList(),
-                                ),
+                            child: RefreshIndicator(
+                              onRefresh: patient_data,
+                              color: AppTheme.teal,
+                              child: ListView(
+                                scrollDirection: Axis.vertical,
+                                children: search_patient_list
+                                    .map<Widget>((e) => Tile(
+                                        map_name_patientInstance_list[e]))
+                                    .toList(),
                               ),
-                            );
-                          })),
-                ),
+                            ),
+                          );
+                        })),
               ),
-            ],
-          ),
-          floatingActionButton: FloatingActionButton(
-              elevation: 15,
-              splashColor: AppTheme.notWhite,
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => AddPatient(
-                              all_patient_name_list: all_patient_name_list,
-                              icon_tap: true,
-                            ))).then((value) {
-                  print('ggb');
-
-                  if (value == 'save') {
-                    patient_instance_list = [];
-                    all_patient_name_list = [];
-                    search_patient_list = [];
-                    map_name_patientInstance_list = {};
-
-                    patient_data();
-                  }
-                });
-              },
-              child: Icon(
-                Icons.add,
-                color: Colors.black,
-              ),
-              backgroundColor: AppTheme.teal),
-          bottomNavigationBar: BottomAppBar(
-            color: AppTheme.white,
-            child: Container(
-              height: MediaQuery.of(context).size.height * 0.08,
             ),
-          ),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
+          ],
         ),
+        floatingActionButton: FloatingActionButton(
+            elevation: 15,
+            splashColor: AppTheme.notWhite,
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AddPatient(
+                            all_patient_name_list: all_patient_name_list,
+                            icon_tap: true,
+                          ))).then((value) {
+                print('ggb');
+
+                if (value == 'save') {
+                  patient_instance_list = [];
+                  all_patient_name_list = [];
+                  search_patient_list = [];
+                  map_name_patientInstance_list = {};
+
+                  patient_data();
+                }
+              });
+            },
+            child: Icon(
+              Icons.add,
+              color: Colors.black,
+            ),
+            backgroundColor: AppTheme.teal),
+        bottomNavigationBar: BottomAppBar(
+          color: AppTheme.white,
+          child: Container(
+            height: MediaQuery.of(context).size.height * 0.08,
+          ),
+        ),
+        floatingActionButtonLocation:
+            FloatingActionButtonLocation.centerDocked,
       ),
     );
   }

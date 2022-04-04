@@ -46,7 +46,7 @@ class Patient_name_data_list{
   static Patient_name_data_list fromJson(Map<String , dynamic> json){
 
 
-    print(json['id']);
+    print(json['gender']);
 
 
     return Patient_name_data_list(

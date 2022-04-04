@@ -158,6 +158,7 @@ Widget Dialogue ({String service_name , TextEditingController service , TextEdit
 
                         final doc = await FirebaseFirestore.instance.collection('Services').doc(doc_id);
                         doc.delete();
+                        Navigator.pop(context);
 
                       }, icon: Icon(Icons.delete_outline_outlined))
                     ],

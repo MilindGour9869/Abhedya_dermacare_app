@@ -138,7 +138,7 @@ class _AddPatientState extends State<AddPatient> {
            });
          }
 
-       if(data.gender != null)
+       if(data.gender != "")
          {
            print(data.gender);
 
@@ -146,7 +146,7 @@ class _AddPatientState extends State<AddPatient> {
             {
 
               male=true;}
-           else
+           else if(data.gender == "Female")
              {
 
                female = true;
