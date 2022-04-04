@@ -241,64 +241,51 @@ Widget build(BuildContext context) {
 return Scaffold(
   resizeToAvoidBottomInset: false,
 
-  appBar: AppBar(
-    title: Text('Medicines'),
-    leading: IconButton(
-      onPressed: (){
+  appBar:PreferredSize(
+    preferredSize: Size.fromHeight(200),
+    child: Container(
+      decoration: BoxDecoration(
+          color: AppTheme.green,
+          borderRadius: BorderRadius.only(
+            bottomRight: Radius.circular(30),
+            bottomLeft: Radius.circular(30),
+          )),
+      height: MediaQuery.of(context).size.height * 0.23,
 
-        Navigator.pop(context);
-        print("gggg");
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
 
-      },
-      icon: Icon(Icons.arrow_back),
-    ),
-    bottom: PreferredSize(
-      preferredSize: Size.fromHeight(100),
-
-      child:  Container(
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-
-            )
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric( horizontal: 8.0),
-          child: SizedBox(
-            height: 50,
-            child: TextField(
-              controller: textcontroller,
-              onChanged: onItemChanged,
-              decoration: InputDecoration(
+          AppBar(
+            title:Text('Medicine') ,
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+          ),
 
 
 
-
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.grey,
-                      width: 2,),
-                    borderRadius: BorderRadius.circular(30),),
-
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.teal,
-                      width: 2,),
-                    borderRadius: BorderRadius.circular(10),),
-
-                  hintText:'Search',
-                  prefixIcon: Icon(Icons.search)),
-
-
-              keyboardType: TextInputType.name ,
-
-
-
-
-
-
+          Padding(
+            padding: const EdgeInsets.only(
+                top: 23.0, right: 40, left: 40 , bottom: 10),
+            child: Container(
+              height: MediaQuery.of(context).size.height*0.06,
+              decoration: BoxDecoration(
+                  color: AppTheme.notWhite,
+                  borderRadius: BorderRadius.circular(10)),
+              child: TextField(
+                controller: textcontroller,
+                onChanged: onItemChanged,
+                decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'search',
+                    prefixText: "      ",
+                    hintStyle: TextStyle(),
+                    suffixIcon: Icon(Icons.search)),
+                keyboardType: TextInputType.name,
+              ),
             ),
           ),
-        ),
+        ],
       ),
     ),
   ),
@@ -346,17 +333,21 @@ return Scaffold(
 
           return Container(
             height: MediaQuery.of(context).size.height*0.727,
-            child: ListView(
-              children: search_medicine_list.map<Widget>((e){
+            child: RefreshIndicator(
+              onRefresh: getMedicineData,
 
-                c++;
+              child: ListView(
+                children: search_medicine_list.map<Widget>((e){
+
+                  c++;
 
 
 
 
-                  return Tile(map: all_medicine_name_map_data , name: e.toString() , color: color[c] );
+                    return Tile(map: all_medicine_name_map_data , name: e.toString() , color: color[c] );
 
-              }).toList(),
+                }).toList(),
+              ),
             ),
           );
         }

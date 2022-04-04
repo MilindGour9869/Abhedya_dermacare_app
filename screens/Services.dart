@@ -36,6 +36,15 @@ class _State extends State<Services> {
   Map<String ,  Map<String , int>> Vaccination ={};
   Map<String ,  Map<String , int>> By_You ={};
 
+  var service = TextEditingController();
+
+  List all_service_list=[];
+  List search_service_list=[];
+
+
+
+
+
 
   int services_length;
 
@@ -48,12 +57,12 @@ class _State extends State<Services> {
   Map<String,dynamic> map={};
 
 
-  Map<String , Map<String,dynamic>> service_map={};
-
-  List<String> service = ['Consultation' , 'Nursing' , 'Procedures' , 'Vaccination' , 'By You'];
+  static Map<String , int> service_list={};
 
 
-  Future getServiceData()async{
+
+
+    Future  getServiceData()async{
 
     Consulation={};
     Nursing={};
@@ -74,6 +83,9 @@ class _State extends State<Services> {
 
         print(element['id']);
         print(element['doc_id']);
+
+        service_list[ element['service']] = element['charge'];
+
 
 
         if(element['id']=='Consultation')
@@ -129,6 +141,14 @@ class _State extends State<Services> {
 
       );
 
+      all_service_list = service_list.keys.toList();
+
+      setState(() {
+        search_service_list = all_service_list;
+
+      });
+
+
 
 
 
@@ -151,8 +171,6 @@ class _State extends State<Services> {
     // TODO: implement dispose
     super.dispose();
 
-    service=[];
-
   }
 
   @override
@@ -165,105 +183,99 @@ class _State extends State<Services> {
 
   }
 
+  onItemChanged(String value) {
+    setState(() {
+      search_service_list= all_service_list
+          .where((string) => string.toLowerCase().contains(value.toLowerCase()))
+          .toList();
+      if(search_service_list.isEmpty)
+      {
+        search_service_list=[];
+      }
+    });
+  }
+
 
 @override
 Widget build(BuildContext context) {
 return Scaffold(
 
-  appBar: AppBar(
-    title: Text('Services'),
-    backgroundColor: AppTheme.teal,
+  appBar: PreferredSize(
+    preferredSize: Size.fromHeight(200),
+    child: Container(
+      decoration: BoxDecoration(
+          color: AppTheme.teal,
+          borderRadius: BorderRadius.only(
+            bottomRight: Radius.circular(30),
+            bottomLeft: Radius.circular(30),
+          )),
+      height: MediaQuery.of(context).size.height * 0.23,
+
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+
+          AppBar(
+            title:Text('Service') ,
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+          ),
+
+
+
+          Padding(
+            padding: const EdgeInsets.only(
+                top: 23.0, right: 40, left: 40 , bottom: 10),
+            child: Container(
+              height: MediaQuery.of(context).size.height*0.06,
+              decoration: BoxDecoration(
+                  color: AppTheme.notWhite,
+                  borderRadius: BorderRadius.circular(10)),
+              child: TextField(
+                controller: service,
+                onChanged: onItemChanged,
+                decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'search',
+                    prefixText: "      ",
+                    hintStyle: TextStyle(),
+                    suffixIcon: Icon(Icons.search)),
+                keyboardType: TextInputType.name,
+              ),
+            ),
+          ),
+        ],
+      ),
+    ),
   ),
 
   body:Center(
 
     child: Container(
 
-      child: Column(
+      child: service.text == ""?RefreshIndicator(
+        onRefresh: getServiceData,
+        child: ListView(
 
-        children: [
+          children: [
 
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              child: Material(
-                elevation: 2,
-                borderRadius: BorderRadius.circular(10),
-
-                child: ListTile(
-                title: Text('Consultation'),
-                leading: Icon(Icons.arrow_forward_ios , size: MediaQuery.of(context).size.height*0.03, color: AppTheme.teal,),
-                onTap: (){
-
-                  setState(() {
-
-                    consultation = !consultation;
-
-                    print(consultation);
-
-
-
-                  });
-
-                },
-
-                trailing: IconButton(
-                  icon: Icon(Icons.add , color: AppTheme.teal,),
-                  onPressed: (){
-
-                    showDialog(context: context, builder: (context)=>Dialogue(service_name: 'Consultation' , service: service_edit , charges: charges_edit , context: context  ,  size: services_length));
-
-                  },
-                ),
-
-//                  subtitle: consultation==true?Padding(
-//                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-//                    child: Column(
-//                      crossAxisAlignment: CrossAxisAlignment.start,
-//                      children: Consulation.keys.map<Widget>((e) => drop(e , Consulation)).toList(),
-//                    ),
-//                  ):Container(),
-
-
-
-        ),
-              ),
-            ),
-          ), // Consultation
-
-
-          Visibility(
-
-              visible: consultation,
-
+            Padding(
+              padding: const EdgeInsets.all(8.0),
               child: Container(
+                child: Material(
+                  elevation: 2,
+                  borderRadius: BorderRadius.circular(10),
 
-                  child: service_map==null?
-                  CircularProgressIndicator():
-                  DropDown( menu: Consulation, service_id: 'Consultation', c: widget.change, )
-
-
-              )),
-
-
-
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 15.0 ,horizontal: 8),
-            child: Container(
-              child: Material(
-                elevation: 2,
-                borderRadius: BorderRadius.circular(10),
-
-                child: ListTile(
-                  title: Text('Nursing'),
+                  child: ListTile(
+                  title: Text('Consultation'),
                   leading: Icon(Icons.arrow_forward_ios , size: MediaQuery.of(context).size.height*0.03, color: AppTheme.teal,),
                   onTap: (){
 
                     setState(() {
 
-                      nursing = !nursing;
+                      consultation = !consultation;
 
-                     // print(consultation);
+                      print(consultation);
 
 
 
@@ -272,10 +284,10 @@ return Scaffold(
                   },
 
                   trailing: IconButton(
-                    icon: Icon(Icons.add ,color: AppTheme.teal,),
+                    icon: Icon(Icons.add , color: AppTheme.teal,),
                     onPressed: (){
 
-                      showDialog(context: context, builder: (context)=>Dialogue(service_name: 'Nursing' , service: service_edit , charges: charges_edit , context: context  ,  size: services_length));
+                      showDialog(context: context, builder: (context)=>Dialogue(service_name: 'Consultation' , service: service_edit , charges: charges_edit , context: context  ,  size: services_length));
 
                     },
                   ),
@@ -290,24 +302,91 @@ return Scaffold(
 
 
 
+          ),
                 ),
               ),
-            ),
-          ),  //Nursing
-          Visibility(
+            ), // Consultation
 
-              visible: nursing,
 
+            Visibility(
+
+                visible: consultation,
+
+                child: Container(
+
+                    child:
+                    DropDown( menu: Consulation, service_id: 'Consultation', c: widget.change, )
+
+
+                )),
+
+
+
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 15.0 ,horizontal: 8),
               child: Container(
+                child: Material(
+                  elevation: 2,
+                  borderRadius: BorderRadius.circular(10),
 
-                  child: DropDown( menu : Nursing, service_id: 'Nursing',))),
+                  child: ListTile(
+                    title: Text('Nursing'),
+                    leading: Icon(Icons.arrow_forward_ios , size: MediaQuery.of(context).size.height*0.03, color: AppTheme.teal,),
+                    onTap: (){
+
+                      setState(() {
+
+                        nursing = !nursing;
+
+                       // print(consultation);
+
+
+
+                      });
+
+                    },
+
+                    trailing: IconButton(
+                      icon: Icon(Icons.add ,color: AppTheme.teal,),
+                      onPressed: (){
+
+                        showDialog(context: context, builder: (context)=>Dialogue(service_name: 'Nursing' , service: service_edit , charges: charges_edit , context: context  ,  size: services_length));
+
+                      },
+                    ),
+
+//                  subtitle: consultation==true?Padding(
+//                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+//                    child: Column(
+//                      crossAxisAlignment: CrossAxisAlignment.start,
+//                      children: Consulation.keys.map<Widget>((e) => drop(e , Consulation)).toList(),
+//                    ),
+//                  ):Container(),
+
+
+
+                  ),
+                ),
+              ),
+            ),  //Nursing
+            Visibility(
+
+                visible: nursing,
+
+                child: Container(
+
+                    child: DropDown( menu : Nursing, service_id: 'Nursing',))),
 
 
 
 
-        ],
+          ],
 
-      ),
+        ),
+      ):Container(
+
+
+      )
 
     ),
 

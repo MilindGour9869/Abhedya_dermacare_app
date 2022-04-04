@@ -341,14 +341,18 @@ class _State extends State<Patient> {
                   )),
               height: MediaQuery.of(context).size.height * 0.28,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    color: Colors.transparent,
-                    height: 45,
-                    child: Row(
+                  AppBar(
+                    backgroundColor: Colors.transparent,
+                    elevation: 0,
+
+
+
+                    title: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+
                         IconButton(
                           onPressed: () {
                             Scaffold.of(context).openDrawer();
@@ -356,69 +360,72 @@ class _State extends State<Patient> {
                           icon: Icon(Icons.menu),
                         ),
 
-                        // ignore: prefer_const_constructors
-                        Padding(
-                          padding: EdgeInsets.only(right: 10),
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(vertical: 8.0),
-                            child: ChoiceChip(
-                              backgroundColor: AppTheme.offwhite,
-                              label: Text('Today'),
-                              selected: false,
-                              selectedColor: Colors.teal,
-                              onSelected: (bool selected) {},
-                            ),
-                          ),
+
+
+                        ChoiceChip(
+                          backgroundColor: AppTheme.offwhite,
+                          label: Text('Today'),
+                          selected: false,
+                          selectedColor: Colors.teal,
+                          onSelected: (bool selected) {},
                         ),
+
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 40.0),
-                    child: Container(
-                      color: Colors.transparent,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            greeting(),
-                            style: TextStyle(fontSize: 15),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Text(
-                            'Dr. Mahi Ram Bishnoi',
-                            style: TextStyle(fontSize: 23),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                        ],
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 50.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+
+                          children: [
+
+                            Text(
+                              greeting(),
+                              style: TextStyle(fontSize: MediaQuery.of(context).size.height*0.03),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              'Dr. Mahi Ram Bishnoi',
+                              style: TextStyle(fontSize: MediaQuery.of(context).size.height*0.04),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+
+                          ],
+                        ),
                       ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        top: 23.0, right: 40, left: 40),
-                    child: Container(
-                      height: 40,
-                      decoration: BoxDecoration(
-                          color: AppTheme.notWhite,
-                          borderRadius: BorderRadius.circular(10)),
-                      child: TextField(
-                        controller: textcontroller,
-                        onChanged: onItemChanged,
-                        decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: 'search',
-                            prefixText: "      ",
-                            hintStyle: TextStyle(),
-                            suffixIcon: Icon(Icons.search)),
-                        keyboardType: TextInputType.name,
+
+
+
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            top: 23.0, right: 40, left: 40 , bottom: 10),
+                        child: Container(
+                          height: MediaQuery.of(context).size.height*0.06,
+                          decoration: BoxDecoration(
+                              color: AppTheme.notWhite,
+                              borderRadius: BorderRadius.circular(10)),
+                          child: TextField(
+                            controller: textcontroller,
+                            onChanged: onItemChanged,
+                            decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'search',
+                                prefixText: "      ",
+                                hintStyle: TextStyle(),
+                                suffixIcon: Icon(Icons.search)),
+                            keyboardType: TextInputType.name,
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 ],
               )),
