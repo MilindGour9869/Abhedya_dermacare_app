@@ -230,7 +230,7 @@ class _State extends State<Patient> {
                 leading: CircleAvatar(
                   child: Text(
                     data.name == null ? "?" : data.name[0].toUpperCase(),
-                    style: TextStyle(color: AppTheme.white),
+                    style: TextStyle(color: AppTheme.black),
                   ),
                   backgroundColor: AppTheme.teal,
                 ),
@@ -353,7 +353,7 @@ class _State extends State<Patient> {
                           onPressed: () {
                             Scaffold.of(context).openDrawer();
                           },
-                          icon: Icon(Icons.menu),
+                          icon: Icon(Icons.menu , color: AppTheme.black,),
                         ),
 
 
@@ -508,7 +508,7 @@ class _State extends State<Patient> {
             },
             child: Icon(
               Icons.add,
-              color: AppTheme.white,
+              color: AppTheme.black,
             ),
             backgroundColor: AppTheme.teal),
         bottomNavigationBar: BottomAppBar(

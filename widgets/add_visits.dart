@@ -8,6 +8,7 @@ import 'package:flutter_app/classes/Patient_name_list.dart';
 
 
 import 'package:date_format/date_format.dart';
+import 'package:flutter_app/widgets/service_search_list.dart';
 
 
 class AddVisits extends StatefulWidget {
@@ -878,6 +879,62 @@ setState(() {
                   ),
                 ), // Blood-Group
 
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Material(
+                    borderRadius: BorderRadius.circular(10),
+                    elevation: 2,
+
+
+                    child: ListTile(
+
+                      title: Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Text(group),
+                      ),
+                      leading: Icon(Icons.add),
+
+                      trailing: IconButton(onPressed: ()async{
+
+
+
+                        // print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
+
+
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return Service_Search_List();
+
+                            }).then((value)async{
+
+                          print(value);
+
+                          if(value != null)
+                          {
+                            setState(() {
+                              Group = value;
+                            });
+
+
+                          }
+                        });
+
+
+
+
+
+
+
+
+
+
+                      }, icon: Icon(Icons.arrow_drop_down_circle_outlined , color: Colors.black,)),
+
+
+                    ),
+                  ),
+                ),
 
 
 

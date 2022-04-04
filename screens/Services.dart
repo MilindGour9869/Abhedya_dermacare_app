@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/classes/service_dialogue.dart';
 import 'package:flutter_app/default.dart';
 
 import 'package:flutter_app/widgets/drop_down_menu_button.dart';
@@ -25,7 +26,7 @@ class _State extends State<Services> {
   bool nursing = false;
   bool procedures = false;
   bool vacination = false;
-  bool miscellaneous = false;
+  bool by_you = false;
 
   var service_edit = TextEditingController();
   var charges_edit = TextEditingController();
@@ -36,7 +37,9 @@ class _State extends State<Services> {
   Map<String ,  Map<String , int>> Vaccination ={};
   Map<String ,  Map<String , int>> By_You ={};
 
+  var search_edit = TextEditingController();
   var service = TextEditingController();
+  var charge = TextEditingController();
 
   List all_service_list=[];
   List search_service_list=[];
@@ -57,7 +60,7 @@ class _State extends State<Services> {
   Map<String,dynamic> map={};
 
 
-  static Map<String , int> service_list={};
+  Map<String , Map<String , String>> service_list={};
 
 
 
@@ -69,6 +72,8 @@ class _State extends State<Services> {
     Procedures={};
     Vaccination = {};
     By_You={};
+    service_list={};
+
 
 
 
@@ -84,7 +89,12 @@ class _State extends State<Services> {
         print(element['id']);
         print(element['doc_id']);
 
-        service_list[ element['service']] = element['charge'];
+        service_list[element['service']] = {
+          element['doc_id'] : element['id']
+        };
+
+
+
 
 
 
@@ -142,6 +152,10 @@ class _State extends State<Services> {
       );
 
       all_service_list = service_list.keys.toList();
+
+
+
+
 
       setState(() {
         search_service_list = all_service_list;
@@ -232,7 +246,7 @@ return Scaffold(
                   color: AppTheme.notWhite,
                   borderRadius: BorderRadius.circular(10)),
               child: TextField(
-                controller: service,
+                controller: search_edit,
                 onChanged: onItemChanged,
                 decoration: InputDecoration(
                     border: InputBorder.none,
@@ -253,7 +267,9 @@ return Scaffold(
 
     child: Container(
 
-      child: service.text == ""?RefreshIndicator(
+      child: search_edit.text == ""?
+
+      RefreshIndicator(
         onRefresh: getServiceData,
         child: ListView(
 
@@ -300,8 +316,6 @@ return Scaffold(
                 ),
               ),
             ), // Consultation
-
-
             Visibility(
 
                 visible: consultation,
@@ -313,8 +327,6 @@ return Scaffold(
 
 
                 )),
-
-
 
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 15.0 ,horizontal: 8),
@@ -349,14 +361,6 @@ return Scaffold(
                       },
                     ),
 
-//                  subtitle: consultation==true?Padding(
-//                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-//                    child: Column(
-//                      crossAxisAlignment: CrossAxisAlignment.start,
-//                      children: Consulation.keys.map<Widget>((e) => drop(e , Consulation)).toList(),
-//                    ),
-//                  ):Container(),
-
 
 
                   ),
@@ -371,48 +375,303 @@ return Scaffold(
 
                     child: DropDown( menu : Nursing, service_id: 'Nursing',))),
 
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 15.0 ,horizontal: 8),
+              child: Container(
+                child: Material(
+                  elevation: 2,
+                  borderRadius: BorderRadius.circular(10),
+
+                  child: ListTile(
+                    title: Text('Procedures'),
+                    leading: Icon(Icons.arrow_forward_ios , size: MediaQuery.of(context).size.height*0.03, color: AppTheme.teal,),
+                    onTap: (){
+
+                      setState(() {
+
+                        procedures = !procedures;
+
+                        // print(consultation);
+
+
+
+                      });
+
+                    },
+
+                    trailing: IconButton(
+                      icon: Icon(Icons.add ,color: AppTheme.teal,),
+                      onPressed: (){
+
+                        showDialog(context: context, builder: (context)=>Dialogue(service_name: 'Procedures' , service: service_edit , charges: charges_edit , context: context  ,  size: services_length));
+
+                      },
+                    ),
+
+
+
+                  ),
+                ),
+              ),
+            ),  //Procedures
+            Visibility(
+
+                visible: procedures,
+
+                child: Container(
+
+                    child: DropDown( menu : Procedures, service_id: 'Procedures',))),
+
+
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 15.0 ,horizontal: 8),
+              child: Container(
+                child: Material(
+                  elevation: 2,
+                  borderRadius: BorderRadius.circular(10),
+
+                  child: ListTile(
+                    title: Text('Vaccination'),
+                    leading: Icon(Icons.arrow_forward_ios , size: MediaQuery.of(context).size.height*0.03, color: AppTheme.teal,),
+                    onTap: (){
+
+                      setState(() {
+
+                        vacination = !vacination;
+
+                        // print(consultation);
+
+
+
+                      });
+
+                    },
+
+                    trailing: IconButton(
+                      icon: Icon(Icons.add ,color: AppTheme.teal,),
+                      onPressed: (){
+
+                        showDialog(context: context, builder: (context)=>Dialogue(service_name: 'Vaccination' , service: service_edit , charges: charges_edit , context: context  ,  size: services_length));
+
+                      },
+                    ),
+
+
+
+                  ),
+                ),
+              ),
+            ),  //Vaccination
+            Visibility(
+
+                visible: vacination,
+
+                child: Container(
+
+                    child: DropDown( menu : Vaccination, service_id: 'Vaccination',))),
+
+
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 15.0 ,horizontal: 8),
+              child: Container(
+                child: Material(
+                  elevation: 2,
+                  borderRadius: BorderRadius.circular(10),
+
+                  child: ListTile(
+                    title: Text('By You'),
+                    leading: Icon(Icons.arrow_forward_ios , size: MediaQuery.of(context).size.height*0.03, color: AppTheme.teal,),
+                    onTap: (){
+
+                      setState(() {
+
+                         by_you = !by_you;
+
+                        // print(consultation);
+
+
+
+                      });
+
+                    },
+
+                    trailing: IconButton(
+                      icon: Icon(Icons.add ,color: AppTheme.teal,),
+                      onPressed: (){
+
+                        showDialog(context: context, builder: (context)=>Dialogue(service_name: 'By You' , service: service_edit , charges: charges_edit , context: context  ,  size: services_length));
+
+                      },
+                    ),
+
+
+
+                  ),
+                ),
+              ),
+            ),  //By You
+            Visibility(
+
+                visible: by_you,
+
+                child: Container(
+
+                    child: DropDown( menu : By_You, service_id: 'By_You',))),
+
+
+
 
 
 
           ],
 
         ),
-      ):Container(
+      ):
+
+      Container(
 
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Material(
             elevation: 2,
             borderRadius: BorderRadius.circular(10),
-            child: Column(
+            child: SingleChildScrollView(
+              child: Column(
 
 
-              children: search_service_list.map<Widget>((e) => ListTile(
-                title: Text(e.toString()),
-                leading: Icon(Icons.arrow_forward_ios , size: MediaQuery.of(context).size.height*0.03, color: AppTheme.teal,),
+                children: search_service_list.map<Widget>((e){
+
+                  List a = service_list[e].keys.toList();
+                  List b = service_list[e].values.toList();
+                  List c;
 
 
-                trailing: IconButton(
-                  icon: Icon(Icons.delete_outline_outlined , color: AppTheme.teal,),
-                  onPressed: (){
+                  service.text = e.toString();
+
+                 if(b[0]== "Consultation")
+                   {
+                     c = Consulation[a[0].toString()].values.toList();
+                   }
+                  else if(b[0]== "Nursing")
+                  {
+                    c = Nursing[a[0].toString()].values.toList();
+                  }
+                 else  if(b[0]== "Procedures")
+                  {
+                    c = Procedures[a[0].toString()].values.toList();
+                  }
+                 else  if(b[0]== "Vaccination")
+                  {
+                    c = Vaccination[a[0].toString()].values.toList();
+                  }
+                  else if(b[0]== "By_You")
+                  {
+                    c = By_You[a[0].toString()].values.toList();
+                  }
+
+                  charge.text = c[0].toString();
 
 
+                  return  GestureDetector(
 
+                  onTap: (){
 
+                    showDialog(context: context, builder: (context)=>ServiceDialogue.Dialogue(
+                      service: service,
+                      charges: charge,
+                      service_name: b[0].toString(),
+                      doc_id: a[0].toString(),
+                      context: context,
+                    ));
                   },
-                ),
-
-//                  subtitle: consultation==true?Padding(
-//                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-//                    child: Column(
-//                      crossAxisAlignment: CrossAxisAlignment.start,
-//                      children: Consulation.keys.map<Widget>((e) => drop(e , Consulation)).toList(),
-//                    ),
-//                  ):Container(),
+                  child: ListTile(
+                    title: Text(e.toString()),
+                    leading: Icon(Icons.arrow_forward_ios , size: MediaQuery.of(context).size.height*0.03, color: AppTheme.teal,),
 
 
+                    trailing: IconButton(
+                      icon: Icon(Icons.delete_outline_outlined , color: AppTheme.teal,),
+                      onPressed: ()async{
 
-              )).toList(),
+
+
+                        var doc = await FirebaseFirestore.instance.collection('Services').doc(a[0]);
+
+                        showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              titlePadding: EdgeInsets.all(0),
+                              title:
+                              Center(child: Text('Are you Sure ?')),
+                              actions: [
+                                Row(
+                                  children: [
+                                    Container(
+                                      child: TextButton(
+                                          onPressed: () {
+                                             doc.delete();
+
+
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text(
+                                            'yes',
+                                            style: TextStyle(
+                                                color: Colors.white),
+                                          )),
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                        BorderRadius.circular(15),
+                                        color: AppTheme.green,
+                                      ),
+                                    ),
+                                    Container(
+                                      child: TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text(
+                                            'no',
+                                            style: TextStyle(
+                                                color: Colors.white),
+                                          )),
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                        BorderRadius.circular(15),
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  ],
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                )
+                              ],
+                            ));
+
+
+
+
+
+
+
+
+
+
+
+
+
+                      },
+                    ),
+
+
+
+
+
+                  ),
+                );
+
+                }).toList(),
+              ),
             ),
           ),
         ),
@@ -430,7 +689,7 @@ return Scaffold(
 Widget Dialogue ({String service_name , TextEditingController service , TextEditingController charges , BuildContext context , int size}){
 
   return Padding(
-    padding: EdgeInsets.symmetric(horizontal: 40 , vertical:  150),
+    padding: EdgeInsets.symmetric(horizontal: 40 , vertical:  200),
     child: Material(
       child: Container(
         color: Colors.white,
@@ -444,7 +703,7 @@ Widget Dialogue ({String service_name , TextEditingController service , TextEdit
 
               SizedBox(height: 10,),
 
-              Text(service_name , style: TextStyle(fontWeight: FontWeight.bold),),
+              Text(service_name , style: TextStyle(fontWeight: FontWeight.bold , fontSize: MediaQuery.of(context).size.height*0.03),),
               SizedBox(height: 20,),
 
               Material(
@@ -573,15 +832,5 @@ Widget Dialogue ({String service_name , TextEditingController service , TextEdit
     ));
 }
 
-Widget drop (String menu ,Map<String , int> map )
-{
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      Text(menu),
-      Text(map[menu].toString()),
 
-    ],
-  );
-}
 

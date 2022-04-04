@@ -40,7 +40,7 @@ class ListSearchState extends State<ListSearch> {
 
 
   Map<String,bool> group_search_color_map={};
-  Map<String,String> all_data ={};
+  Map<String,String> all_data_doc_id ={};
 
 
   List<String> group_updated_result=[];
@@ -168,7 +168,7 @@ class ListSearchState extends State<ListSearch> {
 
               print(element[widget.group]);
 
-              all_data[element[widget.group]] = element['id'].toString();
+              all_data_doc_id[element[widget.group]] = element['id'].toString();
 
 
 
@@ -186,7 +186,7 @@ class ListSearchState extends State<ListSearch> {
             print('\n\naaa');
 
 
-            print(all_data);
+            print(all_data_doc_id);
 
 
 
@@ -448,7 +448,7 @@ class ListSearchState extends State<ListSearch> {
                                        if(element[widget.group]==data.toString())
                                          {
 
-                                           i  = all_data[data.toString()];
+                                           i  = all_data_doc_id[data.toString()];
 
 
 
@@ -527,7 +527,7 @@ class ListSearchState extends State<ListSearch> {
                                                    group_search_color_map.remove(data.toString());
                                                    group_search_color_map[text.text]=false;
 
-                                                   GroupDataUpdate(text.text, all_data[data.toString()]);
+                                                   GroupDataUpdate(text.text, all_data_doc_id[data.toString()]);
                                                                });
 
 
