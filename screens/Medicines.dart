@@ -245,7 +245,7 @@ return Scaffold(
     preferredSize: Size.fromHeight(200),
     child: Container(
       decoration: BoxDecoration(
-          color: AppTheme.green,
+          color: AppTheme.teal,
           borderRadius: BorderRadius.only(
             bottomRight: Radius.circular(30),
             bottomLeft: Radius.circular(30),
@@ -367,8 +367,8 @@ return Scaffold(
        ));
 
     },
-    child: Icon(Icons.add , color: Colors.black,),
-    backgroundColor: AppTheme.green,
+    child: Icon(Icons.add , color: AppTheme.white,),
+    backgroundColor: AppTheme.teal,
   ),
   bottomNavigationBar: BottomAppBar(
 

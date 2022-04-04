@@ -60,10 +60,6 @@ class _State extends State<Patient> {
             print(value);
 
             if (value == 'save') {
-              patient_instance_list = [];
-              all_patient_name_list = [];
-              search_patient_list = [];
-              map_name_patientInstance_list = {};
 
               patient_data();
             }
@@ -124,7 +120,7 @@ class _State extends State<Patient> {
                                             decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(15),
-                                              color: Colors.redAccent,
+                                              color: AppTheme.green,
                                             ),
                                           ),
                                           Container(
@@ -234,7 +230,7 @@ class _State extends State<Patient> {
                 leading: CircleAvatar(
                   child: Text(
                     data.name == null ? "?" : data.name[0].toUpperCase(),
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(color: AppTheme.white),
                   ),
                   backgroundColor: AppTheme.teal,
                 ),
@@ -512,7 +508,7 @@ class _State extends State<Patient> {
             },
             child: Icon(
               Icons.add,
-              color: Colors.black,
+              color: AppTheme.white,
             ),
             backgroundColor: AppTheme.teal),
         bottomNavigationBar: BottomAppBar(
@@ -527,64 +523,3 @@ class _State extends State<Patient> {
     );
   }
 }
-
-//class Patient_Tile extends StatelessWidget {
-//   Patient_Tile({
-//    Key key, this.name , this.age , this.mobile , this.date
-//  }) : super(key: key);
-//
-//  String name , date  ;
-//  int mobile , age ;
-//
-//
-//  @override
-//  Widget build(BuildContext context) {
-//    return ListTile(
-//      title: Text(name==null?"?":name),
-//
-//      subtitle: Column(
-//        crossAxisAlignment: CrossAxisAlignment.start,
-//
-//        children: [
-//          SizedBox(height: 10,),
-//          Row(
-//            mainAxisAlignment: MainAxisAlignment.start,
-//            children: [
-//              Icon(Icons.cake_outlined , color: Colors.grey,size: 20,),
-//              SizedBox(width: 5,),
-//              Text(age==null?"?":age.toString()),
-//              SizedBox(width: 10,),
-//              Icon(Icons.call , color: Colors.grey,size: 20,),
-//              SizedBox(width: 5,),
-//              Text(mobile==null?"?":mobile.toString())
-//            ],
-//          ),
-//
-//
-//          SizedBox(height: 10,),
-//          Text('last visited on : ${date==null?"?":date}' , style: TextStyle(fontStyle: FontStyle.italic),),
-//
-//          Row(
-//           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//            children: [
-//              TextButton(onPressed: (){}, child: Text('Visits')),
-//              TextButton(onPressed: (){}, child: Text('Payment')),
-//              TextButton(onPressed: (){}, child: Text('Documents')),
-//            ],
-//          )
-//
-//        ],
-//      ),
-//
-//      leading: CircleAvatar(
-//        child: Text(name[0].toUpperCase()),
-//
-//
-//      ),
-//
-//
-//
-//
-//    );
-//  }
-//}

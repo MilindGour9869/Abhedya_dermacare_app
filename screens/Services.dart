@@ -292,13 +292,7 @@ return Scaffold(
                     },
                   ),
 
-//                  subtitle: consultation==true?Padding(
-//                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-//                    child: Column(
-//                      crossAxisAlignment: CrossAxisAlignment.start,
-//                      children: Consulation.keys.map<Widget>((e) => drop(e , Consulation)).toList(),
-//                    ),
-//                  ):Container(),
+
 
 
 
@@ -385,7 +379,43 @@ return Scaffold(
         ),
       ):Container(
 
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Material(
+            elevation: 2,
+            borderRadius: BorderRadius.circular(10),
+            child: Column(
 
+
+              children: search_service_list.map<Widget>((e) => ListTile(
+                title: Text(e.toString()),
+                leading: Icon(Icons.arrow_forward_ios , size: MediaQuery.of(context).size.height*0.03, color: AppTheme.teal,),
+
+
+                trailing: IconButton(
+                  icon: Icon(Icons.delete_outline_outlined , color: AppTheme.teal,),
+                  onPressed: (){
+
+
+
+
+                  },
+                ),
+
+//                  subtitle: consultation==true?Padding(
+//                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+//                    child: Column(
+//                      crossAxisAlignment: CrossAxisAlignment.start,
+//                      children: Consulation.keys.map<Widget>((e) => drop(e , Consulation)).toList(),
+//                    ),
+//                  ):Container(),
+
+
+
+              )).toList(),
+            ),
+          ),
+        ),
       )
 
     ),
