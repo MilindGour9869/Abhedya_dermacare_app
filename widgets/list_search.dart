@@ -115,15 +115,17 @@ class ListSearchState extends State<ListSearch> {
      if(group!=group_result)
      {
        // if removed from the list
-       doc.update({
+       doc.set({
 
          widget.group : [],
 
-       });
+       } , SetOptions(merge: true) );
 
-       doc.update({
+
+       // to add
+       doc.set({
          widget.group : FieldValue.arrayUnion(group)
-       } );
+       } , SetOptions(merge: true));
      }
 
    }

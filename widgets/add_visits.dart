@@ -42,10 +42,12 @@ class _AddVisitsState extends State<AddVisits> {
   String clinical_findings="Clinical Findings";
   String group = "Group";
   String blood_group="Blood Group";
+  String service = "Services";
+  String medicine = "Medicine";
 
-  String medicines="Medicines";
 
-  //8
+
+  //10
   List<String> Complaint =[];
   List<String> Diagnosis =[];
   List<String> Advices =[];
@@ -54,6 +56,8 @@ class _AddVisitsState extends State<AddVisits> {
   List<String> Clinical_findings =[];
   List<String> Group =[];
   List<String> Blood_group =[];
+  List<String> Services =[];
+  List<String> Medicine = [];
 
 
 
@@ -178,6 +182,18 @@ setState(() {
 
     });
   }
+  if(widget.visit_data.services != null && widget.visit_data.services.isNotEmpty)
+  {
+
+
+
+    widget.visit_data.services.forEach((element) {
+
+      Services.add(element);
+
+
+    });
+  }
 
 
 
@@ -245,6 +261,7 @@ setState(() {
               var visit_doc = FirebaseFirestore.instance.collection('Patient').doc(widget.patient_data.doc_id).collection('visits').doc(formatDate(visit_date.toDate(), [dd, '-', mm, '-', yyyy ]).toString());
               var patient_doc = FirebaseFirestore.instance.collection('Patient').doc(widget.patient_data.doc_id);
 
+
               final json = {
                 'complaint' : FieldValue.arrayUnion(Complaint),
                 'investigation' : FieldValue.arrayUnion(Investigation),
@@ -254,6 +271,9 @@ setState(() {
                 'allergies': FieldValue.arrayUnion(Allergies),
                 'blood-group' : FieldValue.arrayUnion(Blood_group),
                 'group' : FieldValue.arrayUnion(Group),
+                'service' : FieldValue.arrayUnion(Services),
+
+
 
 
 
@@ -890,7 +910,7 @@ setState(() {
 
                       title: Padding(
                         padding: const EdgeInsets.only(top: 8.0),
-                        child: Text(group),
+                        child: Text(service),
                       ),
                       leading: Icon(Icons.add),
 
@@ -904,7 +924,10 @@ setState(() {
                         showDialog(
                             context: context,
                             builder: (context) {
-                              return Service_Search_List();
+                              return Service_Search_List( patient_data: widget.patient_data , date: formatDate(visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString(),
+                              group: 'service',
+                                Group: 'Services',
+                              );
 
                             }).then((value)async{
 
@@ -913,7 +936,7 @@ setState(() {
                           if(value != null)
                           {
                             setState(() {
-                              Group = value;
+                              Services = value;
                             });
 
 

@@ -1,11 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/classes/Patient_name_list.dart';
 import 'package:flutter_app/classes/service_dialogue.dart';
 
 import '../default.dart';
 
 
 class Service_Search_List extends StatefulWidget {
+
+  Patient_name_data_list patient_data ;
+  String date , group , Group;
+
+
+  Service_Search_List({this.patient_data ,this.date , this.group , this.Group });
+
   @override
   _Service_Search_ListState createState() => _Service_Search_ListState();
 }
@@ -18,6 +26,44 @@ class _Service_Search_ListState extends State<Service_Search_List> {
 
   List all_service_list=[];
   List search_service_list=[];
+
+  List<String> group_updated_result=[];
+  List group_result=[];
+
+
+  Future Add_GroupDataList_to_Patient(List group)async{
+
+    if(widget.date != null && group != [])
+    {
+      final doc =await FirebaseFirestore.instance.collection('Patient').doc(widget.patient_data.doc_id).collection('visits').doc(widget.date);
+
+// print(group_result==group);
+
+
+
+      if(group!=group_result)
+      {
+        // if removed from the list
+        doc.set({
+
+          widget.group : [],
+
+        } , SetOptions(merge: true) );
+
+
+        // to add
+        doc.set({
+          widget.group : FieldValue.arrayUnion(group)
+        } , SetOptions(merge: true));
+      }
+
+
+    }
+
+// print(group.isEmpty);
+
+
+  }
 
 
 
@@ -39,13 +85,70 @@ class _Service_Search_ListState extends State<Service_Search_List> {
 
       });
 
+      if(widget.patient_data.doc_id != null && widget.date != null )
+      {
+        try{
+           FirebaseFirestore.instance.collection('Patient').doc(widget.patient_data.doc_id).collection('visits').doc(widget.date).get().then((value) {
+
+
+            if(value.data()!=null)
+            {
+              print(value);
+
+              if(value.data().containsKey(widget.group))
+              { print('qq');
+              if(value.data()[widget.group]!=[])
+              { print('ww');
+              List a = value.data()[widget.group];
+              print('Color change');
+              a.forEach((element) {
+
+                group_updated_result.add(element);
+                group_result.add(element);
+
+
+
+              });
+              }
+              }
+            }
+            else
+            {
+              print('Patient doc called , in else');
+
+            }
+          });
+        }
+        catch (e){
+          print('error in Color change');
+          print(e);
+        }
+      }
+      else{
+        print('widget.patient_doc_id is null');
+      }
+
+
+
+
 
 
       all_service_list = service_list.keys.toList();
 
+      if(group_updated_result.isNotEmpty){
+        group_updated_result.forEach((element) {
+
+          all_service_list.remove(element);
+          all_service_list.add(element);
+
+
+
+        });
+      }
+
 
       setState(() {
-        search_service_list=all_service_list;
+        search_service_list=all_service_list.reversed.toList();
 
       });
 
@@ -73,6 +176,19 @@ class _Service_Search_ListState extends State<Service_Search_List> {
     // TODO: implement initState
     super.initState();
     getServiceData();
+  }
+
+  @override
+  void dispose() async{
+    // TODO: implement dispose
+    super.dispose();
+    if(widget.patient_data.doc_id != null)
+    {
+      await Add_GroupDataList_to_Patient(group_updated_result);
+
+    }
+
+
   }
 
 
@@ -152,8 +268,22 @@ class _Service_Search_ListState extends State<Service_Search_List> {
                       leading: CircleAvatar(child: Icon(Icons.arrow_forward_ios , size: MediaQuery.of(context).size.height*0.03, color: AppTheme.white,)),
                       onTap: (){
 
+
+
                        setState(() {
                          m['color'] = ! m['color'];
+                         if(m['color'] == true)
+                         {
+                           group_updated_result.add(e);
+
+
+
+                         }
+                         else if(m['color'] == false)
+                           {
+                             group_updated_result.remove(e);
+                           }
+
                        });
 
 

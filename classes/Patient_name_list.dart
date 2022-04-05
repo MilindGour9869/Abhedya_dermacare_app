@@ -22,6 +22,7 @@ class Patient_name_data_list{
   List diagnosis=[];
 
   List medicines=[];
+  List services=[];
   List vital_info=[];
 
   List allergies=[];
@@ -40,7 +41,7 @@ class Patient_name_data_list{
   Patient_name_data_list({
 
     this.doc_id , this.name  , this.DOB , this.recent_visit , this.gender , this.email , this.address  , this.age , this.mobile , this.group , this.blood_group , this.image,
-    this.visit_date , this.complaints, this.clinical_finding , this.allergies , this.diagnosis , this.internal_notes , this.investigation , this.vital_info , this.medicines , this.advices
+    this.visit_date , this.complaints, this.clinical_finding , this.allergies , this.diagnosis , this.internal_notes , this.investigation , this.vital_info , this.medicines , this.advices , this.services
   });
 
   static Patient_name_data_list fromJson(Map<String , dynamic> json){
@@ -107,6 +108,8 @@ class Patient_name_data_list{
       internal_notes: json['internal_notes'],
 
       medicines:  json['medicines'],
+      services: json['service'],
+
       vital_info: json['vital-info'],
 
     );
