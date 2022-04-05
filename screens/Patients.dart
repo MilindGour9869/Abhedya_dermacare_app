@@ -262,7 +262,10 @@ class _State extends State<Patient> {
           print('aa');
         });
 
-        print(patient_instance_list);
+        patient_instance_list.forEach((element) {
+          print(element.hashCode);
+        });
+
 
         setState(() {
           all_patient_name_list =

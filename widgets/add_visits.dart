@@ -214,7 +214,9 @@ setState(() {
     super.initState();
     print('init');
 
-    print(widget.patient_data.doc_id);
+
+
+    print(widget.patient_data.hashCode);
 
 
     if(widget.visit_data !=null)

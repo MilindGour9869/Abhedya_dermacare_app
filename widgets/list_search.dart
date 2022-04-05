@@ -321,11 +321,11 @@ class ListSearchState extends State<ListSearch> {
      group_size=0;
 
 
-     if(widget.patient_doc_id != null)
-       {
-         await Add_GroupDataList_to_Patient(group_updated_result);
-
-       }
+//     if(widget.patient_doc_id != null)
+//       {
+//         await Add_GroupDataList_to_Patient(group_updated_result);
+//
+//       }
 
 
 

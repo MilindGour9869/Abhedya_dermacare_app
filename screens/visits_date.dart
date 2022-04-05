@@ -84,6 +84,9 @@ class _VisitsDateState extends State<VisitsDate> {
 
 
        dt=date;
+
+       print(dt);
+
      });
 
 
