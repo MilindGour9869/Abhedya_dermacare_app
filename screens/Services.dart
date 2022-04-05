@@ -529,6 +529,7 @@ return Scaffold(
       ):
 
       Container(
+        alignment: Alignment.topCenter,
 
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -595,7 +596,7 @@ return Scaffold(
 
 
 
-                        var doc = await FirebaseFirestore.instance.collection('Services').doc(a[0]);
+
 
                         showDialog(
                             context: context,
@@ -608,7 +609,10 @@ return Scaffold(
                                   children: [
                                     Container(
                                       child: TextButton(
-                                          onPressed: () {
+                                          onPressed: ()async {
+
+                                            var doc = await FirebaseFirestore.instance.collection('Services').doc(a[0]);
+
                                              doc.delete();
 
 

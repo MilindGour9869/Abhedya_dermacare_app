@@ -36,6 +36,8 @@ class ListSearchState extends State<ListSearch> {
   List group_all_data_list =[] ;
   List group_search_data_list=[];
 
+  Map<String , Map<String , dynamic>> all_map_list={};
+
   int group_size=0;
 
 
@@ -152,8 +154,16 @@ class ListSearchState extends State<ListSearch> {
             await querySnapshot.docs.forEach((doc) {
 
              group_mapData_list.add(doc.data());
+             all_map_list[doc.id]= doc.data();
+
+
 
            });
+
+            print('\nfff');
+
+            print(all_map_list);
+
 
             group_all_data_list = group_mapData_list.map((d) {
              return d[widget.group];
@@ -481,7 +491,7 @@ class ListSearchState extends State<ListSearch> {
                                       IconButton(onPressed: (){
 
 
-                                        int i;
+                                        String i;
                                         group_mapData_list.forEach((element) {
                                           if(element[widget.group]==data.toString())
                                           {
@@ -504,7 +514,7 @@ class ListSearchState extends State<ListSearch> {
                                                   autofocus: true,
                                                   onEditingComplete: (){
 
-                                                    int i;
+                                                    String i;
 
 
                                                     group_mapData_list.forEach((element) {
