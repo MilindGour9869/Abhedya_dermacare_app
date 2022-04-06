@@ -45,13 +45,13 @@ class _State extends State<Patient> {
     return 'good Evening ,';
   }
 
-  Widget Tile(Patient_name_data_list data) => GestureDetector(
+  Widget Tile(Patient_name_data_list patient_data_tile) => GestureDetector(
         onTap: () {
           Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => AddPatient(
-                        patient_data: data,
+                        patient_data: patient_data_tile,
                         all_patient_name_list: all_patient_name_list,
                         icon_tap: false,
                       ))).then((value) {
@@ -80,7 +80,7 @@ class _State extends State<Patient> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      data.name == null ? "?" : data.name,
+                      patient_data_tile.name == null ? "?" : patient_data_tile.name,
                       style: TextStyle(fontSize: 15),
                     ),
                     IconButton(
@@ -99,15 +99,15 @@ class _State extends State<Patient> {
                                                 onPressed: () {
                                                   setState(() {
                                                     patient_instance_list
-                                                        .remove(data);
+                                                        .remove(patient_data_tile);
                                                     all_patient_name_list
-                                                        .remove(data.name);
+                                                        .remove(patient_data_tile.name);
                                                     search_patient_list
-                                                        .remove(data.name);
+                                                        .remove(patient_data_tile.name);
                                                     map_name_patientInstance_list
-                                                        .remove(data.name);
+                                                        .remove(patient_data_tile.name);
                                                     PatientDataDelete(
-                                                        data.doc_id);
+                                                        patient_data_tile.doc_id);
                                                   });
 
                                                   Navigator.pop(context);
@@ -164,7 +164,7 @@ class _State extends State<Patient> {
                         SizedBox(
                           width: 5,
                         ),
-                        Text(data.age == null ? "20" : data.age.toString()),
+                        Text(patient_data_tile.age == null ? "20" : patient_data_tile.age.toString()),
                         SizedBox(
                           width: 10,
                         ),
@@ -176,22 +176,16 @@ class _State extends State<Patient> {
                         SizedBox(
                           width: 5,
                         ),
-                        Text(data.mobile == null
+                        Text(patient_data_tile.mobile == null
                             ? "?91"
-                            : data.mobile.toString())
+                            : patient_data_tile.mobile.toString())
                       ],
                     ),
                     SizedBox(
                       height: 10,
                     ),
                     Text(
-                      'last visited on : ${formatDate(data.recent_visit.toDate(), [
-                            dd,
-                            '-',
-                            mm,
-                            '-',
-                            yyyy
-                          ])}',
+                      'last visited on : ${formatDate(patient_data_tile.recent_visit.toDate(), [ dd, '-', mm, '-', yyyy])}',
                       style: TextStyle(fontStyle: FontStyle.italic),
                     ),
                     Row(
@@ -203,7 +197,7 @@ class _State extends State<Patient> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          VisitsDate(data))).then((value) {
+                                          VisitsDate(patient_data_tile))).then((value) {
                                 print('sss');
                               });
                             },
@@ -229,7 +223,7 @@ class _State extends State<Patient> {
                 ),
                 leading: CircleAvatar(
                   child: Text(
-                    data.name == null ? "?" : data.name[0].toUpperCase(),
+                    patient_data_tile.name == null ? "?" : patient_data_tile.name[0].toUpperCase(),
                     style: TextStyle(color: AppTheme.black),
                   ),
                   backgroundColor: AppTheme.teal,
@@ -256,8 +250,10 @@ class _State extends State<Patient> {
 
           print(element.data());
 
+          Patient_name_data_list p = new Patient_name_data_list();
+
           patient_instance_list
-              .add(Patient_name_data_list.fromJson(element.data()));
+              .add(p.fromJson(element.data()));
 
           print('aa');
         });

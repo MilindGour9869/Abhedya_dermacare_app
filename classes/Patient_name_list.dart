@@ -13,9 +13,12 @@ class Patient_name_data_list{
 
 
 
+
   //visits
 
-  List visits_mapData_list = [];
+
+  Map<String , Map<String,dynamic>>visits_mapData_list = {};
+
   List complaints=[];
   List clinical_finding=[];
   List investigation =[];
@@ -44,7 +47,7 @@ class Patient_name_data_list{
     this.visit_date , this.complaints, this.clinical_finding , this.allergies , this.diagnosis , this.internal_notes , this.investigation , this.vital_info , this.medicines , this.advices , this.services
   });
 
-  static Patient_name_data_list fromJson(Map<String , dynamic> json){
+   Patient_name_data_list fromJson(Map<String , dynamic> json){
 
 
     print(json['gender']);
@@ -60,7 +63,16 @@ class Patient_name_data_list{
       email: json['email'] =="" ? "?": json['email'],
       doc_id: json['id'],
 
+
+
+
     );
+  }
+
+
+  void Visit_Map_Data({Map<String,dynamic> map , String visit_date })
+  {
+    this.visits_mapData_list[visit_date] = map;
   }
 
 

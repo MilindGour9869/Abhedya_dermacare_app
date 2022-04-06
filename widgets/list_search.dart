@@ -13,12 +13,17 @@ class ListSearch extends StatefulWidget {
 
   String date;
 
+  Patient_name_data_list patient_name_data_list;
 
 
 
 
 
-  ListSearch({@required this.group , @required this.Group ,  this.patient_doc_id , this.date , });
+
+
+  ListSearch({@required this.group , @required this.Group ,  this.patient_doc_id , this.date ,
+   this.patient_name_data_list
+  });
 
 
   ListSearchState createState() => ListSearchState();
@@ -226,35 +231,19 @@ class ListSearchState extends State<ListSearch> {
             if(widget.patient_doc_id != null && widget.date != null )
               {
                 try{
-                  await FirebaseFirestore.instance.collection('Patient').doc(widget.patient_doc_id).collection('visits').doc(widget.date).get().then((value) {
 
 
-                    if(value.data()!=null)
-                    {
-                      print(value);
+                  widget.patient_name_data_list.visits_mapData_list[widget.date].forEach((key, element) {
 
-                      if(value.data().containsKey(widget.group))
-                      { print('qq');
-                        if(value.data()[widget.group]!=[])
-                        { print('ww');
-                          List a = value.data()[widget.group];
-                          print('Color change');
-                          a.forEach((element) {
-                            group_search_color_map[element]=true;
-                            group_updated_result.add(element);
-                            group_result.add(element);
+                    if(widget.group == key)
+                      {
+                        print(element);
 
+                        group_search_color_map[element]=true;
+                        group_updated_result.add(element);
+                        group_result.add(element);
 
-
-                          });
-                        }
                       }
-                    }
-                    else
-                    {
-                      print('Patient doc called , in else');
-
-                    }
                   });
                 }
                 catch (e){

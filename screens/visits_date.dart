@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 
@@ -33,10 +34,13 @@ class _VisitsDateState extends State<VisitsDate> {
   Future f;
 
   List<Patient_name_data_list> visits_instance_list=[];
-  List date =[];
-  List dt=[];
 
-  Map<String , Patient_name_data_list> date_instance={};
+  List<String> visit_dates=[];
+
+  bool delete = false;
+
+
+
 
 
 
@@ -48,44 +52,39 @@ class _VisitsDateState extends State<VisitsDate> {
     FirebaseFirestore.instance.collection('Patient').doc(widget.patient_data.doc_id).collection('visits').get().then((QuerySnapshot querySnapshot){
 
       visits_instance_list=[];
-      date=[];
-      dt=[];
-      date_instance={};
+
+      visit_dates=[];
+
 
       querySnapshot.docs.forEach((element) {
 
-        print('ghjh');
 
         print(element.data());
 
-        visits_instance_list.add(Patient_name_data_list.visits(element.data()));
+        //visits_instance_list.add(Patient_name_data_list.visits(element.data()));
+
+        Map<String,dynamic> map = element.data();
+        print(map['visit_date']);
+
+
+
+        
+        widget.patient_data.Visit_Map_Data(map: element.data() , visit_date:formatDate(map['visit_date'].toDate(), [ dd, '-', mm, '-', yyyy]).toString()  );
+        
+        visit_dates.add(formatDate(map['visit_date'].toDate(), [ dd, '-', mm, '-', yyyy]).toString());
+
+
+        
+        print(widget.patient_data.hashCode);
+        
+
+        
 
       });
 
-      print('aaa');
-      print(visits_instance_list);
-
-    // print( visits_instance_list[0].complaints);
-
 
      setState(() {
-
-
-
-       visits_instance_list.forEach((element) {
-         date.add(element.visit_date);
-
-         date_instance[element.visit_date.toString()]=element;
-
-       }
-       );
-
-
-
-
-       dt=date;
-
-       print(dt);
+       visit_dates=visit_dates;
 
      });
 
@@ -133,6 +132,19 @@ class _VisitsDateState extends State<VisitsDate> {
       appBar: AppBar(
         title: Text('Visits'),
         backgroundColor: AppTheme.teal,
+
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: IconButton(onPressed: (){
+
+              setState(() {
+                delete=!delete;
+
+              });
+            }, icon: Icon(Icons.delete_outline_outlined)),
+          )
+        ],
       ),
       body: SingleChildScrollView(
 
@@ -146,14 +158,14 @@ class _VisitsDateState extends State<VisitsDate> {
 
               }
 
-            if(dt.isEmpty)
+            if(visit_dates.isEmpty)
               {
                 return Text('loading');
 
               }
 
 
-            if(dt.isNotEmpty)
+            if(visit_dates.isNotEmpty)
               {
                 return Center(
                   child: RefreshIndicator(
@@ -164,29 +176,70 @@ class _VisitsDateState extends State<VisitsDate> {
                         direction: Axis.horizontal,
 
 
-                        children:dt.map((e) {
+                        children:visit_dates.map((date) {
 
 
 
 
 
                           return SizedBox(
-                              height: 100,
-                              width: 100,
 
                               child: GestureDetector(
                                 onTap: (){
-                                  Navigator.push(context , MaterialPageRoute(builder: (context)=>AddVisits(visit_data :date_instance[e.toString()] , icon_tap: false, patient_data: widget.patient_data,))).then((value) {
+                                  Navigator.push(context , MaterialPageRoute(builder: (context)=>AddVisits(
+
+                                    visit_date: date.toString(),
+
+                                    icon_tap: false,
+
+                                    patient_data: widget.patient_data,
+
+                                    map: widget.patient_data.visits_mapData_list[date],
+
+                                  ))).then((value) {
 
                                   });
 
 
                                 },
 
-                                child: Card(
 
-                                    child: Center(child: Text('${formatDate(e.toDate(),[dd, '-', mm, '-', yyyy])}'))),
-                              ));
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    SizedBox(
+                                      height: 120,
+                                      width: 120,
+                                      child: Card(
+
+
+                                          child: Center(child: Text(date.toString()),
+                              )),
+                                    ),
+
+                                    Visibility(
+                                      visible: delete,
+                                      child: CircleAvatar(
+                                        backgroundColor: AppTheme.white,
+                                        child: IconButton(onPressed: ()async{
+
+                                          widget.patient_data.visits_mapData_list.remove(date);
+                                          setState(() {
+                                            visit_dates.remove(date);
+
+                                          });
+
+
+                                          await FirebaseFirestore.instance.collection('Patient').doc(widget.patient_data.doc_id).collection('visits').doc(date).delete();
+
+
+
+
+                                        }, icon: Icon(Icons.delete_outline_outlined , color: Colors.red,)
+                                        ),
+                                      ),
+                                    )],
+                                )));
                         }).toList()),
                   ),
                 );
@@ -207,7 +260,17 @@ class _VisitsDateState extends State<VisitsDate> {
 
         splashColor: AppTheme.notWhite,
         onPressed: (){
-          Navigator.push(context , MaterialPageRoute(builder: (context)=>AddVisits(  icon_tap: true, patient_data: widget.patient_data))).then((value) {
+          Navigator.push(context , MaterialPageRoute(builder: (context)=>AddVisits(
+
+              icon_tap: true,
+
+              patient_data: widget.patient_data,
+
+              visit_date: formatDate(Timestamp.now().toDate(), [ dd, '-', mm, '-', yyyy]).toString(),
+
+
+
+          ))).then((value) {
              print("ascdve");
             if(value == 'save')
               {
