@@ -33,7 +33,7 @@ class _VisitsDateState extends State<VisitsDate> {
 
   Future f;
 
-  List<Patient_name_data_list> visits_instance_list=[];
+
 
   List<String> visit_dates=[];
 
@@ -51,7 +51,7 @@ class _VisitsDateState extends State<VisitsDate> {
 
     FirebaseFirestore.instance.collection('Patient').doc(widget.patient_data.doc_id).collection('visits').get().then((QuerySnapshot querySnapshot){
 
-      visits_instance_list=[];
+
 
       visit_dates=[];
 
@@ -205,7 +205,7 @@ class _VisitsDateState extends State<VisitsDate> {
 
 
                                 child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     SizedBox(
                                       height: 120,

@@ -50,7 +50,7 @@ class ListSearchState extends State<ListSearch> {
   Map<String,String> all_data_doc_id ={};
 
 
-  List<String> group_updated_result=[];
+  List group_updated_result=[];
   List group_result=[];
 
 
@@ -235,13 +235,26 @@ class ListSearchState extends State<ListSearch> {
 
                   widget.patient_name_data_list.visits_mapData_list[widget.date].forEach((key, element) {
 
+                    print('Color');
+                    print(key);
+                    print(element);
+
+
+
                     if(widget.group == key)
                       {
-                        print(element);
 
-                        group_search_color_map[element]=true;
-                        group_updated_result.add(element);
-                        group_result.add(element);
+                        List a = element;
+
+                        a.forEach((element) {
+                          group_search_color_map[element]=true;
+                          group_updated_result.add(element);
+                          group_result.add(element);
+                        });
+
+
+
+
 
                       }
                   });

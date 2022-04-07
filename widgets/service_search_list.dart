@@ -27,7 +27,7 @@ class _Service_Search_ListState extends State<Service_Search_List> {
   List all_service_list=[];
   List search_service_list=[];
 
-  List<String> group_updated_result=[];
+  List group_updated_result=[];
   List group_result=[];
 
 
@@ -88,33 +88,41 @@ class _Service_Search_ListState extends State<Service_Search_List> {
       if(widget.patient_data.doc_id != null && widget.date != null )
       {
         try{
-           FirebaseFirestore.instance.collection('Patient').doc(widget.patient_data.doc_id).collection('visits').doc(widget.date).get().then((value) {
 
 
-            if(value.data()!=null)
+          widget.patient_data.visits_mapData_list[widget.date].forEach((key, element) {
+
+            print('Color');
+            print(key);
+            print(element);
+
+
+
+            if(widget.group == key)
             {
-              print(value);
 
-              if(value.data().containsKey(widget.group))
-              { print('qq');
-              if(value.data()[widget.group]!=[])
-              { print('ww');
-              List a = value.data()[widget.group];
-              print('Color change');
+              List a = element;
+
               a.forEach((element) {
+
+                service_list.forEach((key, value) {
+                  if(key == element)
+                    {
+                      value['color'] =true;
+
+
+
+
+                    }
+                });
 
                 group_updated_result.add(element);
                 group_result.add(element);
-
-
-
               });
-              }
-              }
-            }
-            else
-            {
-              print('Patient doc called , in else');
+
+
+
+
 
             }
           });
@@ -127,7 +135,6 @@ class _Service_Search_ListState extends State<Service_Search_List> {
       else{
         print('widget.patient_doc_id is null');
       }
-
 
 
 
@@ -182,11 +189,11 @@ class _Service_Search_ListState extends State<Service_Search_List> {
   void dispose() async{
     // TODO: implement dispose
     super.dispose();
-    if(widget.patient_data.doc_id != null)
-    {
-      await Add_GroupDataList_to_Patient(group_updated_result);
-
-    }
+//    if(widget.patient_data.doc_id != null)
+//    {
+//      await Add_GroupDataList_to_Patient(group_updated_result);
+//
+//    }
 
 
   }
@@ -202,7 +209,7 @@ class _Service_Search_ListState extends State<Service_Search_List> {
           backgroundColor: Colors.white,
           elevation: 0,
           leading: IconButton(icon: Icon(Icons.arrow_back_ios , color: Colors.black,), onPressed: (){
-            Navigator.pop(context );
+            Navigator.pop(context , group_updated_result );
           },),
           title: Padding(
             padding: const EdgeInsets.all(0),
@@ -275,6 +282,8 @@ class _Service_Search_ListState extends State<Service_Search_List> {
                          if(m['color'] == true)
                          {
                            group_updated_result.add(e);
+                           print(group_updated_result);
+
 
 
 

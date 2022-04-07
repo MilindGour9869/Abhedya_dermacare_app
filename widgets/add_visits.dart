@@ -343,6 +343,8 @@ setState(() {
               Map<String , dynamic> map ={};
 
 
+
+
               if(Complaint.isNotEmpty)
                 {
                   map['complaint'] = Complaint;
@@ -379,6 +381,9 @@ setState(() {
               {
                 map['clinical_finding'] = Clinical_findings;
               }
+
+              widget.patient_data.visits_mapData_list[visit_date]=map;
+
 
               if(visit_date == formatDate(Timestamp.now().toDate(), [ dd, '-', mm, '-', yyyy]).toString())
                 {
@@ -1082,6 +1087,17 @@ setState(() {
 
 
                       }, icon: Icon(Icons.arrow_drop_down_circle_outlined , color: Colors.black,)),
+
+                      subtitle: Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Container(
+
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: Services.map<Widget>((e)=>DropDown(e) ).toList(),
+                          ),
+                        ),
+                      ),
 
 
                     ),

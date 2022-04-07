@@ -118,6 +118,8 @@ class _AddMedicineState extends State<AddMedicine> {
                           icon: Icon(Icons.delete_outline_outlined),
                           onPressed: ()async{
 
+
+
                             var doc =await FirebaseFirestore.instance.collection('Medicines').doc(widget.doc_id);
                             doc.delete();
 
