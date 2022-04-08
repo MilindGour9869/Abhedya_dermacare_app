@@ -354,7 +354,7 @@ class _AddMedicineState extends State<AddMedicine> {
 
                                 });
                               }
-                              else
+                              else if(widget.doc_id != null)
                               {
                                 setState(() {
                                   composition="Composition";

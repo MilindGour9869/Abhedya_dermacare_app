@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/classes/add_info.dart';
 
 import 'package:flutter_app/default.dart';
+import 'package:flutter_app/widgets/Add_Data.dart';
 import 'package:flutter_app/widgets/add_medicines.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -208,94 +209,14 @@ class _State extends State<Medicines> {
                           if(map[name]['select'])
                             {
 
-                              Map<String , bool> map2={
-                                'Morning' : false,
-                                'Afternoon' : false,
-                                'Evening' : false,
-                                'Night' : false,
 
-                              };
 
                               showDialog(context: context, builder: (context){
 
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 10.0  , vertical: 200),
-                                  child:Card(
-
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                       ListTile(
-                                         tileColor: AppTheme.notWhite,
-                                         leading: Container(
-                                           height: MediaQuery.of(context).size.height * 0.08,
-                                           width: MediaQuery.of(context).size.width * 0.15,
-                                           decoration: BoxDecoration(
-                                               borderRadius: BorderRadius.circular(5), color: color),
-                                           child: Center(child: Text(map[name]['tab'].toUpperCase())),
-                                         ),
-                                         title: Text(
-                                           name,
-                                           style: TextStyle(fontSize: 20),
-                                         ),
-                                         subtitle: Column(
-                                           crossAxisAlignment: CrossAxisAlignment.start,
-                                           children: [
-                                             Text('${map[name]['composition']}'),
-                                             Text(
-                                               '${map[name]['company_name']}',
-                                               style:
-                                               TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                                             ),
-                                           ],
-                                         ),
-                                         isThreeLine: true,
-                                       ),
-                                        SizedBox(height: 10,),
-
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                          children: map2.keys.map<Widget>((e) =>GestureDetector(
-                                            onTap: (){
-
-                                              setState(() {
-                                                map2.forEach((key, value) {
-                                                  print('cc');
-
-                                                  value=false;
-
-                                                });
-                                                map2[e] = ! map2[e];
-
-
-                                              });
-
-
-
-                                            },
-                                            child: CircleAvatar(
-                                              backgroundColor: map2[e]?AppTheme.teal:Colors.grey,
-                                              child: Text(e[0] , style: TextStyle(color: Colors.white),),
-                                            ),
-                                          ), ).toList()
-                                        ),
-                                        SizedBox(height: 10,),
-
-                                        TextButton(
-                                          child: Text('Add Additional info'),
-                                          onPressed: (){
-                                            showDialog(context: context, builder: (context)=>Padding(
-                                              padding: const EdgeInsets.symmetric(horizontal: 20.0  , vertical: 40),
-                                              child: Add_Info(),
-                                            ));
-                                          },
-                                        ),
-                                      ],
-                                    ),
-
-
-
-                                  ),
+                                return AddData(
+                                  color: color,
+                                  map: map,
+                                  medicine_name: name,
                                 );
                               });
 

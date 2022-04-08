@@ -51,59 +51,62 @@ class _Add_InfoState extends State<Add_Info> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: IconButton(icon: Icon(Icons.arrow_back_ios , color: Colors.black,), onPressed: (){
-          Navigator.pop(context , group_updated_result);
-        },),
-        title: Padding(
-          padding: const EdgeInsets.all(0),
-          child: TextField(
-            controller: _textController_group,
-            decoration: InputDecoration(
-              hintText: 'Search / Add ',
+    return Padding(
+      padding: const EdgeInsets.all(40.0),
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          leading: IconButton(icon: Icon(Icons.arrow_back_ios , color: Colors.black,), onPressed: (){
+            Navigator.pop(context , group_updated_result);
+          },),
+          title: Padding(
+            padding: const EdgeInsets.all(0),
+            child: TextField(
+              controller: _textController_group,
+              decoration: InputDecoration(
+                hintText: 'Search / Add ',
 
 
-            ),
-            onChanged: onItemChanged,
-          ),
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 4.0),
-            child: CircleAvatar(child: Text('aa'),),
-          )
-        ],
-      ),
-      body: Expanded(
-        child: Column(
-          children: group_search_data_list.map<Widget>((e) => ListTile(
-
-            title: Text(e),
-            leading: CircleAvatar(
-              backgroundColor: select[e]?AppTheme.green:Colors.grey,
-              child: IconButton(
-                icon: Icon(Icons.done , color: AppTheme.white,),
-                onPressed: (){
-                  setState(() {
-                    select[e] = !select[e];
-                    if(select[e]== true)
-                      {
-                        group_updated_result.add(e);
-                      }
-                    if(select[e]== false)
-                    {
-                      group_updated_result.remove(e);
-                    }
-
-                  });
-                },
               ),
+              onChanged: onItemChanged,
             ),
+          ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 4.0),
+              child: CircleAvatar(child: Text('aa'),),
+            )
+          ],
+        ),
+        body: Expanded(
+          child: Column(
+            children: group_search_data_list.map<Widget>((e) => ListTile(
 
-          )).toList(),
+              title: Text(e),
+              leading: CircleAvatar(
+                backgroundColor: select[e]?AppTheme.green:Colors.grey,
+                child: IconButton(
+                  icon: Icon(Icons.done , color: AppTheme.white,),
+                  onPressed: (){
+                    setState(() {
+                      select[e] = !select[e];
+                      if(select[e]== true)
+                        {
+                          group_updated_result.add(e);
+                        }
+                      if(select[e]== false)
+                      {
+                        group_updated_result.remove(e);
+                      }
+
+                    });
+                  },
+                ),
+              ),
+
+            )).toList(),
+          ),
         ),
       ),
     );

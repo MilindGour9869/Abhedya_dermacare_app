@@ -185,18 +185,7 @@ class _Service_Search_ListState extends State<Service_Search_List> {
     getServiceData();
   }
 
-  @override
-  void dispose() async{
-    // TODO: implement dispose
-    super.dispose();
-//    if(widget.patient_data.doc_id != null)
-//    {
-//      await Add_GroupDataList_to_Patient(group_updated_result);
-//
-//    }
 
-
-  }
 
 
   @override
@@ -272,67 +261,35 @@ class _Service_Search_ListState extends State<Service_Search_List> {
 
                     return  ListTile(
                       title: Text(e.toString()),
-                      leading: CircleAvatar(child: Icon(Icons.arrow_forward_ios , size: MediaQuery.of(context).size.height*0.03, color: AppTheme.white,)),
+                      leading: CircleAvatar(
+
+                         backgroundColor: AppTheme.teal,
+
+                          child: Icon(Icons.arrow_forward_ios_rounded, size: MediaQuery.of(context).size.height*0.03, color: AppTheme.white,)),
+
+                     tileColor: m['color']?AppTheme.green:AppTheme.white,
                       onTap: (){
-
-
-
-                       setState(() {
-                         m['color'] = ! m['color'];
-                         if(m['color'] == true)
-                         {
-                           group_updated_result.add(e);
-                           print(group_updated_result);
+                        setState(() {
+                          m['color'] = ! m['color'];
+                          if(m['color'] == true)
+                          {
+                            group_updated_result.add(e);
+                            print(group_updated_result);
 
 
 
 
-                         }
-                         else if(m['color'] == false)
-                           {
-                             group_updated_result.remove(e);
-                           }
+                          }
+                          else if(m['color'] == false)
+                          {
+                            group_updated_result.remove(e);
+                          }
 
-                       });
-
-
-                        print(m['color']);
-
-
-
+                        });
                       },
-                     tileColor: m['color']==true?AppTheme.green:AppTheme.white,
 
 
-                      trailing: IconButton(
-                        icon: Icon(Icons.edit_outlined , color: AppTheme.teal,),
-                        onPressed: ()async{
-
-
-
-                          showDialog(context: context, builder: (context)=>ServiceDialogue.Dialogue(
-                            service: service,
-                            charges: charge,
-                            service_name:service_name,
-                            doc_id:doc_id,
-                            context: context,
-
-                          ));
-
-
-
-
-
-
-
-
-
-
-
-
-
-                        },
-                      ),
+                      trailing: Text('₹ ${m['charge']}' , style: TextStyle(fontSize: 20),),
 
 
 
@@ -350,3 +307,6 @@ class _Service_Search_ListState extends State<Service_Search_List> {
     );
   }
 }
+
+
+
