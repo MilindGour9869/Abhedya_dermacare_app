@@ -43,7 +43,7 @@ class _Add_InfoState extends State<Add_Info> {
     super.initState();
 
     group_search_data_list =  all_data_english_list;
-   all_data_english_list.forEach((element) {
+    all_data_english_list.forEach((element) {
      select[element] = false;
 
    });
@@ -52,7 +52,7 @@ class _Add_InfoState extends State<Add_Info> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(40.0),
+      padding: const EdgeInsets.all(8.0),
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
@@ -79,7 +79,9 @@ class _Add_InfoState extends State<Add_Info> {
             )
           ],
         ),
-        body: Expanded(
+        body: SizedBox(
+          height: 300,
+          width: 200,
           child: Column(
             children: group_search_data_list.map<Widget>((e) => ListTile(
 

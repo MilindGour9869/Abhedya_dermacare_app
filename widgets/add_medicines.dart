@@ -123,6 +123,10 @@ class _AddMedicineState extends State<AddMedicine> {
                             var doc =await FirebaseFirestore.instance.collection('Medicines').doc(widget.doc_id);
                             doc.delete();
 
+                            Navigator.pop(context , 'save');
+
+
+
 
                           },
                         ),
