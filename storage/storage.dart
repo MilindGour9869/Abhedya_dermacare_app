@@ -21,6 +21,8 @@ class Storage{
 
 
    var add_info =  await storage.read(key: medicine_additional_info_list);
+   print(add_info);
+
     final value = jsonDecode(add_info);
 
     return value == null? null :List<String>.from(value);

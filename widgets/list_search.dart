@@ -595,6 +595,8 @@ class ListSearchState extends State<ListSearch> {
 
 
                       _textController_group.clear();
+                      onItemChanged('');
+
 
 
 

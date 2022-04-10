@@ -24,9 +24,9 @@ class _AddDataState extends State<AddData> {
   String name;
   Color color;
 
-  List all_data_english_list =[
-    'Before Breakfast' , 'At Bed Time' ,
-  ] ;
+
+
+  List<String> all_data_english_list =[] ;
 
   Map<String , bool> map2={
     'Morning' : false,
@@ -138,11 +138,36 @@ class _AddDataState extends State<AddData> {
               ),
               SizedBox(height: 10,),
 
+              Visibility(
+                  visible: all_data_english_list!=null?true:false,
+                  child: Wrap(
+                    spacing: 20,runSpacing: 10,
+                children: all_data_english_list.map<Widget>((e) => Text(e , style: TextStyle(
+                  fontSize: 20
+                ),)).toList(),
+              )),
+
               IconButton(onPressed: (){
 
-                showDialog(context: context, builder: (context)=>Container(
-                  child: Add_Info(),
-                ));
+                showDialog(context: context, builder: (context)=>Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0 , vertical: 40),
+                    child: Add_Info(result: all_data_english_list,),
+                  ),
+                )).then((value) {
+
+                setState(() {
+                  all_data_english_list=[];
+
+                  all_data_english_list = value;
+                });
+
+
+
+
+
+                });
 
               }, icon: Icon(Icons.add))
 
