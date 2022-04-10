@@ -12,7 +12,15 @@ import 'dart:math' as math;
 
 class Medicines extends StatefulWidget {
   bool delete, select;
-  Medicines({this.delete, this.select});
+
+  List<String> name;
+  Map<String , Map<String , dynamic>> result_map={};
+
+
+
+  Medicines({this.delete, this.select , this.name ,this.result_map});
+
+
 
   @override
   _State createState() => _State();
@@ -33,10 +41,13 @@ class _State extends State<Medicines> {
 
   List<Color> color = [];
 
+  Map<String, Map<String, dynamic>> result_map = {};
+
+
   int c = -1;
 
-  bool delete = false;
-  bool select = false;
+  bool delete = true;
+//  bool select = false;
 
   Future getMedicineData() async {
     await FirebaseFirestore.instance
@@ -73,7 +84,7 @@ class _State extends State<Medicines> {
         map['medicine_name'] = e['medicine_name'];
         map['tab'] = e['tab'];
         map['doc_id'] = e['id'].toString();
-        map['select'] = select;
+        map['select'] = false;
 
         all_medicine_name_map_data[e['medicine_name'].toString()] = map;
 
@@ -86,12 +97,28 @@ class _State extends State<Medicines> {
 
       print(medicine_name);
 
+      print(result_map);
+
+
       setState(() {
         medicine_name= medicine_name;
 
         search_medicine_list = medicine_name;
       });
     });
+
+    if(widget.result_map != null)
+      {
+        List a = widget.result_map.keys.toList();
+        a.forEach((element) {
+          all_medicine_name_map_data[element].forEach((key, value) {
+            if(key == 'select')
+              all_medicine_name_map_data[element][key] = true;
+          });
+        });
+      }
+
+
   }
 
   onItemChanged(String value) {
@@ -110,41 +137,74 @@ class _State extends State<Medicines> {
     // TODO: implement initState
     super.initState();
 
-    if (widget.delete == true) {
-      setState(() {
-        delete = true;
-        select = false;
-      });
-    } else if (widget.select == true) {
+    if (widget.delete == false) {
       setState(() {
         delete = false;
-        select = true;
+
       });
     }
+
+    if(widget.result_map != null)
+      {
+        result_map = widget.result_map;
+
+        print(result_map);
+
+
+      }
+
+
+
+
 
     f = getMedicineData();
   }
 
   Widget Tile(
       {Map<String, Map<String, dynamic>> map, String name, Color color}) {
+
+
+
+
     return GestureDetector(
         onTap: () {
-          showDialog(
-              context: context,
-              builder: (context) => Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                    child: AddMedicine(
-                      composition: map[name]['composition'],
-                      company_name: map[name]['company_name'],
-                      tab: map[name]['tab'],
-                      doc_id: map[name]['doc_id'],
-                      medicine_name: name,
-                    ),
-                  )).then((value) {
-            if (value == 'save') {
-              getMedicineData();
-            }
-          });
+         if(delete)
+           {
+             showDialog(
+                 context: context,
+                 builder: (context) => Padding(
+                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                   child: AddMedicine(
+                     composition: map[name]['composition'],
+                     company_name: map[name]['company_name'],
+                     tab: map[name]['tab'],
+                     doc_id: map[name]['doc_id'],
+                     medicine_name: name,
+                   ),
+                 )).then((value) {
+               if (value == 'save') {
+                 getMedicineData();
+               }
+             });
+           }
+         else if(!delete)
+           {
+             print(result_map[name]);
+
+             showDialog(context: context, builder: (context)=>AddData(
+               color: color,
+               map: map,
+               medicine_name: name,
+               result_map : result_map[name]
+             )).then((value) {
+
+               if(value != null)
+                 {
+                   result_map[name] = value;
+
+                 }
+             });
+           }
         },
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -198,7 +258,7 @@ class _State extends State<Medicines> {
                       )
                     : IconButton(
                         onPressed: () {
-                          print(map[name]['select']);
+
 
 
                           setState(() {
@@ -206,8 +266,14 @@ class _State extends State<Medicines> {
 
                           });
 
+
+
                           if(map[name]['select'])
                             {
+
+
+                              print(result_map);
+
 
 
 
@@ -218,9 +284,40 @@ class _State extends State<Medicines> {
                                   map: map,
                                   medicine_name: name,
                                 );
+                              }).then((value) {
+
+                                print('rtttt');
+                                print(value);
+
+
+                               if(value != null)
+                                 {
+                                   result_map[name]  = value;
+                                 }
+
+                               print(result_map[name]);
+
+
+
                               });
 
                             }
+                          else if(!map[name]['select'])
+                            {
+                              print('\n in else if');
+                              print(map[name]);
+
+                              result_map.remove(name);
+
+
+                              print(result_map);
+
+
+                            }
+
+
+
+
                         },
                         icon: CircleAvatar(
                           backgroundColor: map[name]['select']?AppTheme.green:Colors.grey,
@@ -256,6 +353,17 @@ class _State extends State<Medicines> {
                 title: Text('Medicine'),
                 backgroundColor: Colors.transparent,
                 elevation: 0,
+                actions: [
+                  Visibility(
+                      visible: delete?false:true,
+                      child: IconButton(
+                        icon: Icon(Icons.save),
+                        onPressed: (){
+                          Navigator.pop(context , result_map);
+
+                        },
+                      ))
+                ],
               ),
               Padding(
                 padding: const EdgeInsets.only(
@@ -280,6 +388,7 @@ class _State extends State<Medicines> {
               ),
             ],
           ),
+
         ),
       ),
       body: SingleChildScrollView(

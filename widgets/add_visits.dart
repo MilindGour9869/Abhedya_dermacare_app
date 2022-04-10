@@ -12,6 +12,8 @@ import 'package:flutter_app/classes/Patient_name_list.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter_app/widgets/service_search_list.dart';
 
+import '../screens/Medicines.dart';
+
 
 class AddVisits extends StatefulWidget {
 
@@ -64,7 +66,9 @@ class _AddVisitsState extends State<AddVisits> {
   List Group =[];
   List Blood_group =[];
   List Services =[];
-  List Medicine = [];
+  List<String> Medicine = [];
+
+  Map<String  , Map<String , dynamic>> medicine_result={};
 
   Map<String , dynamic> map;
 
@@ -1104,6 +1108,88 @@ setState(() {
                   ),
                 ),
 
+
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Material(
+                    borderRadius: BorderRadius.circular(10),
+                    elevation: 2,
+
+
+                    child: ListTile(
+
+                      title: Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Text(medicine),
+                      ),
+                      leading: Icon(Icons.add),
+
+                      trailing: IconButton(onPressed: ()async{
+
+                        print(medicine_result);
+
+
+
+
+                        // print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
+
+
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>Medicines(delete: false, name: Medicine,result_map: medicine_result,))).then((value) {
+
+                          print('ccc');
+                          print(value);
+
+
+                          if(value != null)
+                            { Medicine =[];
+
+                              medicine_result = value;
+
+                              setState(() {
+                                Medicine = medicine_result.keys.toList();
+
+
+                              });
+
+                              print(Medicine);
+
+
+                            }
+
+
+                        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                      }, icon: Icon(Icons.arrow_drop_down_circle_outlined , color: Colors.black,)),
+
+                      subtitle: Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Container(
+
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: Medicine.map<Widget>((e)=>DropDown(e) ).toList(),
+                          ),
+                        ),
+                      ),
+
+
+                    ),
+                  ),
+                ),
 
 
 

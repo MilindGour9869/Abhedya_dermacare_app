@@ -25,7 +25,7 @@ class _Add_InfoState extends State<Add_Info> {
   var _textController_group = TextEditingController();
 
   void get() async {
-    print('get called');
+    ('get called');
 
     all_data_english_list = await Storage.get_medicine_additional_info();
 
@@ -43,21 +43,21 @@ class _Add_InfoState extends State<Add_Info> {
 
     if(widget.result != null)
     {
-      print('ddd');
+
 
 
       setState(() {
         widget.result.forEach((element) {
-          print('rrr');
-          print(all_data_english_list);
+
+          (all_data_english_list);
 
           all_data_english_list.forEach((e) {
 
-            print('ww');
+
 
             if(e==element)
             {
-              print(e);
+              (e);
 
               select[e] = true;
               group_updated_result.add(e);
@@ -77,8 +77,8 @@ class _Add_InfoState extends State<Add_Info> {
   }
 
   void set() async {
-    print('set called');
-    print(all_data_english_list);
+
+    (all_data_english_list);
 
     await Storage.set_medicine_additional_info(add_info: all_data_english_list);
   }
@@ -195,6 +195,8 @@ class _Add_InfoState extends State<Add_Info> {
                         setState(() {
                           all_data_english_list.remove(e);
                           group_search_data_list.remove(e);
+                          group_updated_result.remove(e);
+
                         });
 
                         },
@@ -216,7 +218,7 @@ class _Add_InfoState extends State<Add_Info> {
 
                       onChange(_textController_group.text);
 
-                      print('ggg');
+                      ('ggg');
 
 
                       group_search_data_list
@@ -237,7 +239,7 @@ class _Add_InfoState extends State<Add_Info> {
 
           }
           else{
-            print('in future builder , else');
+            ('in future builder , else');
 
             return Center(child:CircularProgressIndicator() );
           }
