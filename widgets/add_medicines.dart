@@ -246,37 +246,39 @@ class _AddMedicineState extends State<AddMedicine> {
 
                               print(value);
 
-                              List a =  await value;
+                              if(value != null)
+                                {
+                                  Tab = [];
+                                  Tab=value;
+                                  List a =  await value;
 
-                              print(a);
-
-
-
-                              tab='';
-                              a.forEach((element) {
-
-                                tab+=element + s;
+                                  print(a);
 
 
-                              });
 
-                              if(tab != "")
-                              {
-                                setState(() {
-                                  tab=tab;
-                                  map['tab']=true;
+                                  tab='';
+                                  a.forEach((element) {
 
-                                });
-                              }
-                              else
-                              {
-                                setState(() {
-                                  tab="TAB/CAP/SYP";
-                                  map['tab']=false;
+                                    tab+=element + s;
 
-                                });
 
-                              }
+                                  });
+
+                                  if(tab != "")
+                                  {
+                                    setState(() {
+                                      tab=tab;
+                                      map['tab']=true;
+
+                                    });
+                                  }
+
+                                }
+                              else if(value == null)
+                                {
+                                  tab ='TAB/CAP/SYP';
+                                  map[tab]=false;
+                                }
 
 
 

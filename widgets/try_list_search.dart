@@ -22,7 +22,7 @@ class Try extends StatefulWidget {
 class _TryState extends State<Try> {
 
 
-  List group_all_data_list =[] ;
+  List<String> group_all_data_list =[] ;
   List<String> group_updated_result = [];
   Map<String , Map<String , dynamic >> all_data_english_list={};
 
@@ -115,6 +115,7 @@ class _TryState extends State<Try> {
 
 
     print(all_data_english_list);
+
 
 
 
@@ -362,32 +363,35 @@ class _TryState extends State<Try> {
 
                     var doc = await FirebaseFirestore.instance.collection('Tab').doc();
 
-                    setState(() {
 
-                      Map<String , dynamic> map={};
+                        setState(() {
 
-                      map['doc_id'] = doc.id;
-                      map['tab'] = search_edit.text;
+                          Map<String , dynamic> map={};
 
-
-                      all_data_english_list[doc.id]=map;
+                          map['doc_id'] = doc.id;
+                          map['tab'] = search_edit.text;
 
 
-
-                      onChange(search_edit.text);
-
-                      ('ggg');
-
-
-                      group_search_data_list
-                          .add(search_edit.text);
+                          all_data_english_list[doc.id]=map;
 
 
 
-                    });
+                          onChange(search_edit.text);
 
-                    search_edit.clear();
-                    onItemChanged('');
+                          ('ggg');
+
+
+                          group_search_data_list
+                              .add(search_edit.text);
+
+
+
+                        });
+
+                        search_edit.clear();
+                        onItemChanged('');
+
+
 
 
 
