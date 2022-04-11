@@ -7,6 +7,9 @@ import 'package:flutter_app/widgets/list_search.dart';
 import 'package:date_format/date_format.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:convert';
+
+import 'package:flutter_app/widgets/try_list_search.dart';
 
 
 
@@ -27,9 +30,31 @@ class _AddMedicineState extends State<AddMedicine> {
   String company_name ="Company Name";
   String tab = "TAB/CAP/SYP";
 
+  List<String> Tab = [];
+
+
+
 
   var medicine_name_edit=TextEditingController();
   var medicine_notes=TextEditingController();
+
+  Map<String  , Map<String , dynamic>> json ={};
+
+  DropdownMenuItem<String> Menu(String item)
+  {
+    return DropdownMenuItem(
+
+      value: item,
+      child: Text(item),
+
+    );
+
+  }
+
+  String value;
+
+
+
 
 
 
@@ -45,6 +70,8 @@ class _AddMedicineState extends State<AddMedicine> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
+
 
     if(widget.composition != null)
       {
@@ -155,6 +182,7 @@ class _AddMedicineState extends State<AddMedicine> {
 
                   SizedBox(height: 10,),
 
+
                   SizedBox(
                     height: MediaQuery.of(context).size.height*0.1,
                     width: MediaQuery.of(context).size.width*0.9,
@@ -194,6 +222,8 @@ class _AddMedicineState extends State<AddMedicine> {
                           SizedBox(width: 4,),
 
 
+
+
                           IconButton(onPressed: ()async{
 
 
@@ -208,8 +238,8 @@ class _AddMedicineState extends State<AddMedicine> {
 
 
                                   return  Padding(
-                                    padding: const EdgeInsets.all(20.0),
-                                    child: ListSearch(group: 'tab', Group: 'Tab'),
+                                      padding: const EdgeInsets.all(20.0),
+                                      child:Try(),
                                   );}
 
                             ).then((value)async{
@@ -271,7 +301,12 @@ class _AddMedicineState extends State<AddMedicine> {
                         ],
                       ),
                     ),
-                  ), // Tab
+                  ),
+
+
+
+
+                  // Tab
 
                   SizedBox(height: 10,),
 

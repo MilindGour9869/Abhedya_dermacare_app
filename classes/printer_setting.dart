@@ -21,6 +21,11 @@ class PdfInvoiceApi {
 
     int row=1;
 
+    var five  =  0.5*PdfPageFormat.cm;
+    var three = 0.3*PdfPageFormat.cm;
+    var two = 0.2*PdfPageFormat.cm;
+
+
 
 
 
@@ -54,8 +59,8 @@ class PdfInvoiceApi {
                       crossAxisAlignment: pw.CrossAxisAlignment.end,
                       children: [
 
-                        pw.Text('डॉ. महिराम ' , style: pw.TextStyle(fontSize: 0.5*PdfPageFormat.cm , font:font , color: PdfColors.purple)),
-                        pw.Text('Dr. Mahiram Bisnoi' , style: pw.TextStyle(fontSize: 0.5*PdfPageFormat.cm)),
+                        pw.Text('डॉ. महिराम ' , style: pw.TextStyle(fontSize: five , font:font , color: PdfColors.purple)),
+                        pw.Text('Dr. Mahiram Bisnoi' , style: pw.TextStyle(fontSize: five)),
                         pw.Text('aa'),
                         pw.Text('aa'),
                         pw.Text('aa'),
@@ -92,7 +97,7 @@ class PdfInvoiceApi {
                   pw.Column(
                       children: [
                         pw.Text("Abhedya's" , style: pw.TextStyle(fontSize: 0.4*PdfPageFormat.cm , )),
-                        pw.Text("DERMACARE" , style: pw.TextStyle(fontSize: 0.2*PdfPageFormat.cm) )
+                        pw.Text("DERMACARE" , style: pw.TextStyle(fontSize: two) )
                       ]
                   ),
                   pw.SizedBox(width: 5),
@@ -129,7 +134,7 @@ class PdfInvoiceApi {
 
                            pw.Padding(
                              padding: pw.EdgeInsets.only(left: 23),
-                             child:  pw.Text('उपलब्ध सुविधाऐ' , style: pw.TextStyle(fontSize: 0.5*PdfPageFormat.cm , font: font)),
+                             child:  pw.Text('उपलब्ध सुविधाऐ' , style: pw.TextStyle(fontSize: five , font: font)),
                            ),
 
                             pw.SizedBox(height:  0.5* PdfPageFormat.cm),
@@ -142,7 +147,7 @@ class PdfInvoiceApi {
                               bulletShape: pw.BoxShape.circle,
                               style: pw.TextStyle(
 
-                                fontSize: 0.3*PdfPageFormat.cm,
+                                fontSize: three,
                                 font: font,
 
                               ),
@@ -163,7 +168,7 @@ class PdfInvoiceApi {
                               bulletShape: pw.BoxShape.circle,
                               style: pw.TextStyle(
 
-                                fontSize: 0.3*PdfPageFormat.cm,
+                                fontSize: three,
                                 font: font,
 
                               ),
@@ -186,7 +191,7 @@ class PdfInvoiceApi {
                               bulletShape: pw.BoxShape.circle,
                               style: pw.TextStyle(
 
-                                  fontSize: 0.3*PdfPageFormat.cm
+                                  fontSize: three
 
                               ),
                               bulletColor: PdfColors.purple,
@@ -199,7 +204,7 @@ class PdfInvoiceApi {
                                 fontSize:  0.2* PdfPageFormat.cm,
                                 font:font))),
 
-                            pw.SizedBox(height: 0.5*PdfPageFormat.cm),
+                            pw.SizedBox(height: five),
 
                             //4
                             pw.Bullet(
@@ -207,7 +212,7 @@ class PdfInvoiceApi {
                               bulletShape: pw.BoxShape.circle,
                               style: pw.TextStyle(
 
-                                  fontSize: 0.3*PdfPageFormat.cm,
+                                  fontSize: three,
                                   font: font,
 
                               ),
@@ -221,7 +226,7 @@ class PdfInvoiceApi {
                                     fontSize:  0.2* PdfPageFormat.cm,
                                     font:font))),
 
-                            pw.SizedBox(height: 0.5*PdfPageFormat.cm),
+                            pw.SizedBox(height: five),
 
 
 
@@ -231,7 +236,7 @@ class PdfInvoiceApi {
                               bulletShape: pw.BoxShape.circle,
                               style: pw.TextStyle(
 
-                                  fontSize: 0.3*PdfPageFormat.cm
+                                  fontSize: three
 
                               ),
                               bulletColor: PdfColors.purple,
@@ -244,7 +249,7 @@ class PdfInvoiceApi {
                                     fontSize:  0.2* PdfPageFormat.cm,
                                     font:font))),
 
-                            pw.SizedBox(height: 0.5*PdfPageFormat.cm),
+                            pw.SizedBox(height: five),
 
                             //6
                             pw.Bullet(
@@ -252,7 +257,7 @@ class PdfInvoiceApi {
                               bulletShape: pw.BoxShape.circle,
                               style: pw.TextStyle(
 
-                                  fontSize: 0.3*PdfPageFormat.cm
+                                  fontSize: three
 
                               ),
                               bulletColor: PdfColors.purple,
@@ -265,7 +270,7 @@ class PdfInvoiceApi {
                                     fontSize:  0.2* PdfPageFormat.cm,
                                     font:font))),
 
-                            pw.SizedBox(height: 0.5*PdfPageFormat.cm),
+                            pw.SizedBox(height: five),
 
 
                             //7
@@ -274,7 +279,7 @@ class PdfInvoiceApi {
                               bulletShape: pw.BoxShape.circle,
                               style: pw.TextStyle(
 
-                                fontSize: 0.2*PdfPageFormat.cm,
+                                fontSize: two,
                                 font: font,
 
                               ),
@@ -288,7 +293,7 @@ class PdfInvoiceApi {
                                     fontSize:  0.2* PdfPageFormat.cm,
                                     font:font))),
 
-                            pw.SizedBox(height: 0.5*PdfPageFormat.cm),
+                            pw.SizedBox(height: five),
 
 
 
@@ -298,7 +303,7 @@ class PdfInvoiceApi {
                               bulletShape: pw.BoxShape.circle,
                               style: pw.TextStyle(
 
-                                  fontSize: 0.3*PdfPageFormat.cm
+                                  fontSize: three
 
                               ),
                               bulletColor: PdfColors.purple,
@@ -311,7 +316,7 @@ class PdfInvoiceApi {
                                     fontSize:  0.2* PdfPageFormat.cm,
                                     font:font))),
 
-                            pw.SizedBox(height: 0.5*PdfPageFormat.cm),
+                            pw.SizedBox(height: five),
 
 
                             //9
@@ -320,7 +325,7 @@ class PdfInvoiceApi {
                               bulletShape: pw.BoxShape.circle,
                               style: pw.TextStyle(
 
-                                  fontSize: 0.3*PdfPageFormat.cm
+                                  fontSize: three
 
                               ),
                               bulletColor: PdfColors.purple,
@@ -333,7 +338,7 @@ class PdfInvoiceApi {
                                     fontSize:  0.2* PdfPageFormat.cm,
                                     font:font))),
 
-                            pw.SizedBox(height: 0.5*PdfPageFormat.cm),
+                            pw.SizedBox(height: five),
 
 
 
@@ -343,7 +348,7 @@ class PdfInvoiceApi {
                               bulletShape: pw.BoxShape.circle,
                               style: pw.TextStyle(
 
-                                fontSize: 0.3*PdfPageFormat.cm,
+                                fontSize: three,
                                 font: font,
 
                               ),
@@ -364,7 +369,7 @@ class PdfInvoiceApi {
                               bulletShape: pw.BoxShape.circle,
                               style: pw.TextStyle(
 
-                                  fontSize: 0.3*PdfPageFormat.cm
+                                  fontSize: three
 
                               ),
                               bulletColor: PdfColors.purple,
@@ -377,7 +382,7 @@ class PdfInvoiceApi {
                                     fontSize:  0.2* PdfPageFormat.cm,
                                     font:font))),
 
-                            pw.SizedBox(height: 0.5*PdfPageFormat.cm),
+                            pw.SizedBox(height: five),
 
 
                             //12
@@ -386,7 +391,7 @@ class PdfInvoiceApi {
                               bulletShape: pw.BoxShape.circle,
                               style: pw.TextStyle(
 
-                                  fontSize: 0.3*PdfPageFormat.cm
+                                  fontSize: three
 
                               ),
                               bulletColor: PdfColors.purple,
@@ -399,7 +404,7 @@ class PdfInvoiceApi {
                                     fontSize:  0.2* PdfPageFormat.cm,
                                     font:font))),
 
-                            pw.SizedBox(height: 0.5*PdfPageFormat.cm),
+                            pw.SizedBox(height: five),
 
                             //12
                             pw.Bullet(
@@ -407,7 +412,7 @@ class PdfInvoiceApi {
                               bulletShape: pw.BoxShape.circle,
                               style: pw.TextStyle(
 
-                                  fontSize: 0.3*PdfPageFormat.cm
+                                  fontSize: three
 
                               ),
                               bulletColor: PdfColors.purple,
@@ -420,7 +425,7 @@ class PdfInvoiceApi {
                                     fontSize:  0.2* PdfPageFormat.cm,
                                     font:font))),
 
-                            pw.SizedBox(height: 0.5*PdfPageFormat.cm),
+                            pw.SizedBox(height: five),
 
 
 
@@ -430,7 +435,7 @@ class PdfInvoiceApi {
                               bulletShape: pw.BoxShape.circle,
                               style: pw.TextStyle(
 
-                                fontSize: 0.3*PdfPageFormat.cm,
+                                fontSize: three,
 
 
                               ),
@@ -452,7 +457,7 @@ class PdfInvoiceApi {
                               bulletShape: pw.BoxShape.circle,
                               style: pw.TextStyle(
 
-                                fontSize: 0.3*PdfPageFormat.cm,
+                                fontSize: three,
 
 
                               ),
@@ -473,7 +478,7 @@ class PdfInvoiceApi {
                               bulletShape: pw.BoxShape.circle,
                               style: pw.TextStyle(
 
-                                fontSize: 0.3*PdfPageFormat.cm,
+                                fontSize: three,
 
 
                               ),
@@ -563,25 +568,25 @@ class PdfInvoiceApi {
 
                                     children: [
 
-                                      pw.Text('Date : ${date==null?'122':date}' , style: pw.TextStyle(fontSize: 0.3*PdfPageFormat.cm)),
-                                      pw.Text('Name : ${name==null?'122':name}' , style: pw.TextStyle(fontSize: 0.3*PdfPageFormat.cm)),
-                                      pw.Text('Age : ${age==null?'122':age}' , style: pw.TextStyle(fontSize: 0.3*PdfPageFormat.cm)),
-                                      pw.Text('Mobile No. : ${mobile==null?'122':mobile}' , style: pw.TextStyle(fontSize: 0.3*PdfPageFormat.cm)),
+                                      pw.Text('Date : ${date==null?'122':date}' , style: pw.TextStyle(fontSize: three)),
+                                      pw.Text('Name : ${name==null?'122':name}' , style: pw.TextStyle(fontSize: three)),
+                                      pw.Text('Age : ${age==null?'122':age}' , style: pw.TextStyle(fontSize: three)),
+                                      pw.Text('Mobile No. : ${mobile==null?'122':mobile}' , style: pw.TextStyle(fontSize: three)),
 
-                                      pw.SizedBox(height:0.5*PdfPageFormat.cm),
+                                      pw.SizedBox(height:five),
 
-                                      pw.Text('Notes:',  style: pw.TextStyle(fontSize: 0.3*PdfPageFormat.cm),),
-                                      pw.Text(notes , style: pw.TextStyle(fontSize: 0.3*PdfPageFormat.cm)),
+                                      pw.Text('Notes:',  style: pw.TextStyle(fontSize: three),),
+                                      pw.Text(notes , style: pw.TextStyle(fontSize: three)),
 
-                                      pw.SizedBox(height:0.5*PdfPageFormat.cm),
+                                      pw.SizedBox(height:five),
 
-                                      pw.Text('Diagnosis:' ,  style: pw.TextStyle(fontSize: 0.3*PdfPageFormat.cm),),
+                                      pw.Text('Diagnosis:' ,  style: pw.TextStyle(fontSize: three),),
                                       pw.Column(
                                         children: diagnosis.map((e) {
 
                                           return pw.Bullet(
                                             text: e.toString().toUpperCase(),
-                                            style: pw.TextStyle(fontSize: 0.3*PdfPageFormat.cm),
+                                            style: pw.TextStyle(fontSize: three),
                                             bulletSize: 0.1*PdfPageFormat.cm,
                                            padding: pw.EdgeInsets.only(left: 0)
 
@@ -591,7 +596,7 @@ class PdfInvoiceApi {
                                         } ).toList()
                                       ),
 
-                                      pw.SizedBox(height:0.5*PdfPageFormat.cm),
+                                      pw.SizedBox(height:five),
 
 
                                       pw.Table(

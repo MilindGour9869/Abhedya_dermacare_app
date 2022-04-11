@@ -110,16 +110,7 @@ class _AddDataState extends State<AddData> {
   String value;
 
 
-  DropdownMenuItem<String> Menu(String item)
-  {
-    return DropdownMenuItem(
 
-      value: item,
-      child: Text(item),
-
-    );
-
-  }
 
 
 
@@ -450,19 +441,24 @@ class _AddDataState extends State<AddData> {
                           ),
                         )).then((value) {
 
+                          if(value != null)
+                            {
+                              setState(() {
+                                print('rr');
 
 
-                        setState(() {
-                          print('rr');
-
-
-                          print(value);
-                          all_data_english_list=[];
+                                print(value);
+                                all_data_english_list=[];
 
 
 
-                          all_data_english_list = value;
-                        });
+                                all_data_english_list = value;
+                              });
+
+
+                            }
+
+
 
 
 
