@@ -305,6 +305,105 @@ class PdfInvoiceApi {
       );
     }
 
+    pw.TableRow Table({ Map<String , String> map}){
+      return pw.TableRow(
+
+          children: [
+
+           pw.Container(
+             decoration: pw.BoxDecoration(
+                 border: pw.Border(
+                     bottom: pw.BorderSide(
+                         width: 1
+                     )
+                 )
+             ),
+              padding: pw.EdgeInsets.only(top: 7,bottom: 7 ,right: 7),
+              child:  pw.Text('${map['sr_no']}.' , style: pw.TextStyle(
+                  fontSize: three
+              )),),
+
+
+
+            pw.SizedBox(width: 2),
+
+
+
+
+            pw.Container(
+              decoration: pw.BoxDecoration(
+                  border: pw.Border(
+                      bottom: pw.BorderSide(
+                          width: 1
+                      )
+                  )
+              ),
+              padding: pw.EdgeInsets.only(top: 7,bottom: 7 ,right: 7),
+              child:   pw.Text(map['medicine'].toUpperCase() , style: pw.TextStyle(
+                  fontSize: three
+              )),
+            ),
+
+            pw.SizedBox(width: 2),
+
+            pw.Container(
+              decoration: pw.BoxDecoration(
+                  border: pw.Border(
+                      bottom: pw.BorderSide(
+                          width: 1
+                      )
+                  )
+              ),
+              padding: pw.EdgeInsets.only(top: 7,bottom: 7 ,right: 7),
+              child:   pw.Column(
+                crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: [
+                  pw.Text(map['dosage_time'] , style: pw.TextStyle(
+                      fontSize: three
+                  )),
+                  pw.Text(map['dosage_info']==null?"":map['dosage_info'] , style: pw.TextStyle(
+                      fontSize: three
+                  )),
+                ]
+              ),
+            ),
+
+
+            pw.SizedBox(width: 2),
+
+
+
+            pw.Container(
+              decoration: pw.BoxDecoration(
+                  border: pw.Border(
+                      bottom: pw.BorderSide(
+                          width: 1
+                      )
+                  )
+              ),
+              padding: pw.EdgeInsets.only(top: 7,bottom: 7 ,right: 7),
+              child:  pw.Row(
+                children: [
+                  pw.Text(map['duration '] , style: pw.TextStyle(
+                      fontSize: three
+
+                  )),
+                  pw.Text('दिन' , style: pw.TextStyle(
+                      fontSize: three,
+                      font: font
+
+                  )),
+
+                ]
+              ),
+            ),
+
+
+
+          ]
+      );
+    }
+
 
 
 
@@ -985,27 +1084,6 @@ class PdfInvoiceApi {
 
 
 
-                                           pw.TableRow(
-                                             children: [
-                                               pw.Column(
-                                                 mainAxisSize: pw.MainAxisSize.min,
-                                                 crossAxisAlignment: pw.CrossAxisAlignment.start,
-                                                 children: [
-                                                   pw.Row(
-
-                                                       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                                                       children: [
-                                                         pw.Text('Sr no.'),
-                                                         pw.Text('Sr no.'),
-                                                         pw.Text('Sr no.'),
-                                                         pw.Text('Sr no.'),
-                                                       ]
-                                                   )
-                                                 ]
-                                               )
-                                             ]
-                                           )
-
 
 
 
@@ -1020,6 +1098,10 @@ class PdfInvoiceApi {
 
                                          ]
                                      ),
+
+
+
+
 
                                   ]
                                 )
