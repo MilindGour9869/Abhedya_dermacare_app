@@ -21,9 +21,294 @@ class PdfInvoiceApi {
 
     int row=1;
 
-    var five  =  0.5*PdfPageFormat.cm;
+    var five  =  0.3*PdfPageFormat.cm;
+
     var three = 0.3*PdfPageFormat.cm;
-    var two = 0.2*PdfPageFormat.cm;
+    var two = 0.3*PdfPageFormat.cm;
+
+
+    var one = 0.1*PdfPageFormat.cm;
+    var bottom = 0.0* PdfPageFormat.cm;
+
+    var bold = pw.FontWeight.bold;
+
+    pw.TableRow Date(String value){
+      return pw.TableRow(
+          children: [
+            pw.Container(
+
+              alignment: pw.Alignment.topRight,
+            //  margin: pw.EdgeInsets.only(right: 1*PdfPageFormat.cm),
+              child:  pw.Text('Date : ${value}', style: pw.TextStyle(
+                fontSize: three,
+
+              ),
+
+            )
+
+            )]
+      );
+    }
+
+    pw.TableRow Patient_detail(String value){
+      return pw.TableRow(
+          children: [
+            pw.Container(
+              //  margin: pw.EdgeInsets.only(right: 1*PdfPageFormat.cm),
+              child:  pw.Text(value , style: pw.TextStyle(
+                fontSize: three,
+              ),),
+
+            )
+
+          ]
+      );
+    }
+
+    pw.TableRow Patient_Address(String value){
+      return pw.TableRow(
+          children: [
+            pw.Container(
+              //  margin: pw.EdgeInsets.only(right: 1*PdfPageFormat.cm),
+              child:  pw.Text(value , style: pw.TextStyle(
+                fontSize: three,
+              ),),
+
+            )
+
+          ]
+      );
+    }
+
+    pw.TableRow Vitals(String value){
+      return pw.TableRow(
+          children: [
+            pw.Container(
+              //  margin: pw.EdgeInsets.only(right: 1*PdfPageFormat.cm),
+              child:  pw.Text(value , style: pw.TextStyle(
+                fontSize: three,
+              ),),
+
+            )
+
+          ]
+      );
+    }
+
+
+    pw.TableRow SizedBox(){
+      return pw.TableRow(
+          children: [
+            pw.Container(
+              height: five
+
+            )
+
+          ]
+      );
+    }
+    pw.Widget bullet(String value){
+
+      value = value[0].toUpperCase() + value.substring(1).toLowerCase();
+
+      return pw.Bullet(
+        text: value,
+        bulletShape: pw.BoxShape.circle,
+        bulletMargin: pw.EdgeInsets.only(
+          left: one , right: one , top: 0.125*PdfPageFormat.cm
+        ),
+        style: pw.TextStyle(
+
+          fontSize: three,
+
+
+
+        ),
+        bulletColor: PdfColors.black,
+        margin: pw.EdgeInsets.only(bottom: 0 ,),
+        bulletSize: 0.07*PdfPageFormat.cm,
+
+
+
+      );
+    }
+
+
+
+    pw.TableRow Notes(List<String> value){
+      return pw.TableRow(
+          children: [
+            pw.Container(
+             width: 200,
+              child: pw.Column(
+                mainAxisSize: pw.MainAxisSize.min,
+                crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: [
+                  pw.Text("Notes :" , style: pw.TextStyle(
+                    fontSize: three,
+                    fontWeight: bold
+
+                  ),),
+
+                  pw.Column(
+                      mainAxisSize: pw.MainAxisSize.min,
+                      crossAxisAlignment: pw.CrossAxisAlignment.start,
+                      children: value.map<pw.Widget>(bullet).toList()
+                  )
+
+
+
+
+
+                ]
+              )
+
+            )
+
+          ]
+      );
+    }
+
+    pw.TableRow Diagnosis(List<String> value){
+      return pw.TableRow(
+          children: [
+            pw.Container(
+                width: 200,
+                child: pw.Column(
+                    mainAxisSize: pw.MainAxisSize.min,
+                    crossAxisAlignment: pw.CrossAxisAlignment.start,
+                    children: [
+                      pw.Text("Diagnosis :" , style: pw.TextStyle(
+                        fontSize: three,
+                          fontWeight: bold
+
+                      ),),
+
+                      pw.Column(
+                          mainAxisSize: pw.MainAxisSize.min,
+                          crossAxisAlignment: pw.CrossAxisAlignment.start,
+                          children: value.map<pw.Widget>(bullet).toList()
+                      )
+
+
+
+
+
+                    ]
+                )
+
+            )
+
+          ]
+      );
+    }
+
+    pw.TableRow Allergies(List<String> value){
+      return pw.TableRow(
+          children: [
+            pw.Container(
+                width: 200,
+                child: pw.Column(
+                    mainAxisSize: pw.MainAxisSize.min,
+                    crossAxisAlignment: pw.CrossAxisAlignment.start,
+                    children: [
+                      pw.Text("Allergies :" , style: pw.TextStyle(
+                        fontSize: three,
+                          fontWeight: bold
+
+                      ),),
+
+                      pw.Column(
+                          mainAxisSize: pw.MainAxisSize.min,
+                          crossAxisAlignment: pw.CrossAxisAlignment.start,
+                          children: value.map<pw.Widget>(bullet).toList()
+                      )
+
+
+
+
+
+                    ]
+                )
+
+            )
+
+          ]
+      );
+    }
+
+    pw.TableRow Advice(List<String> value){
+      return pw.TableRow(
+          children: [
+            pw.Container(
+                width: 200,
+                child: pw.Column(
+                    mainAxisSize: pw.MainAxisSize.min,
+                    crossAxisAlignment: pw.CrossAxisAlignment.start,
+                    children: [
+                      pw.Text("Advice :" , style: pw.TextStyle(
+                        fontSize: three,
+                          fontWeight: bold
+
+                      ),),
+
+                      pw.Column(
+                          mainAxisSize: pw.MainAxisSize.min,
+                          crossAxisAlignment: pw.CrossAxisAlignment.start,
+                          children: value.map<pw.Widget>(bullet).toList()
+                      )
+
+
+
+
+
+                    ]
+                )
+
+            )
+
+          ]
+      );
+    }
+
+    pw.TableRow Group(List<String> value){
+      return pw.TableRow(
+          children: [
+            pw.Container(
+                width: 200,
+                child: pw.Column(
+                    mainAxisSize: pw.MainAxisSize.min,
+                    crossAxisAlignment: pw.CrossAxisAlignment.start,
+                    children: [
+                      pw.Text("Group :" , style: pw.TextStyle(
+                        fontSize: three,
+                          fontWeight: bold
+
+                      ),),
+
+                      pw.Column(
+                          mainAxisSize: pw.MainAxisSize.min,
+                          crossAxisAlignment: pw.CrossAxisAlignment.start,
+                          children: value.map<pw.Widget>(bullet).toList()
+                      )
+
+
+
+
+
+                    ]
+                )
+
+            )
+
+          ]
+      );
+    }
+
+
+
+
+
 
 
 
@@ -119,8 +404,9 @@ class PdfInvoiceApi {
                   pw.Flexible(
                     flex: 1,
                     child:pw.Container(
-                      padding: pw.EdgeInsets.only(left: 20),
-                      width: double.infinity,
+                      padding: pw.EdgeInsets.only(left: 0.7*PdfPageFormat.cm),
+                      width: 6*PdfPageFormat.cm,
+
                       child: pw.Column(
 
                         mainAxisAlignment: pw.MainAxisAlignment.start,
@@ -130,14 +416,14 @@ class PdfInvoiceApi {
 
                           children: [
 
-                            pw.SizedBox(height:  0.5* PdfPageFormat.cm),
+                            pw.SizedBox(height:  five),
 
                            pw.Padding(
-                             padding: pw.EdgeInsets.only(left: 23),
-                             child:  pw.Text('उपलब्ध सुविधाऐ' , style: pw.TextStyle(fontSize: five , font: font)),
+                             padding: pw.EdgeInsets.only(left: 1*PdfPageFormat.cm),
+                             child:  pw.Text('उपलब्ध सुविधाऐ' , style: pw.TextStyle(fontSize: 0.5*PdfPageFormat.cm , font: font)),
                            ),
 
-                            pw.SizedBox(height:  0.5* PdfPageFormat.cm),
+                            pw.SizedBox(height:  five),
 
 
 
@@ -149,17 +435,21 @@ class PdfInvoiceApi {
 
                                 fontSize: three,
                                 font: font,
+                                fontWeight: bold
 
                               ),
                               bulletColor: PdfColors.purple,
-                              margin: pw.EdgeInsets.only(bottom: 0.0* PdfPageFormat.cm ,),
-                              bulletSize: 0.1*PdfPageFormat.cm,
+                              margin: pw.EdgeInsets.only(bottom: bottom ,),
+                              bulletSize: one,
+                              bulletMargin: pw.EdgeInsets.only(
+                                  left:0 , right: one , top: 0.125*PdfPageFormat.cm
+                              )
 
 
 
                             ),
 
-                            pw.SizedBox(height:0.5* PdfPageFormat.cm ),
+                            pw.SizedBox(height:five ),
 
 
                             //2
@@ -170,17 +460,21 @@ class PdfInvoiceApi {
 
                                 fontSize: three,
                                 font: font,
+                                fontWeight: bold
 
                               ),
                               bulletColor: PdfColors.purple,
-                              margin: pw.EdgeInsets.only(bottom: 0.0* PdfPageFormat.cm ,),
-                              bulletSize: 0.1*PdfPageFormat.cm,
+                              margin: pw.EdgeInsets.only(bottom: bottom ,),
+                              bulletSize: one,
+                                bulletMargin: pw.EdgeInsets.only(
+                                    left:0 , right: one , top: 0.125*PdfPageFormat.cm
+                                )
 
 
 
                             ),
 
-                            pw.SizedBox(height:0.5* PdfPageFormat.cm ),
+                            pw.SizedBox(height:five ),
 
 
 
@@ -191,18 +485,24 @@ class PdfInvoiceApi {
                               bulletShape: pw.BoxShape.circle,
                               style: pw.TextStyle(
 
-                                  fontSize: three
+                                  fontSize: three,
+                                fontWeight: bold
 
                               ),
                               bulletColor: PdfColors.purple,
-                              margin: pw.EdgeInsets.only(bottom: 0.1* PdfPageFormat.cm),
-                              bulletSize: 0.1*PdfPageFormat.cm,
+                              margin: pw.EdgeInsets.only(bottom: bottom),
+                              bulletSize: one,
+                                bulletMargin: pw.EdgeInsets.only(
+                                    left:0 , right: one , top: 0.125*PdfPageFormat.cm
+                                )
 
                             ),
-                            pw.Padding(padding: pw.EdgeInsets.only(left: 23),
+                            pw.Padding(padding: pw.EdgeInsets.only(left: two ),
                             child: pw.Text('अंचाहे बालो को हटाना' , style: pw.TextStyle(
-                                fontSize:  0.2* PdfPageFormat.cm,
-                                font:font))),
+                                fontSize:  two,
+                                font:font,
+                                fontWeight: bold
+                            ))),
 
                             pw.SizedBox(height: five),
 
@@ -214,17 +514,40 @@ class PdfInvoiceApi {
 
                                   fontSize: three,
                                   font: font,
+                                fontWeight: bold
 
                               ),
                               bulletColor: PdfColors.purple,
-                              margin: pw.EdgeInsets.only(bottom: 0.1* PdfPageFormat.cm),
-                              bulletSize: 0.1*PdfPageFormat.cm,
+                              margin: pw.EdgeInsets.only(bottom: bottom),
+                              bulletSize: one,
+                                bulletMargin: pw.EdgeInsets.only(
+                                    left:0 , right: one , top: 0.125*PdfPageFormat.cm
+                                )
 
                             ),
-                            pw.Padding(padding: pw.EdgeInsets.only(left: 23 ),
-                                child: pw.Text('सफेद दाग हटाना\nसोरायसिस का इलाज' , style: pw.TextStyle(
-                                    fontSize:  0.2* PdfPageFormat.cm,
-                                    font:font))),
+                            pw.Padding(padding: pw.EdgeInsets.only(left: two ),
+                                child:  pw.Column(
+                                  crossAxisAlignment: pw.CrossAxisAlignment.start,
+                                  children: [
+                                    pw.Text('सफेद दाग हटाना' , style: pw.TextStyle(
+                                        fontSize:  two,
+                                        font:font,
+                                        fontWeight: bold
+
+
+                                    )),
+                                    pw.Text('सोरायसिस का इलाज' , style: pw.TextStyle(
+                                        fontSize:  two,
+                                        font:font,
+                                        fontWeight: bold
+
+
+                                    )),
+                                  ]
+                                )
+
+
+                            ),
 
                             pw.SizedBox(height: five),
 
@@ -236,18 +559,26 @@ class PdfInvoiceApi {
                               bulletShape: pw.BoxShape.circle,
                               style: pw.TextStyle(
 
-                                  fontSize: three
+                                  fontSize: three,
+                                fontWeight: bold
 
                               ),
                               bulletColor: PdfColors.purple,
-                              margin: pw.EdgeInsets.only(bottom: 0.1* PdfPageFormat.cm),
-                              bulletSize: 0.1*PdfPageFormat.cm,
+                              margin: pw.EdgeInsets.only(bottom: bottom),
+                              bulletSize: one,
+                                bulletMargin: pw.EdgeInsets.only(
+                                    left:0 , right: one , top: 0.125*PdfPageFormat.cm
+                                )
 
                             ),
-                            pw.Padding(padding: pw.EdgeInsets.only(left: 23),
+                            pw.Padding(padding: pw.EdgeInsets.only(left: two),
                                 child: pw.Text('DARK CIRCLE हटाना\nचेहरे पर GLOW(चमक)लाना' , style: pw.TextStyle(
-                                    fontSize:  0.2* PdfPageFormat.cm,
-                                    font:font))),
+                                    fontSize:  two,
+                                    font:font,
+                                  fontWeight: bold
+
+
+                                ))),
 
                             pw.SizedBox(height: five),
 
@@ -257,18 +588,25 @@ class PdfInvoiceApi {
                               bulletShape: pw.BoxShape.circle,
                               style: pw.TextStyle(
 
-                                  fontSize: three
+                                  fontSize: three,
+                                fontWeight: bold
 
                               ),
                               bulletColor: PdfColors.purple,
-                              margin: pw.EdgeInsets.only(bottom: 0.1* PdfPageFormat.cm),
-                              bulletSize: 0.1*PdfPageFormat.cm,
+                              margin: pw.EdgeInsets.only(bottom: bottom),
+                              bulletSize: one,
+                                bulletMargin: pw.EdgeInsets.only(
+                                    left:0 , right: one , top: 0.125*PdfPageFormat.cm
+                                )
 
                             ),
-                            pw.Padding(padding: pw.EdgeInsets.only(left: 23),
+                            pw.Padding(padding: pw.EdgeInsets.only(left: two),
                                 child: pw.Text('पिंपल्स के खड्डे भरना\nचिकनपॉक्स के खड्डे भरना' , style: pw.TextStyle(
-                                    fontSize:  0.2* PdfPageFormat.cm,
-                                    font:font))),
+                                    fontSize:  two,
+                                    font:font,
+                                  fontWeight: bold
+
+                                ))),
 
                             pw.SizedBox(height: five),
 
@@ -281,17 +619,25 @@ class PdfInvoiceApi {
 
                                 fontSize: two,
                                 font: font,
+                                fontWeight: bold
 
                               ),
                               bulletColor: PdfColors.purple,
-                              margin: pw.EdgeInsets.only(bottom: 0.0* PdfPageFormat.cm),
-                              bulletSize: 0.1*PdfPageFormat.cm,
+                              margin: pw.EdgeInsets.only(bottom: bottom),
+                              bulletSize: one,
+                                bulletMargin: pw.EdgeInsets.only(
+                                    left:0 , right: one , top: 0.125*PdfPageFormat.cm
+                                )
 
                             ),
-                            pw.Padding(padding: pw.EdgeInsets.only(left: 23 ),
+                            pw.Padding(padding: pw.EdgeInsets.only(left: two ),
                                 child: pw.Text('चेहरे की चमक लाना\nपिंपल्स ऐव पिंपल्स के निशान हटाना\nजुरिया जुरिया हटाना' , style: pw.TextStyle(
-                                    fontSize:  0.2* PdfPageFormat.cm,
-                                    font:font))),
+                                    fontSize:  two,
+                                    font:font,
+                                  fontWeight: bold
+
+
+                                ))),
 
                             pw.SizedBox(height: five),
 
@@ -303,18 +649,26 @@ class PdfInvoiceApi {
                               bulletShape: pw.BoxShape.circle,
                               style: pw.TextStyle(
 
-                                  fontSize: three
+                                  fontSize: three,
+                                fontWeight: bold
 
                               ),
                               bulletColor: PdfColors.purple,
-                              margin: pw.EdgeInsets.only(bottom: 0.1* PdfPageFormat.cm),
-                              bulletSize: 0.1*PdfPageFormat.cm,
+                              margin: pw.EdgeInsets.only(bottom: bottom),
+                              bulletSize: one,
+                                bulletMargin: pw.EdgeInsets.only(
+                                    left:0 , right: one , top: 0.125*PdfPageFormat.cm
+                                )
 
                             ),
-                            pw.Padding(padding: pw.EdgeInsets.only(left: 23),
+                            pw.Padding(padding: pw.EdgeInsets.only(left: two),
                                 child: pw.Text('फोटो फेशियल\nकार्बन पील\nBirth Mark हटना\nTattoo हटना' , style: pw.TextStyle(
-                                    fontSize:  0.2* PdfPageFormat.cm,
-                                    font:font))),
+                                    fontSize:  two,
+                                    font:font,
+                                  fontWeight: bold
+
+
+                                ))),
 
                             pw.SizedBox(height: five),
 
@@ -325,18 +679,23 @@ class PdfInvoiceApi {
                               bulletShape: pw.BoxShape.circle,
                               style: pw.TextStyle(
 
-                                  fontSize: three
+                                  fontSize: three,
+                                fontWeight: bold
 
                               ),
                               bulletColor: PdfColors.purple,
-                              margin: pw.EdgeInsets.only(bottom: 0.1* PdfPageFormat.cm),
-                              bulletSize: 0.1*PdfPageFormat.cm,
+                              margin: pw.EdgeInsets.only(bottom: bottom),
+                              bulletSize: one,
+                                bulletMargin: pw.EdgeInsets.only(
+                                    left:0 , right: one , top: 0.125*PdfPageFormat.cm
+                                )
 
                             ),
-                            pw.Padding(padding: pw.EdgeInsets.only(left: 23),
+                            pw.Padding(padding: pw.EdgeInsets.only(left: two),
                                 child: pw.Text('चेहरे व गले के मस हटाना\nतिल हटाना\nकान के छेद ठिक करना' , style: pw.TextStyle(
-                                    fontSize:  0.2* PdfPageFormat.cm,
-                                    font:font))),
+                                    fontSize:  two,
+                                    font:font ,
+                                    fontWeight: bold))),
 
                             pw.SizedBox(height: five),
 
@@ -350,17 +709,21 @@ class PdfInvoiceApi {
 
                                 fontSize: three,
                                 font: font,
+                                fontWeight: bold
 
                               ),
                               bulletColor: PdfColors.purple,
-                              margin: pw.EdgeInsets.only(bottom: 0.0* PdfPageFormat.cm ,),
-                              bulletSize: 0.1*PdfPageFormat.cm,
+                              margin: pw.EdgeInsets.only(bottom: bottom ,),
+                              bulletSize: one,
+                                bulletMargin: pw.EdgeInsets.only(
+                                    left:0 , right: one , top: 0.125*PdfPageFormat.cm
+                                )
 
 
 
                             ),
 
-                            pw.SizedBox(height:0.5* PdfPageFormat.cm ),
+                            pw.SizedBox(height:five ),
 
 
                             //11
@@ -369,18 +732,26 @@ class PdfInvoiceApi {
                               bulletShape: pw.BoxShape.circle,
                               style: pw.TextStyle(
 
-                                  fontSize: three
+                                  fontSize: three,
+                                fontWeight: bold
 
                               ),
                               bulletColor: PdfColors.purple,
-                              margin: pw.EdgeInsets.only(bottom: 0.1* PdfPageFormat.cm),
-                              bulletSize: 0.1*PdfPageFormat.cm,
+                              margin: pw.EdgeInsets.only(bottom: bottom),
+                              bulletSize: one,
+                                bulletMargin: pw.EdgeInsets.only(
+                                    left:0 , right: one , top: 0.125*PdfPageFormat.cm
+                                )
 
                             ),
-                            pw.Padding(padding: pw.EdgeInsets.only(left: 23),
+                            pw.Padding(padding: pw.EdgeInsets.only(left: two),
                                 child: pw.Text('स्तन के आकार को बढ़ाना\nस्तन कसाव लाना में' , style: pw.TextStyle(
-                                    fontSize:  0.2* PdfPageFormat.cm,
-                                    font:font))),
+                                    fontSize:  two,
+                                    font:font,
+                                  fontWeight: bold
+
+
+                                ))),
 
                             pw.SizedBox(height: five),
 
@@ -391,18 +762,26 @@ class PdfInvoiceApi {
                               bulletShape: pw.BoxShape.circle,
                               style: pw.TextStyle(
 
-                                  fontSize: three
+                                  fontSize: three,
+                                fontWeight: bold
 
                               ),
                               bulletColor: PdfColors.purple,
-                              margin: pw.EdgeInsets.only(bottom: 0.1* PdfPageFormat.cm),
-                              bulletSize: 0.1*PdfPageFormat.cm,
+                              margin: pw.EdgeInsets.only(bottom: bottom),
+                              bulletSize: one,
+                                bulletMargin: pw.EdgeInsets.only(
+                                    left:0 , right: one , top: 0.125*PdfPageFormat.cm
+                                )
 
                             ),
-                            pw.Padding(padding: pw.EdgeInsets.only(left: 23),
+                            pw.Padding(padding: pw.EdgeInsets.only(left: two),
                                 child: pw.Text('आइब्रो का आकार ठीक करना\nसफेद चकतो , होठों का रंग सही करना' , style: pw.TextStyle(
-                                    fontSize:  0.2* PdfPageFormat.cm,
-                                    font:font))),
+                                    fontSize:  two,
+                                    font:font,
+                                  fontWeight: bold
+
+
+                                ))),
 
                             pw.SizedBox(height: five),
 
@@ -412,18 +791,26 @@ class PdfInvoiceApi {
                               bulletShape: pw.BoxShape.circle,
                               style: pw.TextStyle(
 
-                                  fontSize: three
+                                  fontSize: three,
+                                  fontWeight: bold
 
                               ),
                               bulletColor: PdfColors.purple,
-                              margin: pw.EdgeInsets.only(bottom: 0.1* PdfPageFormat.cm),
-                              bulletSize: 0.1*PdfPageFormat.cm,
+                              margin: pw.EdgeInsets.only(bottom: bottom),
+                              bulletSize: one,
+                                bulletMargin: pw.EdgeInsets.only(
+                                    left:0 , right: one , top: 0.125*PdfPageFormat.cm
+                                )
 
                             ),
-                            pw.Padding(padding: pw.EdgeInsets.only(left: 23),
+                            pw.Padding(padding: pw.EdgeInsets.only(left: two),
                                 child: pw.Text('हथेलि , पैर के तलवो पर अत्यधिक पासीना का इलाज' , style: pw.TextStyle(
-                                    fontSize:  0.2* PdfPageFormat.cm,
-                                    font:font))),
+                                    fontSize:  two,
+                                    font:font,
+                                    fontWeight: bold
+
+
+                                ))),
 
                             pw.SizedBox(height: five),
 
@@ -431,96 +818,88 @@ class PdfInvoiceApi {
 
                             //13
                             pw.Bullet(
-                              text: 'BRIDE / GROOM Beauty Treatment Packages',
+                              text: 'BRIDE / GROOM Beauty Treatment\nPackages',
                               bulletShape: pw.BoxShape.circle,
                               style: pw.TextStyle(
 
                                 fontSize: three,
+                                fontWeight: bold
 
 
                               ),
                               bulletColor: PdfColors.purple,
-                              margin: pw.EdgeInsets.only(bottom: 0.0* PdfPageFormat.cm ,),
-                              bulletSize: 0.1*PdfPageFormat.cm,
+                              margin: pw.EdgeInsets.only(bottom: bottom ,),
+                              bulletSize: one,
+                                bulletMargin: pw.EdgeInsets.only(
+                                    left:0 , right: one , top: 0.125*PdfPageFormat.cm
+                                )
 
 
 
                             ),
 
-                            pw.SizedBox(height:0.5* PdfPageFormat.cm ),
+                            pw.SizedBox(height:five ),
 
 
 
-                            //13
+
+
+                            //14
                             pw.Bullet(
-                              text: 'Theard Lift , Botox\nDerma Planning\nVampire FaceLift',
+                              text: 'Theard Lift , Botox',
                               bulletShape: pw.BoxShape.circle,
                               style: pw.TextStyle(
 
                                 fontSize: three,
+                                fontWeight: bold
 
 
                               ),
                               bulletColor: PdfColors.purple,
-                              margin: pw.EdgeInsets.only(bottom: 0.0* PdfPageFormat.cm ,),
-                              bulletSize: 0.1*PdfPageFormat.cm,
+                              margin: pw.EdgeInsets.only(bottom: bottom ,),
+                              bulletSize: one,
+                                bulletMargin: pw.EdgeInsets.only(
+                                    left:0 , right: one , top: 0.125*PdfPageFormat.cm
+                                )
 
 
 
                             ),
+                            pw.Padding(padding: pw.EdgeInsets.only(left: two),
+                                child: pw.Text('Derma Plannign\nVampire FaceLift' , style: pw.TextStyle(
+                                    fontSize:  two,
 
-                            pw.SizedBox(height:0.5* PdfPageFormat.cm ),
+                                    fontWeight: bold
 
 
-                            //13
+                                ))),
+
+                            pw.SizedBox(height:five ),
+
+
+                            //16
                             pw.Bullet(
                               text: 'Hair Transplant',
                               bulletShape: pw.BoxShape.circle,
                               style: pw.TextStyle(
 
                                 fontSize: three,
+                                fontWeight: bold
 
 
                               ),
                               bulletColor: PdfColors.purple,
-                              margin: pw.EdgeInsets.only(bottom: 0.0* PdfPageFormat.cm ,),
-                              bulletSize: 0.1*PdfPageFormat.cm,
+                              margin: pw.EdgeInsets.only(bottom: bottom ,),
+                              bulletSize: one,
+                                bulletMargin: pw.EdgeInsets.only(
+                                    left:0 , right: one , top: 0.125*PdfPageFormat.cm
+                                )
 
 
 
                             ),
 
-                            pw.SizedBox(height:0.5* PdfPageFormat.cm ),
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                            pw.SizedBox(height:five ),
 
                           ]
                       ),
@@ -544,7 +923,7 @@ class PdfInvoiceApi {
                           color: PdfColors.orangeAccent,
 
                         ),
-                        height: 23*PdfPageFormat.cm,
+                        height: 25*PdfPageFormat.cm,
                         width: 2,
 
                       ),
@@ -559,53 +938,73 @@ class PdfInvoiceApi {
                             pw.Container(
 
                               width: 14*PdfPageFormat.cm,
-                              height: 23*PdfPageFormat.cm,
+                              height: 25*PdfPageFormat.cm,
+                              margin: pw.EdgeInsets.only(top: three),
                               color: PdfColors.white,
                               child:pw.Padding(
-                                padding: pw.EdgeInsets.only(left: 1*PdfPageFormat.cm),
-                                child:  pw.Column(
-                                    crossAxisAlignment: pw.CrossAxisAlignment.start,
+                                padding: pw.EdgeInsets.only(right: 1*PdfPageFormat.cm , left: 1*PdfPageFormat.cm),
+                                child: pw.Column(
+                                  children:[
+                                     pw.Table(
+                                         children:[
 
-                                    children: [
+                                           Date('ss'),
 
-                                      pw.Text('Date : ${date==null?'122':date}' , style: pw.TextStyle(fontSize: three)),
-                                      pw.Text('Name : ${name==null?'122':name}' , style: pw.TextStyle(fontSize: three)),
-                                      pw.Text('Age : ${age==null?'122':age}' , style: pw.TextStyle(fontSize: three)),
-                                      pw.Text('Mobile No. : ${mobile==null?'122':mobile}' , style: pw.TextStyle(fontSize: three)),
+                                           Patient_detail('Patient'),
 
-                                      pw.SizedBox(height:five),
+                                           Patient_Address('Address'),
 
-                                      pw.Text('Notes:',  style: pw.TextStyle(fontSize: three),),
-                                      pw.Text(notes , style: pw.TextStyle(fontSize: three)),
-
-                                      pw.SizedBox(height:five),
-
-                                      pw.Text('Diagnosis:' ,  style: pw.TextStyle(fontSize: three),),
-                                      pw.Column(
-                                        children: diagnosis.map((e) {
-
-                                          return pw.Bullet(
-                                            text: e.toString().toUpperCase(),
-                                            style: pw.TextStyle(fontSize: three),
-                                            bulletSize: 0.1*PdfPageFormat.cm,
-                                           padding: pw.EdgeInsets.only(left: 0)
+                                           SizedBox(),
 
 
 
-                                          );
-                                        } ).toList()
-                                      ),
+                                           Vitals('Vitals'),
 
-                                      pw.SizedBox(height:five),
+                                           SizedBox(),
 
+                                           Notes(['Notes'  , 'note 2']),
 
-                                      pw.Table(
-                                        children: []
-                                      )
+                                           SizedBox(),
+
+                                           Diagnosis(['Notes'  , 'note 2']),
+
+                                           SizedBox(),
+
+                                           Allergies(['Notes'  , 'note 2']),
+
+                                           SizedBox(),
+
+                                           Group(['Notes'  , 'note 2']),
+
+                                           SizedBox(),
 
 
 
 
+                                           SizedBox(),
+
+
+
+                                           pw.TableRow(
+                                             children: [
+                                               pw.Column(
+                                                 mainAxisSize: pw.MainAxisSize.min,
+                                                 crossAxisAlignment: pw.CrossAxisAlignment.start,
+                                                 children: [
+                                                   pw.Row(
+
+                                                       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                                                       children: [
+                                                         pw.Text('Sr no.'),
+                                                         pw.Text('Sr no.'),
+                                                         pw.Text('Sr no.'),
+                                                         pw.Text('Sr no.'),
+                                                       ]
+                                                   )
+                                                 ]
+                                               )
+                                             ]
+                                           )
 
 
 
@@ -619,20 +1018,11 @@ class PdfInvoiceApi {
 
 
 
+                                         ]
+                                     ),
 
-
-
-
-
-
-
-
-
-
-
-
-                                    ]
-                                ),
+                                  ]
+                                )
                               )
 
 
@@ -663,8 +1053,8 @@ class PdfInvoiceApi {
                           ]
                         ),
 
-                        width: 14*PdfPageFormat.cm,
-                        height: 23*PdfPageFormat.cm,
+                        width: 15*PdfPageFormat.cm,
+                        height: 25*PdfPageFormat.cm,
 
                       )
 
@@ -697,7 +1087,10 @@ class PdfInvoiceApi {
       ),
     );
 
+
+
     return pdf.save();
   }
+
 
   }
