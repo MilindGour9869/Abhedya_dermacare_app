@@ -14,7 +14,12 @@ class PdfInvoiceApi {
   static Future<Uint8List> generatePdf( {String date ,  String id , String name ,String gender ,  int age, int mobile ,String notes , List diagnosis , Map<String,Map<String,dynamic>> medicinces , List advice }) async {
     final pdf = pw.Document(version: PdfVersion.pdf_1_5 , compress: true);
 
-    final image = await imageFromAssetBundle('images/logo_without_background.png');
+    final logo = await imageFromAssetBundle('images/logo_without_background.png');
+    final sign = await imageFromAssetBundle('images/sign.png');
+    final playstore = await imageFromAssetBundle('images/playstore.png');
+    final Qr = await imageFromAssetBundle('images/Qr.jpg');
+
+
     final hindi_font = await fontFromAssetBundle('font/GIST-DVOTMohini.ttf');
     final eng_font = await fontFromAssetBundle('font/RobotoSlab-Medium.ttf');
 
@@ -48,12 +53,27 @@ class PdfInvoiceApi {
 
               alignment: pw.Alignment.topRight,
             //  margin: pw.EdgeInsets.only(right: 1*PdfPageFormat.cm),
-              child:  pw.Text('Date : ${value}', style: pw.TextStyle(
-                fontSize: three,
+              child:  pw.Row(
+                mainAxisSize: pw.MainAxisSize.min,
+                children: [
+                  pw.Text('Date : ', style: pw.TextStyle(
+                     fontSize: three,
+                      fontWeight: bold
 
-              ),
+                  ),
 
-            )
+                  ),
+                  pw.Text(value, style: pw.TextStyle(
+                    fontSize: three,
+
+
+                  ),
+
+                  ),
+
+
+                ]
+              )
 
             )]
       );
@@ -64,9 +84,27 @@ class PdfInvoiceApi {
           children: [
             pw.Container(
               //  margin: pw.EdgeInsets.only(right: 1*PdfPageFormat.cm),
-              child:  pw.Text(value , style: pw.TextStyle(
-                fontSize: three,
-              ),),
+              child:  pw.Row(
+                  mainAxisSize: pw.MainAxisSize.min,
+                  children: [
+                    pw.Text('Patient Details : ', style: pw.TextStyle(
+                        fontSize: three,
+                        fontWeight: bold
+
+                    ),
+
+                    ),
+                    pw.Text(value, style: pw.TextStyle(
+                      fontSize: three,
+
+
+                    ),
+
+                    ),
+
+
+                  ]
+              )
 
             )
 
@@ -79,9 +117,27 @@ class PdfInvoiceApi {
           children: [
             pw.Container(
               //  margin: pw.EdgeInsets.only(right: 1*PdfPageFormat.cm),
-              child:  pw.Text(value , style: pw.TextStyle(
-                fontSize: three,
-              ),),
+              child:  pw.Row(
+                  mainAxisSize: pw.MainAxisSize.min,
+                  children: [
+                    pw.Text('Address : ', style: pw.TextStyle(
+                        fontSize: three,
+                        fontWeight: bold
+
+                    ),
+
+                    ),
+                    pw.Text(value, style: pw.TextStyle(
+                      fontSize: three,
+
+
+                    ),
+
+                    ),
+
+
+                  ]
+              )
 
             )
 
@@ -94,9 +150,27 @@ class PdfInvoiceApi {
           children: [
             pw.Container(
               //  margin: pw.EdgeInsets.only(right: 1*PdfPageFormat.cm),
-              child:  pw.Text(value , style: pw.TextStyle(
-                fontSize: three,
-              ),),
+              child:  pw.Row(
+                  mainAxisSize: pw.MainAxisSize.min,
+                  children: [
+                    pw.Text('Vitals : ', style: pw.TextStyle(
+                        fontSize: three,
+                        fontWeight: bold
+
+                    ),
+
+                    ),
+                    pw.Text(value, style: pw.TextStyle(
+                      fontSize: three,
+
+
+                    ),
+
+                    ),
+
+
+                  ]
+              )
 
             )
 
@@ -280,9 +354,77 @@ class PdfInvoiceApi {
       );
     }
 
+    pw.TableRow Clinical_Finding(List<String> value){
+      return pw.TableRow(
+          children: [
+            pw.Container(
+                width: 200,
+                child: pw.Column(
+                    mainAxisSize: pw.MainAxisSize.min,
+                    crossAxisAlignment: pw.CrossAxisAlignment.start,
+                    children: [
+                      pw.Text("Clinical Findings :" , style: pw.TextStyle(
+                          fontSize: three,
+                          fontWeight: bold
+
+                      ),),
+
+                      pw.Column(
+                          mainAxisSize: pw.MainAxisSize.min,
+                          crossAxisAlignment: pw.CrossAxisAlignment.start,
+                          children: value.map<pw.Widget>(bullet).toList()
+                      )
+
+
+
+
+
+                    ]
+                )
+
+            )
+
+          ]
+      );
+    }
+
+    pw.TableRow Complaint(List<String> value){
+      return pw.TableRow(
+          children: [
+            pw.Container(
+                width: 200,
+                child: pw.Column(
+                    mainAxisSize: pw.MainAxisSize.min,
+                    crossAxisAlignment: pw.CrossAxisAlignment.start,
+                    children: [
+                      pw.Text("Complaint :" , style: pw.TextStyle(
+                          fontSize: three,
+                          fontWeight: bold
+
+                      ),),
+
+                      pw.Column(
+                          mainAxisSize: pw.MainAxisSize.min,
+                          crossAxisAlignment: pw.CrossAxisAlignment.start,
+                          children: value.map<pw.Widget>(bullet).toList()
+                      )
+
+
+
+
+
+                    ]
+                )
+
+            )
+
+          ]
+      );
+    }
+
 
    //Middle Table
-    pw.TableRow MainTable({ Map<String , String> map}){
+    pw.TableRow MainTable({ Map<String , String> map , bool header} ){
       return pw.TableRow(
 
 
@@ -293,7 +435,8 @@ class PdfInvoiceApi {
 
 
               child:  pw.Text('Sr no.' , style: pw.TextStyle(
-                  fontSize: three
+                  fontSize: three,
+                  fontWeight: header?bold:pw.FontWeight.normal
               )),),
 
 
@@ -301,7 +444,8 @@ class PdfInvoiceApi {
             pw.Container(
 
               child:  pw.Text('Medicine' , style: pw.TextStyle(
-                  fontSize: three
+                  fontSize: three,
+                  fontWeight: header?bold:pw.FontWeight.normal
               )),),
 
             pw.Container(
@@ -309,14 +453,18 @@ class PdfInvoiceApi {
 
 
               child:  pw.Text('Dosage' , style: pw.TextStyle(
-                  fontSize: three
+                  fontSize: three,
+
+                  fontWeight: header?bold:pw.FontWeight.normal
+
               )),),
 
             pw.Container(
 
 
               child:  pw.Text('Duration' , style: pw.TextStyle(
-                  fontSize: three
+                  fontSize: three,
+                  fontWeight: header?bold:pw.FontWeight.normal
               )),),
 
           ]
@@ -358,20 +506,17 @@ class PdfInvoiceApi {
 
     List<pw.TableRow> Abc=[
 
-      MainTable(),
+      MainTable(header: true),
       MainDivider(),
 
-      MainTable(),
-      MainDivider(),
-
-      MainTable(),
-      MainDivider(),
-
-      MainTable(),
+      MainTable(header: false),
       MainDivider(),
 
 
     ];
+
+
+
 
     //Lower Widgets
 
@@ -475,7 +620,7 @@ class PdfInvoiceApi {
                           pw.Padding(
 
 
-                              child: pw.Image(image , height: 3 * PdfPageFormat.cm , width: 3 * PdfPageFormat.cm),
+                              child: pw.Image(logo , height: 3 * PdfPageFormat.cm , width: 3 * PdfPageFormat.cm),
                               padding: pw.EdgeInsets.only(left: 1 * PdfPageFormat.cm)
                           ),
 
@@ -594,7 +739,7 @@ class PdfInvoiceApi {
                           pw.Padding(
 
 
-                              child: pw.Image(image , height: 3 * PdfPageFormat.cm , width: 3 * PdfPageFormat.cm),
+                              child: pw.Image(logo , height: 3 * PdfPageFormat.cm , width: 3 * PdfPageFormat.cm),
                               padding: pw.EdgeInsets.only(right: 1 * PdfPageFormat.cm)
                           ),
 
@@ -1236,6 +1381,16 @@ class PdfInvoiceApi {
 
                                                  Group(['Notes'  , 'note 2']),
 
+                                                 Box(),
+
+                                                 Complaint(['aaaa']),
+
+                                                 Box(),
+
+                                                 Clinical_Finding(['ss']),
+
+
+
 
 
                                                  Box(),
@@ -1293,6 +1448,19 @@ class PdfInvoiceApi {
                                                  Box(),
                                                  Investigation(['aas']),
 
+                                                 Box(),
+                                                 pw.TableRow(
+                                                   children: [
+                                                     pw.Row(
+                                                       children: [
+                                                         pw.Text('Follow up Date : ' , style: pw.TextStyle(fontSize: three , fontWeight: bold)),
+                                                         pw.Text('22 Apr 2022' , style: pw.TextStyle(fontSize: three )),
+
+                                                       ]
+                                                     )
+                                                   ]
+                                                 )
+
                                                ]
                                            ),
                                          ]
@@ -1306,11 +1474,25 @@ class PdfInvoiceApi {
                                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                                        children: [
 
-                                         pw.Text('Qr Code'),
+                                         pw.Column(
+                                           children: [
+                                             pw.Image(Qr , height: 2 * PdfPageFormat.cm , width: 2 * PdfPageFormat.cm),
+                                             pw.Row(
+                                               children: [
+                                                 pw.Text('Scan & Download the app from ' , style: pw.TextStyle(fontSize: two)),
+                                                 pw.Image(playstore , height: 0.5 * PdfPageFormat.cm , width: 0.5 * PdfPageFormat.cm),
+
+                                               ]
+                                             ),
+                                             pw.Text('to book appointment' , style: pw.TextStyle(fontSize: two)),
+
+                                           ]
+                                         ),
 
                                          pw.Column(
                                              crossAxisAlignment: pw.CrossAxisAlignment.end,
                                              children: [
+                                               pw.Image(sign , height: 2 * PdfPageFormat.cm , width: 2 * PdfPageFormat.cm),
                                                pw.Text('Dr. Mahi Ram Bishnoi' , style: pw.TextStyle(fontSize: three , fontWeight: bold)),
                                                pw.Text('(MBBS,DDV (SKIN)),' , style: pw.TextStyle(fontSize: three ,)),
                                                pw.Text('DEM(UK),FAM(GERMANY),FAD' , style: pw.TextStyle(fontSize: three , )),
@@ -1372,7 +1554,7 @@ class PdfInvoiceApi {
                             child:  pw.Center(child: pw.Column(
                               mainAxisAlignment: pw.MainAxisAlignment.center,
                               children: [
-                                pw.Image(image , height: 9 * PdfPageFormat.cm , width: 9 * PdfPageFormat.cm ,),
+                                pw.Image(logo , height: 9 * PdfPageFormat.cm , width: 9 * PdfPageFormat.cm ,),
                                 pw.Text("Abhedya's" , style: pw.TextStyle(color: purple , fontSize: 43 , font: eng_font )),
                                 pw.Text("Dermacare" , style: pw.TextStyle(color: orange , fontSize: 33 , font: eng_font )),
 
@@ -1419,7 +1601,12 @@ class PdfInvoiceApi {
                   pw.Container(
                     width: 800,
                     height: 0.7*PdfPageFormat.cm,
+                    alignment: pw.Alignment.center,
                     color: orange,
+                    child: pw.Text('जय श्री कृष्णा' , style: pw.TextStyle(
+                      font: hindi_font,
+                      fontSize: three
+                    ))
 
                   ),
                   pw.SizedBox(height: one),
