@@ -1,4 +1,6 @@
 
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 
@@ -6,7 +8,7 @@ import 'dart:typed_data';
 import 'package:printing/printing.dart';
 import 'package:pdf/pdf.dart';
 
-import 'package:flutter/material.dart' ;
+//import 'package:flutter/material.dart' ;
 
 class PdfInvoiceApi {
 
@@ -31,6 +33,9 @@ class PdfInvoiceApi {
     var bottom = 0.0* PdfPageFormat.cm;
 
     var bold = pw.FontWeight.bold;
+
+    List<int> i =[1,2];
+
 
     pw.TableRow Date(String value){
       return pw.TableRow(
@@ -96,7 +101,7 @@ class PdfInvoiceApi {
     }
 
 
-    pw.TableRow SizedBox(){
+    pw.TableRow Box(){
       return pw.TableRow(
           children: [
             pw.Container(
@@ -134,7 +139,7 @@ class PdfInvoiceApi {
     }
 
 
-
+    //Upper Widgets
     pw.TableRow Notes(List<String> value){
       return pw.TableRow(
           children: [
@@ -237,40 +242,6 @@ class PdfInvoiceApi {
       );
     }
 
-    pw.TableRow Advice(List<String> value){
-      return pw.TableRow(
-          children: [
-            pw.Container(
-                width: 200,
-                child: pw.Column(
-                    mainAxisSize: pw.MainAxisSize.min,
-                    crossAxisAlignment: pw.CrossAxisAlignment.start,
-                    children: [
-                      pw.Text("Advice :" , style: pw.TextStyle(
-                        fontSize: three,
-                          fontWeight: bold
-
-                      ),),
-
-                      pw.Column(
-                          mainAxisSize: pw.MainAxisSize.min,
-                          crossAxisAlignment: pw.CrossAxisAlignment.start,
-                          children: value.map<pw.Widget>(bullet).toList()
-                      )
-
-
-
-
-
-                    ]
-                )
-
-            )
-
-          ]
-      );
-    }
-
     pw.TableRow Group(List<String> value){
       return pw.TableRow(
           children: [
@@ -305,100 +276,158 @@ class PdfInvoiceApi {
       );
     }
 
-    pw.TableRow Table({ Map<String , String> map}){
+
+   //Middle Table
+    pw.TableRow MainTable({ Map<String , String> map}){
       return pw.TableRow(
 
-          children: [
 
-           pw.Container(
-             decoration: pw.BoxDecoration(
-                 border: pw.Border(
-                     bottom: pw.BorderSide(
-                         width: 1
-                     )
-                 )
-             ),
-              padding: pw.EdgeInsets.only(top: 7,bottom: 7 ,right: 7),
-              child:  pw.Text('${map['sr_no']}.' , style: pw.TextStyle(
+          children: [
+            pw.Container(
+
+
+
+
+              child:  pw.Text('Sr no.' , style: pw.TextStyle(
                   fontSize: three
               )),),
 
 
 
-            pw.SizedBox(width: 2),
-
-
-
-
             pw.Container(
-              decoration: pw.BoxDecoration(
-                  border: pw.Border(
-                      bottom: pw.BorderSide(
-                          width: 1
-                      )
-                  )
-              ),
-              padding: pw.EdgeInsets.only(top: 7,bottom: 7 ,right: 7),
-              child:   pw.Text(map['medicine'].toUpperCase() , style: pw.TextStyle(
+
+              child:  pw.Text('Medicine' , style: pw.TextStyle(
                   fontSize: three
-              )),
-            ),
-
-            pw.SizedBox(width: 2),
+              )),),
 
             pw.Container(
-              decoration: pw.BoxDecoration(
-                  border: pw.Border(
-                      bottom: pw.BorderSide(
-                          width: 1
-                      )
-                  )
-              ),
-              padding: pw.EdgeInsets.only(top: 7,bottom: 7 ,right: 7),
-              child:   pw.Column(
-                crossAxisAlignment: pw.CrossAxisAlignment.start,
-                children: [
-                  pw.Text(map['dosage_time'] , style: pw.TextStyle(
-                      fontSize: three
-                  )),
-                  pw.Text(map['dosage_info']==null?"":map['dosage_info'] , style: pw.TextStyle(
-                      fontSize: three
-                  )),
-                ]
-              ),
+
+
+
+              child:  pw.Text('Dosage' , style: pw.TextStyle(
+                  fontSize: three
+              )),),
+
+            pw.Container(
+
+
+              child:  pw.Text('Duration' , style: pw.TextStyle(
+                  fontSize: three
+              )),),
+
+          ]
+      );
+
+
+    }
+
+    pw.TableRow MainDivider(){
+      return pw.TableRow(
+          children: [
+
+            pw.Container(
+              margin: pw.EdgeInsets.only(right: one),
+              child: pw.Divider(height: two),
             ),
 
+            pw.Container(
+              margin: pw.EdgeInsets.only(right: one),
+              child: pw.Divider(height: two),
+            ),
 
-            pw.SizedBox(width: 2),
-
+            pw.Container(
+              margin: pw.EdgeInsets.only(right: one),
+              child: pw.Divider(height: two),
+            ),
 
 
             pw.Container(
-              decoration: pw.BoxDecoration(
-                  border: pw.Border(
-                      bottom: pw.BorderSide(
-                          width: 1
-                      )
-                  )
-              ),
-              padding: pw.EdgeInsets.only(top: 7,bottom: 7 ,right: 7),
-              child:  pw.Row(
-                children: [
-                  pw.Text(map['duration '] , style: pw.TextStyle(
-                      fontSize: three
-
-                  )),
-                  pw.Text('दिन' , style: pw.TextStyle(
-                      fontSize: three,
-                      font: font
-
-                  )),
-
-                ]
-              ),
+              margin: pw.EdgeInsets.only(right: one),
+              child: pw.Divider(height: two),
             ),
 
 
+          ]
+      );
+    }
+
+
+    List<pw.TableRow> Abc=[
+
+      MainTable(),
+      MainDivider(),
+
+      MainTable(),
+      MainDivider(),
+
+
+    ];
+
+    //Lower Widgets
+
+    pw.TableRow Advice(List<String> value){
+      return pw.TableRow(
+          children: [
+            pw.Container(
+                width: 200,
+                child: pw.Column(
+                    mainAxisSize: pw.MainAxisSize.min,
+                    crossAxisAlignment: pw.CrossAxisAlignment.start,
+                    children: [
+                      pw.Text("Advice :" , style: pw.TextStyle(
+                          fontSize: three,
+                          fontWeight: bold
+
+                      ),),
+
+                      pw.Column(
+                          mainAxisSize: pw.MainAxisSize.min,
+                          crossAxisAlignment: pw.CrossAxisAlignment.start,
+                          children: value.map<pw.Widget>(bullet).toList()
+                      )
+
+
+
+
+
+                    ]
+                )
+
+            )
+
+          ]
+      );
+    }
+
+    pw.TableRow Investigation(List<String> value){
+      return pw.TableRow(
+          children: [
+            pw.Container(
+                width: 200,
+                child: pw.Column(
+                    mainAxisSize: pw.MainAxisSize.min,
+                    crossAxisAlignment: pw.CrossAxisAlignment.start,
+                    children: [
+                      pw.Text("Investigation :" , style: pw.TextStyle(
+                          fontSize: three,
+                          fontWeight: bold
+
+                      ),),
+
+                      pw.Column(
+                          mainAxisSize: pw.MainAxisSize.min,
+                          crossAxisAlignment: pw.CrossAxisAlignment.start,
+                          children: value.map<pw.Widget>(bullet).toList()
+                      )
+
+
+
+
+
+                    ]
+                )
+
+            )
 
           ]
       );
@@ -417,7 +446,7 @@ class PdfInvoiceApi {
 
     pdf.addPage(
       pw.Page(
-        pageFormat: PdfPageFormat(21.0 * PdfPageFormat.cm, 29.7 * PdfPageFormat.cm, marginTop:1 * PdfPageFormat.cm  ),
+        pageFormat: PdfPageFormat(21.0 * PdfPageFormat.cm, 29.7 * PdfPageFormat.cm, marginTop:0.5 * PdfPageFormat.cm  ),
 
         build: (context) {
           return pw.Column(
@@ -443,11 +472,11 @@ class PdfInvoiceApi {
                       crossAxisAlignment: pw.CrossAxisAlignment.end,
                       children: [
 
-                        pw.Text('डॉ. महिराम ' , style: pw.TextStyle(fontSize: five , font:font , color: PdfColors.purple)),
-                        pw.Text('Dr. Mahiram Bisnoi' , style: pw.TextStyle(fontSize: five)),
-                        pw.Text('aa'),
-                        pw.Text('aa'),
-                        pw.Text('aa'),
+                        pw.Text('डॉ. महिराम बिश्नोई' , style: pw.TextStyle(fontSize: 0.7 * PdfPageFormat.cm , font:font , color: PdfColors.purple , fontWeight: bold)),
+                        pw.Text('Dr. Mahi Ram Bishnoi' , style: pw.TextStyle(fontSize: 0.5 * PdfPageFormat.cm , fontWeight: bold)),
+                        pw.Text('MBBS , DDV(SKIN),DEM(UK)' , style: pw.TextStyle(fontSize: 0.4 * PdfPageFormat.cm)),
+                        pw.Text('FAM(GERMANY),FAD,RMC-31777' , style: pw.TextStyle(fontSize: 0.4 * PdfPageFormat.cm)),
+                        pw.Text('Email:abhedyasdermacare@gmail.com' , style: pw.TextStyle(fontSize: three)),
 
 
 
@@ -470,7 +499,7 @@ class PdfInvoiceApi {
                 mainAxisAlignment: pw.MainAxisAlignment.start,
                 children: [
                   pw.Container(
-                    height: 0.4*PdfPageFormat.cm,
+                    height: 0.7*PdfPageFormat.cm,
                     width: 1*PdfPageFormat.cm,
                     color: PdfColors.purple,
 
@@ -480,15 +509,21 @@ class PdfInvoiceApi {
                   pw.SizedBox(width: 5),
                   pw.Column(
                       children: [
-                        pw.Text("Abhedya's" , style: pw.TextStyle(fontSize: 0.4*PdfPageFormat.cm , )),
-                        pw.Text("DERMACARE" , style: pw.TextStyle(fontSize: two) )
+                        pw.Text("Abhedya's" , style: pw.TextStyle(fontSize: 0.4*PdfPageFormat.cm , fontWeight: bold )),
+                        pw.Text("DERMACARE" , style: pw.TextStyle(fontSize: three) )
                       ]
                   ),
                   pw.SizedBox(width: 5),
                   pw.Container(
                     color: PdfColors.orangeAccent,
-                    height: 0.4*PdfPageFormat.cm,
-                    width:500,
+                    height: 0.7*PdfPageFormat.cm,
+                    padding: pw.EdgeInsets.only(right: 1.4*PdfPageFormat.cm),
+                    width:18.0 * PdfPageFormat.cm,
+                    alignment: pw.Alignment.centerRight,
+                    child: pw.Text('मॉडल बस स्टैंड के पास , कर्मचारी कॉलोनी रोड , नाथद्वारा , राजसमंद' , style: pw.TextStyle(
+                      font: font,
+                      fontSize: three
+                    ))
 
 
                   ),
@@ -504,7 +539,7 @@ class PdfInvoiceApi {
                     flex: 1,
                     child:pw.Container(
                       padding: pw.EdgeInsets.only(left: 0.7*PdfPageFormat.cm),
-                      width: 6*PdfPageFormat.cm,
+                      width: 6.3*PdfPageFormat.cm,
 
                       child: pw.Column(
 
@@ -515,7 +550,6 @@ class PdfInvoiceApi {
 
                           children: [
 
-                            pw.SizedBox(height:  five),
 
                            pw.Padding(
                              padding: pw.EdgeInsets.only(left: 1*PdfPageFormat.cm),
@@ -1044,49 +1078,47 @@ class PdfInvoiceApi {
                                 padding: pw.EdgeInsets.only(right: 1*PdfPageFormat.cm , left: 1*PdfPageFormat.cm),
                                 child: pw.Column(
                                   children:[
-                                     pw.Table(
-                                         children:[
+                                     pw.Container(
+                                       child: pw.Column(
+                                         crossAxisAlignment: pw.CrossAxisAlignment.stretch,
+                                         children: [
+                                           pw.Table(
+                                               children:[
 
-                                           Date('ss'),
+                                                 Date('ss'),
 
-                                           Patient_detail('Patient'),
+                                                 Patient_detail('Patient'),
 
-                                           Patient_Address('Address'),
+                                                 Patient_Address('Address'),
 
-                                           SizedBox(),
-
-
-
-                                           Vitals('Vitals'),
-
-                                           SizedBox(),
-
-                                           Notes(['Notes'  , 'note 2']),
-
-                                           SizedBox(),
-
-                                           Diagnosis(['Notes'  , 'note 2']),
-
-                                           SizedBox(),
-
-                                           Allergies(['Notes'  , 'note 2']),
-
-                                           SizedBox(),
-
-                                           Group(['Notes'  , 'note 2']),
-
-                                           SizedBox(),
+                                                 Box(),
 
 
 
+                                                 Vitals('Vitals'),
 
-                                           SizedBox(),
+                                                 Box(),
 
+                                                 Notes(['Notes'  , 'note 2']),
+
+                                                 Box(),
+
+                                                 Diagnosis(['Notes'  , 'note 2']),
+
+                                                 Box(),
+
+                                                 Allergies(['Notes'  , 'note 2']),
+
+                                                 Box(),
+
+                                                 Group(['Notes'  , 'note 2']),
+
+                                                 Box(),
 
 
 
 
-
+                                                 Box(),
 
 
 
@@ -1096,9 +1128,60 @@ class PdfInvoiceApi {
 
 
 
+
+
+
+
+
+
+
+
+                                               ]
+                                           ),
+
+
+                                           pw.Table(
+
+
+
+                                               columnWidths: {
+                                                 0:pw.FractionColumnWidth(0.1),
+                                                 1:pw.FractionColumnWidth(0.3),
+                                                 2:pw.FractionColumnWidth(0.4),
+                                                 3:pw.FractionColumnWidth(0.1),
+
+                                               },
+
+                                               children: Abc
+                                           ),
+
+
+
+
+                                           pw.Table(
+                                               children: [
+                                                 Box(),
+                                                 Advice(['aaa']),
+
+
+                                                 Box(),
+                                                 Investigation(['aas']),
+
+                                               ]
+                                           ),
                                          ]
+                                       )
                                      ),
 
+                                    pw.Spacer(),
+
+
+
+                                    pw.Container(
+
+                                      height: 50,
+                                      color: PdfColors.red,
+                                    )
 
 
 
@@ -1126,7 +1209,7 @@ class PdfInvoiceApi {
                               ],
                             )),
 
-                            opacity: 0.1,
+                            opacity: 0.2,
 
                           ),
 
