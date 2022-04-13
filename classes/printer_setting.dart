@@ -1,14 +1,11 @@
 
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+
 import 'package:pdf/widgets.dart' as pw;
 
 
 import 'dart:typed_data';
 import 'package:printing/printing.dart';
 import 'package:pdf/pdf.dart';
-
-//import 'package:flutter/material.dart' ;
 
 class PdfInvoiceApi {
 
@@ -18,10 +15,13 @@ class PdfInvoiceApi {
     final pdf = pw.Document(version: PdfVersion.pdf_1_5 , compress: true);
 
     final image = await imageFromAssetBundle('images/logo_without_background.png');
-    final font = await fontFromAssetBundle('font/GIST-DVOTMohini.ttf');
-    final font1 = await fontFromAssetBundle('font/DevanagariBold.ttf');
+    final hindi_font = await fontFromAssetBundle('font/GIST-DVOTMohini.ttf');
+    final eng_font = await fontFromAssetBundle('font/RobotoSlab-Medium.ttf');
 
     int row=1;
+
+    bool img_left =true;
+
 
     var five  =  0.3*PdfPageFormat.cm;
 
@@ -35,6 +35,10 @@ class PdfInvoiceApi {
     var bold = pw.FontWeight.bold;
 
     List<int> i =[1,2];
+
+    var purple = PdfColor.fromInt(0xff47017E);
+    var orange = PdfColors.orangeAccent;
+
 
 
     pw.TableRow Date(String value){
@@ -458,86 +462,197 @@ class PdfInvoiceApi {
           return pw.Column(
             mainAxisAlignment: pw.MainAxisAlignment.start,
             children: [
-              pw.Row(
-                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                children: [
 
-                  pw.Padding(
+              img_left?pw.Container(
+                child: pw.Column(
+                    mainAxisAlignment: pw.MainAxisAlignment.start,
+                  children: [
+
+                    pw.Row(
+                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                        children: [
+
+                          pw.Padding(
 
 
-                 child: pw.Image(image , height: 3 * PdfPageFormat.cm , width: 3 * PdfPageFormat.cm),
-                  padding: pw.EdgeInsets.only(left: 1 * PdfPageFormat.cm)
-                  ),
-
-
-
-                  pw.Container(
-                    padding: pw.EdgeInsets.only(right: 1 * PdfPageFormat.cm),
-                    child: pw.Column(
-                      mainAxisAlignment: pw.MainAxisAlignment.end,
-                      crossAxisAlignment: pw.CrossAxisAlignment.end,
-                      children: [
-
-                        pw.Text('डॉ. महिराम बिश्नोई' , style: pw.TextStyle(fontSize: 0.7 * PdfPageFormat.cm , font:font , color: PdfColors.purple , fontWeight: bold)),
-                        pw.Text('Dr. Mahi Ram Bishnoi' , style: pw.TextStyle(fontSize: 0.5 * PdfPageFormat.cm , fontWeight: bold)),
-                        pw.Text('MBBS , DDV(SKIN),DEM(UK)' , style: pw.TextStyle(fontSize: 0.4 * PdfPageFormat.cm)),
-                        pw.Text('FAM(GERMANY),FAD,RMC-31777' , style: pw.TextStyle(fontSize: 0.4 * PdfPageFormat.cm)),
-                        pw.Text('Email:abhedyasdermacare@gmail.com' , style: pw.TextStyle(fontSize: three)),
+                              child: pw.Image(image , height: 3 * PdfPageFormat.cm , width: 3 * PdfPageFormat.cm),
+                              padding: pw.EdgeInsets.only(left: 1 * PdfPageFormat.cm)
+                          ),
 
 
 
+                          pw.Container(
+                              padding: pw.EdgeInsets.only(right: 1 * PdfPageFormat.cm),
+                              child: pw.Column(
+                                  mainAxisAlignment: pw.MainAxisAlignment.end,
+                                  crossAxisAlignment: pw.CrossAxisAlignment.end,
+                                  children: [
 
-
-
-
-                      ]
-                    )
-                  ),
+                                    pw.Text('डॉ. महिराम बिश्नोई' , style: pw.TextStyle(fontSize: 0.7 * PdfPageFormat.cm , font:hindi_font , color: purple , fontWeight: bold)),
+                                    pw.Text('Dr. Mahi Ram Bishnoi' , style: pw.TextStyle(fontSize: 0.5 * PdfPageFormat.cm , fontWeight: bold)),
+                                    pw.Text('MBBS , DDV(SKIN),DEM(UK)' , style: pw.TextStyle(fontSize: 0.4 * PdfPageFormat.cm)),
+                                    pw.Text('FAM(GERMANY),FAD,RMC-31777' , style: pw.TextStyle(fontSize: 0.4 * PdfPageFormat.cm)),
+                                    pw.Text('Email:abhedyasdermacare@gmail.com' , style: pw.TextStyle(fontSize: three)),
 
 
 
 
 
-                ]
+
+
+                                  ]
+                              )
+                          ),
+
+
+
+
+
+                        ]
+                    ),
+
+                    pw.Row(
+                        mainAxisAlignment: pw.MainAxisAlignment.start,
+                        children: [
+                          pw.Container(
+                            height: 0.7*PdfPageFormat.cm,
+                            width: 1*PdfPageFormat.cm,
+                            color: purple,
+
+
+
+                          ),
+                          pw.SizedBox(width: 5),
+                          pw.Column(
+                              children: [
+                                pw.Text("Abhedya's" , style: pw.TextStyle(fontSize: 0.4*PdfPageFormat.cm , fontWeight: bold , font: eng_font )),
+                                pw.Text("DERMACARE" , style: pw.TextStyle(fontSize: three , font: eng_font ) )
+                              ]
+                          ),
+                          pw.SizedBox(width: 5),
+                          pw.Container(
+                              color: orange,
+                              height: 0.7*PdfPageFormat.cm,
+                              padding: pw.EdgeInsets.only(right: 1.4*PdfPageFormat.cm),
+                              width:18.0 * PdfPageFormat.cm,
+                              alignment: pw.Alignment.centerRight,
+                              child: pw.Text('मॉडल बस स्टैंड के पास , कर्मचारी कॉलोनी रोड , नाथद्वारा , राजसमंद' , style: pw.TextStyle(
+                                  font: hindi_font,
+                                  fontSize: three
+                              ))
+
+
+                          ),
+
+
+
+                        ]
+                    ),
+                  ]
+                )
+
+
+
+              ):pw.Container(
+
+                child: pw.Column(
+                    mainAxisAlignment: pw.MainAxisAlignment.start,
+                  children: [
+                    pw.Row(
+                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                        children: [
+
+
+
+
+
+                          pw.Container(
+                              padding: pw.EdgeInsets.only(left: 1 * PdfPageFormat.cm),
+                              child: pw.Column(
+                                  mainAxisAlignment: pw.MainAxisAlignment.start,
+                                  crossAxisAlignment: pw.CrossAxisAlignment.start,
+                                  children: [
+
+                                    pw.Text('डॉ. महिराम बिश्नोई' , style: pw.TextStyle(fontSize: 0.7 * PdfPageFormat.cm , font:hindi_font , color: purple , fontWeight: bold)),
+                                    pw.Text('Dr. Mahi Ram Bishnoi' , style: pw.TextStyle(fontSize: 0.5 * PdfPageFormat.cm , fontWeight: bold)),
+                                    pw.Text('MBBS , DDV(SKIN),DEM(UK)' , style: pw.TextStyle(fontSize: 0.4 * PdfPageFormat.cm)),
+                                    pw.Text('FAM(GERMANY),FAD,RMC-31777' , style: pw.TextStyle(fontSize: 0.4 * PdfPageFormat.cm)),
+                                    pw.Text('Email:abhedyasdermacare@gmail.com' , style: pw.TextStyle(fontSize: three)),
+
+
+
+
+
+
+
+                                  ]
+                              ),
+
+
+                          ),
+
+                          pw.Padding(
+
+
+                              child: pw.Image(image , height: 3 * PdfPageFormat.cm , width: 3 * PdfPageFormat.cm),
+                              padding: pw.EdgeInsets.only(right: 1 * PdfPageFormat.cm)
+                          ),
+
+
+
+
+
+                        ]
+                    ),
+
+                    pw.Row(
+                        mainAxisAlignment: pw.MainAxisAlignment.start,
+                        children: [
+
+                          pw.Container(
+                              color: orange,
+                              height: 0.7*PdfPageFormat.cm,
+                              padding: pw.EdgeInsets.only(left: 1*PdfPageFormat.cm),
+                              width:17.5 * PdfPageFormat.cm,
+                              alignment: pw.Alignment.centerLeft,
+                              child: pw.Text('मॉडल बस स्टैंड के पास , कर्मचारी कॉलोनी रोड , नाथद्वारा , राजसमंद' , style: pw.TextStyle(
+                                  font: hindi_font,
+                                  fontSize: three
+                              ))
+
+
+                          ),
+
+
+                          pw.SizedBox(width: 5),
+                          pw.Column(
+                              children: [
+                                pw.Text("Abhedya's" , style: pw.TextStyle(fontSize: 0.4*PdfPageFormat.cm , fontWeight: bold , font: eng_font )),
+                                pw.Text("DERMACARE" , style: pw.TextStyle(fontSize: three , font: eng_font ) )
+                              ]
+                          ),
+                          pw.SizedBox(width: 5),
+
+                          pw.Container(
+                            height: 0.7*PdfPageFormat.cm,
+                            width: 2*PdfPageFormat.cm,
+                            color: purple,
+
+
+
+                          ),
+
+
+
+
+
+                        ]
+                    ),
+                  ]
+                )
               ),
 
-              pw.Row(
-                mainAxisAlignment: pw.MainAxisAlignment.start,
-                children: [
-                  pw.Container(
-                    height: 0.7*PdfPageFormat.cm,
-                    width: 1*PdfPageFormat.cm,
-                    color: PdfColors.purple,
 
-
-
-                  ),
-                  pw.SizedBox(width: 5),
-                  pw.Column(
-                      children: [
-                        pw.Text("Abhedya's" , style: pw.TextStyle(fontSize: 0.4*PdfPageFormat.cm , fontWeight: bold )),
-                        pw.Text("DERMACARE" , style: pw.TextStyle(fontSize: three) )
-                      ]
-                  ),
-                  pw.SizedBox(width: 5),
-                  pw.Container(
-                    color: PdfColors.orangeAccent,
-                    height: 0.7*PdfPageFormat.cm,
-                    padding: pw.EdgeInsets.only(right: 1.4*PdfPageFormat.cm),
-                    width:18.0 * PdfPageFormat.cm,
-                    alignment: pw.Alignment.centerRight,
-                    child: pw.Text('मॉडल बस स्टैंड के पास , कर्मचारी कॉलोनी रोड , नाथद्वारा , राजसमंद' , style: pw.TextStyle(
-                      font: font,
-                      fontSize: three
-                    ))
-
-
-                  ),
-
-
-
-                ]
-              ),
 
               pw.Row(
                 children: [
@@ -556,12 +671,12 @@ class PdfInvoiceApi {
 
                           children: [
 
-                            pw.SizedBox(height:  two),
+                            pw.SizedBox(height:  one),
 
 
                            pw.Padding(
-                             padding: pw.EdgeInsets.only(left: 1*PdfPageFormat.cm),
-                             child:  pw.Text('उपलब्ध सुविधाऐ' , style: pw.TextStyle(fontSize: 0.5*PdfPageFormat.cm , font: font)),
+                             padding: pw.EdgeInsets.only(left: 0.6*PdfPageFormat.cm),
+                             child:  pw.Text('उपलब्ध सुविधाऐ' , style: pw.TextStyle(fontSize: 0.5*PdfPageFormat.cm , font: hindi_font , fontWeight: bold)),
                            ),
 
                             pw.SizedBox(height:  five),
@@ -575,11 +690,11 @@ class PdfInvoiceApi {
                               style: pw.TextStyle(
 
                                 fontSize: three,
-                                font: font,
+                                font: hindi_font,
                                 fontWeight: bold
 
                               ),
-                              bulletColor: PdfColors.purple,
+                              bulletColor: purple,
                               margin: pw.EdgeInsets.only(bottom: bottom ,),
                               bulletSize: one,
                               bulletMargin: pw.EdgeInsets.only(
@@ -600,11 +715,11 @@ class PdfInvoiceApi {
                               style: pw.TextStyle(
 
                                 fontSize: three,
-                                font: font,
+                                font: hindi_font,
                                 fontWeight: bold
 
                               ),
-                              bulletColor: PdfColors.purple,
+                              bulletColor: purple,
                               margin: pw.EdgeInsets.only(bottom: bottom ,),
                               bulletSize: one,
                                 bulletMargin: pw.EdgeInsets.only(
@@ -630,7 +745,7 @@ class PdfInvoiceApi {
                                 fontWeight: bold
 
                               ),
-                              bulletColor: PdfColors.purple,
+                              bulletColor: purple,
                               margin: pw.EdgeInsets.only(bottom: bottom),
                               bulletSize: one,
                                 bulletMargin: pw.EdgeInsets.only(
@@ -641,7 +756,7 @@ class PdfInvoiceApi {
                             pw.Padding(padding: pw.EdgeInsets.only(left: two ),
                             child: pw.Text('अंचाहे बालो को हटाना' , style: pw.TextStyle(
                                 fontSize:  two,
-                                font:font,
+                                font:hindi_font,
                                 fontWeight: bold
                             ))),
 
@@ -654,11 +769,11 @@ class PdfInvoiceApi {
                               style: pw.TextStyle(
 
                                   fontSize: three,
-                                  font: font,
+                                  font: hindi_font,
                                 fontWeight: bold
 
                               ),
-                              bulletColor: PdfColors.purple,
+                              bulletColor: purple,
                               margin: pw.EdgeInsets.only(bottom: bottom),
                               bulletSize: one,
                                 bulletMargin: pw.EdgeInsets.only(
@@ -672,14 +787,14 @@ class PdfInvoiceApi {
                                   children: [
                                     pw.Text('सफेद दाग हटाना' , style: pw.TextStyle(
                                         fontSize:  two,
-                                        font:font,
+                                        font:hindi_font,
                                         fontWeight: bold
 
 
                                     )),
                                     pw.Text('सोरायसिस का इलाज' , style: pw.TextStyle(
                                         fontSize:  two,
-                                        font:font,
+                                        font:hindi_font,
                                         fontWeight: bold
 
 
@@ -704,7 +819,7 @@ class PdfInvoiceApi {
                                 fontWeight: bold
 
                               ),
-                              bulletColor: PdfColors.purple,
+                              bulletColor: purple,
                               margin: pw.EdgeInsets.only(bottom: bottom),
                               bulletSize: one,
                                 bulletMargin: pw.EdgeInsets.only(
@@ -715,7 +830,7 @@ class PdfInvoiceApi {
                             pw.Padding(padding: pw.EdgeInsets.only(left: two),
                                 child: pw.Text('DARK CIRCLE हटाना\nचेहरे पर GLOW(चमक)लाना' , style: pw.TextStyle(
                                     fontSize:  two,
-                                    font:font,
+                                    font:hindi_font,
                                   fontWeight: bold
 
 
@@ -733,7 +848,7 @@ class PdfInvoiceApi {
                                 fontWeight: bold
 
                               ),
-                              bulletColor: PdfColors.purple,
+                              bulletColor: purple,
                               margin: pw.EdgeInsets.only(bottom: bottom),
                               bulletSize: one,
                                 bulletMargin: pw.EdgeInsets.only(
@@ -744,7 +859,7 @@ class PdfInvoiceApi {
                             pw.Padding(padding: pw.EdgeInsets.only(left: two),
                                 child: pw.Text('पिंपल्स के खड्डे भरना\nचिकनपॉक्स के खड्डे भरना' , style: pw.TextStyle(
                                     fontSize:  two,
-                                    font:font,
+                                    font:hindi_font,
                                   fontWeight: bold
 
                                 ))),
@@ -759,11 +874,11 @@ class PdfInvoiceApi {
                               style: pw.TextStyle(
 
                                 fontSize: two,
-                                font: font,
+                                font: hindi_font,
                                 fontWeight: bold
 
                               ),
-                              bulletColor: PdfColors.purple,
+                              bulletColor: purple,
                               margin: pw.EdgeInsets.only(bottom: bottom),
                               bulletSize: one,
                                 bulletMargin: pw.EdgeInsets.only(
@@ -774,7 +889,7 @@ class PdfInvoiceApi {
                             pw.Padding(padding: pw.EdgeInsets.only(left: two ),
                                 child: pw.Text('चेहरे की चमक लाना\nपिंपल्स ऐव पिंपल्स के निशान हटाना\nजुरिया जुरिया हटाना' , style: pw.TextStyle(
                                     fontSize:  two,
-                                    font:font,
+                                    font:hindi_font,
                                   fontWeight: bold
 
 
@@ -794,7 +909,7 @@ class PdfInvoiceApi {
                                 fontWeight: bold
 
                               ),
-                              bulletColor: PdfColors.purple,
+                              bulletColor: purple,
                               margin: pw.EdgeInsets.only(bottom: bottom),
                               bulletSize: one,
                                 bulletMargin: pw.EdgeInsets.only(
@@ -805,7 +920,7 @@ class PdfInvoiceApi {
                             pw.Padding(padding: pw.EdgeInsets.only(left: two),
                                 child: pw.Text('फोटो फेशियल\nकार्बन पील\nBirth Mark हटना\nTattoo हटना' , style: pw.TextStyle(
                                     fontSize:  two,
-                                    font:font,
+                                    font:hindi_font,
                                   fontWeight: bold
 
 
@@ -824,7 +939,7 @@ class PdfInvoiceApi {
                                 fontWeight: bold
 
                               ),
-                              bulletColor: PdfColors.purple,
+                              bulletColor: purple,
                               margin: pw.EdgeInsets.only(bottom: bottom),
                               bulletSize: one,
                                 bulletMargin: pw.EdgeInsets.only(
@@ -835,7 +950,7 @@ class PdfInvoiceApi {
                             pw.Padding(padding: pw.EdgeInsets.only(left: two),
                                 child: pw.Text('चेहरे व गले के मस हटाना\nतिल हटाना\nकान के छेद ठिक करना' , style: pw.TextStyle(
                                     fontSize:  two,
-                                    font:font ,
+                                    font:hindi_font ,
                                     fontWeight: bold))),
 
                             pw.SizedBox(height: five),
@@ -849,11 +964,11 @@ class PdfInvoiceApi {
                               style: pw.TextStyle(
 
                                 fontSize: three,
-                                font: font,
+                                font: hindi_font,
                                 fontWeight: bold
 
                               ),
-                              bulletColor: PdfColors.purple,
+                              bulletColor: purple,
                               margin: pw.EdgeInsets.only(bottom: bottom ,),
                               bulletSize: one,
                                 bulletMargin: pw.EdgeInsets.only(
@@ -877,7 +992,7 @@ class PdfInvoiceApi {
                                 fontWeight: bold
 
                               ),
-                              bulletColor: PdfColors.purple,
+                              bulletColor: purple,
                               margin: pw.EdgeInsets.only(bottom: bottom),
                               bulletSize: one,
                                 bulletMargin: pw.EdgeInsets.only(
@@ -888,7 +1003,7 @@ class PdfInvoiceApi {
                             pw.Padding(padding: pw.EdgeInsets.only(left: two),
                                 child: pw.Text('स्तन के आकार को बढ़ाना\nस्तन कसाव लाना में' , style: pw.TextStyle(
                                     fontSize:  two,
-                                    font:font,
+                                    font:hindi_font,
                                   fontWeight: bold
 
 
@@ -907,7 +1022,7 @@ class PdfInvoiceApi {
                                 fontWeight: bold
 
                               ),
-                              bulletColor: PdfColors.purple,
+                              bulletColor: purple,
                               margin: pw.EdgeInsets.only(bottom: bottom),
                               bulletSize: one,
                                 bulletMargin: pw.EdgeInsets.only(
@@ -918,7 +1033,7 @@ class PdfInvoiceApi {
                             pw.Padding(padding: pw.EdgeInsets.only(left: two),
                                 child: pw.Text('आइब्रो का आकार ठीक करना\nसफेद चकतो , होठों का रंग सही करना' , style: pw.TextStyle(
                                     fontSize:  two,
-                                    font:font,
+                                    font:hindi_font,
                                   fontWeight: bold
 
 
@@ -936,7 +1051,7 @@ class PdfInvoiceApi {
                                   fontWeight: bold
 
                               ),
-                              bulletColor: PdfColors.purple,
+                              bulletColor: purple,
                               margin: pw.EdgeInsets.only(bottom: bottom),
                               bulletSize: one,
                                 bulletMargin: pw.EdgeInsets.only(
@@ -947,7 +1062,7 @@ class PdfInvoiceApi {
                             pw.Padding(padding: pw.EdgeInsets.only(left: two),
                                 child: pw.Text('हथेलि , पैर के तलवो पर अत्यधिक पासीना का इलाज' , style: pw.TextStyle(
                                     fontSize:  two,
-                                    font:font,
+                                    font:hindi_font,
                                     fontWeight: bold
 
 
@@ -968,7 +1083,7 @@ class PdfInvoiceApi {
 
 
                               ),
-                              bulletColor: PdfColors.purple,
+                              bulletColor: purple,
                               margin: pw.EdgeInsets.only(bottom: bottom ,),
                               bulletSize: one,
                                 bulletMargin: pw.EdgeInsets.only(
@@ -996,7 +1111,7 @@ class PdfInvoiceApi {
 
 
                               ),
-                              bulletColor: PdfColors.purple,
+                              bulletColor: purple,
                               margin: pw.EdgeInsets.only(bottom: bottom ,),
                               bulletSize: one,
                                 bulletMargin: pw.EdgeInsets.only(
@@ -1029,7 +1144,7 @@ class PdfInvoiceApi {
 
 
                               ),
-                              bulletColor: PdfColors.purple,
+                              bulletColor: purple,
                               margin: pw.EdgeInsets.only(bottom: bottom ,),
                               bulletSize: one,
                                 bulletMargin: pw.EdgeInsets.only(
@@ -1061,7 +1176,7 @@ class PdfInvoiceApi {
                             left: pw.Radius.circular(4),
 
                           ),
-                          color: PdfColors.orangeAccent,
+                          color: orange,
 
                         ),
                         height: 23.5*PdfPageFormat.cm,
@@ -1222,13 +1337,13 @@ class PdfInvoiceApi {
                                               mainAxisAlignment: pw.MainAxisAlignment.spaceEvenly,
                                               children: [
                                                 pw.Text('SKIN' , style: pw.TextStyle(fontSize: three) ),
-                                                pw.Text(' | ' , style: pw.TextStyle(color: PdfColors.orangeAccent)),
+                                                pw.Text(' | ' , style: pw.TextStyle(color: orange)),
                                                 pw.Text('HAIR' , style: pw.TextStyle(fontSize: three)),
-                                                pw.Text(' | ' , style: pw.TextStyle(color: PdfColors.orangeAccent)),
+                                                pw.Text(' | ' , style: pw.TextStyle(color: orange)),
                                                 pw.Text('LASER' , style: pw.TextStyle(fontSize: three)),
-                                                pw.Text(' | ' , style: pw.TextStyle(color: PdfColors.orangeAccent)),
+                                                pw.Text(' | ' , style: pw.TextStyle(color: orange)),
                                                 pw.Text('COSMETOLOGY' , style: pw.TextStyle(fontSize: three)),
-                                                pw.Text(' | ' , style: pw.TextStyle(color: PdfColors.orangeAccent)),
+                                                pw.Text(' | ' , style: pw.TextStyle(color: orange)),
                                                 pw.Text('HAIR TRANSPLANT CLINIC' , style: pw.TextStyle(fontSize: three)),
                                               ]
                                           ),
@@ -1257,9 +1372,9 @@ class PdfInvoiceApi {
                             child:  pw.Center(child: pw.Column(
                               mainAxisAlignment: pw.MainAxisAlignment.center,
                               children: [
-                                pw.Image(image , height: 8 * PdfPageFormat.cm , width: 8 * PdfPageFormat.cm ,),
-                                pw.Text("Abhedya's" , style: pw.TextStyle(color: PdfColors.purple , fontSize: 40)),
-                                pw.Text("Dermacare" , style: pw.TextStyle(color: PdfColors.orangeAccent , fontSize: 30)),
+                                pw.Image(image , height: 9 * PdfPageFormat.cm , width: 9 * PdfPageFormat.cm ,),
+                                pw.Text("Abhedya's" , style: pw.TextStyle(color: purple , fontSize: 43 , font: eng_font )),
+                                pw.Text("Dermacare" , style: pw.TextStyle(color: orange , fontSize: 33 , font: eng_font )),
 
                               ],
                             )),
@@ -1304,14 +1419,14 @@ class PdfInvoiceApi {
                   pw.Container(
                     width: 800,
                     height: 0.7*PdfPageFormat.cm,
-                    color: PdfColors.orangeAccent,
+                    color: orange,
 
                   ),
                   pw.SizedBox(height: one),
                   pw.Container(
                     width: 800,
                     height: 0.7*PdfPageFormat.cm,
-                    color: PdfColors.purple,
+                    color: purple,
 
                   ),
                 ]
