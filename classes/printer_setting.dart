@@ -360,6 +360,12 @@ class PdfInvoiceApi {
       MainTable(),
       MainDivider(),
 
+      MainTable(),
+      MainDivider(),
+
+      MainTable(),
+      MainDivider(),
+
 
     ];
 
@@ -446,7 +452,7 @@ class PdfInvoiceApi {
 
     pdf.addPage(
       pw.Page(
-        pageFormat: PdfPageFormat(21.0 * PdfPageFormat.cm, 29.7 * PdfPageFormat.cm, marginTop:0.5 * PdfPageFormat.cm  ),
+        pageFormat: PdfPageFormat(21.0 * PdfPageFormat.cm, 29.7 * PdfPageFormat.cm, marginTop:0.4 * PdfPageFormat.cm  ),
 
         build: (context) {
           return pw.Column(
@@ -549,6 +555,8 @@ class PdfInvoiceApi {
 
 
                           children: [
+
+                            pw.SizedBox(height:  two),
 
 
                            pw.Padding(
@@ -1056,7 +1064,7 @@ class PdfInvoiceApi {
                           color: PdfColors.orangeAccent,
 
                         ),
-                        height: 25*PdfPageFormat.cm,
+                        height: 23.5*PdfPageFormat.cm,
                         width: 2,
 
                       ),
@@ -1071,8 +1079,8 @@ class PdfInvoiceApi {
                             pw.Container(
 
                               width: 14*PdfPageFormat.cm,
-                              height: 25*PdfPageFormat.cm,
-                              margin: pw.EdgeInsets.only(top: three),
+                              height: 23.9*PdfPageFormat.cm,
+                              margin: pw.EdgeInsets.only(top:0.7*PdfPageFormat.cm ),
                               color: PdfColors.white,
                               child:pw.Padding(
                                 padding: pw.EdgeInsets.only(right: 1*PdfPageFormat.cm , left: 1*PdfPageFormat.cm),
@@ -1112,6 +1120,8 @@ class PdfInvoiceApi {
                                                  Box(),
 
                                                  Group(['Notes'  , 'note 2']),
+
+
 
                                                  Box(),
 
@@ -1161,6 +1171,7 @@ class PdfInvoiceApi {
                                            pw.Table(
                                                children: [
                                                  Box(),
+                                                 Box(),
                                                  Advice(['aaa']),
 
 
@@ -1176,11 +1187,55 @@ class PdfInvoiceApi {
                                     pw.Spacer(),
 
 
+                                     pw.Row(
+                                       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                                       children: [
+
+                                         pw.Text('Qr Code'),
+
+                                         pw.Column(
+                                             crossAxisAlignment: pw.CrossAxisAlignment.end,
+                                             children: [
+                                               pw.Text('Dr. Mahi Ram Bishnoi' , style: pw.TextStyle(fontSize: three , fontWeight: bold)),
+                                               pw.Text('(MBBS,DDV (SKIN)),' , style: pw.TextStyle(fontSize: three ,)),
+                                               pw.Text('DEM(UK),FAM(GERMANY),FAD' , style: pw.TextStyle(fontSize: three , )),
+                                               pw.Text('RMC-31777,MMC-2017105198' , style: pw.TextStyle(fontSize: three , )),
+
+                                             ]
+                                         ),
+                                       ]
+                                     ),
+
+
+
+                                    pw.SizedBox(
+                                      height:1*PdfPageFormat.cm
+                                    ),
+
+
 
                                     pw.Container(
 
-                                      height: 50,
-                                      color: PdfColors.red,
+                                      child: pw.Column(
+                                        children: [
+                                          pw.Row(
+                                              mainAxisAlignment: pw.MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                pw.Text('SKIN' , style: pw.TextStyle(fontSize: three) ),
+                                                pw.Text(' | ' , style: pw.TextStyle(color: PdfColors.orangeAccent)),
+                                                pw.Text('HAIR' , style: pw.TextStyle(fontSize: three)),
+                                                pw.Text(' | ' , style: pw.TextStyle(color: PdfColors.orangeAccent)),
+                                                pw.Text('LASER' , style: pw.TextStyle(fontSize: three)),
+                                                pw.Text(' | ' , style: pw.TextStyle(color: PdfColors.orangeAccent)),
+                                                pw.Text('COSMETOLOGY' , style: pw.TextStyle(fontSize: three)),
+                                                pw.Text(' | ' , style: pw.TextStyle(color: PdfColors.orangeAccent)),
+                                                pw.Text('HAIR TRANSPLANT CLINIC' , style: pw.TextStyle(fontSize: three)),
+                                              ]
+                                          ),
+
+
+                                        ]
+                                      )
                                     )
 
 
@@ -1219,7 +1274,8 @@ class PdfInvoiceApi {
                         ),
 
                         width: 15*PdfPageFormat.cm,
-                        height: 25*PdfPageFormat.cm,
+                        height: 23.9*PdfPageFormat.cm,
+                        color: PdfColors.white,
 
                       )
 
@@ -1239,6 +1295,28 @@ class PdfInvoiceApi {
 
                 ]
               ),
+
+
+              pw.Spacer(),
+
+              pw.Column(
+                children: [
+                  pw.Container(
+                    width: 800,
+                    height: 0.7*PdfPageFormat.cm,
+                    color: PdfColors.orangeAccent,
+
+                  ),
+                  pw.SizedBox(height: one),
+                  pw.Container(
+                    width: 800,
+                    height: 0.7*PdfPageFormat.cm,
+                    color: PdfColors.purple,
+
+                  ),
+                ]
+              )
+
 
 
 
