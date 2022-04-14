@@ -6,25 +6,28 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter_app/default.dart';
 
-import 'package:flutter_app/classes/Patient_name_list.dart';
 
 import 'package:flutter_app/storage/storage.dart';
+import 'package:flutter/services.dart';
 
-class Try extends StatefulWidget {
+class Tab_List_Search extends StatefulWidget {
 
   List<String> result;
-  Try({this.result});
+  Tab_List_Search({this.result});
 
   @override
-  _TryState createState() => _TryState();
+  _Tab_List_SearchState createState() => _Tab_List_SearchState();
 }
 
-class _TryState extends State<Try> {
+class _Tab_List_SearchState extends State<Tab_List_Search> {
 
 
   List<String> group_all_data_list =[] ;
   List<String> group_updated_result = [];
-  Map<String , Map<String , dynamic >> all_data_english_list={};
+  Map<String , Map<String , dynamic >> all_data_map={};
+
+  bool updated = false;
+
 
   List group_search_data_list = [];
 
@@ -36,7 +39,7 @@ class _TryState extends State<Try> {
 
 
   var search_edit = TextEditingController();
-  var text_edit = TextEditingController();
+
 
 
    Future<void> get() async {
@@ -45,7 +48,7 @@ class _TryState extends State<Try> {
       group_updated_result=[];
       group_search_data_list=[];
       group_all_data_list=[];
-      all_data_english_list={};
+      all_data_map={};
 
 
 
@@ -53,17 +56,17 @@ class _TryState extends State<Try> {
 
    print(a);
 
-   all_data_english_list = a==null?{}:a;
+   all_data_map = a==null?{}:a;
 
-    print(all_data_english_list);
+    print(all_data_map);
 
 
     setState(() {
 
-      all_data_english_list = all_data_english_list;
+      all_data_map = all_data_map;
 
 
-     all_data_english_list.forEach((key, value) {
+     all_data_map.forEach((key, value) {
        group_all_data_list.add(value['tab'].toString());
      });
       group_search_data_list=group_all_data_list;
@@ -74,32 +77,59 @@ class _TryState extends State<Try> {
 
     });
 
-    if(widget.result != null)
+    if(widget.result.isNotEmpty)
     {
+
+      print('\n Widget.result ');
+      print(widget.result);
+
 
 
 
       setState(() {
         widget.result.forEach((element) {
 
-          (all_data_english_list);
+         print(group_updated_result);
+
 
           group_all_data_list.forEach((e) {
 
-
-
             if(e==element)
             {
-              (e);
+
 
               select[e] = true;
               group_updated_result.add(e);
+
+
+
+
+
 
 
             }
           });
         });
 
+      });
+
+      //Bug Appeared & Removed !!
+
+      group_updated_result.forEach((e) {
+        group_search_data_list.remove(e);
+
+      });
+
+      group_updated_result.forEach((e) {
+        group_search_data_list.add(e);
+
+      });
+
+      group_search_data_list=group_search_data_list.reversed.toList();
+
+      setState(() {
+
+        group_search_data_list=group_search_data_list;
       });
 
     }
@@ -114,7 +144,9 @@ class _TryState extends State<Try> {
     print('aassd');
 
 
-    print(all_data_english_list);
+
+
+    print(all_data_map);
 
 
 
@@ -125,7 +157,7 @@ class _TryState extends State<Try> {
 
 
 
-    await Storage.set_tab(tab_map: all_data_english_list );
+    await Storage.set_tab(value: all_data_map , updated:  updated );
   }
 
   void onChange(String s){
@@ -163,6 +195,12 @@ class _TryState extends State<Try> {
     // TODO: implement dispose
     super.dispose();
     set();
+
+    group_updated_result=[];
+    group_search_data_list=[];
+    group_all_data_list=[];
+    all_data_map={};
+
 
   }
 
@@ -215,18 +253,33 @@ class _TryState extends State<Try> {
                   children: group_search_data_list
                       .map<Widget>((e) => GestureDetector(
                     onTap: (){
+
+                      select[e] = !select[e];
+
+                      if (select[e] == true) {
+                        group_updated_result.add(e);
+                        print(group_updated_result);
+
+
+
+                      }
+                      if (select[e] == false) {
+                        group_updated_result.remove(e);
+                        print(group_updated_result);
+                      }
+
                       setState(() {
-                        select[e] = !select[e];
-                        if (select[e] == true) {
-                          group_updated_result.add(e);
-                        }
-                        if (select[e] == false) {
-                          group_updated_result.remove(e);
-                        }
+
+                        select[e]= select[e];
+
+
                       });
                     },
                     child: ListTile(
-                      title: Text(e),
+                      title: SelectableText(
+                        e,
+                      ),
+
                       leading: CircleAvatar(
                         backgroundColor:
                         select[e] ? AppTheme.green : Colors.grey,
@@ -238,85 +291,15 @@ class _TryState extends State<Try> {
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
+
                           IconButton(onPressed: (){
-                            text_edit.text =e;
 
-                            showDialog(context: context, builder: (context){
-                              return AlertDialog(
-                                title:  TextField(
-                                  autofocus: false,
-
-                                  controller: text_edit,
-                                  decoration: InputDecoration(
-                                      labelText: 'Edit',
-                                      focusColor: AppTheme.green,
-
-                                      border: OutlineInputBorder(
-
-                                      )
-                                  ),
-                                ),
-                               content: Row(
-                                 mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                 children: [
-                                   GestureDetector(
-                                     onTap: (){
-                                       Navigator.pop(context);
-                                     },
-                                     child: Text('Cancel'),
-
-                                   ),
-                                   GestureDetector(
-                                     onTap: (){
-                                       Navigator.pop(context , text_edit.text);
-                                     },
-                                     child: Text('Done')
-                                   ),
-                                 ],
-                               ),
-
-                              );
-                            }).then((value) {
-                              setState(() {
-                               if(value !=null)
-                                 {
-
-                                  setState(() {
-                                    String s;
-
-
-                                    all_data_english_list.forEach((key, value) {
-                                      if(value['tab'] ==e)
-                                      {
-                                        s=key;
-
-                                      }
-                                    });
-
-
-
-                                    all_data_english_list[s]['tab'] = value;
-
-
-                                    group_all_data_list.remove(e);
-                                    onChange(value);
-
-                                    group_search_data_list.remove(e);
-                                    group_search_data_list.add(value);
-
-                                    group_updated_result.remove(e);
-                                    group_updated_result.add(value);
-
-
-                                    print(all_data_english_list);
-
-                                  });
-
-                                 }
-                              });
+                            Clipboard.setData(ClipboardData(text: e)).then((value) {
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Copied to your clipboard !')));
                             });
 
-                          }, icon: Icon(Icons.edit_outlined)),
+                          }, icon: Icon(Icons.copy ,)),
+
                           IconButton(
                             icon: Icon(Icons.delete_outline_outlined),
                             onPressed: (){
@@ -325,7 +308,7 @@ class _TryState extends State<Try> {
                                 String s;
 
 
-                                all_data_english_list.forEach((key, value) {
+                                all_data_map.forEach((key, value) {
                                   if(value['tab'] ==e)
                                     {
                                       s=key;
@@ -333,14 +316,16 @@ class _TryState extends State<Try> {
                                     }
                                 });
 
-                                all_data_english_list.remove(s);
+                                all_data_map.remove(s);
+
+                                updated=true;
 
 
                                 group_all_data_list.remove(e);
                                 group_search_data_list.remove(e);
                                 group_updated_result.remove(e);
 
-                                print(all_data_english_list);
+                                print(all_data_map);
 
 
                               });
@@ -371,8 +356,11 @@ class _TryState extends State<Try> {
                           map['doc_id'] = doc.id;
                           map['tab'] = search_edit.text;
 
+                          updated=true;
 
-                          all_data_english_list[doc.id]=map;
+
+
+                          all_data_map[doc.id]=map;
 
 
 
@@ -383,6 +371,8 @@ class _TryState extends State<Try> {
 
                           group_search_data_list
                               .add(search_edit.text);
+
+
 
 
 

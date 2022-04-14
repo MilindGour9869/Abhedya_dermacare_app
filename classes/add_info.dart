@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_app/default.dart';
 import 'package:flutter_app/storage/storage.dart';
 
@@ -19,13 +20,21 @@ class _Add_InfoState extends State<Add_Info> {
 
   Map<String, bool> select = {};
 
+  bool updated = false;
+
+
   Future f;
 
 
   var _textController_group = TextEditingController();
 
   void get() async {
-    ('get called');
+
+    group_search_data_list=[];
+    group_updated_result=[];
+    all_data_english_list=[];
+    select={};
+
 
     all_data_english_list = await Storage.get_medicine_additional_info();
 
@@ -69,6 +78,26 @@ class _Add_InfoState extends State<Add_Info> {
 
       });
 
+      //Bug Appeared & ReSolved
+
+      group_updated_result.forEach((e) {
+        group_search_data_list.remove(e);
+
+      });
+
+      group_updated_result.forEach((e) {
+        group_search_data_list.add(e);
+
+      });
+
+      group_search_data_list=group_search_data_list.reversed.toList();
+
+      setState(() {
+
+        group_search_data_list=group_search_data_list;
+      });
+
+
     }
 
 
@@ -80,7 +109,7 @@ class _Add_InfoState extends State<Add_Info> {
 
     (all_data_english_list);
 
-    await Storage.set_medicine_additional_info(add_info: all_data_english_list);
+    await Storage.set_medicine_additional_info(value: all_data_english_list , updated: updated);
   }
 
   void onChange(String s){
@@ -180,7 +209,7 @@ class _Add_InfoState extends State<Add_Info> {
                       });
                     },
                         child: ListTile(
-                    title: Text(e),
+                    title: SelectableText(e),
                     leading: CircleAvatar(
                         backgroundColor:
                         select[e] ? AppTheme.green : Colors.grey,
@@ -189,17 +218,30 @@ class _Add_InfoState extends State<Add_Info> {
                             color: AppTheme.white,
                           ),
                         ),
-                    trailing: IconButton(
-                        icon: Icon(Icons.delete_outline_outlined),
-                        onPressed: (){
-                        setState(() {
-                          all_data_english_list.remove(e);
-                          group_search_data_list.remove(e);
-                          group_updated_result.remove(e);
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(onPressed: (){
+                          Clipboard.setData(ClipboardData(text: e)).then((value) {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Copied to your clipboard !')));
+                          });
+                        }, icon: Icon(Icons.copy)),
 
-                        });
+                        IconButton(
+                          icon: Icon(Icons.delete_outline_outlined),
+                          onPressed: (){
+                            setState(() {
 
-                        },
+                              updated=true;
+                              all_data_english_list.remove(e);
+                              group_search_data_list.remove(e);
+                              group_updated_result.remove(e);
+
+                            });
+
+                          },
+                        )
+                      ],
                     ),
                   ),
                       ))
@@ -223,6 +265,8 @@ class _Add_InfoState extends State<Add_Info> {
 
                       group_search_data_list
                           .add(_textController_group.text);
+                      updated=true;
+
 
                     });
 

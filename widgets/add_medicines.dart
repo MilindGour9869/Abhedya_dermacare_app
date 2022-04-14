@@ -9,7 +9,7 @@ import 'package:date_format/date_format.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:convert';
 
-import 'package:flutter_app/widgets/try_list_search.dart';
+import '../list_search/tab_list_search.dart';
 
 
 
@@ -213,7 +213,7 @@ class _AddMedicineState extends State<AddMedicine> {
                                 width:  MediaQuery.of(context).size.width*0.7,
                                 child: SingleChildScrollView(
                                   scrollDirection: Axis.horizontal,
-                                  child: Text(tab , style: TextStyle(color: map['tab']?Colors.black:Colors.grey)),
+                                  child: Text(tab , style: TextStyle(color: map['tab']?Colors.black:Colors.red)),
                                 ),
                               ),
                             ),
@@ -239,15 +239,21 @@ class _AddMedicineState extends State<AddMedicine> {
 
                                   return  Padding(
                                       padding: const EdgeInsets.all(20.0),
-                                      child:Try(),
+                                      child:Tab_List_Search(result: Tab,),
                                   );}
 
                             ).then((value)async{
 
                               print(value);
+                              print('returend');
+
+
+
 
                               if(value != null)
                                 {
+                                  print('if');
+
                                   Tab = [];
                                   Tab=value;
                                   List a =  await value;
@@ -259,7 +265,7 @@ class _AddMedicineState extends State<AddMedicine> {
                                   tab='';
                                   a.forEach((element) {
 
-                                    tab+=element + s;
+                                    tab+=element + ' , ';
 
 
                                   });
@@ -272,12 +278,35 @@ class _AddMedicineState extends State<AddMedicine> {
 
                                     });
                                   }
+                                  else
+                                    {
+
+                                      setState(() {
+
+                                        Tab=[];
+                                        tab ='TAB/CAP/SYP';
+                                        map[tab]=false;
+                                      });
+                                    }
 
                                 }
                               else if(value == null)
                                 {
-                                  tab ='TAB/CAP/SYP';
-                                  map[tab]=false;
+                                  print('in else if');
+                                  print(value);
+
+                                  setState(() {
+
+                                    Tab=[];
+                                    tab ='TAB/CAP/SYP';
+                                    map[tab]=false;
+                                  });
+
+                                }
+                              else
+                                {
+                                  print('in else');
+
                                 }
 
 

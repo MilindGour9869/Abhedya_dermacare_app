@@ -18,6 +18,7 @@ class PdfInvoiceApi {
     final sign = await imageFromAssetBundle('images/sign.png');
     final playstore = await imageFromAssetBundle('images/playstore.png');
     final Qr = await imageFromAssetBundle('images/Qr.jpg');
+    final Rx = await imageFromAssetBundle('images/Rx.png');
 
 
     final hindi_font = await fontFromAssetBundle('font/GIST-DVOTMohini.ttf');
@@ -1350,6 +1351,9 @@ class PdfInvoiceApi {
                                        child: pw.Column(
                                          crossAxisAlignment: pw.CrossAxisAlignment.stretch,
                                          children: [
+
+
+
                                            pw.Table(
                                                children:[
 
@@ -1389,35 +1393,15 @@ class PdfInvoiceApi {
 
                                                  Clinical_Finding(['ss']),
 
-
-
-
-
                                                  Box(),
-
-
-
-
-                                                 Box(),
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
                                                ]
                                            ),
+
+
+                                           pw.Image(Rx , height: 0.7 * PdfPageFormat.cm , width: 0.7 * PdfPageFormat.cm),
+
+                                           pw.SizedBox(height: five),
 
 
                                            pw.Table(
