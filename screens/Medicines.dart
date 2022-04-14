@@ -106,11 +106,26 @@ class _State extends State<Medicines> {
     if(widget.result_map != null)
       {
         List a = widget.result_map.keys.toList();
+        print('result map is not null');
+
+        print(a);
+
         a.forEach((element) {
-          all_data_doc_id_map[element].forEach((key, value) {
+          all_data_name_map[element].forEach((key, value) {
             if(key == 'select')
-              all_data_doc_id_map[element][key] = true;
+              all_data_name_map[element]['select'] = true;
+
+
+
+
           });
+        });
+
+        setState(() {
+          all_data_name_map = all_data_name_map;
+          print(all_data_name_map);
+
+
         });
       }
 
@@ -157,6 +172,10 @@ class _State extends State<Medicines> {
 
     if(widget.result_map != null)
       {
+        print('\n init ');
+
+        print(result_map);
+
         result_map = widget.result_map;
 
         print(result_map);
@@ -232,9 +251,15 @@ class _State extends State<Medicines> {
                result_map : result_map[name]
              )).then((value) {
 
+               print('\nBack from add data');
+               print(value);
+
                if(value != null)
                  {
                    result_map[name] = value;
+
+                   print(result_map);
+
 
                  }
              });

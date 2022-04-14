@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/classes/Patient_name_list.dart';
-import 'package:flutter_app/classes/service_dialogue.dart';
+
 
 import '../default.dart';
 
@@ -31,39 +31,39 @@ class _Service_Search_ListState extends State<Service_Search_List> {
   List group_result=[];
 
 
-  Future Add_GroupDataList_to_Patient(List group)async{
-
-    if(widget.date != null && group != [])
-    {
-      final doc =await FirebaseFirestore.instance.collection('Patient').doc(widget.patient_data.doc_id).collection('visits').doc(widget.date);
-
-// print(group_result==group);
-
-
-
-      if(group!=group_result)
-      {
-        // if removed from the list
-        doc.set({
-
-          widget.group : [],
-
-        } , SetOptions(merge: true) );
-
-
-        // to add
-        doc.set({
-          widget.group : FieldValue.arrayUnion(group)
-        } , SetOptions(merge: true));
-      }
-
-
-    }
-
-// print(group.isEmpty);
-
-
-  }
+//  Future Add_GroupDataList_to_Patient(List group)async{
+//
+//    if(widget.date != null && group != [])
+//    {
+//      final doc =await FirebaseFirestore.instance.collection('Patient').doc(widget.patient_data.doc_id).collection('visits').doc(widget.date);
+//
+//// print(group_result==group);
+//
+//
+//
+//      if(group!=group_result)
+//      {
+//        // if removed from the list
+//        doc.set({
+//
+//          widget.group : [],
+//
+//        } , SetOptions(merge: true) );
+//
+//
+//        // to add
+//        doc.set({
+//          widget.group : FieldValue.arrayUnion(group)
+//        } , SetOptions(merge: true));
+//      }
+//
+//
+//    }
+//
+//// print(group.isEmpty);
+//
+//
+//  }
 
 
 

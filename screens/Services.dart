@@ -4,10 +4,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/classes/service_dialogue.dart';
 import 'package:flutter_app/default.dart';
+import 'package:flutter_app/storage/storage.dart';
 
 import 'package:flutter_app/widgets/drop_down_menu_button.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+bool updated = false;
+
 
 class Services extends StatefulWidget {
 
@@ -21,6 +25,8 @@ _State createState() => _State();
 class _State extends State<Services> {
 
   Future f;
+
+  Map<String , Map<String , dynamic >> all_data_map={};
 
   bool consultation = false;
   bool nursing = false;
@@ -65,6 +71,8 @@ class _State extends State<Services> {
 
 
 
+
+
     Future  getServiceData()async{
 
     Consulation={};
@@ -76,29 +84,19 @@ class _State extends State<Services> {
 
 
 
+        var a = await Storage.get_services();
 
-    await FirebaseFirestore.instance.collection('Services').get().then((QuerySnapshot querySnapshot){
+        all_data_map = a==null?{}:a;
 
-      services_length = querySnapshot.size;
+        services_length = all_data_map.keys.length;
 
+        all_data_map.forEach((key, element) {
 
-      querySnapshot.docs.forEach((element) {
+          service_list[element['service']] = {
+            element['doc_id'].toString() : element['id'].toString()
+          };
 
-        print('ss');
-
-        print(element['id']);
-        print(element['doc_id']);
-
-        service_list[element['service']] = {
-          element['doc_id'] : element['id']
-        };
-
-
-
-
-
-
-        if(element['id']=='Consultation')
+          if(element['id']=='Consultation')
           {
 
             Consulation[element['doc_id']] = {
@@ -107,49 +105,63 @@ class _State extends State<Services> {
 
 
           }
-        if(element['id']=='Nursing')
-        {
-          Nursing[element['doc_id']] = {
-            element['service'] : element['charge']
-          };
+          if(element['id']=='Nursing')
+          {
+            Nursing[element['doc_id']] = {
+              element['service'] : element['charge']
+            };
 
 
-        }
-        if(element['id']=='Procedures')
-        {
-          Procedures[element['doc_id']] = {
-            element['service'] : element['charge']
-          };
+          }
+          if(element['id']=='Procedures')
+          {
+            Procedures[element['doc_id']] = {
+              element['service'] : element['charge']
+            };
 
 
-        }
-        if(element['id']=='Vaccination')
-        {
+          }
+          if(element['id']=='Vaccination')
+          {
 
-          Vaccination[element['doc_id']] = {
-            element['service'] : element['charge']
-          };
-
-
-        }
-        if(element['id']=='By You')
-        {
-
-          By_You[element['doc_id']] = {
-            element['service'] : element['charge']
-          };
+            Vaccination[element['doc_id']] = {
+              element['service'] : element['charge']
+            };
 
 
-        }
+          }
+          if(element['id']=='By You')
+          {
+
+            By_You[element['doc_id']] = {
+              element['service'] : element['charge']
+            };
+
+
+          }
+
+
+        });
 
 
 
 
 
 
-      }
 
-      );
+
+
+
+
+
+
+
+
+
+
+
+
+
 
       all_service_list = service_list.keys.toList();
 
@@ -166,11 +178,15 @@ class _State extends State<Services> {
 
 
 
-    });
+
 
 
 
   }
+
+    Future set(){
+      Storage.set_services(updated: updated , value: all_data_map);
+    }
 
 
   @override
@@ -303,7 +319,13 @@ return Scaffold(
                     icon: Icon(Icons.add , color: AppTheme.teal,),
                     onPressed: (){
 
-                      showDialog(context: context, builder: (context)=>Dialogue(service_name: 'Consultation' , service: service_edit , charges: charges_edit , context: context  ,  size: services_length));
+                      showDialog(context: context, builder: (context)=>Dialogue(service_name: 'Consultation' , service: service_edit , charges: charges_edit , context: context  ,  size: services_length , all_data_map: this.all_data_map)).then((value) {
+
+                        set();
+                        getServiceData();
+
+
+                      });
 
                     },
                   ),
@@ -323,7 +345,7 @@ return Scaffold(
                 child: Container(
 
                     child:
-                    DropDown( menu: Consulation, service_id: 'Consultation', c: widget.change, )
+                    DropDown( menu: Consulation, service_id: 'Consultation', c: widget.change, all_data_map: this.all_data_map, )
 
 
                 )),
@@ -356,7 +378,7 @@ return Scaffold(
                       icon: Icon(Icons.add ,color: AppTheme.teal,),
                       onPressed: (){
 
-                        showDialog(context: context, builder: (context)=>Dialogue(service_name: 'Nursing' , service: service_edit , charges: charges_edit , context: context  ,  size: services_length));
+                        showDialog(context: context, builder: (context)=>Dialogue(service_name: 'Nursing' , service: service_edit , charges: charges_edit , context: context  ,  size: services_length , all_data_map: this.all_data_map));
 
                       },
                     ),
@@ -373,7 +395,7 @@ return Scaffold(
 
                 child: Container(
 
-                    child: DropDown( menu : Nursing, service_id: 'Nursing',))),
+                    child: DropDown( menu : Nursing, service_id: 'Nursing', all_data_map: this.all_data_map,))),
 
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 15.0 ,horizontal: 8),
@@ -403,7 +425,7 @@ return Scaffold(
                       icon: Icon(Icons.add ,color: AppTheme.teal,),
                       onPressed: (){
 
-                        showDialog(context: context, builder: (context)=>Dialogue(service_name: 'Procedures' , service: service_edit , charges: charges_edit , context: context  ,  size: services_length));
+                        showDialog(context: context, builder: (context)=>Dialogue(service_name: 'Procedures' , service: service_edit , charges: charges_edit , context: context  ,  size: services_length , all_data_map: this.all_data_map));
 
                       },
                     ),
@@ -420,7 +442,7 @@ return Scaffold(
 
                 child: Container(
 
-                    child: DropDown( menu : Procedures, service_id: 'Procedures',))),
+                    child: DropDown( menu : Procedures, service_id: 'Procedures', all_data_map: this.all_data_map,))),
 
 
             Padding(
@@ -451,7 +473,7 @@ return Scaffold(
                       icon: Icon(Icons.add ,color: AppTheme.teal,),
                       onPressed: (){
 
-                        showDialog(context: context, builder: (context)=>Dialogue(service_name: 'Vaccination' , service: service_edit , charges: charges_edit , context: context  ,  size: services_length));
+                        showDialog(context: context, builder: (context)=>Dialogue(service_name: 'Vaccination' , service: service_edit , charges: charges_edit , context: context  ,  size: services_length , all_data_map: this.all_data_map));
 
                       },
                     ),
@@ -468,7 +490,7 @@ return Scaffold(
 
                 child: Container(
 
-                    child: DropDown( menu : Vaccination, service_id: 'Vaccination',))),
+                    child: DropDown( menu : Vaccination, service_id: 'Vaccination', all_data_map: this.all_data_map,))),
 
 
             Padding(
@@ -499,7 +521,7 @@ return Scaffold(
                       icon: Icon(Icons.add ,color: AppTheme.teal,),
                       onPressed: (){
 
-                        showDialog(context: context, builder: (context)=>Dialogue(service_name: 'By You' , service: service_edit , charges: charges_edit , context: context  ,  size: services_length));
+                        showDialog(context: context, builder: (context)=>Dialogue(service_name: 'By You' , service: service_edit , charges: charges_edit , context: context  ,  size: services_length , all_data_map: this.all_data_map));
 
                       },
                     ),
@@ -516,7 +538,7 @@ return Scaffold(
 
                 child: Container(
 
-                    child: DropDown( menu : By_You, service_id: 'By_You',))),
+                    child: DropDown( menu : By_You, service_id: 'By_You', all_data_map: this.all_data_map,))),
 
 
 
@@ -611,9 +633,9 @@ return Scaffold(
                                       child: TextButton(
                                           onPressed: ()async {
 
-                                            var doc = await FirebaseFirestore.instance.collection('Services').doc(a[0]);
+                                           all_data_map.remove(a[0].toString());
+                                           updated = true;
 
-                                             doc.delete();
 
 
                                             Navigator.pop(context);
@@ -690,7 +712,7 @@ return Scaffold(
 }
 
 
-Widget Dialogue ({String service_name , TextEditingController service , TextEditingController charges , BuildContext context , int size}){
+Widget Dialogue ({String service_name , TextEditingController service , TextEditingController charges , BuildContext context , int size , Map<String , Map<String , dynamic >> all_data_map}){
 
   return Padding(
     padding: EdgeInsets.symmetric(horizontal: 40 , vertical:  200),
@@ -788,7 +810,7 @@ Widget Dialogue ({String service_name , TextEditingController service , TextEdit
 
                           print('done');
 
-                          size=size+1;
+
 
 
                           var doc =  await FirebaseFirestore.instance.collection('Services').doc();
@@ -801,8 +823,15 @@ Widget Dialogue ({String service_name , TextEditingController service , TextEdit
 
                           };
 
+                          all_data_map[doc.id] = json;
+                          updated = true;
 
-                          doc.set(json);
+
+
+
+
+
+
 
                           charges.clear();
                           service.clear();

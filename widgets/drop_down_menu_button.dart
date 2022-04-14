@@ -1,13 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_app/git/screens/app_theme.dart';
-import 'package:flutter_app/default.dart';
-import 'package:flutter_app/screens/Services.dart';
+
 
 import 'package:flutter_app/classes/service_dialogue.dart';
 
 class DropDown extends StatefulWidget {
   Map<String , Map<String , int>> menu={};
+
+  Map<String , Map<String , dynamic >> all_data_map={};
 
   String service_id;
 
@@ -19,7 +19,7 @@ class DropDown extends StatefulWidget {
 
 
 
-  DropDown({this.menu, this.service_id   , this.c});
+  DropDown({this.menu, this.service_id   , this.c , this.all_data_map});
 
   @override
   _DropDownState createState() => _DropDownState();
@@ -81,9 +81,13 @@ class _DropDownState extends State<DropDown> {
 
               showDialog(context: context,
                   builder: (context)=>
-                      ServiceDialogue.Dialogue(service_name: widget.service_id , service: service , context: context , charges: charge , doc_id: doc_id[index].toString() )).then((value) {
+                      ServiceDialogue.Dialogue(service_name: widget.service_id , service: service , context: context , charges: charge , doc_id: doc_id[index].toString() , map: widget.all_data_map )).then((value) {
 
-                        widget.c = true;
+                        if(value == 'save')
+                          {
+
+
+                          }
 
 
               });
@@ -92,6 +96,7 @@ class _DropDownState extends State<DropDown> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0 , vertical: 2),
               child: Container(
+
                 decoration: BoxDecoration(
 
                   borderRadius: BorderRadius.circular(7),
@@ -101,30 +106,42 @@ class _DropDownState extends State<DropDown> {
                 child: Material(
                   elevation: 2,
                   child: Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
 
 
 
-                        Padding(
-                          padding: const EdgeInsets.only(left: 5.0),
-                          child: Text(
-                           s,
-                            style: TextStyle(color: Colors.black , fontSize: 15),
+                         Row(
+                           mainAxisSize: MainAxisSize.min,
+                           children: [
+                             Icon(Icons.arrow_forward_ios_rounded , color: Colors.grey,),
+                             SizedBox(width: 2,),
 
+                             Text(
+                               ' ${s[0].toUpperCase()+s.substring(1)}',
+                               style: TextStyle(color: Colors.black , fontSize: 15),
+
+                             ),
+                           ],
+                         ),
+
+
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(c+ ' ₹' , style: TextStyle(fontSize: 15),),
+                              IconButton(onPressed: (){
+
+
+
+                              }, icon: Icon(Icons.delete_outline_outlined , color: Colors.grey,))
+                            ],
                           ),
-                        ),
-
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(c+ ' Rs' , style: TextStyle(fontSize: 15),),
-                            SizedBox(width: 10,),
-
-                          ],
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),

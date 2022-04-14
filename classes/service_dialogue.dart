@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 
 class ServiceDialogue{
 
-  static Widget Dialogue ({String service_name , TextEditingController service , TextEditingController charges , BuildContext context , String doc_id}){
+
+  static Widget Dialogue ({String service_name , TextEditingController service , TextEditingController charges , BuildContext context , String doc_id , Map<String , Map<String,dynamic>> map}){
 
     return Padding(
         padding: EdgeInsets.symmetric(horizontal: 40 , vertical:  150),
@@ -114,18 +115,22 @@ class ServiceDialogue{
 
 
 
-                                var doc =  await FirebaseFirestore.instance.collection('Services').doc(doc_id);
+
 
                                 final json = {
                                   'id' : service_name,
                                   'charge' : int.parse(charges.text),
                                   'service' : service.text,
-                                  'doc_id' : doc.id
+                                  'doc_id' : doc_id
 
                                 };
 
+                                map[doc_id] = json;
 
-                                doc.update(json);
+
+
+
+
 
                                 charges.clear();
                                 service.clear();
@@ -139,7 +144,7 @@ class ServiceDialogue{
 
 
 
-                                Navigator.pop(context);
+                                Navigator.pop(context , 'save');
 
 
 

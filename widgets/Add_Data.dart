@@ -51,7 +51,8 @@ class _AddDataState extends State<AddData> {
     map3.forEach((key, v) {
       if(v)
       {
-        tenure[duration] = key ;
+        tenure['tenure'] =  duration ;
+        tenure['Duration'] = key;
       }
     });
 
@@ -137,8 +138,17 @@ class _AddDataState extends State<AddData> {
           map2[widget.result_map['time']] = true;
         }
         if(widget.result_map['duration'] != null)
+
         {
-          duration_edit.text = widget.result_map['duration'];
+
+
+          duration_edit.text = widget.result_map['duration']['tenure'];
+          map3.forEach((key, value) {
+            map3[key] = false;
+
+          });
+          map3[widget.result_map['duration']['Duration']]=true;
+
         }
         if(widget.result_map['add_info'] != null)
         {
@@ -159,6 +169,26 @@ class _AddDataState extends State<AddData> {
   Widget build(BuildContext context) {
 
     print(widget.result_map);
+
+    String tab="" , composition ="" , company_name = "";
+
+    List a = map[name]['tab'];
+    tab=a==null?"":a[0].toString();
+
+    List b = map[name]['composition'];
+    if(b != null) {
+      b.forEach((element) {
+        composition = element.toString() + ' , ';
+      });
+    }
+
+    print(map[name]['company_name']);
+
+
+
+
+    List c = map[name]['company_name'];
+    company_name=c==null?"":c[0].toString();
 
 
 
@@ -200,7 +230,7 @@ class _AddDataState extends State<AddData> {
                          width: MediaQuery.of(context).size.width * 0.15,
                          decoration: BoxDecoration(
                              borderRadius: BorderRadius.circular(5), color: widget.color),
-                         child: Center(child: Text(map[name]['tab'].toUpperCase())),
+                         child: Center(child: Text(tab.toUpperCase())),
                        ),
                        title: Text(
                          name,
@@ -209,9 +239,9 @@ class _AddDataState extends State<AddData> {
                        subtitle: Column(
                          crossAxisAlignment: CrossAxisAlignment.start,
                          children: [
-                           Text('${map[name]['composition']}'),
+                           Text(composition),
                            Text(
-                             '${map[name]['company_name']}',
+                             company_name,
                              style:
                              TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                            ),

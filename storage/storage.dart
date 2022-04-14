@@ -28,6 +28,9 @@ class Storage {
   static const medicine = 'medicine';
   static bool medicine_updated = false;
 
+  static const services = 'services';
+  static bool service_updated = false;
+
 
   static const allergies = 'allergies';
 
@@ -321,6 +324,72 @@ class Storage {
 
 
   }
+
+  static Future delete_medicine(){
+    storage.delete(key: medicine);
+  }
+
+
+  //medicine
+  static Future set_services({Map<String, Map<String, dynamic>> value , @required bool updated }) async
+  {
+    service_updated = updated;
+
+    if(updated)
+    {
+      print('\nset');
+      print(value);
+
+      final str = jsonEncode(value);
+
+      await storage.write(key: services, value: str);
+    }
+  }
+
+  static Future<Map<String, Map<String, dynamic>>> get_services() async
+  {
+    var str = await storage.read(key: services);
+
+    var value = str != null ? jsonDecode(str) : null;
+
+    value = Map<String, Map<String, dynamic>>.from(value);
+
+
+    print(value.runtimeType);
+
+
+    print('\n value :');
+
+
+    print(value);
+
+    return value == null ? null : value;
+  }
+
+  static Future cloud_services({Map<String, Map<String, dynamic>> value  , @required bool updated})async
+  {
+
+
+
+
+
+
+  }
+
+  static Future delete_services(){
+    storage.delete(key: services);
+  }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
