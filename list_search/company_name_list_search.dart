@@ -10,16 +10,16 @@ import 'package:flutter_app/default.dart';
 import 'package:flutter_app/storage/storage.dart';
 import 'package:flutter/services.dart';
 
-class Tab_List_Search extends StatefulWidget {
+class Company_name_List_Search extends StatefulWidget {
 
   List result;
-  Tab_List_Search({this.result});
+  Company_name_List_Search({this.result});
 
   @override
-  _Tab_List_SearchState createState() => _Tab_List_SearchState();
+  _Company_name_List_SearchState createState() => _Company_name_List_SearchState();
 }
 
-class _Tab_List_SearchState extends State<Tab_List_Search> {
+class _Company_name_List_SearchState extends State<Company_name_List_Search> {
 
 
   List group_all_data_list =[] ;
@@ -42,21 +42,21 @@ class _Tab_List_SearchState extends State<Tab_List_Search> {
 
 
 
-   Future<void> get() async {
+  Future<void> get() async {
 
 
-      group_updated_result=[];
-      group_search_data_list=[];
-      group_all_data_list=[];
-      all_data_map={};
+    group_updated_result=[];
+    group_search_data_list=[];
+    group_all_data_list=[];
+    all_data_map={};
 
 
 
-   var a = await Storage.get_tab();
+    var a = await Storage.get_company_name();
 
-   print(a);
+    print(a);
 
-   all_data_map = a==null?{}:a;
+    all_data_map = a==null?{}:a;
 
     print(all_data_map);
 
@@ -66,9 +66,9 @@ class _Tab_List_SearchState extends State<Tab_List_Search> {
       all_data_map = all_data_map;
 
 
-     all_data_map.forEach((key, value) {
-       group_all_data_list.add(value['tab'].toString());
-     });
+      all_data_map.forEach((key, value) {
+        group_all_data_list.add(value['tab'].toString());
+      });
       group_search_data_list=group_all_data_list;
 
       group_all_data_list.forEach((element) {
@@ -89,7 +89,7 @@ class _Tab_List_SearchState extends State<Tab_List_Search> {
       setState(() {
         widget.result.forEach((element) {
 
-         print(group_updated_result);
+          print(group_updated_result);
 
 
           group_all_data_list.forEach((e) {
@@ -157,7 +157,7 @@ class _Tab_List_SearchState extends State<Tab_List_Search> {
 
 
 
-    await Storage.set_tab(value: all_data_map , updated:  updated );
+    await Storage.set_company_name(value: all_data_map , updated:  updated );
   }
 
   void pop(){
@@ -322,11 +322,12 @@ class _Tab_List_SearchState extends State<Tab_List_Search> {
 
                                   all_data_map.forEach((key, value) {
                                     if(value['tab'] ==e)
-                                      {
-                                        s=key;
+                                    {
+                                      s=key;
 
-                                      }
+                                    }
                                   });
+
 
                                   all_data_map.remove(s);
 
@@ -336,6 +337,8 @@ class _Tab_List_SearchState extends State<Tab_List_Search> {
                                   group_all_data_list.remove(e);
                                   group_search_data_list.remove(e);
                                   group_updated_result.remove(e);
+
+
 
                                   print(all_data_map);
 
@@ -361,37 +364,37 @@ class _Tab_List_SearchState extends State<Tab_List_Search> {
                       var doc = await FirebaseFirestore.instance.collection('Tab').doc();
 
 
-                          setState(() {
+                      setState(() {
 
-                            Map<String , dynamic> map={};
+                        Map<String , dynamic> map={};
 
-                            map['doc_id'] = doc.id;
-                            map['tab'] = search_edit.text;
+                        map['doc_id'] = doc.id;
+                        map['tab'] = search_edit.text;
 
-                            updated=true;
-
-
-
-                            all_data_map[doc.id]=map;
+                        updated=true;
 
 
 
-                            onChange(search_edit.text);
-
-                            ('ggg');
-
-
-                            group_search_data_list
-                                .add(search_edit.text);
+                        all_data_map[doc.id]=map;
 
 
 
+                        onChange(search_edit.text);
+
+                        ('ggg');
 
 
-                          });
+                        group_search_data_list
+                            .add(search_edit.text);
 
-                          search_edit.clear();
-                          onItemChanged('');
+
+
+
+
+                      });
+
+                      search_edit.clear();
+                      onItemChanged('');
 
 
 

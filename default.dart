@@ -25,6 +25,8 @@ class AppTheme{
   static const Color offwhite = Color.fromRGBO(232, 231, 230,1);
   static const black = Colors.black;
   static const Color white = Colors.white;
+  static const Color light_black = Colors.black12;
+
 
 
 

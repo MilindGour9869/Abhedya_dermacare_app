@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/classes/add_info.dart';
+
 
 import 'package:flutter_app/default.dart';
+import 'package:flutter_app/storage/storage.dart';
 import 'package:flutter_app/widgets/Add_Data.dart';
 import 'package:flutter_app/widgets/add_medicines.dart';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 import 'dart:math' as math;
 
@@ -36,8 +37,11 @@ class _State extends State<Medicines> {
 
   List medicine_name = [];
 
-  Map<String, Map<String, dynamic>> all_medicine_name_map_data = {};
-  Map<String, dynamic> map = {};
+  Map<String , Map<String , dynamic >> all_data_doc_id_map={};
+  Map<String , Map<String , dynamic >> all_data_name_map={};
+
+  bool updated = false;
+
 
   List<Color> color = [];
 
@@ -50,75 +54,73 @@ class _State extends State<Medicines> {
 //  bool select = false;
 
   Future getMedicineData() async {
-    await FirebaseFirestore.instance
-        .collection('Medicines')
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      color = [];
 
-      medicine_name = [];
 
-      all_medicine_map_list = [];
-      search_medicine_list = [];
+          color = [];
 
-      map = {};
-      all_medicine_name_map_data = {};
-      c = -1;
+          medicine_name = [];
 
-      color.length = querySnapshot.size;
+          all_medicine_map_list = [];
+          search_medicine_list = [];
 
-      for (int i = 0; i < color.length; i++) {
-        color[i] =
+           c = -1;
+
+
+
+
+      var a = await Storage.get_medicine();
+
+      all_data_doc_id_map = a==null?{}:a;
+
+      all_data_doc_id_map.forEach((key, value) {
+
+       all_data_name_map[value['medicine_name'].toString()] = value;
+
+
+       medicine_name.add(value['medicine_name']);
+     });
+
+     setState(() {
+       medicine_name=medicine_name;
+
+       search_medicine_list = medicine_name;
+     });
+
+          color.length = medicine_name.length;
+
+
+          for (int i = 0; i < color.length; i++) {
+            color[i] =
             Colors.primaries[math.Random().nextInt(Colors.primaries.length)];
-      }
+          }
 
-      querySnapshot.docs.forEach((element) {
-        all_medicine_map_list.add(element.data());
-      });
-
-      print(all_medicine_map_list);
-
-      medicine_name = all_medicine_map_list.map((e) {
-        map['composition'] = e['composition'];
-        map['company_name'] = e['company_name'];
-        map['medicine_name'] = e['medicine_name'];
-        map['tab'] = e['tab'];
-        map['doc_id'] = e['id'].toString();
-        map['select'] = false;
-
-        all_medicine_name_map_data[e['medicine_name'].toString()] = map;
-
-        map = {};
-
-        return e['medicine_name'];
-      }).toList();
-
-      print('awertt');
-
-      print(medicine_name);
-
-      print(result_map);
+          print('ffff');
 
 
-      setState(() {
-        medicine_name= medicine_name;
 
-        search_medicine_list = medicine_name;
-      });
-    });
+          print(all_data_doc_id_map);
+
+
+
 
     if(widget.result_map != null)
       {
         List a = widget.result_map.keys.toList();
         a.forEach((element) {
-          all_medicine_name_map_data[element].forEach((key, value) {
+          all_data_doc_id_map[element].forEach((key, value) {
             if(key == 'select')
-              all_medicine_name_map_data[element][key] = true;
+              all_data_doc_id_map[element][key] = true;
           });
         });
       }
 
 
+
+
+  }
+
+  void set(){
+    Storage.set_medicine(value: all_data_doc_id_map, updated: updated);
   }
 
   onItemChanged(String value) {
@@ -131,11 +133,20 @@ class _State extends State<Medicines> {
       }
     });
   }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    set();
+  }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+
+
+
 
     if (widget.delete == false) {
       setState(() {
@@ -163,6 +174,28 @@ class _State extends State<Medicines> {
   Widget Tile(
       {Map<String, Map<String, dynamic>> map, String name, Color color}) {
 
+    String tab="" , composition ="" , company_name = "";
+
+    List a = map[name]['tab'];
+    tab=a==null?"":a[0].toString();
+
+    List b = map[name]['composition'];
+    if(b != null) {
+      b.forEach((element) {
+        composition = element.toString() + ' , ';
+      });
+    }
+
+    print(map[name]['company_name']);
+
+
+
+
+    List c = map[name]['company_name'];
+    company_name=c==null?"":c[0].toString();
+
+
+
 
 
 
@@ -180,6 +213,7 @@ class _State extends State<Medicines> {
                      tab: map[name]['tab'],
                      doc_id: map[name]['doc_id'],
                      medicine_name: name,
+                     result: all_data_doc_id_map,
                    ),
                  )).then((value) {
                if (value == 'save') {
@@ -222,7 +256,7 @@ class _State extends State<Medicines> {
                   width: MediaQuery.of(context).size.width * 0.15,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5), color: color),
-                  child: Center(child: Text(map[name]['tab'].toUpperCase())),
+                  child: Center(child: Text(tab.toUpperCase())),
                 ),
                 title: Text(
                   name,
@@ -231,9 +265,9 @@ class _State extends State<Medicines> {
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('${map[name]['composition']}'),
+                    Text(composition),
                     Text(
-                      '${map[name]['company_name']}',
+                      company_name,
                       style:
                           TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                     ),
@@ -244,10 +278,16 @@ class _State extends State<Medicines> {
                     ? IconButton(
                         onPressed: () async {
 
-                          var doc = await FirebaseFirestore.instance
-                              .collection('Medicines')
-                              .doc(map[name]['doc_id']);
-                          doc.delete();
+                          all_data_doc_id_map.remove(map[name]['doc_id'].toString());
+                          updated=true;
+
+                          all_data_name_map.remove(name);
+                          search_medicine_list.remove(name);
+
+                          setState(() {
+                            all_data_name_map = all_data_name_map;
+
+                          });
 
                          setState(() {
                            medicine_name.remove(name);
@@ -414,6 +454,8 @@ class _State extends State<Medicines> {
                 }
 
                 if (snapshot.hasError) {
+                  print(snapshot.error);
+
                   return const Center(child: Text('Something Went Wrong'));
                 }
 
@@ -426,7 +468,7 @@ class _State extends State<Medicines> {
                         c++;
 
                         return Tile(
-                            map: all_medicine_name_map_data,
+                            map: all_data_name_map,
                             name: e.toString(),
                             color: color[c]);
                       }).toList(),
@@ -444,6 +486,7 @@ class _State extends State<Medicines> {
                     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
                     child: AddMedicine(
                       composition: null,
+                      result: all_data_doc_id_map,
                     ),
                   )).then((value) {
 

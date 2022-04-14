@@ -12,7 +12,7 @@ import 'package:flutter/services.dart';
 
 class Composition_List_Search extends StatefulWidget {
 
-  List<String> result;
+  List result;
   Composition_List_Search({this.result});
 
   @override
@@ -22,8 +22,8 @@ class Composition_List_Search extends StatefulWidget {
 class _Composition_List_SearchState extends State<Composition_List_Search> {
 
 
-  List<String> group_all_data_list =[] ;
-  List<String> group_updated_result = [];
+  List group_all_data_list =[] ;
+  List group_updated_result = [];
   Map<String , Map<String , dynamic >> all_data_map={};
 
   bool updated = false;
@@ -141,7 +141,7 @@ class _Composition_List_SearchState extends State<Composition_List_Search> {
 
   void set() async {
 
-    print('aassd');
+    print('set');
 
 
 
@@ -181,6 +181,11 @@ class _Composition_List_SearchState extends State<Composition_List_Search> {
     });
   }
 
+  void pop(){
+    Navigator.pop(context, group_updated_result);
+  }
+
+
   @override
   void initState() {
     // TODO: implement initState
@@ -206,199 +211,207 @@ class _Composition_List_SearchState extends State<Composition_List_Search> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios,
-            color: Colors.black,
-          ),
-          onPressed: () {
-            Navigator.pop(context, group_updated_result);
-          },
-        ),
-        title: Padding(
-          padding: const EdgeInsets.all(0),
-          child: TextField(
-            controller: search_edit,
-            decoration: InputDecoration(
-              hintText: 'Search / Add ',
+    return WillPopScope(
+      onWillPop: (){
+        pop();
+
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Colors.black,
             ),
-            onChanged: onItemChanged,
+            onPressed: () {
+              pop();
+
+            },
           ),
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 4.0),
-            child: CircleAvatar(
-              child: Text(group_all_data_list!=null?group_all_data_list.length.toString() :'0'),
+          title: Padding(
+            padding: const EdgeInsets.all(0),
+            child: TextField(
+              controller: search_edit,
+              decoration: InputDecoration(
+                hintText: 'Search / Add ',
+              ),
+              onChanged: onItemChanged,
             ),
-          )
-        ],
-      ),
-      body: FutureBuilder(
-        future: f,
-        builder: (context,snapshot){
+          ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 4.0),
+              child: CircleAvatar(
+                backgroundColor: AppTheme.teal,
+                child: Text(group_all_data_list!=null?group_all_data_list.length.toString() :'0' ,style: TextStyle(color: Colors.white),),
+              ),
+            )
+          ],
+        ),
+        body: FutureBuilder(
+          future: f,
+          builder: (context,snapshot){
 
 
-          if(group_search_data_list.isNotEmpty)
-          {
-            return  SizedBox(
+            if(group_search_data_list.isNotEmpty)
+            {
+              return  SizedBox(
 
-                width: double.infinity,
-                child:  ListView(
-                  shrinkWrap: true,
-                  children: group_search_data_list
-                      .map<Widget>((e) => GestureDetector(
-                    onTap: (){
+                  width: double.infinity,
+                  child:  ListView(
+                    shrinkWrap: true,
+                    children: group_search_data_list
+                        .map<Widget>((e) => GestureDetector(
+                      onTap: (){
 
-                      select[e] = !select[e];
+                        select[e] = !select[e];
 
-                      if (select[e] == true) {
-                        group_updated_result.add(e);
-                        print(group_updated_result);
+                        if (select[e] == true) {
+                          group_updated_result.add(e);
+                          print(group_updated_result);
 
 
 
-                      }
-                      if (select[e] == false) {
-                        group_updated_result.remove(e);
-                        print(group_updated_result);
-                      }
+                        }
+                        if (select[e] == false) {
+                          group_updated_result.remove(e);
+                          print(group_updated_result);
+                        }
+
+                        setState(() {
+
+                          select[e]= select[e];
+
+
+                        });
+                      },
+                      child: ListTile(
+                        title: SelectableText(
+                          e,
+                        ),
+
+                        leading: CircleAvatar(
+                          backgroundColor:
+                          select[e] ? AppTheme.teal : AppTheme.light_black,
+                          child: Icon(
+                            Icons.done,
+                            color: AppTheme.white,
+                          ),
+                        ),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+
+                            IconButton(onPressed: (){
+
+                              Clipboard.setData(ClipboardData(text: e)).then((value) {
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Copied to your clipboard !')));
+                              });
+
+                            }, icon: Icon(Icons.copy ,)),
+
+                            IconButton(
+                              icon: Icon(Icons.delete_outline_outlined),
+                              onPressed: (){
+                                setState(() {
+
+                                  String s;
+
+
+                                  all_data_map.forEach((key, value) {
+                                    if(value['tab'] ==e)
+                                    {
+                                      s=key;
+
+                                    }
+                                  });
+
+                                  all_data_map.remove(s);
+
+                                  updated=true;
+
+
+                                  group_all_data_list.remove(e);
+                                  group_search_data_list.remove(e);
+                                  group_updated_result.remove(e);
+
+                                  print(all_data_map);
+
+
+                                });
+
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ))
+                        .toList(),
+                  ));
+
+            }
+            if(search_edit.text.isNotEmpty )
+            {
+              return Center(
+                child: TextButton.icon(
+                    onPressed: ()async {
+
+                      var doc = await FirebaseFirestore.instance.collection('Tab').doc();
+
 
                       setState(() {
 
-                        select[e]= select[e];
+                        Map<String , dynamic> map={};
+
+                        map['doc_id'] = doc.id;
+                        map['tab'] = search_edit.text;
+
+                        updated=true;
+
+
+
+                        all_data_map[doc.id]=map;
+
+
+
+                        onChange(search_edit.text);
+
+                        ('ggg');
+
+
+                        group_search_data_list
+                            .add(search_edit.text);
+
+
+
 
 
                       });
+
+                      search_edit.clear();
+                      onItemChanged('');
+
+
+
+
+
                     },
-                    child: ListTile(
-                      title: SelectableText(
-                        e,
-                      ),
-
-                      leading: CircleAvatar(
-                        backgroundColor:
-                        select[e] ? AppTheme.green : Colors.grey,
-                        child: Icon(
-                          Icons.done,
-                          color: AppTheme.white,
-                        ),
-                      ),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-
-                          IconButton(onPressed: (){
-
-                            Clipboard.setData(ClipboardData(text: e)).then((value) {
-                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Copied to your clipboard !')));
-                            });
-
-                          }, icon: Icon(Icons.copy ,)),
-
-                          IconButton(
-                            icon: Icon(Icons.delete_outline_outlined),
-                            onPressed: (){
-                              setState(() {
-
-                                String s;
+                    icon: Icon(Icons.add),
+                    label: Text(search_edit.text)),
+              );
 
 
-                                all_data_map.forEach((key, value) {
-                                  if(value['tab'] ==e)
-                                  {
-                                    s=key;
+            }
+            else{
+              ('in future builder , else');
 
-                                  }
-                                });
+              return Center(child:CircularProgressIndicator() );
+            }
 
-                                all_data_map.remove(s);
-
-                                updated=true;
-
-
-                                group_all_data_list.remove(e);
-                                group_search_data_list.remove(e);
-                                group_updated_result.remove(e);
-
-                                print(all_data_map);
-
-
-                              });
-
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                  ))
-                      .toList(),
-                ));
-
-          }
-          if(search_edit.text.isNotEmpty )
-          {
-            return Center(
-              child: TextButton.icon(
-                  onPressed: ()async {
-
-                    var doc = await FirebaseFirestore.instance.collection('Tab').doc();
-
-
-                    setState(() {
-
-                      Map<String , dynamic> map={};
-
-                      map['doc_id'] = doc.id;
-                      map['tab'] = search_edit.text;
-
-                      updated=true;
-
-
-
-                      all_data_map[doc.id]=map;
-
-
-
-                      onChange(search_edit.text);
-
-                      ('ggg');
-
-
-                      group_search_data_list
-                          .add(search_edit.text);
-
-
-
-
-
-                    });
-
-                    search_edit.clear();
-                    onItemChanged('');
-
-
-
-
-
-                  },
-                  icon: Icon(Icons.add),
-                  label: Text(search_edit.text)),
-            );
-
-
-          }
-          else{
-            ('in future builder , else');
-
-            return Center(child:CircularProgressIndicator() );
-          }
-
-        },
+          },
+        ),
       ),
     );
   }

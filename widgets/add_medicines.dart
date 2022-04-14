@@ -2,7 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_app/default.dart';
+import 'package:flutter_app/list_search/company_name_list_search.dart';
+import 'package:flutter_app/list_search/composition_list_search.dart';
 import 'package:flutter_app/widgets/list_search.dart';
+import 'package:flutter_app/storage/storage.dart';
 
 import 'package:date_format/date_format.dart';
 
@@ -11,59 +14,53 @@ import 'dart:convert';
 
 import '../list_search/tab_list_search.dart';
 
-
-
 class AddMedicine extends StatefulWidget {
+  List composition, company_name, tab;
+  String  doc_id, medicine_name;
 
-  String composition , company_name , tab , doc_id , medicine_name ;
+  Map<String , Map<String,dynamic> > result;
 
-  AddMedicine({this.company_name , this.composition , this.tab ,this.doc_id , this.medicine_name});
+  AddMedicine(
+      {this.company_name ,
+      this.composition,
+      this.tab,
+      this.doc_id,
+      this.medicine_name,
+      this.result,
+
+      });
 
   @override
   _AddMedicineState createState() => _AddMedicineState();
 }
 
 class _AddMedicineState extends State<AddMedicine> {
-
-
-  String composition= "Composition";
-  String company_name ="Company Name";
+  String composition = "Composition";
+  String company_name = "Company Name";
   String tab = "TAB/CAP/SYP";
 
-  List<String> Tab = [];
+  List Tab = [];
+  List Composition = [];
+  List Company_name = [];
 
+  var medicine_name_edit = TextEditingController();
+  var medicine_notes = TextEditingController();
 
+  Map<String, Map<String, dynamic>> result = {};
 
-
-  var medicine_name_edit=TextEditingController();
-  var medicine_notes=TextEditingController();
-
-  Map<String  , Map<String , dynamic>> json ={};
-
-  DropdownMenuItem<String> Menu(String item)
-  {
+  DropdownMenuItem<String> Menu(String item) {
     return DropdownMenuItem(
-
       value: item,
       child: Text(item),
-
     );
-
   }
 
   String value;
 
-
-
-
-
-
-  Map<String,bool> map ={
-
-    'composition' : false,
-    'company_name':false,
-    'tab':false,
-
+  Map<String, bool> map = {
+    'composition': false,
+    'company_name': false,
+    'tab': false,
   };
 
   @override
@@ -71,631 +68,574 @@ class _AddMedicineState extends State<AddMedicine> {
     // TODO: implement initState
     super.initState();
 
+    if (widget.composition != null) {
 
+      Composition = widget.composition;
 
-    if(widget.composition != null)
-      {
-        setState(() {
-          composition = widget.composition;
-          map['composition'] = true;
-
-
-
-        });
-      }
-    if(widget.company_name != null)
-    {
       setState(() {
-
-        company_name=widget.company_name;
-        map['company_name']=true;
-
-
-
+        widget.composition.forEach((element) {
+          composition  = element.toString() + ' , ';
+        });
+        map['composition'] = true;
       });
     }
-    if(widget.tab != null)
-    {
-      setState(() {
+    if (widget.company_name != null) {
 
-        tab=widget.tab;
+      Company_name = widget.company_name;
+
+      setState(() {
+        widget.company_name.forEach((element) {
+          company_name = element.toString() + " , ";
+        });
+        map['company_name'] = true;
+      });
+    }
+    if (widget.tab != null) {
+
+      Tab = widget.tab;
+
+      setState(() {
+        widget.tab.forEach((element) {
+          tab = element.toString()  + " , ";
+        });
         map['tab'] = true;
-
-
       });
     }
-    if(widget.medicine_name != null)
-      {
-        setState(() {
-          medicine_name_edit.text = widget.medicine_name;
-        });
-
-      }
-
-
+    if (widget.medicine_name != null) {
+      setState(() {
+        medicine_name_edit.text = widget.medicine_name;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal:  8.0 ,vertical: 70),
+      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 70),
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-
-
-
-
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-
               Column(
                 children: [
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Add/Edit Medicine' , style: TextStyle(fontSize: 20 , fontWeight: FontWeight.bold),),
+                      Text(
+                        'Add/Edit Medicine',
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
                       Visibility(
-                        visible: widget.doc_id==null?false:true,
+                        visible: widget.doc_id == null ? false : true,
                         child: IconButton(
                           icon: Icon(Icons.delete_outline_outlined),
-                          onPressed: ()async{
+                          onPressed: () async {
+
+                            widget.result.remove(widget.doc_id);
+
+                            Storage.set_medicine(updated: true , value: widget.result);
 
 
-
-                            var doc =await FirebaseFirestore.instance.collection('Medicines').doc(widget.doc_id);
-                            doc.delete();
-
-                            Navigator.pop(context , 'save');
-
-
-
-
+                            Navigator.pop(context, 'save');
                           },
                         ),
                       ),
-
-
-
-
                     ],
                   ),
 
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
 
                   TextField(
                     controller: medicine_name_edit,
                     decoration: InputDecoration(
                         labelText: 'Medicine Name',
-
                         helperText: 'Example - Parecetamol 250mg',
-
-                        border: OutlineInputBorder(
-
-                        )
-                    ),
+                        border: OutlineInputBorder()),
                   ),
 
-                  SizedBox(height: 10,),
-
+                  SizedBox(
+                    height: 10,
+                  ),
 
                   SizedBox(
-                    height: MediaQuery.of(context).size.height*0.1,
-                    width: MediaQuery.of(context).size.width*0.9,
+                    height: MediaQuery.of(context).size.height * 0.1,
+                    width: MediaQuery.of(context).size.width * 0.9,
                     child: Card(
                       color: AppTheme.white,
                       child: Row(
                         children: [
-                          SizedBox(width: 7,),
+                          SizedBox(
+                            width: 7,
+                          ),
                           Icon(Icons.comment),
-                          SizedBox(width: 7,),
-
+                          SizedBox(
+                            width: 7,
+                          ),
                           Flexible(
                             flex: 2,
                             child: GestureDetector(
-                              onTap: (){
+                              onTap: () {
                                 showDialog(
                                     context: context,
-                                    builder: (context){
-
-                                      return Column(
-                                          children: []
-                                      );
-
-                                    }
-                                );
+                                    builder: (context) {
+                                      return Column(children: []);
+                                    });
                               },
                               child: Container(
-                                width:  MediaQuery.of(context).size.width*0.7,
+                                width: MediaQuery.of(context).size.width * 0.7,
                                 child: SingleChildScrollView(
                                   scrollDirection: Axis.horizontal,
-                                  child: Text(tab , style: TextStyle(color: map['tab']?Colors.black:Colors.red)),
+                                  child: Text(tab,
+                                      style: TextStyle(
+                                          color: map['tab']
+                                              ? Colors.black
+                                              : Colors.grey)),
                                 ),
                               ),
                             ),
                           ),
+                          SizedBox(
+                            width: 4,
+                          ),
+                          IconButton(
+                              onPressed: () async {
+                                //  print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
 
-                          SizedBox(width: 4,),
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return Padding(
+                                        padding: const EdgeInsets.all(20.0),
+                                        child: Tab_List_Search(
+                                          result: Tab,
+                                        ),
+                                      );
+                                    }).then((value) async {
+                                  print(value);
+                                  print('returend');
 
+                                  if (value != null) {
+                                    print('if');
 
+                                    Tab = [];
+                                    Tab = value;
+                                    List a = await value;
 
+                                    print(a);
 
-                          IconButton(onPressed: ()async{
-
-
-
-                            //  print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
-
-
-                            showDialog(
-                                context: context,
-                                builder: (context)  {
-
-
-
-                                  return  Padding(
-                                      padding: const EdgeInsets.all(20.0),
-                                      child:Tab_List_Search(result: Tab,),
-                                  );}
-
-                            ).then((value)async{
-
-                              print(value);
-                              print('returend');
-
-
-
-
-                              if(value != null)
-                                {
-                                  print('if');
-
-                                  Tab = [];
-                                  Tab=value;
-                                  List a =  await value;
-
-                                  print(a);
-
-
-
-                                  tab='';
-                                  a.forEach((element) {
-
-                                    tab+=element + ' , ';
-
-
-                                  });
-
-                                  if(tab != "")
-                                  {
-                                    setState(() {
-                                      tab=tab;
-                                      map['tab']=true;
-
+                                    tab = '';
+                                    a.forEach((element) {
+                                      tab += element + ' , ';
                                     });
-                                  }
-                                  else
-                                    {
 
+                                    if (tab != "") {
                                       setState(() {
-
-                                        Tab=[];
-                                        tab ='TAB/CAP/SYP';
-                                        map[tab]=false;
+                                        tab = tab;
+                                        map['tab'] = true;
+                                      });
+                                    } else {
+                                      setState(() {
+                                        Tab = [];
+                                        tab = 'TAB/CAP/SYP';
+                                        map['tab'] = false;
                                       });
                                     }
+                                  } else if (value == null) {
+                                    print('in else if');
+                                    print(value);
 
-                                }
-                              else if(value == null)
-                                {
-                                  print('in else if');
-                                  print(value);
-
-                                  setState(() {
-
-                                    Tab=[];
-                                    tab ='TAB/CAP/SYP';
-                                    map[tab]=false;
-                                  });
-
-                                }
-                              else
-                                {
-                                  print('in else');
-
-                                }
-
-
-
-
-
-                            });
-
-
-
-
-
-
-
-
-
-
-                          }, icon: Icon(Icons.arrow_drop_down_circle_outlined))
-
-
-
-
+                                    setState(() {
+                                      Tab = [];
+                                      tab = 'TAB/CAP/SYP';
+                                      map['tab'] = false;
+                                    });
+                                  } else {
+                                    print('in else');
+                                  }
+                                });
+                              },
+                              icon: Icon(Icons.arrow_drop_down_circle_outlined))
                         ],
                       ),
                     ),
                   ),
 
-
-
-
                   // Tab
 
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
 
                   SizedBox(
-                    height: MediaQuery.of(context).size.height*0.1,
-                    width: MediaQuery.of(context).size.width*0.9,
+                    height: MediaQuery.of(context).size.height * 0.1,
+                    width: MediaQuery.of(context).size.width * 0.9,
                     child: Card(
                       color: AppTheme.white,
                       child: Row(
                         children: [
-                          SizedBox(width: 7,),
+                          SizedBox(
+                            width: 7,
+                          ),
                           Icon(Icons.comment),
-                          SizedBox(width: 7,),
+                          SizedBox(
+                            width: 7,
+                          ),
+
 
                           Flexible(
                             flex: 2,
                             child: GestureDetector(
-                              onTap: (){
+                              onTap: () {
                                 showDialog(
                                     context: context,
-                                    builder: (context){
-
-                                      return Column(
-                                          children: []
-                                      );
-
-                                    }
-                                );
+                                    builder: (context) {
+                                      return Column(children: []);
+                                    });
                               },
                               child: Container(
-                                width:  MediaQuery.of(context).size.width*0.7,
+                                width: MediaQuery.of(context).size.width * 0.7,
                                 child: SingleChildScrollView(
                                   scrollDirection: Axis.horizontal,
-                                  child: Text(composition , style: TextStyle(color: map['composition']?Colors.black:Colors.grey)),
+                                  child: Text(composition,
+                                      style: TextStyle(
+                                          color: map['composition']
+                                              ? Colors.black
+                                              : Colors.grey)),
                                 ),
                               ),
                             ),
                           ),
+                          SizedBox(
+                            width: 4,
+                          ),
+                          IconButton(
+                              onPressed: () async {
+                                //  print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
 
-                          SizedBox(width: 4,),
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return Padding(
+                                        padding: const EdgeInsets.all(20.0),
+                                        child: Composition_List_Search(
+                                          result: Composition,
+                                        ),
+                                      );
+                                    }).then((value) async {
+                                  print(value);
+                                  print('returend');
 
+                                  if (value != null) {
+                                    print('if');
 
-                          IconButton(onPressed: ()async{
+                                    Composition = [];
+                                    Composition = value;
+                                    List a = await value;
 
+                                    print(a);
 
+                                    composition = '';
+                                    a.forEach((element) {
+                                      composition += element + ' , ';
+                                    });
 
-                            //  print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
+                                    if (composition != "") {
+                                      setState(() {
+                                        composition = composition;
+                                        map['composition'] = true;
+                                      });
+                                    } else {
+                                      setState(() {
+                                        Composition = [];
+                                        composition = 'Composition';
+                                        map['composition'] = false;
+                                      });
+                                    }
+                                  } else if (value == null) {
+                                    print('in else if');
+                                    print(value);
 
-
-                            showDialog(
-                                context: context,
-                                builder: (context)  {
-
-
-
-                                  return  Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: ListSearch(group: 'composition', Group: 'Composition'),
-                                  );}
-
-                            ).then((value)async{
-
-                              print(value);
-
-                              List a =  await value;
-
-                              print(a);
-
-
-
-                              composition='';
-                              a.forEach((element) {
-
-                                composition+=element + s;
-
-
-                              });
-
-                              if(composition != "")
-                              {
-                                setState(() {
-                                  composition=composition;
-                                  map['composition']=true;
-
+                                    setState(() {
+                                      Composition = [];
+                                      composition = 'Composition';
+                                      map['composition'] = false;
+                                    });
+                                  } else {
+                                    print('in else');
+                                  }
                                 });
-                              }
-                              else if(widget.doc_id != null)
-                              {
-                                setState(() {
-                                  composition="Composition";
-                                  map['composition']=false;
-
-                                });
-
-                              }
-
-
-
-
-
-                            });
-
-
-
-
-
-
-
-
-
-
-                          }, icon: Icon(Icons.arrow_drop_down_circle_outlined))
-
-
-
-
+                              },
+                              icon: Icon(Icons.arrow_drop_down_circle_outlined))
                         ],
                       ),
                     ),
                   ), //Composition
 
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
 
                   SizedBox(
-                    height: MediaQuery.of(context).size.height*0.1,
-                    width: MediaQuery.of(context).size.width*0.9,
+                    height: MediaQuery.of(context).size.height * 0.1,
+                    width: MediaQuery.of(context).size.width * 0.9,
                     child: Card(
                       color: AppTheme.white,
                       child: Row(
                         children: [
-                          SizedBox(width: 7,),
+                          SizedBox(
+                            width: 7,
+                          ),
                           Icon(Icons.comment),
-                          SizedBox(width: 7,),
-
+                          SizedBox(
+                            width: 7,
+                          ),
                           Flexible(
                             flex: 2,
                             child: GestureDetector(
-                              onTap: (){
+                              onTap: () {
                                 showDialog(
                                     context: context,
-                                    builder: (context){
-
-                                      return Column(
-                                          children: []
-                                      );
-
-                                    }
-                                );
+                                    builder: (context) {
+                                      return Column(children: []);
+                                    });
                               },
                               child: Container(
-                                width:  MediaQuery.of(context).size.width*0.7,
+                                width: MediaQuery.of(context).size.width * 0.7,
                                 child: SingleChildScrollView(
                                   scrollDirection: Axis.horizontal,
-                                  child: Text(company_name , style: TextStyle(color: map['company_name']?Colors.black:Colors.grey)),
+                                  child: Text(company_name,
+                                      style: TextStyle(
+                                          color: map['company_name']
+                                              ? Colors.black
+                                              : Colors.grey)),
                                 ),
                               ),
                             ),
                           ),
+                          SizedBox(
+                            width: 4,
+                          ),
+                          IconButton(
+                              onPressed: () async {
+                                //  print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
 
-                          SizedBox(width: 4,),
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return Padding(
+                                        padding: const EdgeInsets.all(20.0),
+                                        child: Company_name_List_Search(
+                                          result: Company_name,
+                                        ),
+                                      );
+                                    }).then((value) async {
+                                  print(value);
+                                  print('returend');
 
+                                  if (value != null) {
+                                    print('if');
 
-                          IconButton(onPressed: ()async{
+                                    Company_name = [];
+                                    Company_name = value;
+                                    List a = await value;
 
+                                    print(a);
 
+                                    company_name = '';
+                                    a.forEach((element) {
+                                      company_name += element + ' , ';
+                                    });
 
-                            //  print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
+                                    if (company_name != "") {
+                                      setState(() {
+                                        company_name = company_name;
+                                        map['company_name'] = true;
+                                      });
+                                    } else {
+                                      setState(() {
+                                        Company_name = [];
+                                        company_name = 'Company Name';
+                                        map['company_name'] = false;
+                                      });
+                                    }
+                                  } else if (value == null) {
+                                    print('in else if');
+                                    print(value);
 
-
-                            showDialog(
-                                context: context,
-                                builder: (context)  {
-
-
-
-                                  return  Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: ListSearch(group: 'company_name', Group: 'Company-Name'),
-                                  );}
-
-                            ).then((value)async{
-
-                              print(value);
-
-                              List a =  await value;
-
-                              print(a);
-
-
-
-                              company_name='';
-                              a.forEach((element) {
-
-                                company_name+=element + s;
-
-
-                              });
-
-                              if(company_name != "")
-                              {
-                                setState(() {
-                                  company_name=company_name;
-                                  map['company_name']=true;
-
+                                    setState(() {
+                                      Company_name = [];
+                                      company_name = 'Company Name';
+                                      map['company_name'] = false;
+                                    });
+                                  } else {
+                                    print('in else');
+                                  }
                                 });
-                              }
-                              else
-                              {
-                                setState(() {
-                                  company_name="Company Name";
-                                  map['company_name']=false;
-
-                                });
-
-                              }
-
-
-
-
-
-                            });
-
-
-
-
-
-
-
-
-
-
-                          }, icon: Icon(Icons.arrow_drop_down_circle_outlined))
-
-
-
-
+                              },
+                              icon: Icon(Icons.arrow_drop_down_circle_outlined))
                         ],
                       ),
                     ),
                   ), // Company Name
 
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
 
                   TextField(
                     controller: medicine_notes,
                     decoration: InputDecoration(
                         labelText: 'Medicine Notes',
-
-
-
-                        border: OutlineInputBorder(
-
-                        )
-                    ),
+                        border: OutlineInputBorder()),
                   ),
 
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                 ],
               ),
-
-              Container(
+                  Container(
                 alignment: Alignment.bottomCenter,
                 child: Row(
-
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
-                          color: Colors.grey
-                      ),
+                          color: Colors.grey),
                       child: TextButton(
-                        child: Text('Cancel' , style:  TextStyle(
-                            color: Colors.black
-                        ),),
-                        onPressed: (){
-
+                        child: Text(
+                          'Cancel',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        onPressed: () {
                           Navigator.pop(context);
-
-
                         },
                       ),
                     ),
                     Container(
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
-                          color: AppTheme.green
-                      ),
+                          color: AppTheme.green),
                       child: TextButton(
-                        child: Text('Done' , style:  TextStyle(
-                            color: Colors.black
-                        ),),
-                        onPressed: ()async{
+                        child: Text(
+                          'Done',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        onPressed: () async {
 
-                          if(widget.doc_id == null)
+                          if(medicine_name_edit.text.isEmpty)
                           {
-                            var doc =await FirebaseFirestore.instance.collection('Medicines').doc();
-
-
-                            final json = {
-                              'id':doc.id,
-                              'medicine_name':medicine_name_edit.text,
-                              'tab':tab,
-                              'composition':composition,
-                              'company_name':company_name,
-                              'notes':medicine_notes.text,
-
-                            };
-
-
-                            doc.set(json);
-                          }
-                          if(widget.doc_id != null)
-                          {
-                            var doc =await FirebaseFirestore.instance.collection('Medicines').doc(widget.doc_id);
-
-
-                            final json = {
-                              'id':doc.id,
-                              'medicine_name':medicine_name_edit.text,
-                              'tab':tab,
-                              'composition':composition,
-                              'company_name':company_name,
-                              'notes':medicine_notes.text,
-
-                            };
-
-
-                            doc.update(json);
+                            showDialog(context: context, builder: (context)=>AlertDialog(
+                              title: Text('Medicine Name is Compulsory'),
+                            ));
                           }
 
+                          Map<String,dynamic> json={};
+
+                          if(medicine_notes.text.isNotEmpty)
+                            {
+                              json['medicine_notes'] = medicine_notes.text;
+                            }
+                          if(Tab.isNotEmpty)
+                            {
+                              json['tab']= Tab;
+                            }
+                          if(Company_name.isNotEmpty)
+                            {
+                              json['company_name'] = Company_name;
+                            }
+                          if(Composition.isNotEmpty)
+                            {
+                              json['composition'] = Composition;
+
+                            }
+
+
+
+                         if(medicine_name_edit.text.isNotEmpty)
+                           {
+                             json['medicine_name']=medicine_name_edit.text;
+                           }
+
+                         json['select'] = false;
 
 
 
 
 
 
-                          Navigator.pop(context , 'save');
+
+
+                          if (widget.doc_id == null) {
+                            var doc = await FirebaseFirestore.instance
+                                .collection('Medicines')
+                                .doc();
+                            json['doc_id']=doc.id;
 
 
 
 
 
+                            widget.result[doc.id]=json;
 
 
 
+                            Storage.set_medicine( value: widget.result,updated: true);
+
+
+
+                          }
+                          else if (widget.doc_id != null) {
+
+                            print(widget.doc_id);
+
+                            if(json['composition'] == null)
+                              {
+                                json['composition'] = widget.composition;
+
+                              }
+                            if(json['company_name'] == null)
+                            {
+                              json['company_name'] = widget.company_name;
+
+                            }
+                            if(json['tab'] == null)
+                            {
+                              json['tab'] = widget.tab;
+
+                            }
+
+
+
+                            json['doc_id']=widget.doc_id;
+
+                            widget.result[widget.doc_id.toString()]=json;
+
+                            Storage.set_medicine( value: widget.result,updated: true);
+
+                          }
+
+                          Navigator.pop(context, 'save');
                         },
                       ),
                     ),
-                  ],),
+                  ],
+                ),
               ),
-
-              SizedBox(height: 10,),
-
-
-
-
-
+                  SizedBox(
+                height: 10,
+              ),
             ],
           ),
         ),
