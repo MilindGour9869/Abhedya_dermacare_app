@@ -1,11 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/screens/Services.dart';
 
 
-class ServiceDialogue{
+class ServiceDialogue {
 
 
-  static Widget Dialogue ({String service_name , TextEditingController service , TextEditingController charges , BuildContext context , String doc_id , Map<String , Map<String,dynamic>> map}){
+
+
+
+  static Widget Dialogue ({String service_name , TextEditingController service , TextEditingController charges , BuildContext context , String doc_id }){
 
     return Padding(
         padding: EdgeInsets.symmetric(horizontal: 40 , vertical:  150),
@@ -113,6 +117,9 @@ class ServiceDialogue{
                               onPressed: ()async{
 
 
+                                Map<String , Map<String,dynamic>> map={};
+
+
 
 
 
@@ -126,6 +133,11 @@ class ServiceDialogue{
                                 };
 
                                 map[doc_id] = json;
+
+                                print(map);
+
+
+
 
 
 
@@ -144,7 +156,7 @@ class ServiceDialogue{
 
 
 
-                                Navigator.pop(context , 'save');
+                                Navigator.pop(context , map);
 
 
 
