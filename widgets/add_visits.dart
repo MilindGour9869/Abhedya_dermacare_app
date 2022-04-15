@@ -11,6 +11,7 @@ import 'package:flutter_app/classes/Patient_name_list.dart';
 
 import 'package:date_format/date_format.dart';
 import 'package:flutter_app/widgets/service_search_list.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../screens/Medicines.dart';
 
@@ -29,6 +30,12 @@ class AddVisits extends StatefulWidget {
 
 
   bool icon_tap;
+
+
+
+
+
+
 
 
 
@@ -53,6 +60,14 @@ class _AddVisitsState extends State<AddVisits> {
   String blood_group="Blood Group";
   String service = "Services";
   String medicine = "Medicine";
+
+
+  String img_complaint =  'images/complaint_color.webp';
+  String img_clinical_finding_color =  'images/clinical_finding_color.webp';
+  String img_diagnosis =  'images/diagnosis.webp';
+  String img_medicine_color =  'images/medicine_color.webp';
+  String img_vital_color =  'images/vital_color.webp';
+  String img_investigation_color =  'images/investigation_color.webp';
 
 
 
@@ -382,7 +397,7 @@ setState(() {
                         padding: const EdgeInsets.only(top: 8.0),
                         child: Text(complaints),
                       ),
-                      leading: Icon(Icons.add),
+                      leading: Image.asset(img_complaint),
 
                       trailing: IconButton(onPressed: ()async{
 
@@ -451,7 +466,7 @@ setState(() {
                         padding: const EdgeInsets.only(top: 8.0),
                         child: Text(clinical_findings),
                       ),
-                      leading: Icon(Icons.add),
+                      leading: Image.asset(img_clinical_finding_color ,),
 
                       trailing: IconButton(onPressed: ()async{
 
@@ -520,7 +535,7 @@ setState(() {
                         padding: const EdgeInsets.only(top: 8.0),
                         child: Text(diagnosis),
                       ),
-                      leading: Icon(Icons.add),
+                      leading: Image.asset(img_diagnosis),
 
                       trailing: IconButton(onPressed: ()async{
 
@@ -589,7 +604,7 @@ setState(() {
                         padding: const EdgeInsets.only(top: 8.0),
                         child: Text(investigation),
                       ),
-                      leading: Icon(Icons.add),
+                      leading: Image.asset(img_investigation_color),
 
                       trailing: IconButton(onPressed: ()async{
 
@@ -865,7 +880,7 @@ setState(() {
                         padding: const EdgeInsets.only(top: 8.0),
                         child: Text(blood_group),
                       ),
-                      leading: Icon(Icons.add),
+                      leading: Icon(FontAwesomeIcons.droplet),
 
                       trailing: IconButton(onPressed: ()async{
 

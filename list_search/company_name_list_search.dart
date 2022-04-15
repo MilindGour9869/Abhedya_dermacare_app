@@ -263,94 +263,98 @@ class _Company_name_List_SearchState extends State<Company_name_List_Search> {
                   child:  ListView(
                     shrinkWrap: true,
                     children: group_search_data_list
-                        .map<Widget>((e) => GestureDetector(
-                      onTap: (){
+                        .map<Widget>((e) => Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Material(
+                            elevation: 2,
+                            child: ListTile(
+                              onTap: (){
+                                select[e] = !select[e];
 
-                        select[e] = !select[e];
-
-                        if (select[e] == true) {
-                          group_updated_result.add(e);
-                          print(group_updated_result);
-
-
-
-                        }
-                        if (select[e] == false) {
-                          group_updated_result.remove(e);
-                          print(group_updated_result);
-                        }
-
-                        setState(() {
-
-                          select[e]= select[e];
+                                if (select[e] == true) {
+                                  group_updated_result.add(e);
+                                  print(group_updated_result);
 
 
-                        });
-                      },
-                      child: ListTile(
-                        title: SelectableText(
-                          e,
-                        ),
 
-                        leading: CircleAvatar(
-                          backgroundColor:
-                          select[e] ? AppTheme.teal : AppTheme.light_black,
-                          child: Icon(
-                            Icons.done,
-                            color: AppTheme.white,
-                          ),
-                        ),
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
+                                }
+                                if (select[e] == false) {
+                                  group_updated_result.remove(e);
+                                  print(group_updated_result);
+                                }
 
-                            IconButton(onPressed: (){
-
-                              Clipboard.setData(ClipboardData(text: e)).then((value) {
-                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Copied to your clipboard !')));
-                              });
-
-                            }, icon: Icon(Icons.copy ,)),
-
-                            IconButton(
-                              icon: Icon(Icons.delete_outline_outlined),
-                              onPressed: (){
                                 setState(() {
 
-                                  String s;
-
-
-                                  all_data_map.forEach((key, value) {
-                                    if(value['tab'] ==e)
-                                    {
-                                      s=key;
-
-                                    }
-                                  });
-
-
-                                  all_data_map.remove(s);
-
-                                  updated=true;
-
-
-                                  group_all_data_list.remove(e);
-                                  group_search_data_list.remove(e);
-                                  group_updated_result.remove(e);
-
-
-
-                                  print(all_data_map);
+                                  select[e]= select[e];
 
 
                                 });
 
                               },
+                              title: SelectableText(
+                                e,
+                              ),
+
+                              leading: CircleAvatar(
+                                backgroundColor:
+                                select[e] ? AppTheme.teal : AppTheme.light_black,
+                                child: Icon(
+                                  Icons.done,
+                                  color: AppTheme.white,
+                                ),
+                              ),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+
+                                  IconButton(onPressed: (){
+
+                                    Clipboard.setData(ClipboardData(text: e)).then((value) {
+                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Copied to your clipboard !')));
+                                    });
+
+                                  }, icon: Icon(Icons.copy ,)),
+
+                                  IconButton(
+                                    icon: Icon(Icons.delete_outline_outlined),
+                                    onPressed: (){
+                                      setState(() {
+
+                                        String s;
+
+
+                                        all_data_map.forEach((key, value) {
+                                          if(value['tab'] ==e)
+                                          {
+                                            s=key;
+
+                                          }
+                                        });
+
+
+                                        all_data_map.remove(s);
+
+                                        updated=true;
+
+
+                                        group_all_data_list.remove(e);
+                                        group_search_data_list.remove(e);
+                                        group_updated_result.remove(e);
+
+
+
+                                        print(all_data_map);
+
+
+                                      });
+
+                                    },
+                                  ),
+                                ],
+                              ),
                             ),
-                          ],
-                        ),
-                      ),
-                    ))
+                          ),
+                        ))
                         .toList(),
                   ));
 

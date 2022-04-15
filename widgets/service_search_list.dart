@@ -233,11 +233,12 @@ class _Service_Search_ListState extends State<Service_Search_List> {
                       title: Text(e.toString()),
                       leading: CircleAvatar(
 
-                          backgroundColor: AppTheme.teal,
+                          backgroundColor: m['color']?AppTheme.teal:AppTheme.light_black,
+
 
                           child: Icon(Icons.arrow_forward_ios_rounded, size: MediaQuery.of(context).size.height*0.03, color: AppTheme.white,)),
 
-                      tileColor: m['color']?AppTheme.green:AppTheme.white,
+                      tileColor: AppTheme.white,
                       onTap: (){
                         setState(() {
                           m['color'] = ! m['color'];
@@ -257,6 +258,7 @@ class _Service_Search_ListState extends State<Service_Search_List> {
 
                         });
                       },
+
 
 
                       trailing: Text('₹ ${m['charge']}' , style: TextStyle(fontSize: 20),),
