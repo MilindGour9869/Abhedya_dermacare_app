@@ -1285,7 +1285,8 @@ Widget Dialogue(
                             'id': service_name,
                             'charge': int.parse(charges.text),
                             'service': service.text,
-                            'doc_id': doc.id
+                            'doc_id': doc.id,
+
                           };
 
                           all_data_map[doc.id] = json;

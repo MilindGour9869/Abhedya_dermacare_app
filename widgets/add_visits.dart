@@ -153,124 +153,6 @@ setState(() {
 
 
 
-//
-//  if(widget.visit_data.diagnosis !=null && widget.visit_data.diagnosis.isNotEmpty)
-//  {
-//
-//
-//
-//
-//    widget.visit_data.diagnosis.forEach((element) {
-//
-//      Diagnosis.add(element);
-//
-//    });
-//  }
-//
-//
-//  if(widget.visit_data.complaints != null && widget.visit_data.complaints.isNotEmpty)
-//  {
-//
-//
-//
-//
-//
-//
-//    widget.visit_data.complaints.forEach((element) {
-//
-//      Complaint.add(element);
-//
-//
-//    });
-//  }
-//
-//  if(widget.visit_data.investigation != null && widget.visit_data.investigation.isNotEmpty)
-//  {
-//
-//
-//    // print('investigation not null');
-//
-//
-//
-//    widget.visit_data.investigation.forEach((element) {
-//
-//      Investigation.add(element);
-//
-//    });
-//  }
-//
-//  if(widget.visit_data.advices != null && widget.visit_data.advices.isNotEmpty)
-//  {
-//
-//
-//
-//    widget.visit_data.advices.forEach((element) {
-//
-//      Advices.add(element);
-//
-//
-//    });
-//  }
-//
-//  if(widget.visit_data.allergies != null && widget.visit_data.allergies.isNotEmpty )
-//  {
-//
-//
-//    widget.visit_data.allergies.forEach((element) {
-//
-//      Allergies.add(element);
-//
-//
-//    });
-//  }
-//
-//  if(widget.visit_data.clinical_finding != null && widget.visit_data.clinical_finding.isNotEmpty)
-//  {
-//
-//
-//
-//    widget.visit_data.clinical_finding.forEach((element) {
-//
-//      Clinical_findings.add(element);
-//
-//    });
-//  }
-//
-//  if(widget.visit_data.group != null && widget.visit_data.group.isNotEmpty)
-//  {
-//
-//
-//    widget.visit_data.group.forEach((element) {
-//
-//      Group.add(element);
-//
-//    });
-//  }
-//
-//  if(widget.visit_data.blood_group != null && widget.visit_data.blood_group.isNotEmpty)
-//  {
-//
-//
-//
-//    widget.visit_data.blood_group.forEach((element) {
-//
-//      Blood_group.add(element);
-//
-//
-//    });
-//  }
-//  if(widget.visit_data.services != null && widget.visit_data.services.isNotEmpty)
-//  {
-//
-//
-//
-//    widget.visit_data.services.forEach((element) {
-//
-//      Services.add(element);
-//
-//
-//    });
-//  }
 
 
 
@@ -1064,7 +946,7 @@ setState(() {
                         showDialog(
                             context: context,
                             builder: (context) {
-                              return Service_Search_List( patient_data: widget.patient_data , date: visit_date, group: 'service', Group: 'Services',
+                              return Service_Search_List( result: Services,
                               );
 
                             }).then((value)async{
@@ -1074,6 +956,8 @@ setState(() {
                           if(value != null)
                           {
                             setState(() {
+                              Services=[];
+
                               Services = value;
                             });
 

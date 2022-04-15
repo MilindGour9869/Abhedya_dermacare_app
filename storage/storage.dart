@@ -348,6 +348,8 @@ class Storage {
 
   static Future<Map<String, Map<String, dynamic>>> get_services() async
   {
+
+    print('\n get_services called');
     var str = await storage.read(key: services);
 
     var value = str != null ? jsonDecode(str) : null;
