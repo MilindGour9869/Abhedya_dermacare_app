@@ -167,6 +167,19 @@ class _AddMedicineState extends State<AddMedicine> {
                     height: 10,
                   ),
 
+                  TextField(
+                    controller: medicine_notes,
+                    decoration: InputDecoration(
+                        labelText: 'Medicine Notes',
+                        border: OutlineInputBorder()),
+                  ),
+
+                  SizedBox(
+                    height: 10,
+                  ),
+
+
+
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.1,
                     width: MediaQuery.of(context).size.width * 0.9,
@@ -492,16 +505,8 @@ class _AddMedicineState extends State<AddMedicine> {
                     height: 10,
                   ),
 
-                  TextField(
-                    controller: medicine_notes,
-                    decoration: InputDecoration(
-                        labelText: 'Medicine Notes',
-                        border: OutlineInputBorder()),
-                  ),
 
-                  SizedBox(
-                    height: 10,
-                  ),
+
                 ],
               ),
                   Container(
@@ -534,28 +539,33 @@ class _AddMedicineState extends State<AddMedicine> {
                         ),
                         onPressed: () async {
 
-                          if(medicine_name_edit.text.isEmpty)
+                          print(medicine_name_edit.text);
+
+
+                          if(medicine_name_edit.text.isEmpty || medicine_name_edit.text == null)
                           {
                             showDialog(context: context, builder: (context)=>AlertDialog(
                               title: Text('Medicine Name is Compulsory'),
                             ));
+
+
                           }
+                          else {
+                            Map<String,dynamic> json={};
 
-                          Map<String,dynamic> json={};
-
-                          if(medicine_notes.text.isNotEmpty)
+                            if(medicine_notes.text.isNotEmpty)
                             {
                               json['medicine_notes'] = medicine_notes.text;
                             }
-                          if(Tab.isNotEmpty)
+                            if(Tab.isNotEmpty)
                             {
                               json['tab']= Tab;
                             }
-                          if(Company_name.isNotEmpty)
+                            if(Company_name.isNotEmpty)
                             {
                               json['company_name'] = Company_name;
                             }
-                          if(Composition.isNotEmpty)
+                            if(Composition.isNotEmpty)
                             {
                               json['composition'] = Composition;
 
@@ -563,70 +573,73 @@ class _AddMedicineState extends State<AddMedicine> {
 
 
 
-                         if(medicine_name_edit.text.isNotEmpty)
-                           {
-                             json['medicine_name']=medicine_name_edit.text;
-                           }
+                            if(medicine_name_edit.text.isNotEmpty)
+                            {
+                              json['medicine_name']=medicine_name_edit.text;
+                            }
 
-                         json['select'] = false;
-
-
+                            json['select'] = false;
 
 
 
 
 
 
-                          if (widget.doc_id == null) {
-                            var doc = await FirebaseFirestore.instance
-                                .collection('Medicines')
-                                .doc();
-                            json['doc_id']=doc.id;
+
+
+                            if (widget.doc_id == null) {
+                              var doc = await FirebaseFirestore.instance
+                                  .collection('Medicines')
+                                  .doc();
+                              json['doc_id']=doc.id;
 
 
 
 
 
-                            widget.result[doc.id]=json;
+                              widget.result[doc.id]=json;
 
 
 
-                            Storage.set_medicine( value: widget.result,updated: true);
+                              Storage.set_medicine( value: widget.result,updated: true);
 
 
 
-                          }
-                          else if (widget.doc_id != null) {
+                            }
+                            else if (widget.doc_id != null) {
 
-                            print(widget.doc_id);
+                              print(widget.doc_id);
 
-                            if(json['composition'] == null)
+                              if(json['composition'] == null)
                               {
                                 json['composition'] = widget.composition;
 
                               }
-                            if(json['company_name'] == null)
-                            {
-                              json['company_name'] = widget.company_name;
+                              if(json['company_name'] == null)
+                              {
+                                json['company_name'] = widget.company_name;
+
+                              }
+                              if(json['tab'] == null)
+                              {
+                                json['tab'] = widget.tab;
+
+                              }
+
+
+
+                              json['doc_id']=widget.doc_id;
+
+                              widget.result[widget.doc_id.toString()]=json;
+
+                              Storage.set_medicine( value: widget.result,updated: true);
 
                             }
-                            if(json['tab'] == null)
-                            {
-                              json['tab'] = widget.tab;
 
-                            }
-
-
-
-                            json['doc_id']=widget.doc_id;
-
-                            widget.result[widget.doc_id.toString()]=json;
-
-                            Storage.set_medicine( value: widget.result,updated: true);
-
+                            Navigator.pop(context, 'save');
                           }
 
-                          Navigator.pop(context, 'save');
+
                         },
                       ),
                     ),

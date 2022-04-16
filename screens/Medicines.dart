@@ -256,9 +256,11 @@ class _State extends State<Medicines> {
 
                if(value != null)
                  {
+
+
                    result_map[name] = value;
 
-                   print(result_map);
+
 
 
                  }

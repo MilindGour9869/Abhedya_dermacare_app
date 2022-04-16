@@ -339,7 +339,7 @@ class Storage {
   {
     service_updated = updated;
 
-    if(updated)
+    if(updated && value != null)
     {
       print('\nset');
       print(value);

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../classes/add_info.dart';
+import 'add_info.dart';
 import '../default.dart';
 
 class AddData extends StatefulWidget {

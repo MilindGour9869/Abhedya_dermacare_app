@@ -1098,7 +1098,18 @@ setState(() {
 
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: Medicine.map<Widget>((e)=>DropDown(e) ).toList(),
+                            children: medicine_result.keys.map<Widget>((e){
+
+                             return Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(e),
+
+
+                                ],
+                              );
+
+                            } ).toList(),
                           ),
                         ),
                       ),

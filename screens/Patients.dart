@@ -10,6 +10,10 @@ import 'package:flutter_app/classes/Patient_name_list.dart';
 
 import 'package:date_format/date_format.dart';
 
+
+
+
+
 class Patient extends StatefulWidget {
   @override
   _State createState() => _State();
@@ -387,7 +391,7 @@ class _State extends State<Patient> {
                             ),
                             Text(
                               'Dr. Mahi Ram Bishnoi',
-                              style: TextStyle(fontSize: MediaQuery.of(context).size.height*0.04),
+                              style: TextStyle(fontSize: MediaQuery.of(context).size.height*0.04 ),
                             ),
                             SizedBox(
                               height: 5,
