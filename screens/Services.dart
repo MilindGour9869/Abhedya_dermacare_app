@@ -266,13 +266,23 @@ class _State extends State<Services> {
                                                 context: context,
                                                 charges: charge,
                                                 doc_id: e)).then((value) {
-                                      if (value != null) {
+                                      if(value == 'delete')
+                                      {
+                                        all_data_map.remove(a[0]);
+                                        updated= true;
+                                        set();
+                                        getServiceData();
+
+
+                                      }
+                                      else if (value != null) {
                                         all_data_map.remove(e);
                                         all_data_map.addAll(value);
                                         updated = true;
                                         set();
                                         getServiceData();
                                       }
+
                                     });
                                   },
                                   child: Padding(
@@ -432,13 +442,23 @@ class _State extends State<Services> {
                                                 context: context,
                                                 charges: charge,
                                                 doc_id: e)).then((value) {
-                                      if (value != null) {
+                                      if(value == 'delete')
+                                      {
+                                        all_data_map.remove(a[0]);
+                                        updated= true;
+                                        set();
+                                        getServiceData();
+
+
+                                      }
+                                      else if (value != null) {
                                         all_data_map.remove(e);
                                         all_data_map.addAll(value);
                                         updated = true;
                                         set();
                                         getServiceData();
                                       }
+
                                     });
                                   },
                                   child: Padding(
@@ -592,18 +612,28 @@ class _State extends State<Services> {
                                         context: context,
                                         builder: (context) =>
                                             ServiceDialogue.Dialogue(
-                                                service_name: 'Nursing',
+                                                service_name: 'Procedures',
                                                 service: service,
                                                 context: context,
                                                 charges: charge,
                                                 doc_id: e)).then((value) {
-                                      if (value != null) {
+                                      if(value == 'delete')
+                                      {
+                                        all_data_map.remove(a[0]);
+                                        updated= true;
+                                        set();
+                                        getServiceData();
+
+
+                                      }
+                                      else if (value != null) {
                                         all_data_map.remove(e);
                                         all_data_map.addAll(value);
                                         updated = true;
                                         set();
                                         getServiceData();
                                       }
+
                                     });
                                   },
                                   child: Padding(
@@ -659,10 +689,8 @@ class _State extends State<Services> {
                                                     IconButton(
                                                         onPressed: () {
                                                           setState(() {
-                                                            Procedures.remove(
-                                                                e);
-                                                            all_data_map
-                                                                .remove(e);
+                                                            Procedures.remove(e);
+                                                            all_data_map.remove(e);
                                                             updated = true;
 
                                                             set();
@@ -758,18 +786,28 @@ class _State extends State<Services> {
                                         context: context,
                                         builder: (context) =>
                                             ServiceDialogue.Dialogue(
-                                                service_name: 'Nursing',
+                                                service_name: 'Vaccination',
                                                 service: service,
                                                 context: context,
                                                 charges: charge,
                                                 doc_id: e)).then((value) {
-                                      if (value != null) {
+                                      if(value == 'delete')
+                                      {
+                                        all_data_map.remove(a[0]);
+                                        updated= true;
+                                        set();
+                                        getServiceData();
+
+
+                                      }
+                                      else if (value != null) {
                                         all_data_map.remove(e);
                                         all_data_map.addAll(value);
                                         updated = true;
                                         set();
                                         getServiceData();
                                       }
+
                                     });
                                   },
                                   child: Padding(
@@ -929,13 +967,23 @@ class _State extends State<Services> {
                                                 context: context,
                                                 charges: charge,
                                                 doc_id: e)).then((value) {
-                                      if (value != null) {
+                                      if(value == 'delete')
+                                      {
+                                        all_data_map.remove(a[0]);
+                                        updated= true;
+                                        set();
+                                        getServiceData();
+
+
+                                      }
+                                      else if (value != null) {
                                         all_data_map.remove(e);
                                         all_data_map.addAll(value);
                                         updated = true;
                                         set();
                                         getServiceData();
                                       }
+
                                     });
                                   },
                                   child: Padding(
@@ -1066,13 +1114,24 @@ class _State extends State<Services> {
                                             doc_id: a[0].toString(),
                                             context: context,
                                           )).then((value) {
-                                    if (value != null) {
-                                      all_data_map.remove(e);
-                                      all_data_map.addAll(value);
-                                      updated = true;
-                                      set();
-                                      getServiceData();
-                                    }
+                                   if(value == 'delete')
+                                     {
+                                       all_data_map.remove(a[0]);
+                                       updated= true;
+                                       set();
+                                       getServiceData();
+
+
+                                     }
+                                   if (value != null) {
+                                     all_data_map.remove(e);
+                                     all_data_map.addAll(value);
+                                     updated = true;
+                                     set();
+                                     getServiceData();
+                                   }
+
+
                                   });
                                 },
                                 child: ListTile(

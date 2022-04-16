@@ -32,7 +32,7 @@ class PdfInvoiceApi {
     var five  =  0.3*PdfPageFormat.cm;
 
     var three = 0.3*PdfPageFormat.cm;
-    var two = 0.3*PdfPageFormat.cm;
+    var two = 0.2*PdfPageFormat.cm;
 
 
     var one = 0.1*PdfPageFormat.cm;
@@ -197,7 +197,7 @@ class PdfInvoiceApi {
 
       return pw.Bullet(
         text: value,
-        bulletShape: pw.BoxShape.circle,
+        bulletShape: pw.BoxShape.rectangle,
         bulletMargin: pw.EdgeInsets.only(
           left: one , right: one , top: 0.125*PdfPageFormat.cm
         ),
@@ -817,7 +817,7 @@ class PdfInvoiceApi {
 
                           children: [
 
-                            pw.SizedBox(height:  one),
+                            pw.SizedBox(height:  two),
 
 
                            pw.Padding(
@@ -832,7 +832,7 @@ class PdfInvoiceApi {
                             //1
                             pw.Bullet(
                               text: 'समस्त चर्म ऐव योन रोग',
-                              bulletShape: pw.BoxShape.circle,
+                              bulletShape: pw.BoxShape.rectangle,
                               style: pw.TextStyle(
 
                                 fontSize: three,
@@ -857,7 +857,7 @@ class PdfInvoiceApi {
                             //2
                             pw.Bullet(
                               text: 'नाखुन बालो से संबंधित रोग',
-                              bulletShape: pw.BoxShape.circle,
+                              bulletShape: pw.BoxShape.rectangle,
                               style: pw.TextStyle(
 
                                 fontSize: three,
@@ -884,7 +884,7 @@ class PdfInvoiceApi {
                             //3
                             pw.Bullet(
                               text: 'Triplle Wave Length Diode Laser',
-                              bulletShape: pw.BoxShape.circle,
+                              bulletShape: pw.BoxShape.rectangle,
                               style: pw.TextStyle(
 
                                   fontSize: three,
@@ -901,7 +901,7 @@ class PdfInvoiceApi {
                             ),
                             pw.Padding(padding: pw.EdgeInsets.only(left: two ),
                             child: pw.Text('अंचाहे बालो को हटाना' , style: pw.TextStyle(
-                                fontSize:  two,
+                                fontSize:  three,
                                 font:hindi_font,
                                 fontWeight: bold
                             ))),
@@ -911,7 +911,7 @@ class PdfInvoiceApi {
                             //4
                             pw.Bullet(
                               text: 'फोटोथेरेपी',
-                              bulletShape: pw.BoxShape.circle,
+                              bulletShape: pw.BoxShape.rectangle,
                               style: pw.TextStyle(
 
                                   fontSize: three,
@@ -932,14 +932,14 @@ class PdfInvoiceApi {
                                   crossAxisAlignment: pw.CrossAxisAlignment.start,
                                   children: [
                                     pw.Text('सफेद दाग हटाना' , style: pw.TextStyle(
-                                        fontSize:  two,
+                                        fontSize :three,
                                         font:hindi_font,
                                         fontWeight: bold
 
 
                                     )),
                                     pw.Text('सोरायसिस का इलाज' , style: pw.TextStyle(
-                                        fontSize:  two,
+                                        fontSize:  three,
                                         font:hindi_font,
                                         fontWeight: bold
 
@@ -958,7 +958,7 @@ class PdfInvoiceApi {
                             //5
                             pw.Bullet(
                               text: 'PRP , ACUGEL TREATMENT',
-                              bulletShape: pw.BoxShape.circle,
+                              bulletShape: pw.BoxShape.rectangle,
                               style: pw.TextStyle(
 
                                   fontSize: three,
@@ -975,7 +975,7 @@ class PdfInvoiceApi {
                             ),
                             pw.Padding(padding: pw.EdgeInsets.only(left: two),
                                 child: pw.Text('DARK CIRCLE हटाना\nचेहरे पर GLOW(चमक)लाना' , style: pw.TextStyle(
-                                    fontSize:  two,
+                                    fontSize:  three,
                                     font:hindi_font,
                                   fontWeight: bold
 
@@ -987,7 +987,7 @@ class PdfInvoiceApi {
                             //6
                             pw.Bullet(
                               text: 'MNRF',
-                              bulletShape: pw.BoxShape.circle,
+                              bulletShape: pw.BoxShape.rectangle,
                               style: pw.TextStyle(
 
                                   fontSize: three,
@@ -1004,7 +1004,7 @@ class PdfInvoiceApi {
                             ),
                             pw.Padding(padding: pw.EdgeInsets.only(left: two),
                                 child: pw.Text('पिंपल्स के खड्डे भरना\nचिकनपॉक्स के खड्डे भरना' , style: pw.TextStyle(
-                                    fontSize:  two,
+                                    fontSize:  three,
                                     font:hindi_font,
                                   fontWeight: bold
 
@@ -1016,10 +1016,10 @@ class PdfInvoiceApi {
                             //7
                             pw.Bullet(
                               text: 'केमिकल पीलिंग',
-                              bulletShape: pw.BoxShape.circle,
+                              bulletShape: pw.BoxShape.rectangle,
                               style: pw.TextStyle(
 
-                                fontSize: two,
+                                fontSize:three,
                                 font: hindi_font,
                                 fontWeight: bold
 
@@ -1034,7 +1034,7 @@ class PdfInvoiceApi {
                             ),
                             pw.Padding(padding: pw.EdgeInsets.only(left: two ),
                                 child: pw.Text('चेहरे की चमक लाना\nपिंपल्स ऐव पिंपल्स के निशान हटाना\nजुरिया जुरिया हटाना' , style: pw.TextStyle(
-                                    fontSize:  two,
+                                    fontSize :three,
                                     font:hindi_font,
                                   fontWeight: bold
 
@@ -1048,7 +1048,7 @@ class PdfInvoiceApi {
                             //8
                             pw.Bullet(
                               text: 'ND YAG LASER',
-                              bulletShape: pw.BoxShape.circle,
+                              bulletShape: pw.BoxShape.rectangle,
                               style: pw.TextStyle(
 
                                   fontSize: three,
@@ -1065,7 +1065,7 @@ class PdfInvoiceApi {
                             ),
                             pw.Padding(padding: pw.EdgeInsets.only(left: two),
                                 child: pw.Text('फोटो फेशियल\nकार्बन पील\nBirth Mark हटना\nTattoo हटना' , style: pw.TextStyle(
-                                    fontSize:  two,
+                                    fontSize :three,
                                     font:hindi_font,
                                   fontWeight: bold
 
@@ -1078,7 +1078,7 @@ class PdfInvoiceApi {
                             //9
                             pw.Bullet(
                               text: 'RF Machine',
-                              bulletShape: pw.BoxShape.circle,
+                              bulletShape: pw.BoxShape.rectangle,
                               style: pw.TextStyle(
 
                                   fontSize: three,
@@ -1095,7 +1095,7 @@ class PdfInvoiceApi {
                             ),
                             pw.Padding(padding: pw.EdgeInsets.only(left: two),
                                 child: pw.Text('चेहरे व गले के मस हटाना\nतिल हटाना\nकान के छेद ठिक करना' , style: pw.TextStyle(
-                                    fontSize:  two,
+                                    fontSize :three,
                                     font:hindi_font ,
                                     fontWeight: bold))),
 
@@ -1106,7 +1106,7 @@ class PdfInvoiceApi {
                             //10
                             pw.Bullet(
                               text: 'सेक्स समस्याए',
-                              bulletShape: pw.BoxShape.circle,
+                              bulletShape: pw.BoxShape.rectangle,
                               style: pw.TextStyle(
 
                                 fontSize: three,
@@ -1131,7 +1131,7 @@ class PdfInvoiceApi {
                             //11
                             pw.Bullet(
                               text: 'BREAST CARE MACHINE',
-                              bulletShape: pw.BoxShape.circle,
+                              bulletShape: pw.BoxShape.rectangle,
                               style: pw.TextStyle(
 
                                   fontSize: three,
@@ -1148,7 +1148,7 @@ class PdfInvoiceApi {
                             ),
                             pw.Padding(padding: pw.EdgeInsets.only(left: two),
                                 child: pw.Text('स्तन के आकार को बढ़ाना\nस्तन कसाव लाना में' , style: pw.TextStyle(
-                                    fontSize:  two,
+                                    fontSize :three,
                                     font:hindi_font,
                                   fontWeight: bold
 
@@ -1161,7 +1161,7 @@ class PdfInvoiceApi {
                             //12
                             pw.Bullet(
                               text: 'MICROBLADING , MICROPIGMENT',
-                              bulletShape: pw.BoxShape.circle,
+                              bulletShape: pw.BoxShape.rectangle,
                               style: pw.TextStyle(
 
                                   fontSize: three,
@@ -1178,7 +1178,7 @@ class PdfInvoiceApi {
                             ),
                             pw.Padding(padding: pw.EdgeInsets.only(left: two),
                                 child: pw.Text('आइब्रो का आकार ठीक करना\nसफेद चकतो , होठों का रंग सही करना' , style: pw.TextStyle(
-                                    fontSize:  two,
+                                    fontSize :three,
                                     font:hindi_font,
                                   fontWeight: bold
 
@@ -1190,7 +1190,7 @@ class PdfInvoiceApi {
                             //12
                             pw.Bullet(
                               text: 'IONTOPHORESIS',
-                              bulletShape: pw.BoxShape.circle,
+                              bulletShape: pw.BoxShape.rectangle,
                               style: pw.TextStyle(
 
                                   fontSize: three,
@@ -1207,7 +1207,7 @@ class PdfInvoiceApi {
                             ),
                             pw.Padding(padding: pw.EdgeInsets.only(left: two),
                                 child: pw.Text('हथेलि , पैर के तलवो पर अत्यधिक पासीना का इलाज' , style: pw.TextStyle(
-                                    fontSize:  two,
+                                    fontSize :three,
                                     font:hindi_font,
                                     fontWeight: bold
 
@@ -1221,7 +1221,7 @@ class PdfInvoiceApi {
                             //13
                             pw.Bullet(
                               text: 'BRIDE / GROOM Beauty Treatment\nPackages',
-                              bulletShape: pw.BoxShape.circle,
+                              bulletShape: pw.BoxShape.rectangle,
                               style: pw.TextStyle(
 
                                 fontSize: three,
@@ -1249,7 +1249,7 @@ class PdfInvoiceApi {
                             //14
                             pw.Bullet(
                               text: 'Theard Lift , Botox',
-                              bulletShape: pw.BoxShape.circle,
+                              bulletShape: pw.BoxShape.rectangle,
                               style: pw.TextStyle(
 
                                 fontSize: three,
@@ -1269,7 +1269,7 @@ class PdfInvoiceApi {
                             ),
                             pw.Padding(padding: pw.EdgeInsets.only(left: two),
                                 child: pw.Text('Derma Plannign\nVampire FaceLift' , style: pw.TextStyle(
-                                    fontSize:  two,
+                                    fontSize:  three,
 
                                     fontWeight: bold
 
@@ -1282,7 +1282,7 @@ class PdfInvoiceApi {
                             //16
                             pw.Bullet(
                               text: 'Hair Transplant',
-                              bulletShape: pw.BoxShape.circle,
+                              bulletShape: pw.BoxShape.rectangle,
                               style: pw.TextStyle(
 
                                 fontSize: three,
@@ -1463,12 +1463,12 @@ class PdfInvoiceApi {
                                              pw.Image(Qr , height: 2 * PdfPageFormat.cm , width: 2 * PdfPageFormat.cm),
                                              pw.Row(
                                                children: [
-                                                 pw.Text('Scan & Download the app from ' , style: pw.TextStyle(fontSize: two)),
+                                                 pw.Text('Scan & Download the app from ' , style: pw.TextStyle(fontSize:three)),
                                                  pw.Image(playstore , height: 0.5 * PdfPageFormat.cm , width: 0.5 * PdfPageFormat.cm),
 
                                                ]
                                              ),
-                                             pw.Text('to book appointment' , style: pw.TextStyle(fontSize: two)),
+                                             pw.Text('to book appointment' , style: pw.TextStyle(fontSize:three)),
 
                                            ]
                                          ),
@@ -1545,7 +1545,7 @@ class PdfInvoiceApi {
                               ],
                             )),
 
-                            opacity: 0.2,
+                            opacity: 0.6,
 
                           ),
 

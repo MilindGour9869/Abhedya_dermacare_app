@@ -1,6 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_app/screens/Services.dart';
+
 
 
 class ServiceDialogue {
@@ -32,9 +32,8 @@ class ServiceDialogue {
                         Text(service_name , style: TextStyle(fontWeight: FontWeight.bold , fontSize: MediaQuery.of(context).size.height*0.03),),
                         IconButton(onPressed: ()async{
 
-                          final doc = await FirebaseFirestore.instance.collection('Services').doc(doc_id);
-                          doc.delete();
-                          Navigator.pop(context);
+
+                          Navigator.pop(context  , 'delete');
 
                         }, icon: Icon(Icons.delete_outline_outlined))
                       ],

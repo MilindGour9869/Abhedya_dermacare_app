@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_app/default.dart';
+import 'package:flutter_app/widgets/Vitals.dart';
 import 'package:flutter_app/widgets/list_search.dart';
 import 'package:flutter_app/classes/Patient_name_list.dart';
 
@@ -63,7 +64,7 @@ class _AddVisitsState extends State<AddVisits> {
 
 
   String img_complaint =  'images/complaint_color.webp';
-  String img_clinical_finding_color =  'images/clinical_finding_color.webp';
+  String img_clinical_finding_color =  'images/clinical_finding_color.png';
   String img_diagnosis =  'images/diagnosis.webp';
   String img_medicine_color =  'images/medicine_color.webp';
   String img_vital_color =  'images/vital_color.webp';
@@ -83,7 +84,9 @@ class _AddVisitsState extends State<AddVisits> {
   List Services =[];
   List<String> Medicine = [];
 
+
   Map<String  , Map<String , dynamic>> medicine_result={};
+  Map<String  , Map<String , dynamic>> vital_result={};
 
   Map<String , dynamic> map;
 
@@ -466,7 +469,10 @@ setState(() {
                         padding: const EdgeInsets.only(top: 8.0),
                         child: Text(clinical_findings),
                       ),
-                      leading: Image.asset(img_clinical_finding_color ,),
+                      leading: SizedBox(
+                          width: 50,
+                          height: 50,
+                          child: Image.asset(img_clinical_finding_color ,)),
 
                       trailing: IconButton(onPressed: ()async{
 
@@ -530,6 +536,8 @@ setState(() {
 
 
                     child: ListTile(
+
+
 
                       title: Padding(
                         padding: const EdgeInsets.only(top: 8.0),
@@ -599,6 +607,9 @@ setState(() {
 
 
                     child: ListTile(
+
+
+
 
                       title: Padding(
                         padding: const EdgeInsets.only(top: 8.0),
@@ -880,7 +891,7 @@ setState(() {
                         padding: const EdgeInsets.only(top: 8.0),
                         child: Text(blood_group),
                       ),
-                      leading: Icon(FontAwesomeIcons.droplet),
+                      leading: Icon(FontAwesomeIcons.droplet , color: Colors.redAccent,),
 
                       trailing: IconButton(onPressed: ()async{
 
@@ -1054,6 +1065,83 @@ setState(() {
 
 
                             }
+
+
+                        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                      }, icon: Icon(Icons.arrow_drop_down_circle_outlined , color: Colors.black,)),
+
+                      subtitle: Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Container(
+
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: Medicine.map<Widget>((e)=>DropDown(e) ).toList(),
+                          ),
+                        ),
+                      ),
+
+
+                    ),
+                  ),
+                ),
+
+
+
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Material(
+                    borderRadius: BorderRadius.circular(10),
+                    elevation: 2,
+
+
+                    child: ListTile(
+
+                      title: Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Text('vitals'),
+                      ),
+                      leading: Icon(Icons.add),
+
+                      trailing: IconButton(onPressed: ()async{
+
+                        print(vital_result);
+
+
+
+
+                        // print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
+
+
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>Vital_List_Search())).then((value) {
+
+                          print('ccc');
+                          print(value);
+
+
+                          if(value != null)
+                          {
+
+                          vital_result = value;
+
+
+
+                          }
 
 
                         });

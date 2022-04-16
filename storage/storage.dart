@@ -32,6 +32,10 @@ class Storage {
   static bool service_updated = false;
 
 
+  static const vital = 'services';
+  static bool vital_updated = false;
+
+
   static const allergies = 'allergies';
 
   static const advices = 'advices';
@@ -330,7 +334,7 @@ class Storage {
   }
 
 
-  //medicine
+  //services
   static Future set_services({Map<String, Map<String, dynamic>> value , @required bool updated }) async
   {
     service_updated = updated;
@@ -380,6 +384,60 @@ class Storage {
 
   static Future delete_services(){
     storage.delete(key: services);
+  }
+
+
+
+  //Vital
+  static Future set_vital({Map<String, Map<String, dynamic>> value , @required bool updated }) async
+  {
+    vital_updated = updated;
+
+    if(updated)
+    {
+      print('\nset');
+      print(value);
+
+      final str = jsonEncode(value);
+
+      await storage.write(key: vital, value: str);
+    }
+  }
+
+  static Future<Map<String, Map<String, dynamic>>> get_vital() async
+  {
+
+    print('\n get_services called');
+    var str = await storage.read(key: vital);
+
+    var value = str != null ? jsonDecode(str) : null;
+
+    value = Map<String, Map<String, dynamic>>.from(value);
+
+
+    print(value.runtimeType);
+
+
+    print('\n value :');
+
+
+    print(value);
+
+    return value == null ? null : value;
+  }
+
+  static Future cloud_vital({Map<String, Map<String, dynamic>> value  , @required bool updated})async
+  {
+
+
+
+
+
+
+  }
+
+  static Future delete_vital(){
+    storage.delete(key: vital);
   }
 
 
