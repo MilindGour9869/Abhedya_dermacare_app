@@ -28,6 +28,8 @@ class _Vital_List_SearchState extends State<Vital_List_Search> {
   Map<String , Map<String , dynamic >> all_data_map={};
   Map<String , String> all_data_name_map={};
   Map<String , Map<String , dynamic >> result_map={};
+  Map<String , dynamic> edit_map={};
+
 
   bool updated = false;
 
@@ -43,7 +45,7 @@ class _Vital_List_SearchState extends State<Vital_List_Search> {
   var bp_v1_edit = TextEditingController();
   var bp_v2_edit = TextEditingController();
 
-  bool bp = false;
+  bool clear = false;
 
 
 
@@ -87,8 +89,14 @@ class _Vital_List_SearchState extends State<Vital_List_Search> {
         group_all_data_list.add(value['vital_name']);
         all_data_name_map[value['vital_name']] = key;
 
+        edit_map[key] = TextEditingController();
+
+
+
 
       });
+
+
 
       group_search_data_list=group_all_data_list;
 
@@ -134,6 +142,37 @@ class _Vital_List_SearchState extends State<Vital_List_Search> {
   }
 
   void pop(){
+
+    if(bp_v1_edit.text.isNotEmpty){
+      if(bp_v2_edit.text.isNotEmpty)
+        {
+          OnComplete(
+            vital_name: 'Blood Pressure',
+            vital_unit: 'mmHg',
+            value: bp_v1_edit.text,
+            value2: bp_v2_edit.text,
+
+          );
+        }
+    }
+
+
+
+
+    edit_map.forEach((key, value) {
+
+      if(value.text.isNotEmpty)
+        {
+          OnComplete(
+            vital_name: all_data_map[key]['vital_name'],
+            vital_unit: all_data_map[key]['vital_unit'],
+            value: value.text
+          );
+
+
+        }
+    });
+
     Navigator.pop(context,result_map);
   }
 
@@ -237,11 +276,28 @@ class _Vital_List_SearchState extends State<Vital_List_Search> {
           ),
           actions: [
             Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: IconButton(onPressed: (){
+
+                setState(() {
+                  clear=true;
+
+                  bp_v1_edit.clear();
+                  bp_v2_edit.clear();
+                  result_map={};
+
+                });
+
+
+
+              }, icon: Icon(Icons.refresh_outlined , color: Colors.grey, size: 40,)),
+            ),
+            Padding(
               padding: const EdgeInsets.only(right: 4.0),
               child: CircleAvatar(
                 backgroundColor: AppTheme.teal,
                 child: IconButton(
-                  icon: Icon(Icons.add),
+                  icon: Icon(Icons.add , color: Colors.white,),
                   onPressed: (){
 
 
@@ -260,12 +316,14 @@ class _Vital_List_SearchState extends State<Vital_List_Search> {
                   },
                 ),
               ),
-            )
+            ),
           ],
         ),
         body: FutureBuilder(
           future: f,
           builder: (context,snapshot){
+
+
 
 
             if(true)
@@ -290,17 +348,15 @@ class _Vital_List_SearchState extends State<Vital_List_Search> {
                             children: [
                               SizedBox(
                                   width: MediaQuery.of(context).size.width*0.150,
-                                  child: TextFormField(
+                                  child: TextField(
                                     controller:bp_v1_edit ,
-                                    onFieldSubmitted: (String s){
-                                      print('ddd');
+                                      decoration: InputDecoration(
 
-                                    },
-                                    onSaved: (String s){
-                                      print('rr');
+                                        hintText: '0.00',
+                                      ),
+                                    keyboardType: TextInputType.number,
 
 
-                                    },
                                   )
 
                               ),
@@ -309,23 +365,7 @@ class _Vital_List_SearchState extends State<Vital_List_Search> {
                                   width: MediaQuery.of(context).size.width*0.150,
                                   child: TextField(
                                     controller: bp_v2_edit,
-                                    onEditingComplete: (){
 
-                                      print('rtggf');
-
-
-
-
-                                            OnComplete(
-                                                vital_name: 'Blood Pressure',
-                                                vital_unit: 'mmHg',
-                                                value: bp_v1_edit.text ,
-                                                value2: bp_v2_edit.text,
-                                            );
-
-
-
-                                    },
 
                                     decoration: InputDecoration(
 
@@ -355,7 +395,7 @@ class _Vital_List_SearchState extends State<Vital_List_Search> {
                         .map<Widget>((e) {
 
                           String s = all_data_name_map[e];
-                          var text_edit  = TextEditingController();
+
 
                           String name =  all_data_map[s]['vital_name'];
                           String unit = all_data_map[s]['vital_unit'];
@@ -363,9 +403,17 @@ class _Vital_List_SearchState extends State<Vital_List_Search> {
                           if(widget.result.isNotEmpty)
                             {
 
-                               text_edit.text = widget.result[e]['value'];
+                               edit_map[s].text = widget.result[e]['value'];
 
 
+
+                            }
+
+                          if(clear == true)
+                            {
+                              edit_map.forEach((key, value) {
+                                value.clear();
+                              });
 
                             }
 
@@ -395,15 +443,8 @@ class _Vital_List_SearchState extends State<Vital_List_Search> {
                                   SizedBox(
                                       width: MediaQuery.of(context).size.width*0.150,
                                       child: TextField(
-                                        onEditingComplete: (){
-                                          OnComplete(
-                                              vital_name: name,
-                                              vital_unit: unit,
-                                              value: text_edit.text
-                                          );
 
-                                        },
-                                        controller: text_edit,
+                                        controller: edit_map[s],
 
                                         decoration: InputDecoration(
 
