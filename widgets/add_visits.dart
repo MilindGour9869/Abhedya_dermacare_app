@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_app/default.dart';
-import 'package:flutter_app/widgets/Vitals.dart';
+import '../list_search/Vitals.dart';
 import 'package:flutter_app/widgets/list_search.dart';
 import 'package:flutter_app/classes/Patient_name_list.dart';
 
@@ -61,6 +61,8 @@ class _AddVisitsState extends State<AddVisits> {
   String blood_group="Blood Group";
   String service = "Services";
   String medicine = "Medicine";
+  String vital = "Vitals";
+
 
 
   String img_complaint =  'images/complaint_color.webp';
@@ -161,9 +163,14 @@ setState(() {
   }
   if( map['medicine'] != null)
     {
-      Medicine = map['medicine'];
+      medicine_result = map['medicine'];
 
     }
+  if( map['vital'] != null)
+  {
+    vital_result = map['vital'];
+
+  }
 
 
 
@@ -1114,42 +1121,43 @@ setState(() {
 
                       title: Padding(
                         padding: const EdgeInsets.only(top: 8.0),
-                        child: Text('vitals'),
+                        child: Text(vital),
                       ),
                       leading: Icon(Icons.add),
 
                       trailing: IconButton(onPressed: ()async{
-
-                        print(vital_result);
-
 
 
 
                         // print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
 
 
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>Vital_List_Search())).then((value) {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return Vital_List_Search( result: vital_result,);
 
-                          print('ccc');
+                            }).then((value)async{
+
+                              print('dsdsds');
+
+
                           print(value);
-
 
                           if(value != null)
                           {
+                            setState(() {
 
-                          vital_result = value;
+                              vital_result = value;
 
+
+
+
+                            });
 
 
                           }
-
-
                         });
-
-
-
-
-
 
 
 
@@ -1168,7 +1176,25 @@ setState(() {
 
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: Medicine.map<Widget>((e)=>DropDown(e) ).toList(),
+                            children: vital_result.keys.map<Widget>((e){
+
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(vital_result[e]['vital_name']),
+                                  Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(vital_result[e]['value']),
+                                      SizedBox(width: 4,),
+                                      Text(vital_result[e]['vital_unit']),
+
+                                    ],
+                                  )
+                                ],
+                              );
+
+                            }).toList(),
                           ),
                         ),
                       ),
@@ -1177,6 +1203,10 @@ setState(() {
                     ),
                   ),
                 ),
+
+
+
+
 
 
 

@@ -12,7 +12,7 @@ import 'package:flutter/services.dart';
 
 class Vital_List_Search extends StatefulWidget {
 
-  List result;
+  Map<String , Map<String , dynamic >> result;
   Vital_List_Search({this.result});
 
   @override
@@ -23,19 +23,27 @@ class _Vital_List_SearchState extends State<Vital_List_Search> {
 
 
   List group_all_data_list =[] ;
-  List group_updated_result = [];
+
+
   Map<String , Map<String , dynamic >> all_data_map={};
   Map<String , String> all_data_name_map={};
+  Map<String , Map<String , dynamic >> result_map={};
 
   bool updated = false;
 
-  var unit_edit = TextEditingController();
+  var unit = TextEditingController();
+  var vital = TextEditingController();
 
 
 
   List group_search_data_list = [];
 
   Map<String, bool> select = {};
+
+  var bp_v1_edit = TextEditingController();
+  var bp_v2_edit = TextEditingController();
+
+  bool bp = false;
 
 
 
@@ -49,16 +57,22 @@ class _Vital_List_SearchState extends State<Vital_List_Search> {
   Future<void> get() async {
 
 
-    group_updated_result=[];
+
     group_search_data_list=[];
     group_all_data_list=[];
     all_data_map={};
 
 
 
-    var a = await Storage.get_tab();
+
+
+
+    var a = await Storage.get_vital();
 
     print(a);
+
+    print('\n eferrrgr');
+
 
     all_data_map = a==null?{}:a;
 
@@ -83,7 +97,13 @@ class _Vital_List_SearchState extends State<Vital_List_Search> {
 
     if(widget.result.isNotEmpty)
       {
-        print(widget.result);
+        result_map = widget.result;
+
+       String s =  widget.result['Blood Pressure']['value'];
+       List a = s.split('/');
+       bp_v1_edit.text=a[0];
+       bp_v2_edit.text=a[1];
+
 
       }
 
@@ -110,11 +130,11 @@ class _Vital_List_SearchState extends State<Vital_List_Search> {
 
 
 
-    await Storage.set_tab(value: all_data_map , updated:  updated );
+    await Storage.set_vital(value: all_data_map , updated:  updated );
   }
 
   void pop(){
-    Navigator.pop(context, group_updated_result);
+    Navigator.pop(context,result_map);
   }
 
   void onChange(String s){
@@ -124,24 +144,51 @@ class _Vital_List_SearchState extends State<Vital_List_Search> {
 
   }
 
-  onItemChanged(String value) {
-    setState(() {
-      if(group_all_data_list != null)
-      {
-        group_search_data_list = group_all_data_list
-            .where((string) => string.toLowerCase().contains(value.toLowerCase()))
-            .toList();
-      }
-      if (group_search_data_list.isEmpty) {
-        group_search_data_list = [];
-      }
-    });
+
+
+  OnComplete({String vital_name , String value , String vital_unit , String value2})
+  {
+    print(value);
+
+   if(value.isNotEmpty)
+     {
+       if(vital_name == 'Blood Pressure')
+         {
+           Map<String,dynamic> map ={};
+           map['vital_name'] = vital_name;
+           map['value'] = value + '/' + value2;
+           map['vital_unit'] = vital_unit;
+
+           result_map[vital_name] = map;
+         }
+       else
+         {
+           Map<String,dynamic> map ={};
+           map['vital_name'] = vital_name;
+           map['value'] = value;
+           map['vital_unit'] = vital_unit;
+
+           result_map[vital_name] = map;
+         }
+
+     }
+
+
+
   }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+
+
+
+
+
+
+
+
 
     get();
 
@@ -153,7 +200,7 @@ class _Vital_List_SearchState extends State<Vital_List_Search> {
     super.dispose();
     set();
 
-    group_updated_result=[];
+
     group_search_data_list=[];
     group_all_data_list=[];
     all_data_map={};
@@ -171,6 +218,7 @@ class _Vital_List_SearchState extends State<Vital_List_Search> {
 
       },
       child: Scaffold(
+
         appBar: AppBar(
           backgroundColor: Colors.white,
           elevation: 0,
@@ -185,13 +233,7 @@ class _Vital_List_SearchState extends State<Vital_List_Search> {
           ),
           title: Padding(
             padding: const EdgeInsets.all(0),
-            child: TextField(
-              controller: search_edit,
-              decoration: InputDecoration(
-                hintText: 'Search / Add ',
-              ),
-              onChanged: onItemChanged,
-            ),
+            child: Text('Vitals' , style: TextStyle(color: Colors.black),),
           ),
           actions: [
             Padding(
@@ -203,10 +245,18 @@ class _Vital_List_SearchState extends State<Vital_List_Search> {
                   onPressed: (){
 
 
-                    showDialog(context: context, builder: (context)=>Card(
+                    showDialog(context: context, builder: (context)=>Dialogue(vital_unit: unit , vital_name: vital , context: context )).then((value) {
 
+                      if(value !=null)
+                        {
+                          all_data_map.addAll(value);
+                          updated=true;
+                          set();
+                          get();
 
-                    ));
+                        }
+
+                    });
                   },
                 ),
               ),
@@ -218,75 +268,178 @@ class _Vital_List_SearchState extends State<Vital_List_Search> {
           builder: (context,snapshot){
 
 
-            if(group_search_data_list.isNotEmpty)
+            if(true)
             {
-              return  Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: SizedBox(
+              return  Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Material(
+                      elevation: 2,
+                      child: ListTile(
 
-                    width: double.infinity,
-                    child:  ListView(
-                      shrinkWrap: true,
-                      children: group_search_data_list
-                          .map<Widget>((e) {
-
-
+                        leading: Icon(Icons.arrow_forward_ios_rounded , color: AppTheme.teal,),
 
 
+                        title: Text(
+                          "Blood Pressure ",
+                        ),
+                        trailing: Container(
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              SizedBox(
+                                  width: MediaQuery.of(context).size.width*0.150,
+                                  child: TextFormField(
+                                    controller:bp_v1_edit ,
+                                    onFieldSubmitted: (String s){
+                                      print('ddd');
+
+                                    },
+                                    onSaved: (String s){
+                                      print('rr');
 
 
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Material(
-                            elevation: 2,
-
-                            child: ListTile(
-
-
-                              title: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  SelectableText(
-                                    e,
-                                  ),
-
-
-                                  Container(
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        SizedBox(
-                                            width: MediaQuery.of(context).size.width*0.150,
-                                            child: TextField(
-                                              controller: unit_edit,
-
-                                              decoration: InputDecoration(
-
-                                                hintText: "Unit",
-                                              )
-                                              ,
-                                              keyboardType: TextInputType.number,
-                                            )
-
-                                        ),
-                                        SizedBox(width: 4,),
-
-                                        Text('Unit'),
-                                      ],
-                                    ),
+                                    },
                                   )
 
+                              ),
+                              SizedBox(width: 2,),
+                              SizedBox(
+                                  width: MediaQuery.of(context).size.width*0.150,
+                                  child: TextField(
+                                    controller: bp_v2_edit,
+                                    onEditingComplete: (){
+
+                                      print('rtggf');
+
+
+
+
+                                            OnComplete(
+                                                vital_name: 'Blood Pressure',
+                                                vital_unit: 'mmHg',
+                                                value: bp_v1_edit.text ,
+                                                value2: bp_v2_edit.text,
+                                            );
+
+
+
+                                    },
+
+                                    decoration: InputDecoration(
+
+                                      hintText: '0.00',
+                                    )
+                                    ,
+                                    keyboardType: TextInputType.number,
+                                  )
+
+                              ),
+                              SizedBox(width: 4,),
+
+                              Text('Hg'),
+
+                            ],
+                          ),
+                        ),
+
+
+                      ),
+                    ),
+                  ),
+
+                  ListView(
+                    shrinkWrap: true,
+                    children: group_search_data_list
+                        .map<Widget>((e) {
+
+                          String s = all_data_name_map[e];
+                          var text_edit  = TextEditingController();
+
+                          String name =  all_data_map[s]['vital_name'];
+                          String unit = all_data_map[s]['vital_unit'];
+
+                          if(widget.result.isNotEmpty)
+                            {
+
+                               text_edit.text = widget.result[e]['value'];
+
+
+
+                            }
+
+
+
+
+
+
+
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Material(
+                          elevation: 2,
+
+                          child: ListTile(
+
+                            leading: Icon(Icons.arrow_forward_ios_rounded , color: AppTheme.teal,),
+
+
+                            title: Container(
+                              child: Text(name),
+                            ),
+                            trailing:  Container(
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  SizedBox(
+                                      width: MediaQuery.of(context).size.width*0.150,
+                                      child: TextField(
+                                        onEditingComplete: (){
+                                          OnComplete(
+                                              vital_name: name,
+                                              vital_unit: unit,
+                                              value: text_edit.text
+                                          );
+
+                                        },
+                                        controller: text_edit,
+
+                                        decoration: InputDecoration(
+
+                                          hintText: "0.00",
+                                        )
+                                        ,
+                                        keyboardType: TextInputType.number,
+                                      )
+
+                                  ),
+                                  SizedBox(width: 4,),
+
+                                  Text(unit),
+
+                                  IconButton(onPressed: (){
+
+                                    all_data_map.remove(s);
+                                    updated=true;
+                                    set();
+                                    get();
+
+
+                                  }, icon: Icon(Icons.delete_outline_outlined , color: Colors.grey,))
                                 ],
                               ),
-
-
                             ),
-                          ),
-                        );
 
-                      })
-                          .toList(),
-                    )),
+
+                          ),
+                        ),
+                      );
+
+                    })
+                        .toList(),
+                  ),
+                ],
               );
 
             }
@@ -305,11 +458,11 @@ class _Vital_List_SearchState extends State<Vital_List_Search> {
 }
 
 Widget Dialogue(
-    {String service_name,
+    {
       TextEditingController vital_name,
       TextEditingController vital_unit,
       BuildContext context,
-      int size}) {
+    }) {
   return Padding(
       padding: EdgeInsets.symmetric(horizontal: 40, vertical: 200),
       child: Material(
@@ -323,7 +476,7 @@ Widget Dialogue(
                 height: 10,
               ),
               Text(
-                vital_name.text==null?'Add Vital':vital_name.text,
+                vital_name.text.isEmpty?'Add Vital':vital_name.text,
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: MediaQuery.of(context).size.height * 0.03),
@@ -390,7 +543,7 @@ Widget Dialogue(
                           style: TextStyle(color: Colors.black),
                         ),
                         onPressed: () async {
-                          print(size);
+
 
                           print('done');
 
@@ -423,7 +576,7 @@ Widget Dialogue(
                             'vital_name': vital_name.text,
                             'vital_unit': vital_unit.text,
                             'doc_id': doc.id,
-                            'unit_edit' : TextEditingController()
+
 
                           };
 

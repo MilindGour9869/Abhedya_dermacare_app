@@ -393,6 +393,9 @@ class Storage {
   {
     vital_updated = updated;
 
+    print(updated);
+
+
     if(updated)
     {
       print('\nset');
@@ -407,7 +410,7 @@ class Storage {
   static Future<Map<String, Map<String, dynamic>>> get_vital() async
   {
 
-    print('\n get_services called');
+    print('\n get_vital called');
     var str = await storage.read(key: vital);
 
     var value = str != null ? jsonDecode(str) : null;
