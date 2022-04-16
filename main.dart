@@ -7,7 +7,9 @@ import 'package:flutter/material.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 import 'default.dart';
 
@@ -23,6 +25,10 @@ import 'screens/Reception.dart';
 import 'screens/send_feedback.dart';
 
 
+
+
+
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -34,7 +40,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
+
+      home: ResponsiveSizer(
+        builder: (context, orientation, screenType){
+          return HomePage();
+
+        },
+      ),
       theme: ThemeData(
         fontFamily: 'RobotoSlab-Black.ttf',
       ),
@@ -53,6 +65,9 @@ class _HomePageState extends State<HomePage> {
 
 
   var search_text = TextEditingController();
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -98,37 +113,34 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                padding:  EdgeInsets.symmetric(vertical: 1.h),
                 child: GestureDetector(
                   onTap: () {
                     showDialog(
                         context: context,
-                        builder: (context) => Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 30.0, vertical: 240),
-                              child: Card(
-                                child: Column(
-                                  children: [
-                                    TextButton.icon(
-                                        icon: Icon(Icons.camera),
-                                        onPressed: () {
-                                          imagepicker(ImageSource.camera);
-                                        },
-                                        label: Text('Camera')),
-                                    TextButton.icon(
-                                        icon: Icon(Icons.browse_gallery),
-                                        onPressed: () {
-                                          imagepicker(ImageSource.gallery);
-                                        },
-                                        label: Text('Gallery'))
-                                  ],
-                                ),
-                              ),
-                            ));
+                        builder: (context) => AlertDialog(
+                      title: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          TextButton.icon(
+                              icon: Icon(FontAwesomeIcons.cameraRetro , color: AppTheme.green, ),
+                              onPressed: () {
+                                imagepicker(ImageSource.camera);
+                              },
+                              label: Text(' Camera' , style: TextStyle(fontSize: AppTheme.size , color: AppTheme.black),)),
+                          TextButton.icon(
+                              icon: Icon(FontAwesomeIcons.photoFilm  , color: AppTheme.green, ),
+                              onPressed: () {
+                                imagepicker(ImageSource.gallery);
+                              },
+                              label: Text(' Gallery' , style: TextStyle(fontSize: AppTheme.size , color: AppTheme.black) ))
+                        ],
+                      )),
+                    );
                   },
                   child: ClipOval(
                     child: CircleAvatar(
-                      radius: MediaQuery.of(context).size.height * 0.1,
+                      radius:  AppTheme.circle,
                       child: file == null
                           ? Icon(
                               Icons.person_add_outlined,
@@ -138,7 +150,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                               file,
                               fit: BoxFit.fill,
                             ),
-                      backgroundColor: Colors.grey,
+                      backgroundColor: AppTheme.grey,
                     ),
                   ),
                 ),
@@ -154,17 +166,17 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
 
 Widget Menu(BuildContext context) {
   return Wrap(
-    runSpacing: 7,
+    runSpacing: 2.w,
     children: [
       GestureDetector(
         onTap: (){
-          print('yrhr');
+
         },
         child: ListTile(
-          title: Text('Profile'),
-          leading: Icon(Icons.person_outline),
+          title: Text('Profile' , style: TextStyle( fontSize: AppTheme.size ),),
+          leading: Icon(FontAwesomeIcons.userDoctor , color: AppTheme.green,),
           onTap: () {
-            print('ggg');
+
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => Profile()));
           },
@@ -174,23 +186,23 @@ Widget Menu(BuildContext context) {
       Dividerr(),
 
       ListTile(
-        title: Text('Patients'),
-        leading: Icon(Icons.people_alt_outlined),
+        title: Text('Patients' , style: TextStyle( fontSize: AppTheme.size),),
+        leading: Icon(FontAwesomeIcons.users , color: AppTheme.teal),
         onTap: () {
          Navigator.pop(context);
         },
       ), // Patient
       ListTile(
-        title: Text('Medicine'),
-        leading: Icon(Icons.medical_services_outlined),
+        title: Text('Medicine' , style: TextStyle( fontSize: AppTheme.size),),
+        leading: Icon(FontAwesomeIcons.capsules , color: AppTheme.teal ),
         onTap: () {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => Medicines()));
         },
       ), // Medicine
       ListTile(
-        title: Text('Services'),
-        leading: Icon(Icons.room_service),
+        title: Text('Services' , style: TextStyle( fontSize: AppTheme.size),),
+        leading: Icon(FontAwesomeIcons.briefcase , color: AppTheme.teal),
         onTap: () {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => Services()));
@@ -200,8 +212,8 @@ Widget Menu(BuildContext context) {
       Dividerr(),
 
       ListTile(
-        title: Text('Setting'),
-        leading: Icon(Icons.settings_accessibility_outlined),
+        title: Text('Setting' , style: TextStyle( fontSize: AppTheme.size),),
+        leading: Icon(FontAwesomeIcons.gear , color: AppTheme.grey,),
         onTap: () {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => Setting()));
@@ -209,8 +221,8 @@ Widget Menu(BuildContext context) {
       ),
 
       ListTile(
-        title: Text('Reception'),
-        leading: Icon(Icons.remove_red_eye_outlined),
+        title: Text('Reception' , style: TextStyle( fontSize: AppTheme.size),),
+        leading: Icon(FontAwesomeIcons.eyeSlash ,  color: AppTheme.grey,),
         onTap: () {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => Reception()));
@@ -239,6 +251,6 @@ class Dividerr extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Divider(thickness: 2,);
+    return Divider(thickness: 0.5.w,);
   }
 }

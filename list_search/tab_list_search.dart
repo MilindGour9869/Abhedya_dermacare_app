@@ -276,14 +276,14 @@ class _Tab_List_SearchState extends State<Tab_List_Search> {
 
                                 if (select[e] == true) {
                                   group_updated_result.add(e);
-                                  print(group_updated_result);
+
 
 
 
                                 }
                                 if (select[e] == false) {
                                   group_updated_result.remove(e);
-                                  print(group_updated_result);
+
                                 }
 
                                 setState(() {
@@ -344,7 +344,6 @@ class _Tab_List_SearchState extends State<Tab_List_Search> {
                                         group_search_data_list.remove(e);
                                         group_updated_result.remove(e);
 
-                                        print(all_data_map);
 
 
                                       });
