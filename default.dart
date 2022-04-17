@@ -32,8 +32,16 @@ class AppTheme{
 
 
 
-   static double size = 18.sp;
+   static double size = 20.sp;
    static double circle = 10.h;
+
+   static final kTextStyle = TextStyle(
+     fontSize: 20.sp,
+     color: AppTheme.black,
+
+
+
+   );
 
 
 

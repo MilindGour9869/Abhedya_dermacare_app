@@ -9,6 +9,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_app/classes/Patient_name_list.dart';
 
 import 'package:date_format/date_format.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 
 
@@ -85,7 +86,7 @@ class _State extends State<Patient> {
                   children: [
                     Text(
                       patient_data_tile.name == null ? "?" : patient_data_tile.name,
-                      style: TextStyle(fontSize: 15),
+                      style: AppTheme.kTextStyle,
                     ),
                     IconButton(
                         onPressed: () {
@@ -94,7 +95,7 @@ class _State extends State<Patient> {
                               builder: (context) => AlertDialog(
                                     titlePadding: EdgeInsets.all(0),
                                     title:
-                                        Center(child: Text('Are you Sure ?')),
+                                        Center(child: Text('Are you Sure ?' , style: AppTheme.kTextStyle,)),
                                     actions: [
                                       Row(
                                         children: [

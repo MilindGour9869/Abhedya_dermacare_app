@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
         },
       ),
       theme: ThemeData(
-        fontFamily: 'RobotoSlab-Black.ttf',
+        fontFamily: 'Nunito-Regular',
       ),
       routes: {},
     );
@@ -127,13 +127,13 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                               onPressed: () {
                                 imagepicker(ImageSource.camera);
                               },
-                              label: Text(' Camera' , style: TextStyle(fontSize: AppTheme.size , color: AppTheme.black),)),
+                              label: Text(' Camera' , style: AppTheme.kTextStyle)),
                           TextButton.icon(
                               icon: Icon(FontAwesomeIcons.photoFilm  , color: AppTheme.green, ),
                               onPressed: () {
                                 imagepicker(ImageSource.gallery);
                               },
-                              label: Text(' Gallery' , style: TextStyle(fontSize: AppTheme.size , color: AppTheme.black) ))
+                              label: Text(' Gallery' , style: AppTheme.kTextStyle ))
                         ],
                       )),
                     );
@@ -173,7 +173,7 @@ Widget Menu(BuildContext context) {
 
         },
         child: ListTile(
-          title: Text('Profile' , style: TextStyle( fontSize: AppTheme.size ),),
+          title: Text('Profile' , style: AppTheme.kTextStyle),
           leading: Icon(FontAwesomeIcons.userDoctor , color: AppTheme.green,),
           onTap: () {
 
@@ -186,14 +186,14 @@ Widget Menu(BuildContext context) {
       Dividerr(),
 
       ListTile(
-        title: Text('Patients' , style: TextStyle( fontSize: AppTheme.size),),
+        title: Text('Patients' , style: AppTheme.kTextStyle),
         leading: Icon(FontAwesomeIcons.users , color: AppTheme.teal),
         onTap: () {
          Navigator.pop(context);
         },
       ), // Patient
       ListTile(
-        title: Text('Medicine' , style: TextStyle( fontSize: AppTheme.size),),
+        title: Text('Medicine' , style: AppTheme.kTextStyle),
         leading: Icon(FontAwesomeIcons.capsules , color: AppTheme.teal ),
         onTap: () {
           Navigator.push(
@@ -201,7 +201,7 @@ Widget Menu(BuildContext context) {
         },
       ), // Medicine
       ListTile(
-        title: Text('Services' , style: TextStyle( fontSize: AppTheme.size),),
+        title: Text('Services' , style: AppTheme.kTextStyle),
         leading: Icon(FontAwesomeIcons.briefcase , color: AppTheme.teal),
         onTap: () {
           Navigator.push(
@@ -212,7 +212,7 @@ Widget Menu(BuildContext context) {
       Dividerr(),
 
       ListTile(
-        title: Text('Setting' , style: TextStyle( fontSize: AppTheme.size),),
+        title: Text('Setting' , style: AppTheme.kTextStyle),
         leading: Icon(FontAwesomeIcons.gear , color: AppTheme.grey,),
         onTap: () {
           Navigator.push(
@@ -221,7 +221,7 @@ Widget Menu(BuildContext context) {
       ),
 
       ListTile(
-        title: Text('Reception' , style: TextStyle( fontSize: AppTheme.size),),
+        title: Text('Reception' , style: AppTheme.kTextStyle),
         leading: Icon(FontAwesomeIcons.eyeSlash ,  color: AppTheme.grey,),
         onTap: () {
           Navigator.push(
@@ -251,6 +251,6 @@ class Dividerr extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Divider(thickness: 0.5.w,);
+    return Divider(thickness: 0.5.w, color: AppTheme.grey,);
   }
 }

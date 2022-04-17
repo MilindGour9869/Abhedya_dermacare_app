@@ -21,7 +21,7 @@ class PdfInvoiceApi {
     final Rx = await imageFromAssetBundle('images/Rx.png');
 
 
-    final hindi_font = await fontFromAssetBundle('font/GIST-DVOTMohini.ttf');
+    final hindi_font = await fontFromAssetBundle('font/Martel-SemiBold.ttf');
     final eng_font = await fontFromAssetBundle('font/RobotoSlab-Medium.ttf');
 
     int row=1;
@@ -29,7 +29,7 @@ class PdfInvoiceApi {
     bool img_left =true;
 
 
-    var five  =  0.3*PdfPageFormat.cm;
+    var five  =  0.2*PdfPageFormat.cm;
 
     var three = 0.3*PdfPageFormat.cm;
     var two = 0.2*PdfPageFormat.cm;
@@ -817,7 +817,7 @@ class PdfInvoiceApi {
 
                           children: [
 
-                            pw.SizedBox(height:  two),
+                            pw.SizedBox(height:  one),
 
 
                            pw.Padding(
@@ -903,7 +903,7 @@ class PdfInvoiceApi {
                             child: pw.Text('अंचाहे बालो को हटाना' , style: pw.TextStyle(
                                 fontSize:  three,
                                 font:hindi_font,
-                                fontWeight: bold
+
                             ))),
 
                             pw.SizedBox(height: five),
@@ -934,14 +934,14 @@ class PdfInvoiceApi {
                                     pw.Text('सफेद दाग हटाना' , style: pw.TextStyle(
                                         fontSize :three,
                                         font:hindi_font,
-                                        fontWeight: bold
+
 
 
                                     )),
                                     pw.Text('सोरायसिस का इलाज' , style: pw.TextStyle(
                                         fontSize:  three,
                                         font:hindi_font,
-                                        fontWeight: bold
+
 
 
                                     )),
@@ -974,7 +974,7 @@ class PdfInvoiceApi {
 
                             ),
                             pw.Padding(padding: pw.EdgeInsets.only(left: two),
-                                child: pw.Text('DARK CIRCLE हटाना\nचेहरे पर GLOW(चमक)लाना' , style: pw.TextStyle(
+                                child: pw.Text('Dark Circle हटाना\nचेहरे पर Glow(चमक)लाना' , style: pw.TextStyle(
                                     fontSize:  three,
                                     font:hindi_font,
                                   fontWeight: bold
@@ -1584,7 +1584,7 @@ class PdfInvoiceApi {
                 children: [
                   pw.Container(
                     width: 800,
-                    height: 0.7*PdfPageFormat.cm,
+                    height: 0.6*PdfPageFormat.cm,
                     alignment: pw.Alignment.center,
                     color: orange,
                     child: pw.Text('जय श्री कृष्णा' , style: pw.TextStyle(
@@ -1596,7 +1596,7 @@ class PdfInvoiceApi {
                   pw.SizedBox(height: one),
                   pw.Container(
                     width: 800,
-                    height: 0.7*PdfPageFormat.cm,
+                    height: 0.6*PdfPageFormat.cm,
                     color: purple,
 
                   ),
