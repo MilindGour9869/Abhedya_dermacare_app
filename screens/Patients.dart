@@ -9,6 +9,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_app/classes/Patient_name_list.dart';
 
 import 'package:date_format/date_format.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 
@@ -348,7 +349,7 @@ class _State extends State<Patient> {
         resizeToAvoidBottomInset: false,
         backgroundColor: AppTheme.offwhite,
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(25.h),
+          preferredSize: Size.fromHeight(26.h),
           child: Container(
               decoration: BoxDecoration(
                   color: AppTheme.green,
@@ -563,7 +564,7 @@ class _State extends State<Patient> {
             },
             child: Icon(
               Icons.add,
-              color: AppTheme.black,
+              color: AppTheme.white,
             ),
             backgroundColor: AppTheme.teal),
         bottomNavigationBar: BottomAppBar(

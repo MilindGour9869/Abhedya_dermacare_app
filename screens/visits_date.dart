@@ -9,6 +9,7 @@ import 'package:flutter_app/widgets/add_visits.dart';
 import 'package:flutter_app/classes/Patient_name_list.dart';
 
 import 'package:date_format/date_format.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 
 class VisitsDate extends StatefulWidget {
@@ -130,7 +131,13 @@ class _VisitsDateState extends State<VisitsDate> {
     return Scaffold(
 
       appBar: AppBar(
-        title: Text('Visits'),
+        leading: IconButton(
+          onPressed: (){
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back , size: AppTheme.aspectRatio*40),
+        ),
+        title: Text('Visits' , style: AppTheme.main_white_30,),
         backgroundColor: AppTheme.teal,
 
         actions: [
@@ -142,7 +149,7 @@ class _VisitsDateState extends State<VisitsDate> {
                 delete=!delete;
 
               });
-            }, icon: Icon(Icons.delete_outline_outlined)),
+            }, icon: Icon(Icons.delete_outline_outlined , size: AppTheme.aspectRatio*40,)),
           )
         ],
       ),
@@ -160,7 +167,7 @@ class _VisitsDateState extends State<VisitsDate> {
 
             if(visit_dates.isEmpty)
               {
-                return Text('loading');
+                return Center(child: Text('loading' , style: AppTheme.black_22,));
 
               }
 
@@ -171,8 +178,8 @@ class _VisitsDateState extends State<VisitsDate> {
                   child: RefreshIndicator(
                     onRefresh: visist_date,
                     child: Wrap(
-                        spacing: 10,
-                        runSpacing: 10,
+                        spacing: 3.w,
+                        runSpacing: 3.h,
                         direction: Axis.horizontal,
 
 
@@ -208,12 +215,12 @@ class _VisitsDateState extends State<VisitsDate> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     SizedBox(
-                                      height: 120,
-                                      width: 120,
+                                      height: 17.h,
+                                      width: 30.w,
                                       child: Card(
 
 
-                                          child: Center(child: Text(date.toString()),
+                                          child: Center(child: Text(date.toString() , style: AppTheme.main_black_25,),
                               )),
                                     ),
 
@@ -235,7 +242,7 @@ class _VisitsDateState extends State<VisitsDate> {
 
 
 
-                                        }, icon: Icon(Icons.delete_outline_outlined , color: Colors.red,)
+                                        }, icon: Icon(Icons.delete_outline_outlined , color: Colors.red, size: AppTheme.aspectRatio*40,)
                                         ),
                                       ),
                                     )],
@@ -247,7 +254,7 @@ class _VisitsDateState extends State<VisitsDate> {
 
             else
               {
-                return Text('aerror');
+                return Text('Error' , style: AppTheme.black_22,);
 
               }
 
@@ -278,8 +285,8 @@ class _VisitsDateState extends State<VisitsDate> {
               }
           });
         },
-        child: Icon(Icons.add , color: Colors.black,),
-        backgroundColor: AppTheme.green,
+        child: Icon(Icons.add , color: Colors.white,),
+        backgroundColor: AppTheme.teal,
       ),
       bottomNavigationBar: BottomAppBar(
 

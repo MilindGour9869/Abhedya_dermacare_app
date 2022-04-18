@@ -11,6 +11,8 @@ import 'package:flutter_app/widgets/add_medicines.dart';
 
 import 'dart:math' as math;
 
+import 'package:responsive_sizer/responsive_sizer.dart';
+
 class Medicines extends StatefulWidget {
   bool delete, select;
 
@@ -224,9 +226,8 @@ class _State extends State<Medicines> {
            {
              showDialog(
                  context: context,
-                 builder: (context) => Padding(
-                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                   child: AddMedicine(
+                 builder: (context) => AlertDialog(
+                   title: AddMedicine(
                      composition: map[name]['composition'],
                      company_name: map[name]['company_name'],
                      tab: map[name]['tab'],
@@ -244,11 +245,13 @@ class _State extends State<Medicines> {
            {
              print(result_map[name]);
 
-             showDialog(context: context, builder: (context)=>AddData(
-               color: color,
-               map: map,
-               medicine_name: name,
-               result_map : result_map[name]
+             showDialog(context: context, builder: (context)=>AlertDialog(
+               title: AddData(
+                 color: color,
+                 map: map,
+                 medicine_name: name,
+                 result_map : result_map[name]
+               ),
              )).then((value) {
 
                print('\nBack from add data');
@@ -268,7 +271,7 @@ class _State extends State<Medicines> {
            }
         },
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding:  EdgeInsets.all(4.w),
           child: Material(
             elevation: 4,
             child: Container(
@@ -404,59 +407,70 @@ class _State extends State<Medicines> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(200),
+        preferredSize: Size.fromHeight(25.h),
         child: Container(
-          decoration: BoxDecoration(
-              color: AppTheme.teal,
-              borderRadius: BorderRadius.only(
-                bottomRight: Radius.circular(30),
-                bottomLeft: Radius.circular(30),
-              )),
-          height: MediaQuery.of(context).size.height * 0.23,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              AppBar(
-                title: Text('Medicine'),
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-                actions: [
-                  Visibility(
-                      visible: delete?false:true,
-                      child: IconButton(
-                        icon: Icon(Icons.save),
-                        onPressed: (){
-                          Navigator.pop(context , result_map);
+            decoration: BoxDecoration(
+                color: AppTheme.green,
+                borderRadius: BorderRadius.only(
+                  bottomRight: Radius.circular(30),
+                  bottomLeft: Radius.circular(30),
+                )),
 
-                        },
-                      ))
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                    top: 23.0, right: 40, left: 40, bottom: 10),
-                child: Container(
-                  height: MediaQuery.of(context).size.height * 0.06,
+            child: Column(
+
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+              children: [
+
+
+                AppBar(
+                  title: Text('Medicine' , style: AppTheme.main_white_30,),
+                  backgroundColor: Colors.transparent,
+                  elevation: 0,
+                  actions: [
+                    Visibility(
+                        visible: delete?false:true,
+                        child: IconButton(
+                          icon: Icon(Icons.save),
+                          onPressed: (){
+                            Navigator.pop(context , result_map);
+
+                          },
+                        ))
+                  ],
+                ),
+
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 10.w , vertical: 2.h),
+
+                  height: 6.h,
+
                   decoration: BoxDecoration(
                       color: AppTheme.notWhite,
                       borderRadius: BorderRadius.circular(10)),
                   child: TextField(
+
                     controller: textcontroller,
+                    style: AppTheme.ksearchBar,
+
+
                     onChanged: onItemChanged,
                     decoration: InputDecoration(
+                        isDense: true,
+                        isCollapsed: true,
+                        contentPadding: EdgeInsets.symmetric(horizontal: 7.w , vertical: 1.3.h ),
                         border: InputBorder.none,
                         hintText: 'search',
-                        prefixText: "      ",
-                        hintStyle: TextStyle(),
+
+
+
+
                         suffixIcon: Icon(Icons.search)),
                     keyboardType: TextInputType.name,
                   ),
                 ),
-              ),
-            ],
-          ),
-
-        ),
+              ],
+            )),
       ),
       body: SingleChildScrollView(
           child: FutureBuilder(
@@ -472,7 +486,7 @@ class _State extends State<Medicines> {
                           color: AppTheme.notWhite,
                           child: Padding(
                             padding: const EdgeInsets.all(20.0),
-                            child: Text('loadin'),
+                            child: Text('loadin' , style: AppTheme.black_22,),
                           )));
                 }
 
@@ -483,7 +497,7 @@ class _State extends State<Medicines> {
                 if (snapshot.hasError) {
                   print(snapshot.error);
 
-                  return const Center(child: Text('Something Went Wrong'));
+                  return  Center(child: Text('Something Went Wrong'  , style: AppTheme.black_22,));
                 }
 
                 return Container(

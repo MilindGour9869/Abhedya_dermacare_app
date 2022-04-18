@@ -238,6 +238,7 @@ class _AddPatientState extends State<AddPatient> {
 
 
 
+
                        if(isSame && icon_tap)
                          {
                            print('in if ');
@@ -245,65 +246,117 @@ class _AddPatientState extends State<AddPatient> {
 
                           return  showDialog(context: context , builder: (context)=>AlertDialog(
                              title: Text('Name is similar to another patient\nPlease change the name' ,style: AppTheme.black_22, ),
+                             actions: [
+                               TextButton(onPressed: (){
+                                 Navigator.pop(context);
+
+                               }, child: Text('OK' , style: AppTheme.black_22,))
+                             ],
 
                            ));
                          }
+
+
                        else
                          {
-                           print('in else ');
-                           if(icon_tap)
+
+                           if(email_edit.text.isNotEmpty)
                              {
-                               var doc = await FirebaseFirestore.instance.collection('Patient').doc();
+                               if(!EmailValidator.validate(email_edit.text))
+                                 {
+                                  return  showDialog(context: context, builder: (context)=>AlertDialog(
+                                     title: Text('Invalid Email ID' , style: AppTheme.black_22,),
+                                    actions: [
+                                      TextButton(onPressed: (){
+                                        Navigator.pop(context);
 
-                               final json = {
-                                 'name':name_edit.text,
-                                 'age' : age_edit.text,
-                                 'gender':male==true?'Male':female==true?'Female':"",
-                                 'address': address_edit.text,
-                                 'mobile':mobile_edit.text,
-                                 'recent_visit':Timestamp.now(),
-                                 'email':email_edit.text,
-                                 'id' : doc.id,
-                               };
+                                      }, child: Text('OK' , style: AppTheme.black_22,))
+                                    ],
+                                   ));
 
-                               doc.set(json);
+                                 }
                              }
-                           else if(icon_tap == false)
+                            if(mobile_edit.text.isNotEmpty){
+
+                             print('in else if');
+
+
+                             if(mobile_edit.text.length!=10)
+                               {
+                                 return  showDialog(context: context, builder: (context)=>AlertDialog(
+                                   title: Text('Invalid Mobile No.' , style: AppTheme.black_22,),
+                                   actions: [
+                                     TextButton(onPressed: (){
+                                       Navigator.pop(context);
+
+                                     }, child: Text('OK' , style: AppTheme.black_22,))
+                                   ],
+                                 ));
+
+                               }
+
+
+                           }
+                           else
                              {
+                               print('in else ');
+                               if(icon_tap)
+                               {
+                                 var doc = await FirebaseFirestore.instance.collection('Patient').doc();
+
+                                 final json = {
+                                   'name':name_edit.text,
+                                   'age' : age_edit.text,
+                                   'gender':male==true?'Male':female==true?'Female':"",
+                                   'address': address_edit.text,
+                                   'mobile':mobile_edit.text,
+                                   'recent_visit':Timestamp.now(),
+                                   'email':email_edit.text,
+                                   'id' : doc.id,
+                                 };
+
+                                 doc.set(json);
+                               }
+                               else if(icon_tap == false)
+                               {
 
 
 
-                               await FirebaseFirestore.instance.collection('Patient').doc(widget.patient_data.doc_id).update(
-                                   {
-                                     'name':name_edit.text,
-                                     'age' : age_edit.text,
-                                     'gender':male==true?'Male':female==true?'Female':"",
-                                     'address': address_edit.text,
-                                     'mobile':mobile_edit.text,
-                                     'recent_visit':Timestamp.now(),
-                                     'email':email_edit.text,
+                                 await FirebaseFirestore.instance.collection('Patient').doc(widget.patient_data.doc_id).update(
+                                     {
+                                       'name':name_edit.text,
+                                       'age' : age_edit.text,
+                                       'gender':male==true?'Male':female==true?'Female':"",
+                                       'address': address_edit.text,
+                                       'mobile':mobile_edit.text,
+                                       'recent_visit':Timestamp.now(),
+                                       'email':email_edit.text,
 
 
 
 
 
-                                   });
+                                     });
+                               }
                              }
+
+                         return  Navigator.pop(context , 'save');
 
                          }
 
-                      Navigator.pop(context , 'save');
+
                     }
                   else
                     {
                       return showDialog(context: context , builder: (context)=>AlertDialog(
 
-                        title: Column(
-                          children: [
-                            Text('Name is Compulsory ' ),
-                            Text('Please write the name' ),
-                          ],
-                        ),
+                        title: Text('Name is Compulsory\nPlease write the name'  , style: AppTheme.black_22,),
+                        actions: [
+                          TextButton(onPressed: (){
+                            Navigator.pop(context);
+
+                          }, child: Text('OK' , style: AppTheme.black_22,))
+                        ],
                       ));
 
                     }
@@ -505,7 +558,7 @@ class _AddPatientState extends State<AddPatient> {
                          return   showDialog(
                              context: context,
                              builder: (context) => Padding(
-                               padding: const EdgeInsets.all(20.0),
+                               padding:  EdgeInsets.all(4.w),
                                child: ListSearch(group: 'group', Group: 'Group', patient_doc_id: data.doc_id , date: formatDate(data.recent_visit.toDate(), [dd, '-', mm, '-', yyyy ]).toString()),
                              )).then((value){
                                print('ff');
@@ -589,7 +642,7 @@ class _AddPatientState extends State<AddPatient> {
                           return   showDialog(
                               context: context,
                               builder: (context) => Padding(
-                                padding: const EdgeInsets.all(20.0),
+                                padding:  EdgeInsets.all(4.w),
                                 child: ListSearch(group: 'blood-group', Group: 'Blood-Group', patient_doc_id: data.doc_id , date: formatDate(data.recent_visit.toDate(), [dd, '-', mm, '-', yyyy ]).toString()),
                               )).then((value){
                             print('ff');

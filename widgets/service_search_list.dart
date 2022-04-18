@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/classes/Patient_name_list.dart';
 import 'package:flutter_app/storage/storage.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 
 import '../default.dart';
@@ -148,24 +149,26 @@ class _Service_Search_ListState extends State<Service_Search_List> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding:  EdgeInsets.all(4.h),
       child: Scaffold(
 
         appBar: AppBar(
           backgroundColor: Colors.white,
           elevation: 0,
-          leading: IconButton(icon: Icon(Icons.arrow_back_ios , color: Colors.black,), onPressed: (){
+          leading: IconButton(icon: Icon(Icons.arrow_back_ios , color: Colors.black, size: AppTheme.icon_size,), onPressed: (){
 
             print(group_updated_result);
 
             Navigator.pop(context , group_updated_result );
           },),
           title: Padding(
-            padding: const EdgeInsets.all(0),
+            padding:  EdgeInsets.all(0),
             child: TextField(
               controller: _textController_group,
+              style: AppTheme.black_22,
               decoration: InputDecoration(
                 hintText: 'Search / Add ',
+                hintStyle: AppTheme.main_grey_25
 
 
               ),
@@ -174,7 +177,7 @@ class _Service_Search_ListState extends State<Service_Search_List> {
           ),
           actions: [
             Padding(
-              padding: const EdgeInsets.only(right: 4.0),
+              padding:  EdgeInsets.only(right: 1.w),
               child: CircleAvatar(child: Text(all_service_list.length==null?"":all_service_list.length.toString()),),
             )
           ],
@@ -184,7 +187,7 @@ class _Service_Search_ListState extends State<Service_Search_List> {
         body: Container(
 
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding:  EdgeInsets.all(2.w),
             child: Material(
               elevation: 2,
 
@@ -230,13 +233,13 @@ class _Service_Search_ListState extends State<Service_Search_List> {
 
 
                     return  ListTile(
-                      title: Text(e.toString()),
+                      title: Text(e.toString() , style: AppTheme.black_22,),
                       leading: CircleAvatar(
 
                           backgroundColor: m['color']?AppTheme.teal:AppTheme.light_black,
 
 
-                          child: Icon(Icons.arrow_forward_ios_rounded, size: MediaQuery.of(context).size.height*0.03, color: AppTheme.white,)),
+                          child: Icon(Icons.arrow_forward_ios_rounded, size: AppTheme.icon_size, color: AppTheme.white,)),
 
                       tileColor: AppTheme.white,
                       onTap: (){
@@ -261,7 +264,7 @@ class _Service_Search_ListState extends State<Service_Search_List> {
 
 
 
-                      trailing: Text('₹ ${m['charge']}' , style: TextStyle(fontSize: 20),),
+                      trailing: Text('₹ ${m['charge']}' , style: AppTheme.black_22,),
 
 
 

@@ -43,14 +43,27 @@ class AppTheme{
    static double size = 20.sp;
    static double circle = 10.h;
 
+   static final icon_size = AppTheme.aspectRatio*40;
+
+
    static final main_black_25 = TextStyle(
      fontSize: aspectRatio*25,
+
 
      color: AppTheme.black,
 
 
 
    );
+  static final main_grey_25 = TextStyle(
+    fontSize: aspectRatio*25,
+
+
+    color: AppTheme.grey,
+
+
+
+  );
 
   static final main_white_25 = TextStyle(
     fontSize: aspectRatio*25,
@@ -99,6 +112,12 @@ class AppTheme{
   static final black_22 = TextStyle(
     fontSize: aspectRatio*22,
     color: Colors.black,
+  );
+
+
+  static final subtile_22 = TextStyle(
+    fontSize: aspectRatio*22,
+
   );
 
 

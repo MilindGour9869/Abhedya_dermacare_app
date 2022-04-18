@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_app/default.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import '../list_search/Vitals.dart';
 import 'package:flutter_app/widgets/list_search.dart';
 import 'package:flutter_app/classes/Patient_name_list.dart';
@@ -237,15 +238,15 @@ setState(() {
       appBar: AppBar(
         backgroundColor: AppTheme.teal,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: Icon(Icons.arrow_back ,size: AppTheme.icon_size,),
           onPressed: (){
             Navigator.pop(context , 'back');
           },
         ),
-        title: Text('Add Visits'),
+        title: Text('Add Visits' , style: AppTheme.main_white_30,),
         actions: [
           Padding(
-            padding: const EdgeInsets.only(right: 8.0),
+            padding:  EdgeInsets.only(right: 1.h),
             child: IconButton(onPressed: (){
 
               var visit_doc = FirebaseFirestore.instance.collection('Patient').doc(widget.patient_data.doc_id).collection('visits').doc(visit_date);
@@ -348,7 +349,7 @@ setState(() {
 
 
 
-            }, icon: Icon(Icons.save)),
+            }, icon: Icon(Icons.save , size: AppTheme.icon_size,)),
           )
         ],
       ),
@@ -368,11 +369,11 @@ setState(() {
 
                 SizedBox(
                     height: MediaQuery.of(context).size.height*0.08,
-                    width: MediaQuery.of(context).size.width*0.3,
+                    width: 40.w,
 
                     child: Card(child: Center(child: TextButton(
 
-                        child: Text('${visit_date}' , style: TextStyle(color: Colors.black),),
+                        child: Text('${visit_date}' , style: AppTheme.main_black_25,),
                         onPressed:(){
                           showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(1947), lastDate: DateTime(2050)).then((value){
                             print(value);
@@ -395,7 +396,7 @@ setState(() {
 
 
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding:  EdgeInsets.all(1.h),
                   child: Material(
                     borderRadius: BorderRadius.circular(10),
                     elevation: 2,
@@ -404,8 +405,8 @@ setState(() {
                     child: ListTile(
 
                       title: Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: Text(complaints),
+                        padding:  EdgeInsets.only(top: 1.h),
+                        child: Text(complaints , style: AppTheme.main_black_25,),
                       ),
                       leading: Image.asset(img_complaint),
 
@@ -450,7 +451,7 @@ setState(() {
                       }, icon: Icon(Icons.arrow_drop_down_circle_outlined , color: Colors.black,)),
 
                      subtitle: Padding(
-                       padding: const EdgeInsets.only(top: 8.0),
+                       padding:  EdgeInsets.only(top: 1.h),
                        child: Container(
 
                          child: Column(
@@ -464,7 +465,7 @@ setState(() {
                 ), // Complaint
 
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding:  EdgeInsets.all(1.h),
                   child: Material(
                     borderRadius: BorderRadius.circular(10),
                     elevation: 2,
@@ -473,8 +474,8 @@ setState(() {
                     child: ListTile(
 
                       title: Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: Text(clinical_findings),
+                        padding:  EdgeInsets.only(top: 1.h),
+                        child: Text(clinical_findings , style: AppTheme.main_black_25,),
                       ),
                       leading: SizedBox(
                           width: 50,
@@ -522,7 +523,7 @@ setState(() {
                       }, icon: Icon(Icons.arrow_drop_down_circle_outlined , color: Colors.black,)),
 
                       subtitle: Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
+                        padding:  EdgeInsets.only(top: 1.h),
                         child: Container(
 
                           child: Column(
@@ -536,7 +537,7 @@ setState(() {
                 ), // Clinical Finding
 
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding:  EdgeInsets.all(1.h),
                   child: Material(
                     borderRadius: BorderRadius.circular(10),
                     elevation: 2,
@@ -547,8 +548,8 @@ setState(() {
 
 
                       title: Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: Text(diagnosis),
+                        padding:  EdgeInsets.only(top: 1.h),
+                        child: Text(diagnosis , style: AppTheme.main_black_25,),
                       ),
                       leading: Image.asset(img_diagnosis),
 
@@ -593,7 +594,7 @@ setState(() {
                       }, icon: Icon(Icons.arrow_drop_down_circle_outlined , color: Colors.black,)),
 
                       subtitle: Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
+                        padding:  EdgeInsets.only(top: 1.h),
                         child: Container(
 
                           child: Column(
@@ -607,7 +608,7 @@ setState(() {
                 ), // Diagnosis
 
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding:  EdgeInsets.all(1.h),
                   child: Material(
                     borderRadius: BorderRadius.circular(10),
                     elevation: 2,
@@ -619,8 +620,8 @@ setState(() {
 
 
                       title: Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: Text(investigation),
+                        padding:  EdgeInsets.only(top: 1.h),
+                        child: Text(investigation , style: AppTheme.main_black_25,),
                       ),
                       leading: Image.asset(img_investigation_color),
 
@@ -665,7 +666,7 @@ setState(() {
                       }, icon: Icon(Icons.arrow_drop_down_circle_outlined , color: Colors.black,)),
 
                       subtitle: Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
+                        padding:  EdgeInsets.only(top: 1.h),
                         child: Container(
 
                           child: Column(
@@ -679,7 +680,7 @@ setState(() {
                 ), // Investigation
 
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding:  EdgeInsets.all(1.h),
                   child: Material(
                     borderRadius: BorderRadius.circular(10),
                     elevation: 2,
@@ -688,10 +689,10 @@ setState(() {
                     child: ListTile(
 
                       title: Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: Text(allergies),
+                        padding:  EdgeInsets.only(top: 1.h),
+                        child: Text(allergies , style: AppTheme.main_black_25,),
                       ),
-                      leading: Icon(Icons.add),
+                      leading: Icon(Icons.add , size: AppTheme.icon_size,),
 
                       trailing: IconButton(onPressed: ()async{
 
@@ -734,7 +735,7 @@ setState(() {
                       }, icon: Icon(Icons.arrow_drop_down_circle_outlined , color: Colors.black,)),
 
                       subtitle: Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
+                        padding:  EdgeInsets.only(top: 1.h),
                         child: Container(
 
                           child: Column(
@@ -748,7 +749,7 @@ setState(() {
                 ), // Allergies
 
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding:  EdgeInsets.all(1.h),
                   child: Material(
                     borderRadius: BorderRadius.circular(10),
                     elevation: 2,
@@ -757,8 +758,8 @@ setState(() {
                     child: ListTile(
 
                       title: Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: Text(advices),
+                        padding:  EdgeInsets.only(top: 1.h),
+                        child: Text(advices, style: AppTheme.main_black_25,),
                       ),
                       leading: Icon(Icons.add),
 
@@ -803,7 +804,7 @@ setState(() {
                       }, icon: Icon(Icons.arrow_drop_down_circle_outlined , color: Colors.black,)),
 
                       subtitle: Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
+                        padding:  EdgeInsets.only(top: 1.h),
                         child: Container(
 
                           child: Column(
@@ -817,7 +818,7 @@ setState(() {
                 ), // Advices
 
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding:  EdgeInsets.all(1.h),
                   child: Material(
                     borderRadius: BorderRadius.circular(10),
                     elevation: 2,
@@ -826,8 +827,8 @@ setState(() {
                     child: ListTile(
 
                       title: Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: Text(group),
+                        padding:  EdgeInsets.only(top: 1.h),
+                        child: Text(group, style: AppTheme.main_black_25,),
                       ),
                       leading: Icon(Icons.add),
 
@@ -872,7 +873,7 @@ setState(() {
                       }, icon: Icon(Icons.arrow_drop_down_circle_outlined , color: Colors.black,)),
 
                       subtitle: Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
+                        padding:  EdgeInsets.only(top: 1.h),
                         child: Container(
 
                           child: Column(
@@ -886,7 +887,7 @@ setState(() {
                 ), // Group
 
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding:  EdgeInsets.all(1.h),
                   child: Material(
                     borderRadius: BorderRadius.circular(10),
                     elevation: 2,
@@ -895,8 +896,8 @@ setState(() {
                     child: ListTile(
 
                       title: Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: Text(blood_group),
+                        padding:  EdgeInsets.only(top: 1.h),
+                        child: Text(blood_group, style: AppTheme.main_black_25,),
                       ),
                       leading: Icon(FontAwesomeIcons.droplet , color: Colors.redAccent,),
 
@@ -941,7 +942,7 @@ setState(() {
                       }, icon: Icon(Icons.arrow_drop_down_circle_outlined , color: Colors.black,)),
 
                       subtitle: Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
+                        padding:  EdgeInsets.only(top: 1.h),
                         child: Container(
 
                           child: Column(
@@ -955,7 +956,7 @@ setState(() {
                 ), // Blood-Group
 
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding:  EdgeInsets.all(1.h),
                   child: Material(
                     borderRadius: BorderRadius.circular(10),
                     elevation: 2,
@@ -964,8 +965,8 @@ setState(() {
                     child: ListTile(
 
                       title: Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: Text(service),
+                        padding:  EdgeInsets.only(top: 1.h),
+                        child: Text(service, style: AppTheme.main_black_25,),
                       ),
                       leading: Icon(Icons.add),
 
@@ -1010,7 +1011,7 @@ setState(() {
                       }, icon: Icon(Icons.arrow_drop_down_circle_outlined , color: Colors.black,)),
 
                       subtitle: Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
+                        padding:  EdgeInsets.only(top: 1.h),
                         child: Container(
 
                           child: Column(
@@ -1027,7 +1028,7 @@ setState(() {
 
 
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding:  EdgeInsets.all(1.h),
                   child: Material(
                     borderRadius: BorderRadius.circular(10),
                     elevation: 2,
@@ -1036,8 +1037,8 @@ setState(() {
                     child: ListTile(
 
                       title: Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: Text(medicine),
+                        padding:  EdgeInsets.only(top: 1.h),
+                        child: Text(medicine, style: AppTheme.main_black_25,),
                       ),
                       leading: Icon(Icons.add),
 
@@ -1093,21 +1094,14 @@ setState(() {
                       }, icon: Icon(Icons.arrow_drop_down_circle_outlined , color: Colors.black,)),
 
                       subtitle: Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
+                        padding:  EdgeInsets.only(top: 1.h),
                         child: Container(
 
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: medicine_result.keys.map<Widget>((e){
 
-                             return Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(e),
-
-
-                                ],
-                              );
+                             return DropDown(e);
 
                             } ).toList(),
                           ),
@@ -1122,7 +1116,7 @@ setState(() {
 
 
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding:  EdgeInsets.all(1.h),
                   child: Material(
                     borderRadius: BorderRadius.circular(10),
                     elevation: 2,
@@ -1131,10 +1125,10 @@ setState(() {
                     child: ListTile(
 
                       title: Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: Text(vital),
+                        padding:  EdgeInsets.only(top: 1.h),
+                        child: Text(vital , style: AppTheme.main_black_25,),
                       ),
-                      leading: Icon(Icons.add),
+                      leading: Icon(Icons.add , size: AppTheme.icon_size,),
 
                       trailing: IconButton(onPressed: ()async{
 
@@ -1182,7 +1176,7 @@ setState(() {
                       }, icon: Icon(Icons.arrow_drop_down_circle_outlined , color: Colors.black,)),
 
                       subtitle: Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
+                        padding:  EdgeInsets.only(top: 1.h),
                         child: Container(
 
                           child: Column(
@@ -1192,13 +1186,13 @@ setState(() {
                               return Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(vital_result[e]['vital_name']),
+                                  Text(vital_result[e]['vital_name'] , style: AppTheme.subtile_22,),
                                   Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      Text(vital_result[e]['value']),
-                                      SizedBox(width: 4,),
-                                      Text(vital_result[e]['vital_unit']),
+                                      Text(vital_result[e]['value'] , style: AppTheme.subtile_22,),
+                                      SizedBox(width: 0.5.w,),
+                                      Text(vital_result[e]['vital_unit'], style: AppTheme.subtile_22,),
 
                                     ],
                                   )
@@ -1239,5 +1233,5 @@ setState(() {
 
 Widget DropDown (String menu)
 {
-  return Text(menu);
+  return Text(menu , style: AppTheme.subtile_22,);
 }
