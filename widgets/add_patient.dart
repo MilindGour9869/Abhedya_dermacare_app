@@ -6,6 +6,8 @@ import 'package:flutter_app/default.dart';
 import 'package:flutter_app/screens/Patients.dart';
 import 'package:flutter_app/classes/image_picker.dart';
 
+import 'package:email_validator/email_validator.dart';
+
 import 'package:image_picker/image_picker.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
@@ -209,6 +211,8 @@ class _AddPatientState extends State<AddPatient> {
 
 
 
+
+
                   if(name_edit.text!=null && name_edit.text.isNotEmpty)
                     {
                       bool isSame = false ;
@@ -220,33 +224,33 @@ class _AddPatientState extends State<AddPatient> {
                             if(name_edit.text == patient_list[i])
                             {
                               isSame = true;
+
+                              print('\nisa same is trueee');
+
                               break;
                             }
 
                           }
                         }
 
+                      print(isSame);
+
 
 
 
                        if(isSame && icon_tap)
                          {
-                           showDialog(context: context , builder: (context)=>Padding(
-                             padding: const EdgeInsets.symmetric(horizontal: 30.0   , vertical: 230),
-                             child: Card(
+                           print('in if ');
 
-                               child: Column(
-                                 children: [
-                                   Text('Name is similar to another patient name ' ),
-                                   Text('Please change the name' ),
-                                 ],
-                               ),
-                             ),
+
+                          return  showDialog(context: context , builder: (context)=>AlertDialog(
+                             title: Text('Name is similar to another patient\nPlease change the name' ,style: AppTheme.black_22, ),
+
                            ));
                          }
                        else
                          {
-                           print('vrvea');
+                           print('in else ');
                            if(icon_tap)
                              {
                                var doc = await FirebaseFirestore.instance.collection('Patient').doc();
@@ -292,16 +296,13 @@ class _AddPatientState extends State<AddPatient> {
                     }
                   else
                     {
-                      showDialog(context: context , builder: (context)=>Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 30.0   , vertical: 230),
-                        child: Card(
+                      return showDialog(context: context , builder: (context)=>AlertDialog(
 
-                          child: Column(
-                            children: [
-                              Text('Name is Compulsory ' ),
-                              Text('Please write the name' ),
-                            ],
-                          ),
+                        title: Column(
+                          children: [
+                            Text('Name is Compulsory ' ),
+                            Text('Please write the name' ),
+                          ],
                         ),
                       ));
 
@@ -385,9 +386,10 @@ class _AddPatientState extends State<AddPatient> {
                   });
                 }, ),
 
-                SizedBox(
-                    width: MediaQuery.of(context).size.width*0.400,
-                    height: 9.h,
+                Container(
+                  width: 39.w,
+
+
                     child: TextField(
                       controller: age_edit,
                       style: AppTheme.main_black_25,
@@ -429,8 +431,42 @@ class _AddPatientState extends State<AddPatient> {
 
             txtfield(text_edit: address_edit, hint: "Address", keyboard: TextInputType.text , icon: Icon(Icons.place_outlined), ),
             txtfield(text_edit: email_edit, hint: "Email", keyboard:TextInputType.emailAddress , icon: Icon(Icons.email),),
-            txtfield(text_edit: mobile_edit, hint: "Mobile no.", keyboard:TextInputType.number , icon: Icon(Icons.call),),
+            Padding(
+              padding:  EdgeInsets.symmetric(horizontal: 6.w , vertical: 1.h),
+              child: TextField(
+                controller: mobile_edit,
+                style: AppTheme.main_black_25,
+                decoration: InputDecoration(
 
+
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.grey,
+                        width: 2,),
+                      borderRadius: BorderRadius.circular(10),),
+
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.teal,
+                        width: 2,),
+                      borderRadius: BorderRadius.circular(10),),
+
+                    labelText: 'Mobile no.',
+                    prefixIcon: Icon(Icons.call)),
+
+
+                keyboardType: TextInputType.number,
+                maxLength: 10,
+
+
+
+
+
+
+
+
+              ),
+            ),
 
 
 
@@ -441,6 +477,7 @@ class _AddPatientState extends State<AddPatient> {
                 controller: group_edit,
                 autofocus: false,
                 style: AppTheme.main_black_25,
+                readOnly: true,
                 decoration: InputDecoration(
 
 
@@ -516,6 +553,7 @@ class _AddPatientState extends State<AddPatient> {
                   controller: blood_group_edit,
                   autofocus: false,
                   style: AppTheme.main_black_25,
+                  readOnly: true,
 
                   decoration: InputDecoration(
 
@@ -622,12 +660,15 @@ class txtfield extends StatefulWidget {
     @required this.hint,
     @required this.keyboard,
      @required this.icon,
+
   }) : super(key: key);
 
   TextEditingController text_edit;
   String hint;
   TextInputType keyboard;
   Icon icon;
+
+
 
   @override
   State<txtfield> createState() => _txtfieldState();
@@ -661,6 +702,7 @@ class _txtfieldState extends State<txtfield> {
 
 
         keyboardType: widget.keyboard ,
+
 
 
 
