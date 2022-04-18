@@ -21,7 +21,9 @@ class Patient extends StatefulWidget {
 }
 
 class _State extends State<Patient> {
-  bool today = false, all = false;
+
+
+  bool today = true;
 
   Future f;
 
@@ -70,169 +72,174 @@ class _State extends State<Patient> {
             }
           });
         },
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8),
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: AppTheme.white,
-            ),
-            child: Material(
-              elevation: 4,
-              borderRadius: BorderRadius.circular(10),
-              child: ListTile(
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      patient_data_tile.name == null ? "?" : patient_data_tile.name,
-                      style: AppTheme.kTextStyle,
-                    ),
-                    IconButton(
-                        onPressed: () {
-                          showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                    titlePadding: EdgeInsets.all(0),
-                                    title:
-                                        Center(child: Text('Are you Sure ?' , style: AppTheme.kTextStyle,)),
-                                    actions: [
-                                      Row(
-                                        children: [
-                                          Container(
-                                            child: TextButton(
-                                                onPressed: () {
-                                                  setState(() {
-                                                    patient_instance_list
-                                                        .remove(patient_data_tile);
-                                                    all_patient_name_list
-                                                        .remove(patient_data_tile.name);
-                                                    search_patient_list
-                                                        .remove(patient_data_tile.name);
-                                                    map_name_patientInstance_list
-                                                        .remove(patient_data_tile.name);
-                                                    PatientDataDelete(
-                                                        patient_data_tile.doc_id);
-                                                  });
-
-                                                  Navigator.pop(context);
-                                                },
-                                                child: Text(
-                                                  'yes',
-                                                  style: TextStyle(
-                                                      color: Colors.white),
-                                                )),
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(15),
-                                              color: AppTheme.green,
-                                            ),
-                                          ),
-                                          Container(
-                                            child: TextButton(
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                                child: Text(
-                                                  'no',
-                                                  style: TextStyle(
-                                                      color: Colors.white),
-                                                )),
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(15),
-                                              color: Colors.grey,
-                                            ),
-                                          ),
-                                        ],
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                      )
-                                    ],
-                                  ));
-                        },
-                        icon: Icon(Icons.delete_outline))
-                  ],
-                ),
-                dense: true,
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Icon(
-                          Icons.cake_outlined,
-                          color: Colors.grey,
-                          size: 20,
-                        ),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Text(patient_data_tile.age == null ? "20" : patient_data_tile.age.toString()),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Icon(
-                          Icons.call,
-                          color: Colors.grey,
-                          size: 20,
-                        ),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Text(patient_data_tile.mobile == null
-                            ? "?91"
-                            : patient_data_tile.mobile.toString())
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      'last visited on : ${formatDate(patient_data_tile.recent_visit.toDate(), [ dd, '-', mm, '-', yyyy])}',
-                      style: TextStyle(fontStyle: FontStyle.italic),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        TextButton(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          VisitsDate(patient_data_tile))).then((value) {
-                                print('sss');
-                              });
-                            },
-                            child: Text(
-                              'Visits',
-                              style: TextStyle(color: AppTheme.grey),
-                            )),
-                        TextButton(
-                            onPressed: () {},
-                            child: Text(
-                              'Payment',
-                              style: TextStyle(color: AppTheme.grey),
-                            )),
-                        TextButton(
-                            onPressed: () {},
-                            child: Text(
-                              'Documents',
-                              style: TextStyle(color: AppTheme.grey),
-                            )),
-                      ],
-                    )
-                  ],
-                ),
-                leading: CircleAvatar(
-                  child: Text(
-                    patient_data_tile.name == null ? "?" : patient_data_tile.name[0].toUpperCase(),
-                    style: TextStyle(color: AppTheme.black),
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 1.h, vertical: 1.h),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: AppTheme.white,
+          ),
+          child: Material(
+            elevation: 4,
+            borderRadius: BorderRadius.circular(10),
+            child: ListTile(
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    patient_data_tile.name == null ? "?" : patient_data_tile.name,
+                    style: AppTheme.main_black_25,
                   ),
-                  backgroundColor: AppTheme.teal,
+                  IconButton(
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                                  titlePadding: EdgeInsets.all(0),
+                                  title:
+                                      Center(child: Text('Are you Sure ?' , style: AppTheme.main_black_25,)),
+                                  actions: [
+                                    Row(
+                                      children: [
+                                        Container(
+                                          child: TextButton(
+                                              onPressed: () {
+                                                setState(() {
+                                                  patient_instance_list
+                                                      .remove(patient_data_tile);
+                                                  all_patient_name_list
+                                                      .remove(patient_data_tile.name);
+                                                  search_patient_list
+                                                      .remove(patient_data_tile.name);
+                                                  map_name_patientInstance_list
+                                                      .remove(patient_data_tile.name);
+                                                  PatientDataDelete(
+                                                      patient_data_tile.doc_id);
+                                                });
+
+                                                Navigator.pop(context);
+                                              },
+                                              child: Text(
+                                                'yes',
+                                                style: TextStyle(
+                                                    color: Colors.white , fontSize: 17.sp),
+                                              )),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            color: AppTheme.green,
+                                          ),
+                                        ),
+                                        Container(
+                                          child: TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: Text(
+                                                'no',
+                                                style: TextStyle(
+                                                    color: Colors.white , fontSize: 17.sp),
+                                              )),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                      ],
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                    )
+                                  ],
+                                ));
+                      },
+                      icon: Icon(Icons.delete_outline))
+                ],
+              ),
+              dense: true,
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Icon(
+                        Icons.cake_outlined,
+                        color: Colors.grey,
+
+                      ),
+                      SizedBox(
+                        width: 1.w,
+                      ),
+                      Text(patient_data_tile.age == null ? "?" : patient_data_tile.age.toString() , style: AppTheme.grey_20,),
+                      SizedBox(
+                        width: 2.w,
+                      ),
+                      Icon(
+                        Icons.call,
+                        color: Colors.grey,
+
+                      ),
+                      SizedBox(
+                        width: 1.w,
+                      ),
+                      Text(patient_data_tile.mobile == null
+                          ? "?"
+                          : patient_data_tile.mobile.toString() , style: AppTheme.grey_20,)
+                    ],
+                  ),
+                  SizedBox(
+                    height: 1.h,
+                  ),
+                  Text(
+                    'last visited on : ${formatDate(patient_data_tile.recent_visit.toDate(), [ dd, '-', mm, '-', yyyy])}',
+                    style: AppTheme.grey_italic_20
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        VisitsDate(patient_data_tile))).then((value) {
+
+                                          if(value == 'change')
+                                            {
+                                              patient_data();
+
+
+                                            }
+
+                            });
+                          },
+                          child: Text(
+                            'Visits',
+                            style: AppTheme.grey_22
+                          )),
+                      TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            'Payment',
+                              style: AppTheme.grey_22
+                          )),
+                      TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            'Documents',
+                              style: AppTheme.grey_22
+                          )),
+                    ],
+                  )
+                ],
+              ),
+              leading: CircleAvatar(
+                child: Text(
+                  patient_data_tile.name == null ? "?" : patient_data_tile.name[0].toUpperCase(),
+                  style: TextStyle(fontSize: 17.sp , color: Colors.white),
                 ),
+                backgroundColor: AppTheme.teal,
               ),
             ),
           ),
@@ -307,7 +314,12 @@ class _State extends State<Patient> {
     // TODO: implement initState
     super.initState();
 
-    // print('\ninit\n');
+     print('\ninit\n');
+
+
+
+
+
     f = patient_data();
   }
 
@@ -323,6 +335,11 @@ class _State extends State<Patient> {
 
   @override
   Widget build(BuildContext context) {
+
+    //print(100.h/100.w);
+    print(100.w/100.h);
+
+
     // print('builder');
 
 
@@ -331,7 +348,7 @@ class _State extends State<Patient> {
         resizeToAvoidBottomInset: false,
         backgroundColor: AppTheme.offwhite,
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(200),
+          preferredSize: Size.fromHeight(25.h),
           child: Container(
               decoration: BoxDecoration(
                   color: AppTheme.green,
@@ -339,93 +356,124 @@ class _State extends State<Patient> {
                     bottomRight: Radius.circular(30),
                     bottomLeft: Radius.circular(30),
                   )),
-              height: MediaQuery.of(context).size.height * 0.28,
+
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+               // mainAxisAlignment: MainAxisAlignment.spaceAround,
+
                 children: [
-                  AppBar(
-                    backgroundColor: Colors.transparent,
-                    elevation: 0,
+
+
+                  Flexible(
+                    flex: 1,
+                    child: Container(
+
+                      padding: EdgeInsets.symmetric(horizontal: 2.w),
 
 
 
-                    title: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-
-                        IconButton(
-                          onPressed: () {
-                            Scaffold.of(context).openDrawer();
-                          },
-                          icon: Icon(Icons.menu , color: AppTheme.black,),
-                        ),
 
 
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
 
-                        ChoiceChip(
-                          backgroundColor: AppTheme.offwhite,
-                          label: Text('Today'),
-                          selected: false,
-                          selectedColor: Colors.teal,
-                          onSelected: (bool selected) {},
-                        ),
+                          IconButton(
+                            onPressed: () {
+                              Scaffold.of(context).openDrawer();
+                            },
+                            icon: Icon(Icons.menu , color: AppTheme.black,),
+                          ),
 
-                      ],
+
+
+                          ChoiceChip(
+                            backgroundColor: AppTheme.offwhite,
+                            label: today?Text('Today' , style: AppTheme.black_22,):Text('All' , style: AppTheme.black_22,),
+                            selected: false,
+                            selectedColor: Colors.teal,
+                            onSelected: (bool selected) {
+                              setState(() {
+                                today=!today;
+
+                              });
+                            },
+                          ),
+
+                        ],
+                      ) ,
                     ),
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 50.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
 
-                          children: [
 
-                            Text(
-                              greeting(),
-                              style: TextStyle(fontSize: MediaQuery.of(context).size.height*0.03),
+
+                  Flexible(
+                    flex: 4,
+                    child: Container(
+
+                      margin:  EdgeInsets.symmetric(horizontal: 10.w ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(top: 1.h),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                    greeting(),
+                                    style: AppTheme.main_black_25
+                                ),
+
+                                Text(
+                                  'Dr. Mahi Ram Bishnoi',
+                                  style: AppTheme.black_35,
+                                ),
+                              ],
                             ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Text(
-                              'Dr. Mahi Ram Bishnoi',
-                              style: TextStyle(fontSize: MediaQuery.of(context).size.height*0.04 ),
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-
-                          ],
-                        ),
-                      ),
-
-
-
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            top: 23.0, right: 40, left: 40 , bottom: 10),
-                        child: Container(
-                          height: MediaQuery.of(context).size.height*0.06,
-                          decoration: BoxDecoration(
-                              color: AppTheme.notWhite,
-                              borderRadius: BorderRadius.circular(10)),
-                          child: TextField(
-                            controller: textcontroller,
-                            onChanged: onItemChanged,
-                            decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'search',
-                                prefixText: "      ",
-                                hintStyle: TextStyle(),
-                                suffixIcon: Icon(Icons.search)),
-                            keyboardType: TextInputType.name,
                           ),
-                        ),
+
+
+
+                          Container(
+                            margin: EdgeInsets.only(bottom: 1.h),
+
+                            height: 6.h,
+
+                            decoration: BoxDecoration(
+                                color: AppTheme.notWhite,
+                                borderRadius: BorderRadius.circular(10)),
+                            child: TextField(
+
+                              controller: textcontroller,
+                              style: AppTheme.ksearchBar,
+
+
+                              onChanged: onItemChanged,
+                              decoration: InputDecoration(
+                                  isDense: true,
+                                  isCollapsed: true,
+                                  contentPadding: EdgeInsets.symmetric(horizontal: 7.w , vertical: 1.3.h ),
+                                  border: InputBorder.none,
+                                  hintText: 'search',
+
+
+
+
+                                  suffixIcon: Icon(Icons.search)),
+                              keyboardType: TextInputType.name,
+                            ),
+                          ),
+
+
+
+
+
+
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ],
               )),
@@ -448,8 +496,11 @@ class _State extends State<Patient> {
                                 child: Card(
                                     color: AppTheme.notWhite,
                                     child: Padding(
-                                      padding: const EdgeInsets.all(20.0),
-                                      child: Text('loading'),
+                                      padding:  EdgeInsets.all(5.w),
+                                      child: Text('loading', style: TextStyle(
+                                        fontSize: MediaQuery.of(context).size.aspectRatio*25
+
+                                      ),),
                                     )));
                           }
 
@@ -460,15 +511,15 @@ class _State extends State<Patient> {
                           }
 
                           if (snapshot.hasError) {
-                            return const Center(
+                            return  Center(
                                 child: Text('Something Went Wrong'));
                           }
 
                           return Container(
                             height:
-                                MediaQuery.of(context).size.height * 0.6,
+                               65.h,
 
-//                            color: Colors.red,
+                         //   color: Colors.red,
 
                             child: RefreshIndicator(
                               onRefresh: patient_data,
@@ -518,7 +569,7 @@ class _State extends State<Patient> {
         bottomNavigationBar: BottomAppBar(
           color: AppTheme.white,
           child: Container(
-            height: MediaQuery.of(context).size.height * 0.08,
+            height: 7.h,
           ),
         ),
         floatingActionButtonLocation:

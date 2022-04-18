@@ -127,13 +127,13 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                               onPressed: () {
                                 imagepicker(ImageSource.camera);
                               },
-                              label: Text(' Camera' , style: AppTheme.kTextStyle)),
+                              label: Text(' Camera' , style: AppTheme.main_black_25)),
                           TextButton.icon(
                               icon: Icon(FontAwesomeIcons.photoFilm  , color: AppTheme.green, ),
                               onPressed: () {
                                 imagepicker(ImageSource.gallery);
                               },
-                              label: Text(' Gallery' , style: AppTheme.kTextStyle ))
+                              label: Text(' Gallery' , style: AppTheme.main_black_25 ))
                         ],
                       )),
                     );
@@ -173,7 +173,7 @@ Widget Menu(BuildContext context) {
 
         },
         child: ListTile(
-          title: Text('Profile' , style: AppTheme.kTextStyle),
+          title: Text('Profile' , style: AppTheme.main_black_25),
           leading: Icon(FontAwesomeIcons.userDoctor , color: AppTheme.green,),
           onTap: () {
 
@@ -186,14 +186,14 @@ Widget Menu(BuildContext context) {
       Dividerr(),
 
       ListTile(
-        title: Text('Patients' , style: AppTheme.kTextStyle),
+        title: Text('Patients' , style: AppTheme.main_black_25),
         leading: Icon(FontAwesomeIcons.users , color: AppTheme.teal),
         onTap: () {
          Navigator.pop(context);
         },
       ), // Patient
       ListTile(
-        title: Text('Medicine' , style: AppTheme.kTextStyle),
+        title: Text('Medicine' , style: AppTheme.main_black_25),
         leading: Icon(FontAwesomeIcons.capsules , color: AppTheme.teal ),
         onTap: () {
           Navigator.push(
@@ -201,7 +201,7 @@ Widget Menu(BuildContext context) {
         },
       ), // Medicine
       ListTile(
-        title: Text('Services' , style: AppTheme.kTextStyle),
+        title: Text('Services' , style: AppTheme.main_black_25),
         leading: Icon(FontAwesomeIcons.briefcase , color: AppTheme.teal),
         onTap: () {
           Navigator.push(
@@ -212,7 +212,7 @@ Widget Menu(BuildContext context) {
       Dividerr(),
 
       ListTile(
-        title: Text('Setting' , style: AppTheme.kTextStyle),
+        title: Text('Setting' , style: AppTheme.main_black_25),
         leading: Icon(FontAwesomeIcons.gear , color: AppTheme.grey,),
         onTap: () {
           Navigator.push(
@@ -221,7 +221,7 @@ Widget Menu(BuildContext context) {
       ),
 
       ListTile(
-        title: Text('Reception' , style: AppTheme.kTextStyle),
+        title: Text('Reception' , style: AppTheme.main_black_25),
         leading: Icon(FontAwesomeIcons.eyeSlash ,  color: AppTheme.grey,),
         onTap: () {
           Navigator.push(

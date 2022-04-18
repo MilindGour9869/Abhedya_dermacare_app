@@ -57,7 +57,7 @@ class Storage {
   static Future set_medicine_additional_info({List<String> value ,  @required bool updated}) async
   {
     add_info_updated = updated;
-    print(updated);
+    print(updated && value != null);
 
 
     if(updated)
@@ -93,7 +93,7 @@ class Storage {
   //Tab
   static Future set_tab({Map<String, Map<String, dynamic>> value , @required bool updated }) async
   {
-    print(updated);
+    print(updated && value != null);
 
     Storage.tab_updated = updated;
 
@@ -222,7 +222,7 @@ class Storage {
   {
     company_name_updated = updated;
 
-    if(updated)
+    if(updated && value != null)
       {
         print('\nset');
         print(value);
@@ -281,7 +281,7 @@ class Storage {
   {
     company_name_updated = updated;
 
-    if(updated)
+    if(updated && value != null)
     {
       print('\nset');
       print(value);

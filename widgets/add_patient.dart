@@ -7,6 +7,7 @@ import 'package:flutter_app/screens/Patients.dart';
 import 'package:flutter_app/classes/image_picker.dart';
 
 import 'package:image_picker/image_picker.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 import 'dart:io';
 
@@ -185,7 +186,7 @@ class _AddPatientState extends State<AddPatient> {
       appBar: AppBar(
         backgroundColor: AppTheme.teal,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: Icon(Icons.arrow_back , size: AppTheme.aspectRatio*40,),
           onPressed: (){
             Navigator.pop(context , 'back');
           },
@@ -196,7 +197,7 @@ class _AddPatientState extends State<AddPatient> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Patient'),
+            Text('Patient' , style: AppTheme.main_white_30,),
             IconButton(
                 onPressed: () async {
 
@@ -208,7 +209,7 @@ class _AddPatientState extends State<AddPatient> {
 
 
 
-                  if(name_edit.text!=null)
+                  if(name_edit.text!=null && name_edit.text.isNotEmpty)
                     {
                       bool isSame = false ;
 
@@ -310,6 +311,7 @@ class _AddPatientState extends State<AddPatient> {
                 icon: Icon(
                   Icons.save,
                   color: Colors.white,
+                  size: AppTheme.aspectRatio*40,
                 ),
             )
           ],
@@ -318,40 +320,44 @@ class _AddPatientState extends State<AddPatient> {
       body: SingleChildScrollView(
         child: Column(
 
+
+
           children: [
-            SizedBox(height: MediaQuery.of(context).size.height*0.03,),
-            GestureDetector(
-              onTap: (){
-                showDialog(context: context, builder:(context)=>Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 30.0 , vertical: 240),
-                  child: Card(
-                    child: Column(
-                      children: [
-                        TextButton.icon(icon :Icon(Icons.camera) , onPressed: (){
-                          imagepicker(ImageSource.camera);
 
-                        }, label: Text('Camera')),
-                        TextButton.icon(
-                            icon: Icon(Icons.browse_gallery),
-                            onPressed: (){
-                          imagepicker(ImageSource.gallery);
-                        }, label: Text('Gallery'))
-                      ],
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 2.h),
+              child: GestureDetector(
+                onTap: (){
+                  showDialog(context: context, builder:(context)=>AlertDialog(
+                    title: Card(
+                      child: Column(
+                        children: [
+                          TextButton.icon(icon :Icon(Icons.camera) , onPressed: (){
+                            imagepicker(ImageSource.camera);
+
+                          }, label: Text('Camera')),
+                          TextButton.icon(
+                              icon: Icon(Icons.browse_gallery),
+                              onPressed: (){
+                            imagepicker(ImageSource.gallery);
+                          }, label: Text('Gallery'))
+                        ],
+                      ),
                     ),
+                  ));
+                },
+                child: ClipOval(
+                  child: CircleAvatar(
+                    radius:MediaQuery.of(context).size.height*0.1,
+
+                    child: file==null?Icon(Icons.person_add_outlined , color: Colors.white,): Image.file(file , fit: BoxFit.fill,),
+                    backgroundColor: Colors.grey,
+
                   ),
-                ));
-              },
-              child: ClipOval(
-                child: CircleAvatar(
-                  radius:MediaQuery.of(context).size.height*0.1,
-
-                  child: file==null?Icon(Icons.person_add_outlined , color: Colors.white,): Image.file(file , fit: BoxFit.fill,),
-                  backgroundColor: Colors.grey,
-
                 ),
               ),
             ),
-            SizedBox(height:  MediaQuery.of(context).size.height*0.01,),
+
 
 
 
@@ -360,7 +366,7 @@ class _AddPatientState extends State<AddPatient> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                ChoiceChip(label: Text('Male'), selected:male,selectedColor: Colors.teal,onSelected: (bool selected){
+                ChoiceChip(label: Text('Male' , style: AppTheme.main_black_25), selected:male,selectedColor: Colors.teal,onSelected: (bool selected){
                   setState(() {
                     male=true;
                     female=false;
@@ -371,7 +377,7 @@ class _AddPatientState extends State<AddPatient> {
 
                 }, ),
 
-                ChoiceChip(label: Text('Female'), selected:female ,selectedColor: Colors.teal,onSelected: (bool a){
+                ChoiceChip(label: Text('Female' , style: AppTheme.main_black_25,), selected:female ,selectedColor: Colors.teal,onSelected: (bool a){
                   setState(() {
                     male=false;
                     female=true;
@@ -381,9 +387,10 @@ class _AddPatientState extends State<AddPatient> {
 
                 SizedBox(
                     width: MediaQuery.of(context).size.width*0.400,
-                    height: 70,
+                    height: 9.h,
                     child: TextField(
                       controller: age_edit,
+                      style: AppTheme.main_black_25,
                       decoration: InputDecoration(
 
 
@@ -423,16 +430,17 @@ class _AddPatientState extends State<AddPatient> {
             txtfield(text_edit: address_edit, hint: "Address", keyboard: TextInputType.text , icon: Icon(Icons.place_outlined), ),
             txtfield(text_edit: email_edit, hint: "Email", keyboard:TextInputType.emailAddress , icon: Icon(Icons.email),),
             txtfield(text_edit: mobile_edit, hint: "Mobile no.", keyboard:TextInputType.number , icon: Icon(Icons.call),),
-            SizedBox(height: 10,),
+
 
 
 
 
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0 , horizontal: 20),
+              padding: EdgeInsets.symmetric(vertical:1.h, horizontal: 6.w),
               child:TextField(
                 controller: group_edit,
                 autofocus: false,
+                style: AppTheme.main_black_25,
                 decoration: InputDecoration(
 
 
@@ -503,10 +511,12 @@ class _AddPatientState extends State<AddPatient> {
             ),
 
             Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0 , horizontal: 20),
+                padding:  EdgeInsets.symmetric(vertical: 1.h , horizontal: 6.w),
                 child:TextField(
                   controller: blood_group_edit,
                   autofocus: false,
+                  style: AppTheme.main_black_25,
+
                   decoration: InputDecoration(
 
 
@@ -585,7 +595,7 @@ class _AddPatientState extends State<AddPatient> {
 
 
 
-            SizedBox(height: 10,),
+
 
 
 //            SizedBox(height: 5,),
@@ -627,9 +637,10 @@ class _txtfieldState extends State<txtfield> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0 , horizontal:  20),
+      padding:  EdgeInsets.symmetric(vertical: 1.h, horizontal:  6.w),
       child: TextField(
         controller: widget.text_edit,
+          style: AppTheme.main_black_25,
           decoration: InputDecoration(
 
 

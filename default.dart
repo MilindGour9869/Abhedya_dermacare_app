@@ -2,6 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class AppTheme{
+
+  static double aspectRatio = 100.w/100.h;
+
+
+
+
+
+
   static const Color notWhite = Color.fromRGBO(252, 252, 252 , 1);
     //00FEA3
 
@@ -35,13 +43,63 @@ class AppTheme{
    static double size = 20.sp;
    static double circle = 10.h;
 
-   static final kTextStyle = TextStyle(
-     fontSize: 20.sp,
+   static final main_black_25 = TextStyle(
+     fontSize: aspectRatio*25,
+
      color: AppTheme.black,
 
 
 
    );
+
+  static final main_white_25 = TextStyle(
+    fontSize: aspectRatio*25,
+
+    color: AppTheme.white,
+
+
+
+  );
+
+  static final main_white_30 = TextStyle(
+    fontSize: aspectRatio*30,
+
+    color: AppTheme.white,
+
+
+
+  );
+
+   static final grey_20 = TextStyle(
+     fontSize: aspectRatio*20,
+     color: Colors.grey
+
+   );
+
+
+
+   static final grey_italic_20 = TextStyle(fontStyle: FontStyle.italic , fontSize: aspectRatio*20);
+
+  static final grey_22 = TextStyle(
+    fontSize: aspectRatio*22,
+    color: Colors.grey,
+  );
+
+
+  static final black_35 = TextStyle(
+    fontSize: aspectRatio*35,
+    color: Colors.black,
+  );
+
+  static final ksearchBar = TextStyle(
+    fontSize: aspectRatio*22,
+    color: Colors.black,
+  );
+
+  static final black_22 = TextStyle(
+    fontSize: aspectRatio*22,
+    color: Colors.black,
+  );
 
 
 
