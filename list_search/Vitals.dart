@@ -9,6 +9,7 @@ import 'package:flutter_app/default.dart';
 
 import 'package:flutter_app/storage/storage.dart';
 import 'package:flutter/services.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class Vital_List_Search extends StatefulWidget {
 
@@ -258,242 +259,249 @@ class _Vital_List_SearchState extends State<Vital_List_Search> {
 
 
       },
-      child: Scaffold(
+      child: Padding(
+        padding:  EdgeInsets.symmetric(horizontal: 2.w  , vertical: 3.h),
+        child: Scaffold(
 
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-          leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back_ios,
-              color: Colors.black,
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            elevation: 0,
+            leading: IconButton(
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: Colors.black,
+              ),
+              onPressed: () {
+                pop();
+              },
             ),
-            onPressed: () {
-              pop();
-            },
-          ),
-          title: Padding(
-            padding: const EdgeInsets.all(0),
-            child: Text('Vitals' , style: TextStyle(color: Colors.black),),
-          ),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: IconButton(onPressed: (){
-
-                setState(() {
-                  clear=true;
-
-                  bp_v1_edit.clear();
-                  bp_v2_edit.clear();
-                  result_map={};
-
-                });
-
-
-
-              }, icon: Icon(Icons.refresh_outlined , color: Colors.grey, size: 40,)),
+            title: Padding(
+              padding: const EdgeInsets.all(0),
+              child: Text('Vitals' , style: TextStyle(color: Colors.black),textScaleFactor: AppTheme.list_tile_subtile,),
             ),
-            Padding(
-              padding: const EdgeInsets.only(right: 4.0),
-              child: CircleAvatar(
-                backgroundColor: AppTheme.teal,
-                child: IconButton(
-                  icon: Icon(Icons.add , color: Colors.white,),
-                  onPressed: (){
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: IconButton(onPressed: (){
+
+                  setState(() {
+                    clear=true;
+
+                    bp_v1_edit.clear();
+                    bp_v2_edit.clear();
+                    result_map={};
+
+                  });
 
 
-                    showDialog(context: context, builder: (context)=>Dialogue(vital_unit: unit , vital_name: vital , context: context )).then((value) {
 
-                      if(value !=null)
-                        {
-                          all_data_map.addAll(value);
-                          updated=true;
-                          set();
-                          get();
+                }, icon: Icon(Icons.refresh_outlined , color: Colors.grey, size: 9.w,)),
+              ),
+              Padding(
+                padding:  EdgeInsets.only(right: 2.w),
+                child: SizedBox(
+                  height: 1.h,
+                  child: CircleAvatar(
+                    backgroundColor: AppTheme.teal,
+                    child: IconButton(
+                      icon: Icon(Icons.add , color: Colors.white,),
+                      onPressed: (){
 
-                        }
 
-                    });
-                  },
+                        showDialog(context: context, builder: (context)=>Dialogue(vital_unit: unit , vital_name: vital , context: context )).then((value) {
+
+                          if(value !=null)
+                            {
+                              all_data_map.addAll(value);
+                              updated=true;
+                              set();
+                              get();
+
+                            }
+
+                        });
+                      },
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
-        body: FutureBuilder(
-          future: f,
-          builder: (context,snapshot){
+            ],
+          ),
+          body: FutureBuilder(
+            future: f,
+            builder: (context,snapshot){
 
 
 
 
-            if(true)
-            {
-              return  Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Material(
-                      elevation: 2,
-                      child: ListTile(
+              if(true)
+              {
+                return  Column(
+                  children: [
+                    Padding(
+                      padding:  EdgeInsets.symmetric(horizontal: 1.w  , vertical: 1.w),
+                      child: Material(
+                        elevation: 2,
+                        child: ListTile(
 
-                        leading: Icon(Icons.arrow_forward_ios_rounded , color: AppTheme.teal,),
+                          leading: Icon(Icons.arrow_forward_ios_rounded , color: AppTheme.teal, size: 6.w,),
 
 
-                        title: Text(
-                          "Blood Pressure ",
-                        ),
-                        trailing: Container(
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              SizedBox(
-                                  width: MediaQuery.of(context).size.width*0.150,
-                                  child: TextField(
-                                    controller:bp_v1_edit ,
+                          title: Text(
+                            "Blood Pressure ",
+                            textScaleFactor: AppTheme.list_tile_subtile,
+                          ),
+                          trailing: Container(
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                SizedBox(
+                                    width: MediaQuery.of(context).size.width*0.150,
+                                    child: TextField(
+                                      controller:bp_v1_edit ,
+                                        decoration: InputDecoration(
+
+                                          hintText: '0.00',
+                                        ),
+                                      keyboardType: TextInputType.number,
+
+
+                                    )
+
+                                ),
+
+                                SizedBox(
+                                    width: MediaQuery.of(context).size.width*0.150,
+                                    child: TextField(
+                                      controller: bp_v2_edit,
+
+
                                       decoration: InputDecoration(
 
                                         hintText: '0.00',
-                                      ),
-                                    keyboardType: TextInputType.number,
-
-
-                                  )
-
-                              ),
-                              SizedBox(width: 2,),
-                              SizedBox(
-                                  width: MediaQuery.of(context).size.width*0.150,
-                                  child: TextField(
-                                    controller: bp_v2_edit,
-
-
-                                    decoration: InputDecoration(
-
-                                      hintText: '0.00',
+                                      )
+                                      ,
+                                      keyboardType: TextInputType.number,
                                     )
-                                    ,
-                                    keyboardType: TextInputType.number,
-                                  )
 
-                              ),
-                              SizedBox(width: 4,),
+                                ),
+                                SizedBox(width: 4,),
 
-                              Text('Hg'),
+                                Text('mmHg'),
 
-                            ],
+                              ],
+                            ),
                           ),
+
+
                         ),
-
-
                       ),
                     ),
-                  ),
 
-                  ListView(
-                    shrinkWrap: true,
-                    children: group_search_data_list
-                        .map<Widget>((e) {
+                    ListView(
+                      shrinkWrap: true,
+                      children: group_search_data_list
+                          .map<Widget>((e) {
 
-                          String s = all_data_name_map[e];
-
-
-                          String name =  all_data_map[s]['vital_name'];
-                          String unit = all_data_map[s]['vital_unit'];
-
-                          if(widget.result.isNotEmpty)
-                            {
-
-                               edit_map[s].text = widget.result[e]['value'];
+                            String s = all_data_name_map[e];
 
 
+                            String name =  all_data_map[s]['vital_name'];
+                            String unit = all_data_map[s]['vital_unit'];
 
-                            }
+                            if(widget.result.isNotEmpty)
+                              {
 
-                          if(clear == true)
-                            {
-                              edit_map.forEach((key, value) {
-                                value.clear();
-                              });
+                                 edit_map[s].text = widget.result[e]['value'];
 
-                            }
 
+
+                              }
+
+                            if(clear == true)
+                              {
+                                edit_map.forEach((key, value) {
+                                  value.clear();
+                                });
+
+                              }
 
 
 
 
 
 
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Material(
-                          elevation: 2,
 
-                          child: ListTile(
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Material(
+                            elevation: 2,
 
-                            leading: Icon(Icons.arrow_forward_ios_rounded , color: AppTheme.teal,),
+                            child: ListTile(
 
-
-                            title: Container(
-                              child: Text(name),
-                            ),
-                            trailing:  Container(
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  SizedBox(
-                                      width: MediaQuery.of(context).size.width*0.150,
-                                      child: TextField(
-
-                                        controller: edit_map[s],
-
-                                        decoration: InputDecoration(
-
-                                          hintText: "0.00",
-                                        )
-                                        ,
-                                        keyboardType: TextInputType.number,
-                                      )
-
-                                  ),
-                                  SizedBox(width: 4,),
-
-                                  Text(unit),
-
-                                  IconButton(onPressed: (){
-
-                                    all_data_map.remove(s);
-                                    updated=true;
-                                    set();
-                                    get();
+                              leading: Icon(Icons.arrow_forward_ios_rounded , color: AppTheme.teal,),
 
 
-                                  }, icon: Icon(Icons.delete_outline_outlined , color: Colors.grey,))
-                                ],
+                              title: Container(
+                                child: Text(name , textScaleFactor: AppTheme.list_tile_subtile,),
                               ),
+                              trailing:  Container(
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    SizedBox(
+                                        width: MediaQuery.of(context).size.width*0.150,
+                                        child: TextField(
+
+                                          controller: edit_map[s],
+
+                                          decoration: InputDecoration(
+
+                                            hintText: "0.00",
+                                          )
+                                          ,
+                                          keyboardType: TextInputType.number,
+                                        )
+
+                                    ),
+
+
+                                    Text(unit),
+
+                                    IconButton(onPressed: (){
+
+                                      all_data_map.remove(s);
+                                      updated=true;
+                                      set();
+                                      get();
+
+
+                                    }, icon: Icon(Icons.delete_outline_outlined , color: Colors.grey,))
+                                  ],
+                                ),
+                              ),
+
+
                             ),
-
-
                           ),
-                        ),
-                      );
+                        );
 
-                    })
-                        .toList(),
-                  ),
-                ],
-              );
+                      })
+                          .toList(),
+                    ),
+                  ],
+                );
 
-            }
+              }
 
-            else{
-              ('in future builder , else');
+              else{
+                ('in future builder , else');
 
-              return Center(child:CircularProgressIndicator() );
-            }
+                return Center(child:CircularProgressIndicator() );
+              }
 
-          },
+            },
+          ),
         ),
       ),
     );
@@ -506,142 +514,158 @@ Widget Dialogue(
       TextEditingController vital_unit,
       BuildContext context,
     }) {
-  return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 40, vertical: 200),
-      child: Material(
-        child: Container(
-          color: Colors.white,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child:
-            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              SizedBox(
-                height: 10,
-              ),
-              Text(
-                vital_name.text.isEmpty?'Add Vital':vital_name.text,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: MediaQuery.of(context).size.height * 0.03),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Material(
-                child: TextField(
-                  controller: vital_name,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
+  return Scaffold(
+    backgroundColor: Colors.transparent,
+    body: Padding(
+      padding: EdgeInsets.symmetric(horizontal: 5.w),
+      child: Column(
+
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Material(
+            child: Padding(
+              padding:  EdgeInsets.symmetric(horizontal: 2.w),
+              child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                SizedBox(
+                  height: 1.h,
+                ),
+                Text(
+                  vital_name.text.isEmpty?'Add Vital':vital_name.text,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      ),
+                ),
+                SizedBox(
+                  height: 2.h,
+                ),
+                Material(
+                  child: TextField(
+                    style: TextStyle(
+                        fontSize: 4.w
                     ),
-                    labelText: 'Vital Name',
+                    controller: vital_name,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      labelText: 'Vital Name',
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Material(
-                child: TextField(
-                  controller: vital_unit,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
+                SizedBox(
+                  height: 2.h,
+                ),
+                Material(
+                  child: TextField(
+                    style: TextStyle(
+                        fontSize: 4.w
                     ),
-                    labelText: 'Vital Unit',
+                    controller: vital_unit,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      labelText: 'Vital Unit',
 
+                    ),
+                    keyboardType: TextInputType.name,
                   ),
-                  keyboardType: TextInputType.name,
                 ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Container(
-                alignment: Alignment.bottomCenter,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.grey),
-                      child: TextButton(
-                        child: Text(
-                          'Cancel',
-                          style: TextStyle(color: Colors.black),
-                        ),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: AppTheme.green),
-                      child: TextButton(
-                        child: Text(
-                          'Done',
-                          style: TextStyle(color: Colors.black),
-                        ),
-                        onPressed: () async {
-
-
-                          print('done');
-
-                          if (vital_name.text.isEmpty) {
-                            showDialog(
-                                context: context,
-                                builder: (context) => AlertDialog(
-                                  title: Text('Vital Name field is required'),
-                                ));
-                          }
-
-                          if (vital_unit.text.isEmpty) {
-                            showDialog(
-                                context: context,
-                                builder: (context) => AlertDialog(
-                                  title: Text('Vital Unit field is required'),
-                                ));
-                          }
-
-                          Map<String, Map<String, dynamic>> all_data_map = {};
-
-                          var doc = await FirebaseFirestore.instance
-                              .collection('Vital')
-                              .doc();
-
-
-
-                          final json = {
-
-                            'vital_name': vital_name.text,
-                            'vital_unit': vital_unit.text,
-                            'doc_id': doc.id,
-
-
-                          };
-
-                          all_data_map[doc.id] = json;
-                          print(all_data_map);
-
-                          //  Services();
-
-                          Navigator.pop(context, all_data_map);
-
-                          vital_unit.clear();
-                          vital_name.clear();
-                        },
-                      ),
-                    ),
-                  ],
+                SizedBox(
+                  height: 2.h,
                 ),
-              )
-            ]),
+                Container(
+                  alignment: Alignment.bottomCenter,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.grey),
+                        child: TextButton(
+                          child: Text(
+                            'Cancel',
+                            style: TextStyle(color: Colors.black),
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: AppTheme.green),
+                        child: TextButton(
+                          child: Text(
+                            'Done',
+                            style: TextStyle(color: Colors.black),
+                          ),
+                          onPressed: () async {
+
+
+                            print('done');
+
+                            if (vital_name.text.isEmpty) {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    title: Text('Vital Name field is required'),
+                                  ));
+                            }
+
+                            if (vital_unit.text.isEmpty) {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    title: Text('Vital Unit field is required'),
+                                  ));
+                            }
+
+                            Map<String, Map<String, dynamic>> all_data_map = {};
+
+                            var doc = await FirebaseFirestore.instance
+                                .collection('Vital')
+                                .doc();
+
+
+
+                            final json = {
+
+                              'vital_name': vital_name.text,
+                              'vital_unit': vital_unit.text,
+                              'doc_id': doc.id,
+
+
+                            };
+
+                            all_data_map[doc.id] = json;
+                            print(all_data_map);
+
+                            //  Services();
+
+                            Navigator.pop(context, all_data_map);
+
+                            vital_unit.clear();
+                            vital_name.clear();
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                SizedBox(height: 1.h,)
+              ]),
+            ),
           ),
-        ),
-      ));
+
+        ],
+      ),
+    ),
+  );
 }
 
 

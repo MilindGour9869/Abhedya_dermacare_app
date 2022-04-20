@@ -1186,13 +1186,13 @@ setState(() {
                               return Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(vital_result[e]['vital_name'] , ),
+                                  Text(vital_result[e]['vital_name'] ,textScaleFactor: AppTheme.list_tile_subtile,),
                                   Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      Text(vital_result[e]['value'] , ),
+                                      Text(vital_result[e]['value'] , textScaleFactor: AppTheme.list_tile_subtile,),
                                       SizedBox(width: 0.5.w,),
-                                      Text(vital_result[e]['vital_unit'], ),
+                                      Text(vital_result[e]['vital_unit'] , textScaleFactor: AppTheme.list_tile_subtile,),
 
                                     ],
                                   )
@@ -1233,5 +1233,5 @@ setState(() {
 
 Widget DropDown (String menu)
 {
-  return Text(menu , );
+  return Text(menu , textScaleFactor: AppTheme.list_tile_subtile,);
 }
