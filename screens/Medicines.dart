@@ -507,8 +507,8 @@ class _State extends State<Medicines> {
                       child: Card(
                           color: AppTheme.notWhite,
                           child: Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: Text('loadin' ),
+                            padding:  EdgeInsets.all(5.w),
+                            child: Text('loading' ),
                           )));
                 }
 

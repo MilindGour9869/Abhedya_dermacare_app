@@ -430,7 +430,7 @@ class _AddMedicineState extends State<AddMedicine> {
                                     context: context,
                                     builder: (context) {
                                       return Padding(
-                                        padding: const EdgeInsets.all(20.0),
+                                        padding:  EdgeInsets.symmetric(horizontal: 8.w , vertical: 6.h),
                                         child: Company_name_List_Search(
                                           result: Company_name,
                                         ),
