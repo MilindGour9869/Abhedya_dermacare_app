@@ -137,7 +137,7 @@ class _VisitsDateState extends State<VisitsDate> {
           },
           icon: Icon(Icons.arrow_back , size: AppTheme.aspectRatio*40),
         ),
-        title: Text('Visits' , style: AppTheme.main_white_30,),
+        title: Text('Visits' , ),
         backgroundColor: AppTheme.teal,
 
         actions: [
@@ -167,7 +167,7 @@ class _VisitsDateState extends State<VisitsDate> {
 
             if(visit_dates.isEmpty)
               {
-                return Center(child: Text('loading' , style: AppTheme.black_22,));
+                return Center(child: Text('loading' ));
 
               }
 
@@ -220,7 +220,7 @@ class _VisitsDateState extends State<VisitsDate> {
                                       child: Card(
 
 
-                                          child: Center(child: Text(date.toString() , style: AppTheme.main_black_25,),
+                                          child: Center(child: Text(date.toString() ),
                               )),
                                     ),
 
@@ -254,7 +254,7 @@ class _VisitsDateState extends State<VisitsDate> {
 
             else
               {
-                return Text('Error' , style: AppTheme.black_22,);
+                return Text('Error');
 
               }
 

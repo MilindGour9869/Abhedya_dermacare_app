@@ -165,10 +165,10 @@ class _Service_Search_ListState extends State<Service_Search_List> {
             padding:  EdgeInsets.all(0),
             child: TextField(
               controller: _textController_group,
-              style: AppTheme.black_22,
+
               decoration: InputDecoration(
                 hintText: 'Search / Add ',
-                hintStyle: AppTheme.main_grey_25
+
 
 
               ),
@@ -233,7 +233,7 @@ class _Service_Search_ListState extends State<Service_Search_List> {
 
 
                     return  ListTile(
-                      title: Text(e.toString() , style: AppTheme.black_22,),
+                      title: Text(e.toString() ),
                       leading: CircleAvatar(
 
                           backgroundColor: m['color']?AppTheme.teal:AppTheme.light_black,
@@ -264,7 +264,7 @@ class _Service_Search_ListState extends State<Service_Search_List> {
 
 
 
-                      trailing: Text('₹ ${m['charge']}' , style: AppTheme.black_22,),
+                      trailing: Text('₹ ${m['charge']}'),
 
 
 

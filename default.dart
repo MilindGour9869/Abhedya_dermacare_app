@@ -6,6 +6,12 @@ class AppTheme{
   static double aspectRatio = 100.w/100.h;
 
 
+  static double dr_mahi = 1.6;
+  static double list_tile_subtile  = 1;
+
+
+
+
 
 
 
@@ -40,85 +46,29 @@ class AppTheme{
 
 
 
-   static double size = 20.sp;
+   static double size_17 = 2.5.h;
+   static double size_14 = 1.7.h;
+   static double size_20 = 3.5.h;
+
+
+
+
    static double circle = 10.h;
+
 
    static final icon_size = AppTheme.aspectRatio*40;
 
+   static const Black = TextStyle(
 
-   static final main_black_25 = TextStyle(
-     fontSize: aspectRatio*25,
+   color: Colors.black);
 
-
-     color: AppTheme.black,
-
-
-
-   );
-  static final main_grey_25 = TextStyle(
-    fontSize: aspectRatio*25,
-
-
-    color: AppTheme.grey,
-
-
-
-  );
-
-  static final main_white_25 = TextStyle(
-    fontSize: aspectRatio*25,
-
-    color: AppTheme.white,
-
-
-
-  );
-
-  static final main_white_30 = TextStyle(
-    fontSize: aspectRatio*30,
-
-    color: AppTheme.white,
-
-
-
-  );
-
-   static final grey_20 = TextStyle(
-     fontSize: aspectRatio*20,
+   static const CGrey=TextStyle(
      color: Colors.grey
-
    );
 
 
 
-   static final grey_italic_20 = TextStyle(fontStyle: FontStyle.italic , fontSize: aspectRatio*20);
 
-  static final grey_22 = TextStyle(
-    fontSize: aspectRatio*22,
-    color: Colors.grey,
-  );
-
-
-  static final black_35 = TextStyle(
-    fontSize: aspectRatio*35,
-    color: Colors.black,
-  );
-
-  static final ksearchBar = TextStyle(
-    fontSize: aspectRatio*22,
-    color: Colors.black,
-  );
-
-  static final black_22 = TextStyle(
-    fontSize: aspectRatio*22,
-    color: Colors.black,
-  );
-
-
-  static final subtile_22 = TextStyle(
-    fontSize: aspectRatio*22,
-
-  );
 
 
 

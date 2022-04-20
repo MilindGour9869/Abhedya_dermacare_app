@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/default.dart';
 import 'package:flutter_app/list_search/company_name_list_search.dart';
 import 'package:flutter_app/list_search/composition_list_search.dart';
-import 'package:flutter_app/widgets/list_search.dart';
+
 import 'package:flutter_app/storage/storage.dart';
 
-import 'package:date_format/date_format.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'dart:convert';
+import 'package:responsive_sizer/responsive_sizer.dart';
+
 
 import '../list_search/tab_list_search.dart';
 
@@ -110,28 +110,34 @@ class _AddMedicineState extends State<AddMedicine> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 70),
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Column(
-                children: [
+    return Center(
+
+      child: Container(
+        padding:  EdgeInsets.symmetric(horizontal: 5.w),
+
+        child: Column(
+
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+                Material(
+                  child: Column(
+              children: [
                   SizedBox(
-                    height: 10,
+                    height: 1.h,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        'Add/Edit Medicine',
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
+                      Container(
+                        margin: EdgeInsets.symmetric(vertical: 1.h),
+                        child: Text(
+                          'Add/Edit Medicine',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold
+                          ),
+
+                        ),
                       ),
                       Visibility(
                         visible: widget.doc_id == null ? false : true,
@@ -152,366 +158,345 @@ class _AddMedicineState extends State<AddMedicine> {
                   ),
 
                   SizedBox(
-                    height: 10,
-                  ),
-
-                  TextField(
-                    controller: medicine_name_edit,
-                    decoration: InputDecoration(
-                        labelText: 'Medicine Name',
-                        helperText: 'Example - Parecetamol 250mg',
-                        border: OutlineInputBorder()),
+                    height: 1.h,
                   ),
 
                   SizedBox(
-                    height: 10,
-                  ),
-
-                  TextField(
-                    controller: medicine_notes,
-                    decoration: InputDecoration(
-                        labelText: 'Medicine Notes',
-                        border: OutlineInputBorder()),
+                    height: 13.h,
+                    child: TextField(
+                      controller: medicine_name_edit,
+                      decoration: InputDecoration(
+                          labelText: 'Medicine Name',
+                          helperText: 'Example - Parecetamol 250mg',
+                          border: OutlineInputBorder()),
+                    ),
                   ),
 
                   SizedBox(
-                    height: 10,
+                    height: 2.h,
+                  ),
+
+                  SizedBox(
+                    height: 8.h,
+                    child: TextField(
+                      controller: medicine_notes,
+                      decoration: InputDecoration(
+                          labelText: 'Medicine Notes',
+                          border: OutlineInputBorder()),
+                    ),
+                  ),
+
+                  SizedBox(
+                    height: 1.h,
                   ),
 
 
 
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.1,
-                    width: MediaQuery.of(context).size.width * 0.9,
-                    child: Card(
-                      color: AppTheme.white,
-                      child: Row(
-                        children: [
-                          SizedBox(
-                            width: 7,
-                          ),
-                          Icon(Icons.comment),
-                          SizedBox(
-                            width: 7,
-                          ),
-                          Flexible(
-                            flex: 2,
-                            child: GestureDetector(
-                              onTap: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return Column(children: []);
-                                    });
-                              },
-                              child: Container(
-                                width: MediaQuery.of(context).size.width * 0.7,
-                                child: SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Text(tab,
-                                      style: TextStyle(
-                                          color: map['tab']
-                                              ? Colors.black
-                                              : Colors.grey)),
-                                ),
+                  Card(
+                    color: AppTheme.white,
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width:2.w ,
+                        ),
+                        Icon(Icons.comment),
+                        SizedBox(
+                          width: 2.w,
+                        ),
+                        Flexible(
+                          flex: 2,
+                          child: Container(
+
+                            width: MediaQuery.of(context).size.width * 0.7,
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Padding(
+                                padding:  EdgeInsets.symmetric(vertical: 3.h),
+                                child: Text(tab,
+                                    style: TextStyle(
+                                        color: map['tab']
+                                            ? Colors.black
+                                            : Colors.grey)),
                               ),
                             ),
                           ),
-                          SizedBox(
-                            width: 4,
-                          ),
-                          IconButton(
-                              onPressed: () async {
-                                //  print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
+                        ),
+                        SizedBox(
+                          width: 2.w,
+                        ),
+                        IconButton(
+                            onPressed: () async {
+                              //  print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
 
-                                showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return Padding(
-                                        padding: const EdgeInsets.all(20.0),
-                                        child: Tab_List_Search(
-                                          result: Tab,
-                                        ),
-                                      );
-                                    }).then((value) async {
-                                  print(value);
-                                  print('returend');
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return Padding(
+                                      padding:  EdgeInsets.symmetric(horizontal: 8.w , vertical: 6.h),
+                                      child: Tab_List_Search(
+                                        result: Tab,
+                                      ),
+                                    );
+                                  }).then((value) async {
+                                print(value);
+                                print('returend');
 
-                                  if (value != null) {
-                                    print('if');
+                                if (value != null) {
+                                  print('if');
 
-                                    Tab = [];
-                                    Tab = value;
-                                    List a = await value;
+                                  Tab = [];
+                                  Tab = value;
+                                  List a = await value;
 
-                                    print(a);
+                                  print(a);
 
-                                    tab = '';
-                                    a.forEach((element) {
-                                      tab += element + ' , ';
+                                  tab = '';
+                                  a.forEach((element) {
+                                    tab += element + ' , ';
+                                  });
+
+                                  if (tab != "") {
+                                    setState(() {
+                                      tab = tab;
+                                      map['tab'] = true;
                                     });
-
-                                    if (tab != "") {
-                                      setState(() {
-                                        tab = tab;
-                                        map['tab'] = true;
-                                      });
-                                    } else {
-                                      setState(() {
-                                        Tab = [];
-                                        tab = 'TAB/CAP/SYP';
-                                        map['tab'] = false;
-                                      });
-                                    }
-                                  } else if (value == null) {
-                                    print('in else if');
-                                    print(value);
-
+                                  } else {
                                     setState(() {
                                       Tab = [];
                                       tab = 'TAB/CAP/SYP';
                                       map['tab'] = false;
                                     });
-                                  } else {
-                                    print('in else');
                                   }
-                                });
-                              },
-                              icon: Icon(Icons.arrow_drop_down_circle_outlined))
-                        ],
-                      ),
+                                } else if (value == null) {
+                                  print('in else if');
+                                  print(value);
+
+                                  setState(() {
+                                    Tab = [];
+                                    tab = 'TAB/CAP/SYP';
+                                    map['tab'] = false;
+                                  });
+                                } else {
+                                  print('in else');
+                                }
+                              });
+                            },
+                            icon: Icon(Icons.arrow_drop_down_circle_outlined))
+                      ],
                     ),
                   ),
 
                   // Tab
 
                   SizedBox(
-                    height: 10,
+                    height: 1.h,
                   ),
 
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.1,
-                    width: MediaQuery.of(context).size.width * 0.9,
-                    child: Card(
-                      color: AppTheme.white,
-                      child: Row(
-                        children: [
-                          SizedBox(
-                            width: 7,
-                          ),
-                          Icon(Icons.comment),
-                          SizedBox(
-                            width: 7,
-                          ),
+                  Card(
+                    color: AppTheme.white,
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: 2.w,
+                        ),
+                        Icon(Icons.comment),
+                        SizedBox(
+                          width: 2.w,
+                        ),
 
 
-                          Flexible(
-                            flex: 2,
-                            child: GestureDetector(
-                              onTap: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return Column(children: []);
-                                    });
-                              },
-                              child: Container(
-                                width: MediaQuery.of(context).size.width * 0.7,
-                                child: SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Text(composition,
-                                      style: TextStyle(
-                                          color: map['composition']
-                                              ? Colors.black
-                                              : Colors.grey)),
-                                ),
+                        Flexible(
+                          flex: 2,
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * 0.7,
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Padding(
+                                padding:  EdgeInsets.symmetric(vertical: 3.h),
+                                child: Text(composition,
+                                    style: TextStyle(
+                                        color: map['composition']
+                                            ? Colors.black
+                                            : Colors.grey)),
                               ),
                             ),
                           ),
-                          SizedBox(
-                            width: 4,
-                          ),
-                          IconButton(
-                              onPressed: () async {
-                                //  print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
+                        ),
+                        SizedBox(
+                          width: 2.w,
+                        ),
+                        IconButton(
+                            onPressed: () async {
+                              //  print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
 
-                                showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return Padding(
-                                        padding: const EdgeInsets.all(20.0),
-                                        child: Composition_List_Search(
-                                          result: Composition,
-                                        ),
-                                      );
-                                    }).then((value) async {
-                                  print(value);
-                                  print('returend');
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return Padding(
+                                      padding:  EdgeInsets.symmetric(horizontal: 8.w , vertical: 6.h),
+                                      child: Composition_List_Search(
+                                        result: Composition,
+                                      ),
+                                    );
+                                  }).then((value) async {
+                                print(value);
+                                print('returend');
 
-                                  if (value != null) {
-                                    print('if');
+                                if (value != null) {
+                                  print('if');
 
-                                    Composition = [];
-                                    Composition = value;
-                                    List a = await value;
+                                  Composition = [];
+                                  Composition = value;
+                                  List a = await value;
 
-                                    print(a);
+                                  print(a);
 
-                                    composition = '';
-                                    a.forEach((element) {
-                                      composition += element + ' , ';
+                                  composition = '';
+                                  a.forEach((element) {
+                                    composition += element + ' , ';
+                                  });
+
+                                  if (composition != "") {
+                                    setState(() {
+                                      composition = composition;
+                                      map['composition'] = true;
                                     });
-
-                                    if (composition != "") {
-                                      setState(() {
-                                        composition = composition;
-                                        map['composition'] = true;
-                                      });
-                                    } else {
-                                      setState(() {
-                                        Composition = [];
-                                        composition = 'Composition';
-                                        map['composition'] = false;
-                                      });
-                                    }
-                                  } else if (value == null) {
-                                    print('in else if');
-                                    print(value);
-
+                                  } else {
                                     setState(() {
                                       Composition = [];
                                       composition = 'Composition';
                                       map['composition'] = false;
                                     });
-                                  } else {
-                                    print('in else');
                                   }
-                                });
-                              },
-                              icon: Icon(Icons.arrow_drop_down_circle_outlined))
-                        ],
-                      ),
+                                } else if (value == null) {
+                                  print('in else if');
+                                  print(value);
+
+                                  setState(() {
+                                    Composition = [];
+                                    composition = 'Composition';
+                                    map['composition'] = false;
+                                  });
+                                } else {
+                                  print('in else');
+                                }
+                              });
+                            },
+                            icon: Icon(Icons.arrow_drop_down_circle_outlined))
+                      ],
                     ),
                   ), //Composition
 
                   SizedBox(
-                    height: 10,
+                    height: 1.h,
                   ),
 
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.1,
-                    width: MediaQuery.of(context).size.width * 0.9,
-                    child: Card(
-                      color: AppTheme.white,
-                      child: Row(
-                        children: [
-                          SizedBox(
-                            width: 7,
-                          ),
-                          Icon(Icons.comment),
-                          SizedBox(
-                            width: 7,
-                          ),
-                          Flexible(
-                            flex: 2,
-                            child: GestureDetector(
-                              onTap: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return Column(children: []);
-                                    });
-                              },
-                              child: Container(
-                                width: MediaQuery.of(context).size.width * 0.7,
-                                child: SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Text(company_name,
-                                      style: TextStyle(
-                                          color: map['company_name']
-                                              ? Colors.black
-                                              : Colors.grey)),
-                                ),
+                  Card(
+                    color: AppTheme.white,
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: 2.w,
+                        ),
+                        Icon(Icons.comment),
+                        SizedBox(
+                          width: 2.w,
+                        ),
+                        Flexible(
+                          flex: 2,
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * 0.7,
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Padding(
+                                padding:  EdgeInsets.symmetric(vertical: 3.h),
+                                child: Text(company_name,
+                                    style: TextStyle(
+                                        color: map['company_name']
+                                            ? Colors.black
+                                            : Colors.grey)),
                               ),
                             ),
                           ),
-                          SizedBox(
-                            width: 4,
-                          ),
-                          IconButton(
-                              onPressed: () async {
-                                //  print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
+                        ),
+                        SizedBox(
+                          width: 2.w,
+                        ),
+                        IconButton(
+                            onPressed: () async {
+                              //  print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
 
-                                showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return Padding(
-                                        padding: const EdgeInsets.all(20.0),
-                                        child: Company_name_List_Search(
-                                          result: Company_name,
-                                        ),
-                                      );
-                                    }).then((value) async {
-                                  print(value);
-                                  print('returend');
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return Padding(
+                                      padding: const EdgeInsets.all(20.0),
+                                      child: Company_name_List_Search(
+                                        result: Company_name,
+                                      ),
+                                    );
+                                  }).then((value) async {
+                                print(value);
+                                print('returend');
 
-                                  if (value != null) {
-                                    print('if');
+                                if (value != null) {
+                                  print('if');
 
-                                    Company_name = [];
-                                    Company_name = value;
-                                    List a = await value;
+                                  Company_name = [];
+                                  Company_name = value;
+                                  List a = await value;
 
-                                    print(a);
+                                  print(a);
 
-                                    company_name = '';
-                                    a.forEach((element) {
-                                      company_name += element + ' , ';
+                                  company_name = '';
+                                  a.forEach((element) {
+                                    company_name += element + ' , ';
+                                  });
+
+                                  if (company_name != "") {
+                                    setState(() {
+                                      company_name = company_name;
+                                      map['company_name'] = true;
                                     });
-
-                                    if (company_name != "") {
-                                      setState(() {
-                                        company_name = company_name;
-                                        map['company_name'] = true;
-                                      });
-                                    } else {
-                                      setState(() {
-                                        Company_name = [];
-                                        company_name = 'Company Name';
-                                        map['company_name'] = false;
-                                      });
-                                    }
-                                  } else if (value == null) {
-                                    print('in else if');
-                                    print(value);
-
+                                  } else {
                                     setState(() {
                                       Company_name = [];
                                       company_name = 'Company Name';
                                       map['company_name'] = false;
                                     });
-                                  } else {
-                                    print('in else');
                                   }
-                                });
-                              },
-                              icon: Icon(Icons.arrow_drop_down_circle_outlined))
-                        ],
-                      ),
+                                } else if (value == null) {
+                                  print('in else if');
+                                  print(value);
+
+                                  setState(() {
+                                    Company_name = [];
+                                    company_name = 'Company Name';
+                                    map['company_name'] = false;
+                                  });
+                                } else {
+                                  print('in else');
+                                }
+                              });
+                            },
+                            icon: Icon(Icons.arrow_drop_down_circle_outlined))
+                      ],
                     ),
                   ), // Company Name
 
                   SizedBox(
-                    height: 10,
+                    height: 1.h,
                   ),
 
 
 
-                ],
-              ),
-                  Container(
-                alignment: Alignment.bottomCenter,
-                child: Row(
+              ],
+            ),
+                ),
+                Material(
+                  child: Container(
+              alignment: Alignment.bottomCenter,
+              child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
@@ -644,13 +629,13 @@ class _AddMedicineState extends State<AddMedicine> {
                       ),
                     ),
                   ],
+              ),
+            ),
                 ),
-              ),
-                  SizedBox(
-                height: 10,
-              ),
-            ],
-          ),
+                SizedBox(
+              height: 1.h,
+            ),
+          ],
         ),
       ),
     );

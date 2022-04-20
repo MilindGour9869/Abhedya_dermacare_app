@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/default.dart';
 import 'package:flutter_app/storage/storage.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class Add_Info extends StatefulWidget {
 
@@ -171,13 +172,16 @@ class _Add_InfoState extends State<Add_Info> {
             controller: _textController_group,
             decoration: InputDecoration(
               hintText: 'Search / Add ',
+              hintStyle: TextStyle(
+                fontSize: 4.w
+              )
             ),
             onChanged: onItemChanged,
           ),
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.only(right: 4.0),
+            padding:  EdgeInsets.only(right: 2.w),
             child: CircleAvatar(
               child: Text(all_data_english_list!=null?all_data_english_list.length.toString() :'0'),
             ),
@@ -209,10 +213,10 @@ class _Add_InfoState extends State<Add_Info> {
                       });
                     },
                         child: ListTile(
-                    title: SelectableText(e),
+                    title: SelectableText(e , textScaleFactor: AppTheme.list_tile_subtile,),
                     leading: CircleAvatar(
                         backgroundColor:
-                        select[e] ? AppTheme.green : Colors.grey,
+                        select[e] ? AppTheme.teal : Colors.grey,
                         child: Icon(
                             Icons.done,
                             color: AppTheme.white,
@@ -223,7 +227,7 @@ class _Add_InfoState extends State<Add_Info> {
                       children: [
                         IconButton(onPressed: (){
                           Clipboard.setData(ClipboardData(text: e)).then((value) {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Copied to your clipboard !')));
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Copied to your clipboard !' , textScaleFactor: AppTheme.list_tile_subtile,)));
                           });
                         }, icon: Icon(Icons.copy)),
 
@@ -277,7 +281,7 @@ class _Add_InfoState extends State<Add_Info> {
 
                   },
                   icon: Icon(Icons.add),
-                  label: Text(_textController_group.text)),
+                  label: Text(_textController_group.text , textScaleFactor: AppTheme.list_tile_subtile,)),
             );
 
 

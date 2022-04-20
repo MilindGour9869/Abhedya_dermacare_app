@@ -43,13 +43,18 @@ class MyApp extends StatelessWidget {
 
       home: ResponsiveSizer(
         builder: (context, orientation, screenType){
-          return HomePage();
+          return MediaQuery(
+              data:MediaQuery.of(context).copyWith(textScaleFactor: 1.2),
+              child: HomePage());
 
         },
       ),
       theme: ThemeData(
         fontFamily: 'Nunito-Regular',
+
       ),
+
+
       routes: {},
     );
   }
@@ -127,13 +132,13 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                               onPressed: () {
                                 imagepicker(ImageSource.camera);
                               },
-                              label: Text(' Camera' , style: AppTheme.main_black_25)),
+                              label: Text(' Camera' ,style: AppTheme.Black,)),
                           TextButton.icon(
                               icon: Icon(FontAwesomeIcons.photoFilm  , color: AppTheme.green, ),
                               onPressed: () {
                                 imagepicker(ImageSource.gallery);
                               },
-                              label: Text(' Gallery' , style: AppTheme.main_black_25 ))
+                              label: Text(' Gallery' ,style: AppTheme.Black, ))
                         ],
                       )),
                     );
@@ -173,7 +178,7 @@ Widget Menu(BuildContext context) {
 
         },
         child: ListTile(
-          title: Text('Profile' , style: AppTheme.main_black_25),
+          title: Text('Profile'),
           leading: Icon(FontAwesomeIcons.userDoctor , color: AppTheme.green,),
           onTap: () {
 
@@ -186,14 +191,14 @@ Widget Menu(BuildContext context) {
       Dividerr(),
 
       ListTile(
-        title: Text('Patients' , style: AppTheme.main_black_25),
+        title: Text('Patients' , ),
         leading: Icon(FontAwesomeIcons.users , color: AppTheme.teal),
         onTap: () {
          Navigator.pop(context);
         },
       ), // Patient
       ListTile(
-        title: Text('Medicine' , style: AppTheme.main_black_25),
+        title: Text('Medicine' , ),
         leading: Icon(FontAwesomeIcons.capsules , color: AppTheme.teal ),
         onTap: () {
           Navigator.push(
@@ -201,7 +206,7 @@ Widget Menu(BuildContext context) {
         },
       ), // Medicine
       ListTile(
-        title: Text('Services' , style: AppTheme.main_black_25),
+        title: Text('Services' , ),
         leading: Icon(FontAwesomeIcons.briefcase , color: AppTheme.teal),
         onTap: () {
           Navigator.push(
@@ -212,7 +217,7 @@ Widget Menu(BuildContext context) {
       Dividerr(),
 
       ListTile(
-        title: Text('Setting' , style: AppTheme.main_black_25),
+        title: Text('Setting' , ),
         leading: Icon(FontAwesomeIcons.gear , color: AppTheme.grey,),
         onTap: () {
           Navigator.push(
@@ -221,7 +226,7 @@ Widget Menu(BuildContext context) {
       ),
 
       ListTile(
-        title: Text('Reception' , style: AppTheme.main_black_25),
+        title: Text('Reception' , ),
         leading: Icon(FontAwesomeIcons.eyeSlash ,  color: AppTheme.grey,),
         onTap: () {
           Navigator.push(

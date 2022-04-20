@@ -243,7 +243,7 @@ setState(() {
             Navigator.pop(context , 'back');
           },
         ),
-        title: Text('Add Visits' , style: AppTheme.main_white_30,),
+        title: Text('Add Visits' , ),
         actions: [
           Padding(
             padding:  EdgeInsets.only(right: 1.h),
@@ -373,7 +373,7 @@ setState(() {
 
                     child: Card(child: Center(child: TextButton(
 
-                        child: Text('${visit_date}' , style: AppTheme.main_black_25,),
+                        child: Text('${visit_date}' , ),
                         onPressed:(){
                           showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(1947), lastDate: DateTime(2050)).then((value){
                             print(value);
@@ -406,7 +406,7 @@ setState(() {
 
                       title: Padding(
                         padding:  EdgeInsets.only(top: 1.h),
-                        child: Text(complaints , style: AppTheme.main_black_25,),
+                        child: Text(complaints , ),
                       ),
                       leading: Image.asset(img_complaint),
 
@@ -475,7 +475,7 @@ setState(() {
 
                       title: Padding(
                         padding:  EdgeInsets.only(top: 1.h),
-                        child: Text(clinical_findings , style: AppTheme.main_black_25,),
+                        child: Text(clinical_findings , ),
                       ),
                       leading: SizedBox(
                           width: 50,
@@ -549,7 +549,7 @@ setState(() {
 
                       title: Padding(
                         padding:  EdgeInsets.only(top: 1.h),
-                        child: Text(diagnosis , style: AppTheme.main_black_25,),
+                        child: Text(diagnosis , ),
                       ),
                       leading: Image.asset(img_diagnosis),
 
@@ -621,7 +621,7 @@ setState(() {
 
                       title: Padding(
                         padding:  EdgeInsets.only(top: 1.h),
-                        child: Text(investigation , style: AppTheme.main_black_25,),
+                        child: Text(investigation , ),
                       ),
                       leading: Image.asset(img_investigation_color),
 
@@ -690,7 +690,7 @@ setState(() {
 
                       title: Padding(
                         padding:  EdgeInsets.only(top: 1.h),
-                        child: Text(allergies , style: AppTheme.main_black_25,),
+                        child: Text(allergies , ),
                       ),
                       leading: Icon(Icons.add , size: AppTheme.icon_size,),
 
@@ -759,7 +759,7 @@ setState(() {
 
                       title: Padding(
                         padding:  EdgeInsets.only(top: 1.h),
-                        child: Text(advices, style: AppTheme.main_black_25,),
+                        child: Text(advices, ),
                       ),
                       leading: Icon(Icons.add),
 
@@ -828,7 +828,7 @@ setState(() {
 
                       title: Padding(
                         padding:  EdgeInsets.only(top: 1.h),
-                        child: Text(group, style: AppTheme.main_black_25,),
+                        child: Text(group, ),
                       ),
                       leading: Icon(Icons.add),
 
@@ -897,7 +897,7 @@ setState(() {
 
                       title: Padding(
                         padding:  EdgeInsets.only(top: 1.h),
-                        child: Text(blood_group, style: AppTheme.main_black_25,),
+                        child: Text(blood_group, ),
                       ),
                       leading: Icon(FontAwesomeIcons.droplet , color: Colors.redAccent,),
 
@@ -966,7 +966,7 @@ setState(() {
 
                       title: Padding(
                         padding:  EdgeInsets.only(top: 1.h),
-                        child: Text(service, style: AppTheme.main_black_25,),
+                        child: Text(service, ),
                       ),
                       leading: Icon(Icons.add),
 
@@ -1038,7 +1038,7 @@ setState(() {
 
                       title: Padding(
                         padding:  EdgeInsets.only(top: 1.h),
-                        child: Text(medicine, style: AppTheme.main_black_25,),
+                        child: Text(medicine, ),
                       ),
                       leading: Icon(Icons.add),
 
@@ -1126,7 +1126,7 @@ setState(() {
 
                       title: Padding(
                         padding:  EdgeInsets.only(top: 1.h),
-                        child: Text(vital , style: AppTheme.main_black_25,),
+                        child: Text(vital , ),
                       ),
                       leading: Icon(Icons.add , size: AppTheme.icon_size,),
 
@@ -1186,13 +1186,13 @@ setState(() {
                               return Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(vital_result[e]['vital_name'] , style: AppTheme.subtile_22,),
+                                  Text(vital_result[e]['vital_name'] , ),
                                   Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      Text(vital_result[e]['value'] , style: AppTheme.subtile_22,),
+                                      Text(vital_result[e]['value'] , ),
                                       SizedBox(width: 0.5.w,),
-                                      Text(vital_result[e]['vital_unit'], style: AppTheme.subtile_22,),
+                                      Text(vital_result[e]['vital_unit'], ),
 
                                     ],
                                   )
@@ -1233,5 +1233,5 @@ setState(() {
 
 Widget DropDown (String menu)
 {
-  return Text(menu , style: AppTheme.subtile_22,);
+  return Text(menu , );
 }

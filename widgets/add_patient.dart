@@ -188,7 +188,7 @@ class _AddPatientState extends State<AddPatient> {
       appBar: AppBar(
         backgroundColor: AppTheme.teal,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back , size: AppTheme.aspectRatio*40,),
+          icon: Icon(Icons.arrow_back ,),
           onPressed: (){
             Navigator.pop(context , 'back');
           },
@@ -199,7 +199,7 @@ class _AddPatientState extends State<AddPatient> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Patient' , style: AppTheme.main_white_30,),
+            Text('Patient'),
             IconButton(
                 onPressed: () async {
 
@@ -245,12 +245,12 @@ class _AddPatientState extends State<AddPatient> {
 
 
                           return  showDialog(context: context , builder: (context)=>AlertDialog(
-                             title: Text('Name is similar to another patient\nPlease change the name' ,style: AppTheme.black_22, ),
+                             title: Text('Name is similar to another patient\nPlease change the name'  ),
                              actions: [
                                TextButton(onPressed: (){
                                  Navigator.pop(context);
 
-                               }, child: Text('OK' , style: AppTheme.black_22,))
+                               }, child: Text('OK' , ))
                              ],
 
                            ));
@@ -265,12 +265,12 @@ class _AddPatientState extends State<AddPatient> {
                                if(!EmailValidator.validate(email_edit.text))
                                  {
                                   return  showDialog(context: context, builder: (context)=>AlertDialog(
-                                     title: Text('Invalid Email ID' , style: AppTheme.black_22,),
+                                     title: Text('Invalid Email ID'),
                                     actions: [
                                       TextButton(onPressed: (){
                                         Navigator.pop(context);
 
-                                      }, child: Text('OK' , style: AppTheme.black_22,))
+                                      }, child: Text('OK' ,))
                                     ],
                                    ));
 
@@ -284,12 +284,12 @@ class _AddPatientState extends State<AddPatient> {
                              if(mobile_edit.text.length!=10)
                                {
                                  return  showDialog(context: context, builder: (context)=>AlertDialog(
-                                   title: Text('Invalid Mobile No.' , style: AppTheme.black_22,),
+                                   title: Text('Invalid Mobile No.' , ),
                                    actions: [
                                      TextButton(onPressed: (){
                                        Navigator.pop(context);
 
-                                     }, child: Text('OK' , style: AppTheme.black_22,))
+                                     }, child: Text('OK'))
                                    ],
                                  ));
 
@@ -350,12 +350,12 @@ class _AddPatientState extends State<AddPatient> {
                     {
                       return showDialog(context: context , builder: (context)=>AlertDialog(
 
-                        title: Text('Name is Compulsory\nPlease write the name'  , style: AppTheme.black_22,),
+                        title: Text('Name is Compulsory\nPlease write the name'  ,),
                         actions: [
                           TextButton(onPressed: (){
                             Navigator.pop(context);
 
-                          }, child: Text('OK' , style: AppTheme.black_22,))
+                          }, child: Text('OK' , ))
                         ],
                       ));
 
@@ -365,7 +365,7 @@ class _AddPatientState extends State<AddPatient> {
                 icon: Icon(
                   Icons.save,
                   color: Colors.white,
-                  size: AppTheme.aspectRatio*40,
+
                 ),
             )
           ],
@@ -420,7 +420,7 @@ class _AddPatientState extends State<AddPatient> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                ChoiceChip(label: Text('Male' , style: AppTheme.main_black_25), selected:male,selectedColor: Colors.teal,onSelected: (bool selected){
+                ChoiceChip(label: Text('Male'), selected:male,selectedColor: Colors.teal,onSelected: (bool selected){
                   setState(() {
                     male=true;
                     female=false;
@@ -431,7 +431,7 @@ class _AddPatientState extends State<AddPatient> {
 
                 }, ),
 
-                ChoiceChip(label: Text('Female' , style: AppTheme.main_black_25,), selected:female ,selectedColor: Colors.teal,onSelected: (bool a){
+                ChoiceChip(label: Text('Female' , ), selected:female ,selectedColor: Colors.teal,onSelected: (bool a){
                   setState(() {
                     male=false;
                     female=true;
@@ -445,7 +445,7 @@ class _AddPatientState extends State<AddPatient> {
 
                     child: TextField(
                       controller: age_edit,
-                      style: AppTheme.main_black_25,
+
                       decoration: InputDecoration(
 
 
@@ -488,7 +488,7 @@ class _AddPatientState extends State<AddPatient> {
               padding:  EdgeInsets.symmetric(horizontal: 6.w , vertical: 1.h),
               child: TextField(
                 controller: mobile_edit,
-                style: AppTheme.main_black_25,
+
                 decoration: InputDecoration(
 
 
@@ -529,7 +529,7 @@ class _AddPatientState extends State<AddPatient> {
               child:TextField(
                 controller: group_edit,
                 autofocus: false,
-                style: AppTheme.main_black_25,
+
                 readOnly: true,
                 decoration: InputDecoration(
 
@@ -605,7 +605,7 @@ class _AddPatientState extends State<AddPatient> {
                 child:TextField(
                   controller: blood_group_edit,
                   autofocus: false,
-                  style: AppTheme.main_black_25,
+
                   readOnly: true,
 
                   decoration: InputDecoration(
@@ -734,7 +734,7 @@ class _txtfieldState extends State<txtfield> {
       padding:  EdgeInsets.symmetric(vertical: 1.h, horizontal:  6.w),
       child: TextField(
         controller: widget.text_edit,
-          style: AppTheme.main_black_25,
+
           decoration: InputDecoration(
 
 

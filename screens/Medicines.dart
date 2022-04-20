@@ -72,9 +72,22 @@ class _State extends State<Medicines> {
 
       var a = await Storage.get_medicine();
 
+      print('\nssss');
+      print(a);
+
+
       all_data_doc_id_map = a==null?{}:a;
 
+      print('fssv');
+
+
+      print(all_data_doc_id_map);
+
+
       all_data_doc_id_map.forEach((key, value) {
+
+        print('Nor errcsdwq');
+
 
        all_data_name_map[value['medicine_name'].toString()] = value;
 
@@ -125,6 +138,7 @@ class _State extends State<Medicines> {
 
         setState(() {
           all_data_name_map = all_data_name_map;
+          print('fddbf');
           print(all_data_name_map);
 
 
@@ -200,9 +214,13 @@ class _State extends State<Medicines> {
     List a = map[name]['tab'];
     tab=a==null?"":a[0].toString();
 
-    List b = map[name]['composition'];
-    if(b != null) {
+    List b = map[name]['composition']==null?[]:map[name]['composition'];
+
+    print('\ncds');
+
+    if(b != null && b.isNotEmpty) {
       b.forEach((element) {
+
         composition = element.toString() + ' , ';
       });
     }
@@ -226,8 +244,7 @@ class _State extends State<Medicines> {
            {
              showDialog(
                  context: context,
-                 builder: (context) => AlertDialog(
-                   title: AddMedicine(
+                 builder: (context) => AddMedicine(
                      composition: map[name]['composition'],
                      company_name: map[name]['company_name'],
                      tab: map[name]['tab'],
@@ -235,8 +252,11 @@ class _State extends State<Medicines> {
                      medicine_name: name,
                      result: all_data_doc_id_map,
                    ),
-                 )).then((value) {
+                 ).then((value) {
                if (value == 'save') {
+
+                 print('\neee');
+
                  getMedicineData();
                }
              });
@@ -244,15 +264,16 @@ class _State extends State<Medicines> {
          else if(!delete)
            {
              print(result_map[name]);
+             print('feeaar');
 
-             showDialog(context: context, builder: (context)=>AlertDialog(
-               title: AddData(
+
+             showDialog(context: context, builder: (context)=> AddData(
                  color: color,
                  map: map,
                  medicine_name: name,
                  result_map : result_map[name]
                ),
-             )).then((value) {
+             ).then((value) {
 
                print('\nBack from add data');
                print(value);
@@ -290,7 +311,7 @@ class _State extends State<Medicines> {
                 ),
                 title: Text(
                   name,
-                  style: TextStyle(fontSize: 20),
+
                 ),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -299,7 +320,7 @@ class _State extends State<Medicines> {
                     Text(
                       company_name,
                       style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                          TextStyle( fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -409,6 +430,7 @@ class _State extends State<Medicines> {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(25.h),
         child: Container(
+
             decoration: BoxDecoration(
                 color: AppTheme.green,
                 borderRadius: BorderRadius.only(
@@ -424,7 +446,7 @@ class _State extends State<Medicines> {
 
 
                 AppBar(
-                  title: Text('Medicine' , style: AppTheme.main_white_30,),
+                  title: Text('XyZ' ),
                   backgroundColor: Colors.transparent,
                   elevation: 0,
                   actions: [
@@ -451,7 +473,7 @@ class _State extends State<Medicines> {
                   child: TextField(
 
                     controller: textcontroller,
-                    style: AppTheme.ksearchBar,
+
 
 
                     onChanged: onItemChanged,
@@ -486,19 +508,12 @@ class _State extends State<Medicines> {
                           color: AppTheme.notWhite,
                           child: Padding(
                             padding: const EdgeInsets.all(20.0),
-                            child: Text('loadin' , style: AppTheme.black_22,),
+                            child: Text('loadin' ),
                           )));
                 }
 
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
-                }
 
-                if (snapshot.hasError) {
-                  print(snapshot.error);
 
-                  return  Center(child: Text('Something Went Wrong'  , style: AppTheme.black_22,));
-                }
 
                 return Container(
                   height: MediaQuery.of(context).size.height * 0.727,
@@ -523,16 +538,16 @@ class _State extends State<Medicines> {
         onPressed: () {
           showDialog(
               context: context,
-              builder: (context) => Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                    child: AddMedicine(
-                      composition: null,
-                      result: all_data_doc_id_map,
-                    ),
-                  )).then((value) {
+              builder: (context) => AddMedicine(
+                composition: null,
+                result: all_data_doc_id_map,
+              )).then((value) {
+
+                    print('dd');
+
 
                     if(value == 'save')
-                      {
+                      { print('\nggg');
                         getMedicineData();
                       }
           });

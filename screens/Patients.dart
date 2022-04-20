@@ -45,12 +45,12 @@ class _State extends State<Patient> {
   String greeting() {
     var hour = DateTime.now().hour;
     if (hour < 12) {
-      return 'good Morning ,';
+      return 'good morning ,';
     }
     if (hour < 17) {
-      return 'good Afternoon ,';
+      return 'good afternoon ,';
     }
-    return 'good Evening ,';
+    return 'good evening ,';
   }
 
   Widget Tile(Patient_name_data_list patient_data_tile) => GestureDetector(
@@ -87,8 +87,8 @@ class _State extends State<Patient> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    patient_data_tile.name == null ? "?" : patient_data_tile.name,
-                    style: AppTheme.main_black_25,
+                    patient_data_tile.name == null ? "?" : '${patient_data_tile.name[0].toUpperCase()+patient_data_tile.name.substring(1)}',
+
                   ),
                   IconButton(
                       onPressed: () {
@@ -97,7 +97,7 @@ class _State extends State<Patient> {
                             builder: (context) => AlertDialog(
                                   titlePadding: EdgeInsets.all(0),
                                   title:
-                                      Center(child: Text('Are you Sure ?' , style: AppTheme.main_black_25,)),
+                                      Center(child: Text('Are you Sure ?' ,textScaleFactor: AppTheme.list_tile_subtile,)),
                                   actions: [
                                     Row(
                                       children: [
@@ -121,13 +121,14 @@ class _State extends State<Patient> {
                                               },
                                               child: Text(
                                                 'yes',
+                                                textScaleFactor: AppTheme.list_tile_subtile,
                                                 style: TextStyle(
-                                                    color: Colors.white , fontSize: 17.sp),
+                                                    color: Colors.white),
                                               )),
                                           decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(15),
-                                            color: AppTheme.green,
+                                            color: AppTheme.teal,
                                           ),
                                         ),
                                         Container(
@@ -137,9 +138,15 @@ class _State extends State<Patient> {
                                               },
                                               child: Text(
                                                 'no',
+
                                                 style: TextStyle(
-                                                    color: Colors.white , fontSize: 17.sp),
-                                              )),
+                                                    color: Colors.white),
+
+                                                textScaleFactor: AppTheme.list_tile_subtile,
+                                              ),
+
+
+                                          ),
                                           decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(15),
@@ -171,7 +178,7 @@ class _State extends State<Patient> {
                       SizedBox(
                         width: 1.w,
                       ),
-                      Text(patient_data_tile.age == null ? "?" : patient_data_tile.age.toString() , style: AppTheme.grey_20,),
+                      Text(patient_data_tile.age == null ? "?" : patient_data_tile.age.toString() , style: AppTheme.CGrey,),
                       SizedBox(
                         width: 2.w,
                       ),
@@ -185,7 +192,7 @@ class _State extends State<Patient> {
                       ),
                       Text(patient_data_tile.mobile == null
                           ? "?"
-                          : patient_data_tile.mobile.toString() , style: AppTheme.grey_20,)
+                          : patient_data_tile.mobile.toString() , style: AppTheme.CGrey,)
                     ],
                   ),
                   SizedBox(
@@ -193,7 +200,7 @@ class _State extends State<Patient> {
                   ),
                   Text(
                     'last visited on : ${formatDate(patient_data_tile.recent_visit.toDate(), [ dd, '-', mm, '-', yyyy])}',
-                    style: AppTheme.grey_italic_20
+                     textScaleFactor: AppTheme.list_tile_subtile,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -217,19 +224,22 @@ class _State extends State<Patient> {
                           },
                           child: Text(
                             'Visits',
-                            style: AppTheme.grey_22
+                            
+
+
+                            style: AppTheme.CGrey
                           )),
                       TextButton(
                           onPressed: () {},
                           child: Text(
                             'Payment',
-                              style: AppTheme.grey_22
+                              style: AppTheme.CGrey
                           )),
                       TextButton(
                           onPressed: () {},
                           child: Text(
                             'Documents',
-                              style: AppTheme.grey_22
+                              style: AppTheme.CGrey
                           )),
                     ],
                   )
@@ -338,7 +348,11 @@ class _State extends State<Patient> {
   Widget build(BuildContext context) {
 
     //print(100.h/100.w);
-    print(100.w/100.h);
+    print('\n');
+    print(MediaQuery.of(context).textScaleFactor);
+
+
+
 
 
     // print('builder');
@@ -349,7 +363,7 @@ class _State extends State<Patient> {
         resizeToAvoidBottomInset: false,
         backgroundColor: AppTheme.offwhite,
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(26.h),
+          preferredSize: Size.fromHeight(25.h),
           child: Container(
               decoration: BoxDecoration(
                   color: AppTheme.green,
@@ -390,7 +404,7 @@ class _State extends State<Patient> {
 
                           ChoiceChip(
                             backgroundColor: AppTheme.offwhite,
-                            label: today?Text('Today' , style: AppTheme.black_22,):Text('All' , style: AppTheme.black_22,),
+                            label: today?Text('Today' , ):Text('All' , ),
                             selected: false,
                             selectedColor: Colors.teal,
                             onSelected: (bool selected) {
@@ -424,12 +438,14 @@ class _State extends State<Patient> {
                               children: [
                                 Text(
                                     greeting(),
-                                    style: AppTheme.main_black_25
+
                                 ),
 
                                 Text(
                                   'Dr. Mahi Ram Bishnoi',
-                                  style: AppTheme.black_35,
+                                  textScaleFactor: 1.7,
+
+
                                 ),
                               ],
                             ),
@@ -448,7 +464,7 @@ class _State extends State<Patient> {
                             child: TextField(
 
                               controller: textcontroller,
-                              style: AppTheme.ksearchBar,
+
 
 
                               onChanged: onItemChanged,
@@ -458,6 +474,7 @@ class _State extends State<Patient> {
                                   contentPadding: EdgeInsets.symmetric(horizontal: 7.w , vertical: 1.3.h ),
                                   border: InputBorder.none,
                                   hintText: 'search',
+
 
 
 
@@ -498,10 +515,7 @@ class _State extends State<Patient> {
                                     color: AppTheme.notWhite,
                                     child: Padding(
                                       padding:  EdgeInsets.all(5.w),
-                                      child: Text('loading', style: TextStyle(
-                                        fontSize: MediaQuery.of(context).size.aspectRatio*25
-
-                                      ),),
+                                      child: Text('loading',),
                                     )));
                           }
 
