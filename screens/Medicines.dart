@@ -446,7 +446,7 @@ class _State extends State<Medicines> {
 
 
                 AppBar(
-                  title: Text('XyZ' ),
+                  title: Text('Medicine' ),
                   backgroundColor: Colors.transparent,
                   elevation: 0,
                   actions: [

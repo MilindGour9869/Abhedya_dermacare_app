@@ -111,390 +111,392 @@ class _AddMedicineState extends State<AddMedicine> {
   @override
   Widget build(BuildContext context) {
     return Center(
-
-      child: Container(
-        padding:  EdgeInsets.symmetric(horizontal: 5.w),
-
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
         child: Column(
 
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
                 Material(
-                  child: Column(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Column(
               children: [
-                  SizedBox(
-                    height: 1.h,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        margin: EdgeInsets.symmetric(vertical: 1.h),
-                        child: Text(
-                          'Add/Edit Medicine',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold
-                          ),
-
-                        ),
-                      ),
-                      Visibility(
-                        visible: widget.doc_id == null ? false : true,
-                        child: IconButton(
-                          icon: Icon(Icons.delete_outline_outlined),
-                          onPressed: () async {
-
-                            widget.result.remove(widget.doc_id);
-
-                            Storage.set_medicine(updated: true , value: widget.result);
-
-
-                            Navigator.pop(context, 'save');
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  SizedBox(
-                    height: 1.h,
-                  ),
-
-                  SizedBox(
-                    height: 13.h,
-                    child: TextField(
-                      controller: medicine_name_edit,
-                      decoration: InputDecoration(
-                          labelText: 'Medicine Name',
-                          helperText: 'Example - Parecetamol 250mg',
-                          border: OutlineInputBorder()),
+                    SizedBox(
+                      height: 1.h,
                     ),
-                  ),
-
-                  SizedBox(
-                    height: 2.h,
-                  ),
-
-                  SizedBox(
-                    height: 8.h,
-                    child: TextField(
-                      controller: medicine_notes,
-                      decoration: InputDecoration(
-                          labelText: 'Medicine Notes',
-                          border: OutlineInputBorder()),
-                    ),
-                  ),
-
-                  SizedBox(
-                    height: 1.h,
-                  ),
-
-
-
-                  Card(
-                    color: AppTheme.white,
-                    child: Row(
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        SizedBox(
-                          width:2.w ,
-                        ),
-                        Icon(Icons.comment),
-                        SizedBox(
-                          width: 2.w,
-                        ),
-                        Flexible(
-                          flex: 2,
-                          child: Container(
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 1.h),
+                          child: Text(
+                            'Add/Edit Medicine',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold
+                            ),
 
-                            width: MediaQuery.of(context).size.width * 0.7,
-                            child: SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Padding(
-                                padding:  EdgeInsets.symmetric(vertical: 3.h),
-                                child: Text(tab,
-                                    style: TextStyle(
-                                        color: map['tab']
-                                            ? Colors.black
-                                            : Colors.grey)),
+                          ),
+                        ),
+                        Visibility(
+                          visible: widget.doc_id == null ? false : true,
+                          child: IconButton(
+                            icon: Icon(Icons.delete_outline_outlined),
+                            onPressed: () async {
+
+                              widget.result.remove(widget.doc_id);
+
+                              Storage.set_medicine(updated: true , value: widget.result);
+
+
+                              Navigator.pop(context, 'save');
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    SizedBox(
+                      height: 1.h,
+                    ),
+
+                    SizedBox(
+                      height: 13.h,
+                      child: TextField(
+                        controller: medicine_name_edit,
+                        decoration: InputDecoration(
+                            labelText: 'Medicine Name',
+                            helperText: 'Example - Parecetamol 250mg',
+                            border: OutlineInputBorder()),
+                      ),
+                    ),
+
+                    SizedBox(
+                      height: 2.h,
+                    ),
+
+                    SizedBox(
+                      height: 8.h,
+                      child: TextField(
+                        controller: medicine_notes,
+                        decoration: InputDecoration(
+                            labelText: 'Medicine Notes',
+                            border: OutlineInputBorder()),
+                      ),
+                    ),
+
+                    SizedBox(
+                      height: 1.h,
+                    ),
+
+
+
+                    Card(
+                      color: AppTheme.white,
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width:2.w ,
+                          ),
+                          Icon(Icons.comment),
+                          SizedBox(
+                            width: 2.w,
+                          ),
+                          Flexible(
+                            flex: 2,
+                            child: Container(
+
+                              width: MediaQuery.of(context).size.width * 0.7,
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Padding(
+                                  padding:  EdgeInsets.symmetric(vertical: 3.h),
+                                  child: Text(tab,
+                                      style: TextStyle(
+                                          color: map['tab']
+                                              ? Colors.black
+                                              : Colors.grey)),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          width: 2.w,
-                        ),
-                        IconButton(
-                            onPressed: () async {
-                              //  print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
+                          SizedBox(
+                            width: 2.w,
+                          ),
+                          IconButton(
+                              onPressed: () async {
+                                //  print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
 
-                              showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return Padding(
-                                      padding:  EdgeInsets.symmetric(horizontal: 8.w , vertical: 6.h),
-                                      child: Tab_List_Search(
-                                        result: Tab,
-                                      ),
-                                    );
-                                  }).then((value) async {
-                                print(value);
-                                print('returend');
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return Padding(
+                                        padding:  EdgeInsets.symmetric(horizontal: 8.w , vertical: 6.h),
+                                        child: Tab_List_Search(
+                                          result: Tab,
+                                        ),
+                                      );
+                                    }).then((value) async {
+                                  print(value);
+                                  print('returend');
 
-                                if (value != null) {
-                                  print('if');
+                                  if (value != null) {
+                                    print('if');
 
-                                  Tab = [];
-                                  Tab = value;
-                                  List a = await value;
+                                    Tab = [];
+                                    Tab = value;
+                                    List a = await value;
 
-                                  print(a);
+                                    print(a);
 
-                                  tab = '';
-                                  a.forEach((element) {
-                                    tab += element + ' , ';
-                                  });
-
-                                  if (tab != "") {
-                                    setState(() {
-                                      tab = tab;
-                                      map['tab'] = true;
+                                    tab = '';
+                                    a.forEach((element) {
+                                      tab += element + ' , ';
                                     });
-                                  } else {
+
+                                    if (tab != "") {
+                                      setState(() {
+                                        tab = tab;
+                                        map['tab'] = true;
+                                      });
+                                    } else {
+                                      setState(() {
+                                        Tab = [];
+                                        tab = 'TAB/CAP/SYP';
+                                        map['tab'] = false;
+                                      });
+                                    }
+                                  } else if (value == null) {
+                                    print('in else if');
+                                    print(value);
+
                                     setState(() {
                                       Tab = [];
                                       tab = 'TAB/CAP/SYP';
                                       map['tab'] = false;
                                     });
+                                  } else {
+                                    print('in else');
                                   }
-                                } else if (value == null) {
-                                  print('in else if');
-                                  print(value);
-
-                                  setState(() {
-                                    Tab = [];
-                                    tab = 'TAB/CAP/SYP';
-                                    map['tab'] = false;
-                                  });
-                                } else {
-                                  print('in else');
-                                }
-                              });
-                            },
-                            icon: Icon(Icons.arrow_drop_down_circle_outlined))
-                      ],
+                                });
+                              },
+                              icon: Icon(Icons.arrow_drop_down_circle_outlined))
+                        ],
+                      ),
                     ),
-                  ),
 
-                  // Tab
+                    // Tab
 
-                  SizedBox(
-                    height: 1.h,
-                  ),
+                    SizedBox(
+                      height: 1.h,
+                    ),
 
-                  Card(
-                    color: AppTheme.white,
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          width: 2.w,
-                        ),
-                        Icon(Icons.comment),
-                        SizedBox(
-                          width: 2.w,
-                        ),
+                    Card(
+                      color: AppTheme.white,
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 2.w,
+                          ),
+                          Icon(Icons.comment),
+                          SizedBox(
+                            width: 2.w,
+                          ),
 
 
-                        Flexible(
-                          flex: 2,
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * 0.7,
-                            child: SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Padding(
-                                padding:  EdgeInsets.symmetric(vertical: 3.h),
-                                child: Text(composition,
-                                    style: TextStyle(
-                                        color: map['composition']
-                                            ? Colors.black
-                                            : Colors.grey)),
+                          Flexible(
+                            flex: 2,
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.7,
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Padding(
+                                  padding:  EdgeInsets.symmetric(vertical: 3.h),
+                                  child: Text(composition,
+                                      style: TextStyle(
+                                          color: map['composition']
+                                              ? Colors.black
+                                              : Colors.grey)),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          width: 2.w,
-                        ),
-                        IconButton(
-                            onPressed: () async {
-                              //  print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
+                          SizedBox(
+                            width: 2.w,
+                          ),
+                          IconButton(
+                              onPressed: () async {
+                                //  print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
 
-                              showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return Padding(
-                                      padding:  EdgeInsets.symmetric(horizontal: 8.w , vertical: 6.h),
-                                      child: Composition_List_Search(
-                                        result: Composition,
-                                      ),
-                                    );
-                                  }).then((value) async {
-                                print(value);
-                                print('returend');
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return Padding(
+                                        padding:  EdgeInsets.symmetric(horizontal: 8.w , vertical: 6.h),
+                                        child: Composition_List_Search(
+                                          result: Composition,
+                                        ),
+                                      );
+                                    }).then((value) async {
+                                  print(value);
+                                  print('returend');
 
-                                if (value != null) {
-                                  print('if');
+                                  if (value != null) {
+                                    print('if');
 
-                                  Composition = [];
-                                  Composition = value;
-                                  List a = await value;
+                                    Composition = [];
+                                    Composition = value;
+                                    List a = await value;
 
-                                  print(a);
+                                    print(a);
 
-                                  composition = '';
-                                  a.forEach((element) {
-                                    composition += element + ' , ';
-                                  });
-
-                                  if (composition != "") {
-                                    setState(() {
-                                      composition = composition;
-                                      map['composition'] = true;
+                                    composition = '';
+                                    a.forEach((element) {
+                                      composition += element + ' , ';
                                     });
-                                  } else {
+
+                                    if (composition != "") {
+                                      setState(() {
+                                        composition = composition;
+                                        map['composition'] = true;
+                                      });
+                                    } else {
+                                      setState(() {
+                                        Composition = [];
+                                        composition = 'Composition';
+                                        map['composition'] = false;
+                                      });
+                                    }
+                                  } else if (value == null) {
+                                    print('in else if');
+                                    print(value);
+
                                     setState(() {
                                       Composition = [];
                                       composition = 'Composition';
                                       map['composition'] = false;
                                     });
+                                  } else {
+                                    print('in else');
                                   }
-                                } else if (value == null) {
-                                  print('in else if');
-                                  print(value);
+                                });
+                              },
+                              icon: Icon(Icons.arrow_drop_down_circle_outlined))
+                        ],
+                      ),
+                    ), //Composition
 
-                                  setState(() {
-                                    Composition = [];
-                                    composition = 'Composition';
-                                    map['composition'] = false;
-                                  });
-                                } else {
-                                  print('in else');
-                                }
-                              });
-                            },
-                            icon: Icon(Icons.arrow_drop_down_circle_outlined))
-                      ],
+                    SizedBox(
+                      height: 1.h,
                     ),
-                  ), //Composition
 
-                  SizedBox(
-                    height: 1.h,
-                  ),
-
-                  Card(
-                    color: AppTheme.white,
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          width: 2.w,
-                        ),
-                        Icon(Icons.comment),
-                        SizedBox(
-                          width: 2.w,
-                        ),
-                        Flexible(
-                          flex: 2,
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * 0.7,
-                            child: SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Padding(
-                                padding:  EdgeInsets.symmetric(vertical: 3.h),
-                                child: Text(company_name,
-                                    style: TextStyle(
-                                        color: map['company_name']
-                                            ? Colors.black
-                                            : Colors.grey)),
+                    Card(
+                      color: AppTheme.white,
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 2.w,
+                          ),
+                          Icon(Icons.comment),
+                          SizedBox(
+                            width: 2.w,
+                          ),
+                          Flexible(
+                            flex: 2,
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.7,
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Padding(
+                                  padding:  EdgeInsets.symmetric(vertical: 3.h),
+                                  child: Text(company_name,
+                                      style: TextStyle(
+                                          color: map['company_name']
+                                              ? Colors.black
+                                              : Colors.grey)),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          width: 2.w,
-                        ),
-                        IconButton(
-                            onPressed: () async {
-                              //  print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
+                          SizedBox(
+                            width: 2.w,
+                          ),
+                          IconButton(
+                              onPressed: () async {
+                                //  print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
 
-                              showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return Padding(
-                                      padding: const EdgeInsets.all(20.0),
-                                      child: Company_name_List_Search(
-                                        result: Company_name,
-                                      ),
-                                    );
-                                  }).then((value) async {
-                                print(value);
-                                print('returend');
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return Padding(
+                                        padding: const EdgeInsets.all(20.0),
+                                        child: Company_name_List_Search(
+                                          result: Company_name,
+                                        ),
+                                      );
+                                    }).then((value) async {
+                                  print(value);
+                                  print('returend');
 
-                                if (value != null) {
-                                  print('if');
+                                  if (value != null) {
+                                    print('if');
 
-                                  Company_name = [];
-                                  Company_name = value;
-                                  List a = await value;
+                                    Company_name = [];
+                                    Company_name = value;
+                                    List a = await value;
 
-                                  print(a);
+                                    print(a);
 
-                                  company_name = '';
-                                  a.forEach((element) {
-                                    company_name += element + ' , ';
-                                  });
-
-                                  if (company_name != "") {
-                                    setState(() {
-                                      company_name = company_name;
-                                      map['company_name'] = true;
+                                    company_name = '';
+                                    a.forEach((element) {
+                                      company_name += element + ' , ';
                                     });
-                                  } else {
+
+                                    if (company_name != "") {
+                                      setState(() {
+                                        company_name = company_name;
+                                        map['company_name'] = true;
+                                      });
+                                    } else {
+                                      setState(() {
+                                        Company_name = [];
+                                        company_name = 'Company Name';
+                                        map['company_name'] = false;
+                                      });
+                                    }
+                                  } else if (value == null) {
+                                    print('in else if');
+                                    print(value);
+
                                     setState(() {
                                       Company_name = [];
                                       company_name = 'Company Name';
                                       map['company_name'] = false;
                                     });
+                                  } else {
+                                    print('in else');
                                   }
-                                } else if (value == null) {
-                                  print('in else if');
-                                  print(value);
+                                });
+                              },
+                              icon: Icon(Icons.arrow_drop_down_circle_outlined))
+                        ],
+                      ),
+                    ), // Company Name
 
-                                  setState(() {
-                                    Company_name = [];
-                                    company_name = 'Company Name';
-                                    map['company_name'] = false;
-                                  });
-                                } else {
-                                  print('in else');
-                                }
-                              });
-                            },
-                            icon: Icon(Icons.arrow_drop_down_circle_outlined))
-                      ],
+                    SizedBox(
+                      height: 1.h,
                     ),
-                  ), // Company Name
-
-                  SizedBox(
-                    height: 1.h,
-                  ),
 
 
 
               ],
             ),
+                  ),
                 ),
                 Material(
                   child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 8.0),
               alignment: Alignment.bottomCenter,
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -632,9 +634,12 @@ class _AddMedicineState extends State<AddMedicine> {
               ),
             ),
                 ),
-                SizedBox(
+                Material(
+                  child: Container(
+                    color: Colors.white,
               height: 1.h,
             ),
+                ),
           ],
         ),
       ),
