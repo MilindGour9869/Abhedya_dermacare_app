@@ -185,6 +185,9 @@ class _VisitsDateState extends State<VisitsDate> {
 
                         children:visit_dates.map((date) {
 
+                          print(date);
+
+
 
 
 
@@ -201,7 +204,7 @@ class _VisitsDateState extends State<VisitsDate> {
 
                                     patient_data: widget.patient_data,
 
-                                    map: widget.patient_data.visits_mapData_list[date],
+                                    map: widget.patient_data.visits_mapData_list[date.toString()],
 
                                   ))).then((value) {
 

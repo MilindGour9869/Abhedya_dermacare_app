@@ -19,18 +19,9 @@ class _State extends State<Setting> {
 
 Map<String,Map<String,dynamic>> map={
 
-  'aa':{
-    'dosage':12,
-    'duration':98,
+  'fud': {
 
-  },
-
-
-  'qqw':{
-    'dosage':12,
-    'duration':98,
-
-  }
+    'time': ['Afternoon'], 'duration': {'tenure': 23, 'Duration': 'Weeks'}, 'add_info': ['At Bed Time']}
 };
 
 
@@ -44,20 +35,15 @@ Widget build(BuildContext context) {
 
 
 
-return Center(
-  child:   Container(
+return PdfPreview(
 
-    child: PdfPreview(
-
-      build: ((format)=>PdfInvoiceApi.generatePdf(
-        diagnosis: ['qqq' , 'eretur' ,'nnnsn'],
-        medicinces: map
-      )),
+  build: ((format)=>PdfInvoiceApi.generatePdf(
+    medicinces: map
+  )),
 
 
 
-    ),
-  ));
+);
 
 
 }
@@ -66,27 +52,27 @@ return Center(
 
 }
 
-Future<Uint8List> generatePdf(PdfPageFormat format, String title) async {
-  final pdf = pw.Document();
-
-  final image = await imageFromAssetBundle('images/logo.png');
-
-
-  pdf.addPage(
-    pw.Page(
-
-      build: (context) {
-        return pw.Container(
-
-          child: pw.Text('qq')
-        );
-
-      },
-    ),
-  );
-
-  return pdf.save();
-}
+//Future<Uint8List> generatePdf(PdfPageFormat format, String title) async {
+//  final pdf = pw.Document();
+//
+//  final image = await imageFromAssetBundle('images/logo.png');
+//
+//
+//  pdf.addPage(
+//    pw.Page(
+//
+//      build: (context) {
+//        return pw.Container(
+//
+//          child: pw.Text('qq')
+//        );
+//
+//      },
+//    ),
+//  );
+//
+//  return pdf.save();
+//}
 
 
 

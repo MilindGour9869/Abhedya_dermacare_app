@@ -201,6 +201,9 @@ class _State extends State<Patient> {
                   Text(
                     'last visited on : ${formatDate(patient_data_tile.recent_visit.toDate(), [ dd, '-', mm, '-', yyyy])}',
                      textScaleFactor: AppTheme.list_tile_subtile,
+                    style: TextStyle(
+                      fontStyle: FontStyle.italic
+                    ),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -33,7 +33,7 @@ class _AddDataState extends State<AddData> {
 
 
   void pop(){
-    String time ;
+    List<String> time ;
     String duration;
 
     print(result_map['aa']);
@@ -41,7 +41,7 @@ class _AddDataState extends State<AddData> {
     map2.forEach((key, v) {
       if(v)
       {
-        time = key ;
+        time.add(key) ;
       }
     });
 
@@ -264,11 +264,7 @@ class _AddDataState extends State<AddData> {
 
                               setState(() {
 
-                                map2.forEach((key, value) {
-                                  print(key);
-                                  map2[key] = false;
-
-                                });
+                                
 
 
 

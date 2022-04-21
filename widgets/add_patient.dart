@@ -582,7 +582,13 @@ class _AddPatientState extends State<AddPatient> {
                          return showDialog(
                              context: context,
                              builder: (context) =>AlertDialog(
-                               title: Text('Please enter Name of Patient'),
+                               title: Text('Please enter Name of Patient' , textScaleFactor: AppTheme.alert,),
+                               actions: [
+                                 TextButton(onPressed: (){
+                                   Navigator.pop(context);
+
+                                 }, child: Text('OK' ,  textScaleFactor: AppTheme.alert,))
+                               ],
                              ));
                        }
                      },)
@@ -662,7 +668,13 @@ class _AddPatientState extends State<AddPatient> {
                           return showDialog(
                               context: context,
                               builder: (context) =>AlertDialog(
-                                title: Text('Please enter Name of Patient'),
+                                title: Text('Please enter Name of Patient'  , textScaleFactor: AppTheme.alert,),
+                                actions: [
+                                  TextButton(onPressed: (){
+                                    Navigator.pop(context);
+
+                                  }, child: Text('OK' ,  textScaleFactor: AppTheme.alert,))
+                                ],
                               ));
                         }
                       },)

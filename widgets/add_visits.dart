@@ -111,6 +111,13 @@ class _AddVisitsState extends State<AddVisits> {
   }
 
 
+  void Prnt(){
+    print(Complaint);
+    print(Clinical_findings);
+
+  }
+
+
 
 
 
@@ -197,7 +204,7 @@ setState(() {
   void initState() {
     // TODO: implement initState
     super.initState();
-    print('init');
+
 
 
 
@@ -207,6 +214,12 @@ setState(() {
     if(widget.map != null)
       {
         map = widget.map;
+
+        print('\ninit');
+
+
+        print(map);
+
 
 
          setdata();
@@ -245,6 +258,10 @@ setState(() {
         ),
         title: Text('Add Visits' , ),
         actions: [
+          IconButton(onPressed: (){
+            Prnt();
+
+          }, icon: Icon(Icons.print_outlined)),
           Padding(
             padding:  EdgeInsets.only(right: 1.h),
             child: IconButton(onPressed: (){
@@ -293,6 +310,7 @@ setState(() {
               {
                 map['clinical_finding'] = Clinical_findings;
               }
+
 
               widget.patient_data.visits_mapData_list[visit_date]=map;
 
@@ -414,7 +432,7 @@ setState(() {
 
 
 
-                         print(widget.patient_data.doc_id);
+                         print(widget.patient_data.visits_mapData_list);
 
 
                         showDialog(
@@ -487,6 +505,12 @@ setState(() {
 
 
                         // print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
+
+                        print('ddd');
+
+
+                        print(widget.patient_data.visits_mapData_list[visit_date]);
+
 
 
                         showDialog(
