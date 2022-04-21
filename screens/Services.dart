@@ -8,6 +8,9 @@ import 'package:flutter_app/storage/storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
+
+List all_service_list = [];
+
 class Services extends StatefulWidget {
   @override
   _State createState() => _State();
@@ -41,7 +44,7 @@ class _State extends State<Services> {
   var service = TextEditingController();
   var charge = TextEditingController();
 
-  List all_service_list = [];
+
   List search_service_list = [];
 
   Services_data_update data;
@@ -100,6 +103,8 @@ class _State extends State<Services> {
   }
 
   Future set() {
+
+    print('set called');
     Storage.set_services(updated: updated, value: all_data_map);
   }
 
@@ -223,6 +228,11 @@ class _State extends State<Services> {
                                                 context: context,
                                                 size: services_length))
                                         .then((value) {
+
+
+
+                                          print('ddd');
+
                                       if (value != null) {
                                         all_data_map.addAll(value);
                                         updated = true;
@@ -1378,7 +1388,13 @@ Widget Dialogue(
                                       context: context,
                                       builder: (context) => AlertDialog(
                                         title:
-                                        Text('Service field is required'),
+                                        Text('Service field is required' , textScaleFactor: AppTheme.alert,),
+                                        actions: [
+                                          TextButton(onPressed: (){
+                                            Navigator.pop(context);
+
+                                          }, child: Text('OK' ,  textScaleFactor: AppTheme.alert,))
+                                        ],
                                       ));
                                 }
 
@@ -1386,32 +1402,75 @@ Widget Dialogue(
                                   showDialog(
                                       context: context,
                                       builder: (context) => AlertDialog(
-                                        title: Text('Charge field is required'),
+                                        title: Text('Charge field is required' , textScaleFactor: AppTheme.alert,),
+                                        actions: [
+                                          TextButton(onPressed: (){
+                                            Navigator.pop(context);
+
+                                          }, child: Text('OK' ,  textScaleFactor: AppTheme.alert,))
+                                        ],
                                       ));
                                 }
+                                bool similar = false;
 
-                                Map<String, Map<String, dynamic>> all_data_map = {};
 
-                                var doc = await FirebaseFirestore.instance
-                                    .collection('Services')
-                                    .doc();
+                                all_service_list.forEach((element) {
+                                  if(service.text == element)
+                                    {
+                                      print('Similaer');
+                                      similar=true;
+                                    }
+                                });
 
-                                final json = {
-                                  'id': service_name,
-                                  'charge': int.parse(charges.text),
-                                  'service': service.text,
-                                  'doc_id': doc.id,
-                                };
 
-                                all_data_map[doc.id] = json;
-                                print(all_data_map);
+
+
+
 
                                 //  Services();
 
-                                Navigator.pop(context, all_data_map);
+                               if(!similar)
+                                 {
 
-                                charges.clear();
-                                service.clear();
+                                   Map<String, Map<String, dynamic>> all_data_map = {};
+
+                                   var doc = await FirebaseFirestore.instance
+                                       .collection('Services')
+                                       .doc();
+
+                                   final json = {
+                                     'id': service_name,
+                                     'charge': int.parse(charges.text),
+                                     'service': service.text,
+                                     'doc_id': doc.id,
+                                   };
+
+                                   all_data_map[doc.id] = json;
+                                   print(all_data_map);
+
+
+                                   Navigator.pop(context, all_data_map);
+                                   charges.clear();
+                                   service.clear();
+                                 }
+                               else
+                                 {
+                                   showDialog(
+                                       context: context,
+                                       builder: (context) => AlertDialog(
+                                         title:
+                                         Text('Service Name is similar to another service\nPlease change the name' , textScaleFactor: AppTheme.alert,),
+                                         actions: [
+                                           TextButton(onPressed: (){
+                                             Navigator.pop(context);
+
+                                           }, child: Text('OK' ,  textScaleFactor: AppTheme.alert,))
+                                         ],
+                                       ));
+
+                                 }
+
+
                               },
                             ),
                           ),

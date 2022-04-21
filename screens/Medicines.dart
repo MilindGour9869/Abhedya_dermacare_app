@@ -541,6 +541,7 @@ class _State extends State<Medicines> {
               builder: (context) => AddMedicine(
                 composition: null,
                 result: all_data_doc_id_map,
+                medicine_name_list: medicine_name,
               )).then((value) {
 
                     print('dd');

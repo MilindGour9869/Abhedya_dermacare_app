@@ -8,6 +8,8 @@ class AppTheme{
 
   static double dr_mahi = 1.6;
   static double list_tile_subtile  = 1;
+  static double alert=0.9;
+
 
 
 

@@ -20,6 +20,9 @@ class AddMedicine extends StatefulWidget {
 
   Map<String , Map<String,dynamic> > result;
 
+  List medicine_name_list = [];
+
+
   AddMedicine(
       {this.company_name ,
       this.composition,
@@ -27,6 +30,8 @@ class AddMedicine extends StatefulWidget {
       this.doc_id,
       this.medicine_name,
       this.result,
+        this.medicine_name_list
+
 
       });
 
@@ -532,99 +537,134 @@ class _AddMedicineState extends State<AddMedicine> {
                           if(medicine_name_edit.text.isEmpty || medicine_name_edit.text == null)
                           {
                             showDialog(context: context, builder: (context)=>AlertDialog(
-                              title: Text('Medicine Name is Compulsory'),
+                              title: Text('Medicine Name is Compulsory' , textScaleFactor: AppTheme.alert,),
+                              actions: [
+                                TextButton(onPressed: (){
+                                  Navigator.pop(context);
+
+                                }, child: Text('OK' ,  textScaleFactor: AppTheme.alert,))
+                              ],
                             ));
 
 
                           }
-                          else {
-                            Map<String,dynamic> json={};
-
-                            if(medicine_notes.text.isNotEmpty)
+                          else
                             {
-                              json['medicine_notes'] = medicine_notes.text;
-                            }
-                            if(Tab.isNotEmpty)
-                            {
-                              json['tab']= Tab;
-                            }
-                            if(Company_name.isNotEmpty)
-                            {
-                              json['company_name'] = Company_name;
-                            }
-                            if(Composition.isNotEmpty)
-                            {
-                              json['composition'] = Composition;
+                              bool similar = false;
+                              widget.medicine_name_list.forEach((element) {
+                                if(medicine_name_edit.text == element)
+                                  {
+                                    similar=true;
 
-                            }
+                                  }
+                              });
 
+                              if(similar)
+                                {
+                                  showDialog(context: context, builder: (context)=>AlertDialog(
+                                    title: Text('Medicine Name is Similar Another Name\nPlease Change the Name ' , textScaleFactor: AppTheme.alert,),
+                                    actions: [
+                                      TextButton(onPressed: (){
+                                        Navigator.pop(context);
 
-
-                            if(medicine_name_edit.text.isNotEmpty)
-                            {
-                              json['medicine_name']=medicine_name_edit.text;
-                            }
-
-                            json['select'] = false;
+                                      }, child: Text('OK' ,  textScaleFactor: AppTheme.alert,))
+                                    ],
+                                  ));
 
 
-
-
-
-
-
-
-                            if (widget.doc_id == null) {
-                              var doc = await FirebaseFirestore.instance
-                                  .collection('Medicines')
-                                  .doc();
-                              json['doc_id']=doc.id;
-
-
-
-
-
-                              widget.result[doc.id]=json;
-
-
-
-                              Storage.set_medicine( value: widget.result,updated: true);
-
-
-
-                            }
-                            else if (widget.doc_id != null) {
-
-                              print(widget.doc_id);
-
-                              if(json['composition'] == null)
+                                }
+                              else
                               {
-                                json['composition'] = widget.composition;
+                                Map<String,dynamic> json={};
 
+                                if(medicine_notes.text.isNotEmpty)
+                                {
+                                  json['medicine_notes'] = medicine_notes.text;
+                                }
+                                if(Tab.isNotEmpty)
+                                {
+                                  json['tab']= Tab;
+                                }
+                                if(Company_name.isNotEmpty)
+                                {
+                                  json['company_name'] = Company_name;
+                                }
+                                if(Composition.isNotEmpty)
+                                {
+                                  json['composition'] = Composition;
+
+                                }
+
+
+
+                                if(medicine_name_edit.text.isNotEmpty)
+                                {
+                                  json['medicine_name']=medicine_name_edit.text;
+                                }
+
+                                json['select'] = false;
+
+
+
+
+
+
+
+
+                                if (widget.doc_id == null) {
+                                  var doc = await FirebaseFirestore.instance
+                                      .collection('Medicines')
+                                      .doc();
+                                  json['doc_id']=doc.id;
+
+
+
+
+
+                                  widget.result[doc.id]=json;
+
+
+
+                                  Storage.set_medicine( value: widget.result,updated: true);
+
+
+
+                                }
+                                else if (widget.doc_id != null) {
+
+                                  print(widget.doc_id);
+
+                                  if(json['composition'] == null)
+                                  {
+                                    json['composition'] = widget.composition;
+
+                                  }
+                                  if(json['company_name'] == null)
+                                  {
+                                    json['company_name'] = widget.company_name;
+
+                                  }
+                                  if(json['tab'] == null)
+                                  {
+                                    json['tab'] = widget.tab;
+
+                                  }
+
+
+
+                                  json['doc_id']=widget.doc_id;
+
+                                  widget.result[widget.doc_id.toString()]=json;
+
+                                  Storage.set_medicine( value: widget.result,updated: true);
+
+                                }
+
+                                Navigator.pop(context, 'save');
                               }
-                              if(json['company_name'] == null)
-                              {
-                                json['company_name'] = widget.company_name;
 
-                              }
-                              if(json['tab'] == null)
-                              {
-                                json['tab'] = widget.tab;
-
-                              }
-
-
-
-                              json['doc_id']=widget.doc_id;
-
-                              widget.result[widget.doc_id.toString()]=json;
-
-                              Storage.set_medicine( value: widget.result,updated: true);
 
                             }
-
-                            Navigator.pop(context, 'save');
-                          }
 
 
                         },

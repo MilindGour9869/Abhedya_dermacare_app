@@ -227,19 +227,26 @@ class _State extends State<Patient> {
                             
 
 
-                            style: AppTheme.CGrey
-                          )),
+                            style: AppTheme.CGrey,
+                            textScaleFactor: AppTheme.list_tile_subtile,
+                          ),
+
+
+
+                      ),
                       TextButton(
                           onPressed: () {},
                           child: Text(
                             'Payment',
-                              style: AppTheme.CGrey
+                              style: AppTheme.CGrey,
+                            textScaleFactor: AppTheme.list_tile_subtile,
                           )),
                       TextButton(
                           onPressed: () {},
                           child: Text(
                             'Documents',
-                              style: AppTheme.CGrey
+                              style: AppTheme.CGrey,
+                            textScaleFactor: AppTheme.list_tile_subtile,
                           )),
                     ],
                   )
@@ -404,7 +411,7 @@ class _State extends State<Patient> {
 
                           ChoiceChip(
                             backgroundColor: AppTheme.offwhite,
-                            label: today?Text('Today' , ):Text('All' , ),
+                            label: today?Text('Today' , textScaleFactor: AppTheme.list_tile_subtile, ):Text('All' , textScaleFactor: AppTheme.list_tile_subtile ),
                             selected: false,
                             selectedColor: Colors.teal,
                             onSelected: (bool selected) {

@@ -250,7 +250,7 @@ class _AddPatientState extends State<AddPatient> {
                                TextButton(onPressed: (){
                                  Navigator.pop(context);
 
-                               }, child: Text('OK' , ))
+                               }, child: Text('OK' ,  textScaleFactor: AppTheme.alert,))
                              ],
 
                            ));
@@ -270,7 +270,7 @@ class _AddPatientState extends State<AddPatient> {
                                       TextButton(onPressed: (){
                                         Navigator.pop(context);
 
-                                      }, child: Text('OK' ,))
+                                      }, child: Text('OK' , textScaleFactor: AppTheme.alert,))
                                     ],
                                    ));
 
@@ -284,12 +284,12 @@ class _AddPatientState extends State<AddPatient> {
                              if(mobile_edit.text.length!=10)
                                {
                                  return  showDialog(context: context, builder: (context)=>AlertDialog(
-                                   title: Text('Invalid Mobile No.' , ),
+                                   title: Text('Invalid Mobile No.' ,  textScaleFactor: AppTheme.alert,),
                                    actions: [
                                      TextButton(onPressed: (){
                                        Navigator.pop(context);
 
-                                     }, child: Text('OK'))
+                                     }, child: Text('OK' , textScaleFactor: AppTheme.alert,))
                                    ],
                                  ));
 
@@ -350,12 +350,12 @@ class _AddPatientState extends State<AddPatient> {
                     {
                       return showDialog(context: context , builder: (context)=>AlertDialog(
 
-                        title: Text('Name is Compulsory\nPlease write the name'  ,),
+                        title: Text('Name is Compulsory\nPlease write the name'  , textScaleFactor: AppTheme.alert,),
                         actions: [
                           TextButton(onPressed: (){
                             Navigator.pop(context);
 
-                          }, child: Text('OK' , ))
+                          }, child: Text('OK' ,  textScaleFactor: AppTheme.alert,))
                         ],
                       ));
 
