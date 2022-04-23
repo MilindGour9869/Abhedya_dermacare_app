@@ -1130,514 +1130,548 @@ class PdfInvoiceApi {
 
                   pw.Flexible(
                     flex: 1,
-                    child:pw.Container(
-                      padding: pw.EdgeInsets.only(left: 0.7*PdfPageFormat.cm),
-                      width: 6.3*PdfPageFormat.cm,
+                    child:pw.Column(
+                      children: [
 
-                      child: pw.Column(
+                        pw.SizedBox(height:  one),
 
-                        mainAxisAlignment: pw.MainAxisAlignment.start,
-                          crossAxisAlignment: pw.CrossAxisAlignment.start,
+                        pw.Container(
 
-
-
-                          children: [
+                          color: orange,
+                          child: pw.Row(
 
 
-                            pw.SizedBox(height:  one),
+                              mainAxisAlignment: pw.MainAxisAlignment.start,
+                              children: [
 
-                            pw.Container(
-                              color: orange,
-                              padding: pw.EdgeInsets.symmetric(horizontal: two),
-                              child: pw.Text('उपलब्ध सुविधाऐ' , style: pw.TextStyle(fontSize: 0.5*PdfPageFormat.cm , font: hindiFont , fontWeight: bold)),
-                            ),
+                                pw.Container(
+
+                                    width: 50),
 
 
 
+                                 pw.Text('उपलब्ध सुविधाऐ  ' , style: pw.TextStyle(fontSize: 0.5*PdfPageFormat.cm , font: hindiFont , fontWeight: bold)),
+
+                               pw.Expanded(
+                                 child:  pw.Container(
+                                     color: PdfColors.white,
+
+
+                                     height: 0.9*PdfPageFormat.cm
+
+
+                                 ),
+                               )
+
+                              ]
+                          ),
+                        ),
+
+
+                        pw.Container(
+                          padding: pw.EdgeInsets.only(left: 0.7*PdfPageFormat.cm),
+                          width: 6.3*PdfPageFormat.cm,
+
+                          child: pw.Column(
+
+                              mainAxisAlignment: pw.MainAxisAlignment.start,
+                              crossAxisAlignment: pw.CrossAxisAlignment.start,
 
 
 
-
-                            pw.SizedBox(height:  five),
-
-
-
-                            //1
-                            pw.Bullet(
-                              text: 'समस्त चर्म ऐव योन रोग',
-                              bulletShape: pw.BoxShape.rectangle,
-                              style: pw.TextStyle(
-
-                                fontSize: three,
-                                font: hindiFont,
-                                fontWeight: bold
-
-                              ),
-                              bulletColor: purple,
-                              margin: pw.EdgeInsets.only(bottom: bottom ,),
-                              bulletSize: one,
-                              bulletMargin: pw.EdgeInsets.only(
-                                  left:0 , right: one , top: 0.125*PdfPageFormat.cm
-                              )
-
-
-
-                            ),
-
-                            pw.SizedBox(height:five ),
-
-
-                            //2
-                            pw.Bullet(
-                              text: 'नाखुन बालो से संबंधित रोग',
-                              bulletShape: pw.BoxShape.rectangle,
-                              style: pw.TextStyle(
-
-                                fontSize: three,
-                                font: hindiFont,
-                                fontWeight: bold
-
-                              ),
-                              bulletColor: purple,
-                              margin: pw.EdgeInsets.only(bottom: bottom ,),
-                              bulletSize: one,
-                                bulletMargin: pw.EdgeInsets.only(
-                                    left:0 , right: one , top: 0.125*PdfPageFormat.cm
-                                )
-
-
-
-                            ),
-
-                            pw.SizedBox(height:five ),
+                              children: [
 
 
 
 
-                            //3
-                            pw.Bullet(
-                              text: 'Triplle Wave Length Diode Laser',
-                              bulletShape: pw.BoxShape.rectangle,
-                              style: pw.TextStyle(
-
-                                  fontSize: three,
-                                fontWeight: bold
-
-                              ),
-                              bulletColor: purple,
-                              margin: pw.EdgeInsets.only(bottom: bottom),
-                              bulletSize: one,
-                                bulletMargin: pw.EdgeInsets.only(
-                                    left:0 , right: one , top: 0.125*PdfPageFormat.cm
-                                )
-
-                            ),
-                            pw.Padding(padding: pw.EdgeInsets.only(left: two ),
-                            child: pw.Text('अंचाहे बालो को हटाना' , style: pw.TextStyle(
-                                fontSize:  three,
-                                font:hindiFont,
-
-                            ))),
-
-                            pw.SizedBox(height: five),
-
-                            //4
-                            pw.Bullet(
-                              text: 'फोटोथेरेपी',
-                              bulletShape: pw.BoxShape.rectangle,
-                              style: pw.TextStyle(
-
-                                  fontSize: three,
-                                  font: hindiFont,
-                                fontWeight: bold
-
-                              ),
-                              bulletColor: purple,
-                              margin: pw.EdgeInsets.only(bottom: bottom),
-                              bulletSize: one,
-                                bulletMargin: pw.EdgeInsets.only(
-                                    left:0 , right: one , top: 0.125*PdfPageFormat.cm
-                                )
-
-                            ),
-                            pw.Padding(padding: pw.EdgeInsets.only(left: two ),
-                                child:  pw.Column(
-                                  crossAxisAlignment: pw.CrossAxisAlignment.start,
-                                  children: [
-                                    pw.Text('सफेद दाग हटाना' , style: pw.TextStyle(
-                                        fontSize :three,
-                                        font:hindiFont,
 
 
 
-                                    )),
-                                    pw.Text('सोरायसिस का इलाज' , style: pw.TextStyle(
+
+
+
+                                pw.SizedBox(height:  five),
+
+
+
+                                //1
+                                pw.Bullet(
+                                    text: 'समस्त चर्म ऐव योन रोग',
+                                    bulletShape: pw.BoxShape.rectangle,
+                                    style: pw.TextStyle(
+
+                                        fontSize: three,
+                                        font: hindiFont,
+                                        fontWeight: bold
+
+                                    ),
+                                    bulletColor: purple,
+                                    margin: pw.EdgeInsets.only(bottom: bottom ,),
+                                    bulletSize: one,
+                                    bulletMargin: pw.EdgeInsets.only(
+                                        left:0 , right: one , top: 0.125*PdfPageFormat.cm
+                                    )
+
+
+
+                                ),
+
+                                pw.SizedBox(height:five ),
+
+
+                                //2
+                                pw.Bullet(
+                                    text: 'नाखुन बालो से संबंधित रोग',
+                                    bulletShape: pw.BoxShape.rectangle,
+                                    style: pw.TextStyle(
+
+                                        fontSize: three,
+                                        font: hindiFont,
+                                        fontWeight: bold
+
+                                    ),
+                                    bulletColor: purple,
+                                    margin: pw.EdgeInsets.only(bottom: bottom ,),
+                                    bulletSize: one,
+                                    bulletMargin: pw.EdgeInsets.only(
+                                        left:0 , right: one , top: 0.125*PdfPageFormat.cm
+                                    )
+
+
+
+                                ),
+
+                                pw.SizedBox(height:five ),
+
+
+
+
+                                //3
+                                pw.Bullet(
+                                    text: 'Triplle Wave Length Diode Laser',
+                                    bulletShape: pw.BoxShape.rectangle,
+                                    style: pw.TextStyle(
+
+                                        fontSize: three,
+                                        fontWeight: bold
+
+                                    ),
+                                    bulletColor: purple,
+                                    margin: pw.EdgeInsets.only(bottom: bottom),
+                                    bulletSize: one,
+                                    bulletMargin: pw.EdgeInsets.only(
+                                        left:0 , right: one , top: 0.125*PdfPageFormat.cm
+                                    )
+
+                                ),
+                                pw.Padding(padding: pw.EdgeInsets.only(left: two ),
+                                    child: pw.Text('अंचाहे बालो को हटाना' , style: pw.TextStyle(
+                                      fontSize:  three,
+                                      font:hindiFont,
+
+                                    ))),
+
+                                pw.SizedBox(height: five),
+
+                                //4
+                                pw.Bullet(
+                                    text: 'फोटोथेरेपी',
+                                    bulletShape: pw.BoxShape.rectangle,
+                                    style: pw.TextStyle(
+
+                                        fontSize: three,
+                                        font: hindiFont,
+                                        fontWeight: bold
+
+                                    ),
+                                    bulletColor: purple,
+                                    margin: pw.EdgeInsets.only(bottom: bottom),
+                                    bulletSize: one,
+                                    bulletMargin: pw.EdgeInsets.only(
+                                        left:0 , right: one , top: 0.125*PdfPageFormat.cm
+                                    )
+
+                                ),
+                                pw.Padding(padding: pw.EdgeInsets.only(left: two ),
+                                    child:  pw.Column(
+                                        crossAxisAlignment: pw.CrossAxisAlignment.start,
+                                        children: [
+                                          pw.Text('सफेद दाग हटाना' , style: pw.TextStyle(
+                                            fontSize :three,
+                                            font:hindiFont,
+
+
+
+                                          )),
+                                          pw.Text('सोरायसिस का इलाज' , style: pw.TextStyle(
+                                            fontSize:  three,
+                                            font:hindiFont,
+
+
+
+                                          )),
+                                        ]
+                                    )
+
+
+                                ),
+
+                                pw.SizedBox(height: five),
+
+
+
+                                //5
+                                pw.Bullet(
+                                    text: 'PRP , ACUGEL TREATMENT',
+                                    bulletShape: pw.BoxShape.rectangle,
+                                    style: pw.TextStyle(
+
+                                        fontSize: three,
+                                        fontWeight: bold
+
+                                    ),
+                                    bulletColor: purple,
+                                    margin: pw.EdgeInsets.only(bottom: bottom),
+                                    bulletSize: one,
+                                    bulletMargin: pw.EdgeInsets.only(
+                                        left:0 , right: one , top: 0.125*PdfPageFormat.cm
+                                    )
+
+                                ),
+                                pw.Padding(padding: pw.EdgeInsets.only(left: two),
+                                    child: pw.Text('Dark Circle हटाना\nचेहरे पर Glow(चमक)लाना' , style: pw.TextStyle(
                                         fontSize:  three,
                                         font:hindiFont,
+                                        fontWeight: bold
 
 
+                                    ))),
 
-                                    )),
-                                  ]
-                                )
+                                pw.SizedBox(height: five),
 
+                                //6
+                                pw.Bullet(
+                                    text: 'MNRF',
+                                    bulletShape: pw.BoxShape.rectangle,
+                                    style: pw.TextStyle(
 
-                            ),
+                                        fontSize: three,
+                                        fontWeight: bold
 
-                            pw.SizedBox(height: five),
+                                    ),
+                                    bulletColor: purple,
+                                    margin: pw.EdgeInsets.only(bottom: bottom),
+                                    bulletSize: one,
+                                    bulletMargin: pw.EdgeInsets.only(
+                                        left:0 , right: one , top: 0.125*PdfPageFormat.cm
+                                    )
 
+                                ),
+                                pw.Padding(padding: pw.EdgeInsets.only(left: two),
+                                    child: pw.Text('पिंपल्स के खड्डे भरना\nचिकनपॉक्स के खड्डे भरना' , style: pw.TextStyle(
+                                        fontSize:  three,
+                                        font:hindiFont,
+                                        fontWeight: bold
 
+                                    ))),
 
-                            //5
-                            pw.Bullet(
-                              text: 'PRP , ACUGEL TREATMENT',
-                              bulletShape: pw.BoxShape.rectangle,
-                              style: pw.TextStyle(
+                                pw.SizedBox(height: five),
 
-                                  fontSize: three,
-                                fontWeight: bold
 
-                              ),
-                              bulletColor: purple,
-                              margin: pw.EdgeInsets.only(bottom: bottom),
-                              bulletSize: one,
-                                bulletMargin: pw.EdgeInsets.only(
-                                    left:0 , right: one , top: 0.125*PdfPageFormat.cm
-                                )
+                                //7
+                                pw.Bullet(
+                                    text: 'केमिकल पीलिंग',
+                                    bulletShape: pw.BoxShape.rectangle,
+                                    style: pw.TextStyle(
 
-                            ),
-                            pw.Padding(padding: pw.EdgeInsets.only(left: two),
-                                child: pw.Text('Dark Circle हटाना\nचेहरे पर Glow(चमक)लाना' , style: pw.TextStyle(
-                                    fontSize:  three,
-                                    font:hindiFont,
-                                  fontWeight: bold
+                                        fontSize:three,
+                                        font: hindiFont,
+                                        fontWeight: bold
 
+                                    ),
+                                    bulletColor: purple,
+                                    margin: pw.EdgeInsets.only(bottom: bottom),
+                                    bulletSize: one,
+                                    bulletMargin: pw.EdgeInsets.only(
+                                        left:0 , right: one , top: 0.125*PdfPageFormat.cm
+                                    )
 
-                                ))),
+                                ),
+                                pw.Padding(padding: pw.EdgeInsets.only(left: two ),
+                                    child: pw.Text('चेहरे की चमक लाना\nपिंपल्स ऐव पिंपल्स के निशान हटाना\nजुरिया जुरिया हटाना' , style: pw.TextStyle(
+                                        fontSize :three,
+                                        font:hindiFont,
+                                        fontWeight: bold
 
-                            pw.SizedBox(height: five),
 
-                            //6
-                            pw.Bullet(
-                              text: 'MNRF',
-                              bulletShape: pw.BoxShape.rectangle,
-                              style: pw.TextStyle(
+                                    ))),
 
-                                  fontSize: three,
-                                fontWeight: bold
+                                pw.SizedBox(height: five),
 
-                              ),
-                              bulletColor: purple,
-                              margin: pw.EdgeInsets.only(bottom: bottom),
-                              bulletSize: one,
-                                bulletMargin: pw.EdgeInsets.only(
-                                    left:0 , right: one , top: 0.125*PdfPageFormat.cm
-                                )
 
-                            ),
-                            pw.Padding(padding: pw.EdgeInsets.only(left: two),
-                                child: pw.Text('पिंपल्स के खड्डे भरना\nचिकनपॉक्स के खड्डे भरना' , style: pw.TextStyle(
-                                    fontSize:  three,
-                                    font:hindiFont,
-                                  fontWeight: bold
 
-                                ))),
+                                //8
+                                pw.Bullet(
+                                    text: 'ND YAG LASER',
+                                    bulletShape: pw.BoxShape.rectangle,
+                                    style: pw.TextStyle(
 
-                            pw.SizedBox(height: five),
+                                        fontSize: three,
+                                        fontWeight: bold
 
+                                    ),
+                                    bulletColor: purple,
+                                    margin: pw.EdgeInsets.only(bottom: bottom),
+                                    bulletSize: one,
+                                    bulletMargin: pw.EdgeInsets.only(
+                                        left:0 , right: one , top: 0.125*PdfPageFormat.cm
+                                    )
 
-                            //7
-                            pw.Bullet(
-                              text: 'केमिकल पीलिंग',
-                              bulletShape: pw.BoxShape.rectangle,
-                              style: pw.TextStyle(
+                                ),
+                                pw.Padding(padding: pw.EdgeInsets.only(left: two),
+                                    child: pw.Text('फोटो फेशियल\nकार्बन पील\nBirth Mark हटना\nTattoo हटना' , style: pw.TextStyle(
+                                        fontSize :three,
+                                        font:hindiFont,
+                                        fontWeight: bold
 
-                                fontSize:three,
-                                font: hindiFont,
-                                fontWeight: bold
 
-                              ),
-                              bulletColor: purple,
-                              margin: pw.EdgeInsets.only(bottom: bottom),
-                              bulletSize: one,
-                                bulletMargin: pw.EdgeInsets.only(
-                                    left:0 , right: one , top: 0.125*PdfPageFormat.cm
-                                )
+                                    ))),
 
-                            ),
-                            pw.Padding(padding: pw.EdgeInsets.only(left: two ),
-                                child: pw.Text('चेहरे की चमक लाना\nपिंपल्स ऐव पिंपल्स के निशान हटाना\nजुरिया जुरिया हटाना' , style: pw.TextStyle(
-                                    fontSize :three,
-                                    font:hindiFont,
-                                  fontWeight: bold
+                                pw.SizedBox(height: five),
 
 
-                                ))),
+                                //9
+                                pw.Bullet(
+                                    text: 'RF Machine',
+                                    bulletShape: pw.BoxShape.rectangle,
+                                    style: pw.TextStyle(
 
-                            pw.SizedBox(height: five),
+                                        fontSize: three,
+                                        fontWeight: bold
 
+                                    ),
+                                    bulletColor: purple,
+                                    margin: pw.EdgeInsets.only(bottom: bottom),
+                                    bulletSize: one,
+                                    bulletMargin: pw.EdgeInsets.only(
+                                        left:0 , right: one , top: 0.125*PdfPageFormat.cm
+                                    )
 
+                                ),
+                                pw.Padding(padding: pw.EdgeInsets.only(left: two),
+                                    child: pw.Text('चेहरे व गले के मस हटाना\nतिल हटाना\nकान के छेद ठिक करना' , style: pw.TextStyle(
+                                        fontSize :three,
+                                        font:hindiFont ,
+                                        fontWeight: bold))),
 
-                            //8
-                            pw.Bullet(
-                              text: 'ND YAG LASER',
-                              bulletShape: pw.BoxShape.rectangle,
-                              style: pw.TextStyle(
+                                pw.SizedBox(height: five),
 
-                                  fontSize: three,
-                                fontWeight: bold
 
-                              ),
-                              bulletColor: purple,
-                              margin: pw.EdgeInsets.only(bottom: bottom),
-                              bulletSize: one,
-                                bulletMargin: pw.EdgeInsets.only(
-                                    left:0 , right: one , top: 0.125*PdfPageFormat.cm
-                                )
 
-                            ),
-                            pw.Padding(padding: pw.EdgeInsets.only(left: two),
-                                child: pw.Text('फोटो फेशियल\nकार्बन पील\nBirth Mark हटना\nTattoo हटना' , style: pw.TextStyle(
-                                    fontSize :three,
-                                    font:hindiFont,
-                                  fontWeight: bold
+                                //10
+                                pw.Bullet(
+                                    text: 'सेक्स समस्याए',
+                                    bulletShape: pw.BoxShape.rectangle,
+                                    style: pw.TextStyle(
 
+                                        fontSize: three,
+                                        font: hindiFont,
+                                        fontWeight: bold
 
-                                ))),
+                                    ),
+                                    bulletColor: purple,
+                                    margin: pw.EdgeInsets.only(bottom: bottom ,),
+                                    bulletSize: one,
+                                    bulletMargin: pw.EdgeInsets.only(
+                                        left:0 , right: one , top: 0.125*PdfPageFormat.cm
+                                    )
 
-                            pw.SizedBox(height: five),
 
 
-                            //9
-                            pw.Bullet(
-                              text: 'RF Machine',
-                              bulletShape: pw.BoxShape.rectangle,
-                              style: pw.TextStyle(
+                                ),
 
-                                  fontSize: three,
-                                fontWeight: bold
+                                pw.SizedBox(height:five ),
 
-                              ),
-                              bulletColor: purple,
-                              margin: pw.EdgeInsets.only(bottom: bottom),
-                              bulletSize: one,
-                                bulletMargin: pw.EdgeInsets.only(
-                                    left:0 , right: one , top: 0.125*PdfPageFormat.cm
-                                )
 
-                            ),
-                            pw.Padding(padding: pw.EdgeInsets.only(left: two),
-                                child: pw.Text('चेहरे व गले के मस हटाना\nतिल हटाना\nकान के छेद ठिक करना' , style: pw.TextStyle(
-                                    fontSize :three,
-                                    font:hindiFont ,
-                                    fontWeight: bold))),
+                                //11
+                                pw.Bullet(
+                                    text: 'BREAST CARE MACHINE',
+                                    bulletShape: pw.BoxShape.rectangle,
+                                    style: pw.TextStyle(
 
-                            pw.SizedBox(height: five),
+                                        fontSize: three,
+                                        fontWeight: bold
 
+                                    ),
+                                    bulletColor: purple,
+                                    margin: pw.EdgeInsets.only(bottom: bottom),
+                                    bulletSize: one,
+                                    bulletMargin: pw.EdgeInsets.only(
+                                        left:0 , right: one , top: 0.125*PdfPageFormat.cm
+                                    )
 
+                                ),
+                                pw.Padding(padding: pw.EdgeInsets.only(left: two),
+                                    child: pw.Text('स्तन के आकार को बढ़ाना\nस्तन कसाव लाना में' , style: pw.TextStyle(
+                                        fontSize :three,
+                                        font:hindiFont,
+                                        fontWeight: bold
 
-                            //10
-                            pw.Bullet(
-                              text: 'सेक्स समस्याए',
-                              bulletShape: pw.BoxShape.rectangle,
-                              style: pw.TextStyle(
 
-                                fontSize: three,
-                                font: hindiFont,
-                                fontWeight: bold
+                                    ))),
 
-                              ),
-                              bulletColor: purple,
-                              margin: pw.EdgeInsets.only(bottom: bottom ,),
-                              bulletSize: one,
-                                bulletMargin: pw.EdgeInsets.only(
-                                    left:0 , right: one , top: 0.125*PdfPageFormat.cm
-                                )
+                                pw.SizedBox(height: five),
 
 
+                                //12
+                                pw.Bullet(
+                                    text: 'MICROBLADING , MICROPIGMENT',
+                                    bulletShape: pw.BoxShape.rectangle,
+                                    style: pw.TextStyle(
 
-                            ),
+                                        fontSize: three,
+                                        fontWeight: bold
 
-                            pw.SizedBox(height:five ),
+                                    ),
+                                    bulletColor: purple,
+                                    margin: pw.EdgeInsets.only(bottom: bottom),
+                                    bulletSize: one,
+                                    bulletMargin: pw.EdgeInsets.only(
+                                        left:0 , right: one , top: 0.125*PdfPageFormat.cm
+                                    )
 
+                                ),
+                                pw.Padding(padding: pw.EdgeInsets.only(left: two),
+                                    child: pw.Text('आइब्रो का आकार ठीक करना\nसफेद चकतो , होठों का रंग सही करना' , style: pw.TextStyle(
+                                        fontSize :three,
+                                        font:hindiFont,
+                                        fontWeight: bold
 
-                            //11
-                            pw.Bullet(
-                              text: 'BREAST CARE MACHINE',
-                              bulletShape: pw.BoxShape.rectangle,
-                              style: pw.TextStyle(
 
-                                  fontSize: three,
-                                fontWeight: bold
+                                    ))),
 
-                              ),
-                              bulletColor: purple,
-                              margin: pw.EdgeInsets.only(bottom: bottom),
-                              bulletSize: one,
-                                bulletMargin: pw.EdgeInsets.only(
-                                    left:0 , right: one , top: 0.125*PdfPageFormat.cm
-                                )
+                                pw.SizedBox(height: five),
 
-                            ),
-                            pw.Padding(padding: pw.EdgeInsets.only(left: two),
-                                child: pw.Text('स्तन के आकार को बढ़ाना\nस्तन कसाव लाना में' , style: pw.TextStyle(
-                                    fontSize :three,
-                                    font:hindiFont,
-                                  fontWeight: bold
+                                //12
+                                pw.Bullet(
+                                    text: 'IONTOPHORESIS',
+                                    bulletShape: pw.BoxShape.rectangle,
+                                    style: pw.TextStyle(
 
+                                        fontSize: three,
+                                        fontWeight: bold
 
-                                ))),
+                                    ),
+                                    bulletColor: purple,
+                                    margin: pw.EdgeInsets.only(bottom: bottom),
+                                    bulletSize: one,
+                                    bulletMargin: pw.EdgeInsets.only(
+                                        left:0 , right: one , top: 0.125*PdfPageFormat.cm
+                                    )
 
-                            pw.SizedBox(height: five),
+                                ),
+                                pw.Padding(padding: pw.EdgeInsets.only(left: two),
+                                    child: pw.Text('हथेलि , पैर के तलवो पर अत्यधिक पासीना का इलाज' , style: pw.TextStyle(
+                                        fontSize :three,
+                                        font:hindiFont,
+                                        fontWeight: bold
 
 
-                            //12
-                            pw.Bullet(
-                              text: 'MICROBLADING , MICROPIGMENT',
-                              bulletShape: pw.BoxShape.rectangle,
-                              style: pw.TextStyle(
+                                    ))),
 
-                                  fontSize: three,
-                                fontWeight: bold
+                                pw.SizedBox(height: five),
 
-                              ),
-                              bulletColor: purple,
-                              margin: pw.EdgeInsets.only(bottom: bottom),
-                              bulletSize: one,
-                                bulletMargin: pw.EdgeInsets.only(
-                                    left:0 , right: one , top: 0.125*PdfPageFormat.cm
-                                )
 
-                            ),
-                            pw.Padding(padding: pw.EdgeInsets.only(left: two),
-                                child: pw.Text('आइब्रो का आकार ठीक करना\nसफेद चकतो , होठों का रंग सही करना' , style: pw.TextStyle(
-                                    fontSize :three,
-                                    font:hindiFont,
-                                  fontWeight: bold
 
+                                //13
+                                pw.Bullet(
+                                    text: 'BRIDE / GROOM Beauty Treatment\nPackages',
+                                    bulletShape: pw.BoxShape.rectangle,
+                                    style: pw.TextStyle(
 
-                                ))),
+                                        fontSize: three,
+                                        fontWeight: bold
 
-                            pw.SizedBox(height: five),
 
-                            //12
-                            pw.Bullet(
-                              text: 'IONTOPHORESIS',
-                              bulletShape: pw.BoxShape.rectangle,
-                              style: pw.TextStyle(
+                                    ),
+                                    bulletColor: purple,
+                                    margin: pw.EdgeInsets.only(bottom: bottom ,),
+                                    bulletSize: one,
+                                    bulletMargin: pw.EdgeInsets.only(
+                                        left:0 , right: one , top: 0.125*PdfPageFormat.cm
+                                    )
 
-                                  fontSize: three,
-                                  fontWeight: bold
 
-                              ),
-                              bulletColor: purple,
-                              margin: pw.EdgeInsets.only(bottom: bottom),
-                              bulletSize: one,
-                                bulletMargin: pw.EdgeInsets.only(
-                                    left:0 , right: one , top: 0.125*PdfPageFormat.cm
-                                )
 
-                            ),
-                            pw.Padding(padding: pw.EdgeInsets.only(left: two),
-                                child: pw.Text('हथेलि , पैर के तलवो पर अत्यधिक पासीना का इलाज' , style: pw.TextStyle(
-                                    fontSize :three,
-                                    font:hindiFont,
-                                    fontWeight: bold
+                                ),
 
+                                pw.SizedBox(height:five ),
 
-                                ))),
 
-                            pw.SizedBox(height: five),
 
 
 
-                            //13
-                            pw.Bullet(
-                              text: 'BRIDE / GROOM Beauty Treatment\nPackages',
-                              bulletShape: pw.BoxShape.rectangle,
-                              style: pw.TextStyle(
+                                //14
+                                pw.Bullet(
+                                    text: 'Theard Lift , Botox',
+                                    bulletShape: pw.BoxShape.rectangle,
+                                    style: pw.TextStyle(
 
-                                fontSize: three,
-                                fontWeight: bold
+                                        fontSize: three,
+                                        fontWeight: bold
 
 
-                              ),
-                              bulletColor: purple,
-                              margin: pw.EdgeInsets.only(bottom: bottom ,),
-                              bulletSize: one,
-                                bulletMargin: pw.EdgeInsets.only(
-                                    left:0 , right: one , top: 0.125*PdfPageFormat.cm
-                                )
+                                    ),
+                                    bulletColor: purple,
+                                    margin: pw.EdgeInsets.only(bottom: bottom ,),
+                                    bulletSize: one,
+                                    bulletMargin: pw.EdgeInsets.only(
+                                        left:0 , right: one , top: 0.125*PdfPageFormat.cm
+                                    )
 
 
 
-                            ),
+                                ),
+                                pw.Padding(padding: pw.EdgeInsets.only(left: two),
+                                    child: pw.Text('Derma Plannign\nVampire FaceLift' , style: pw.TextStyle(
+                                        fontSize:  three,
 
-                            pw.SizedBox(height:five ),
+                                        fontWeight: bold
 
 
+                                    ))),
 
+                                pw.SizedBox(height:five ),
 
 
-                            //14
-                            pw.Bullet(
-                              text: 'Theard Lift , Botox',
-                              bulletShape: pw.BoxShape.rectangle,
-                              style: pw.TextStyle(
+                                //16
+                                pw.Bullet(
+                                    text: 'Hair Transplant',
+                                    bulletShape: pw.BoxShape.rectangle,
+                                    style: pw.TextStyle(
 
-                                fontSize: three,
-                                fontWeight: bold
+                                        fontSize: three,
+                                        fontWeight: bold
 
 
-                              ),
-                              bulletColor: purple,
-                              margin: pw.EdgeInsets.only(bottom: bottom ,),
-                              bulletSize: one,
-                                bulletMargin: pw.EdgeInsets.only(
-                                    left:0 , right: one , top: 0.125*PdfPageFormat.cm
-                                )
+                                    ),
+                                    bulletColor: purple,
+                                    margin: pw.EdgeInsets.only(bottom: bottom ,),
+                                    bulletSize: one,
+                                    bulletMargin: pw.EdgeInsets.only(
+                                        left:0 , right: one , top: 0.125*PdfPageFormat.cm
+                                    )
 
 
 
-                            ),
-                            pw.Padding(padding: pw.EdgeInsets.only(left: two),
-                                child: pw.Text('Derma Plannign\nVampire FaceLift' , style: pw.TextStyle(
-                                    fontSize:  three,
+                                ),
 
-                                    fontWeight: bold
+                                pw.SizedBox(height:five ),
 
-
-                                ))),
-
-                            pw.SizedBox(height:five ),
-
-
-                            //16
-                            pw.Bullet(
-                              text: 'Hair Transplant',
-                              bulletShape: pw.BoxShape.rectangle,
-                              style: pw.TextStyle(
-
-                                fontSize: three,
-                                fontWeight: bold
-
-
-                              ),
-                              bulletColor: purple,
-                              margin: pw.EdgeInsets.only(bottom: bottom ,),
-                              bulletSize: one,
-                                bulletMargin: pw.EdgeInsets.only(
-                                    left:0 , right: one , top: 0.125*PdfPageFormat.cm
-                                )
-
-
-
-                            ),
-
-                            pw.SizedBox(height:five ),
-
-                          ]
-                      ),
+                              ]
+                          ),
+                        )
+                      ]
                     )
 
                   ),
