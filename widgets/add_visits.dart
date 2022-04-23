@@ -2,14 +2,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_app/default.dart';
+import 'package:flutter_app/widgets/Printer_Select_list.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../list_search/Vitals.dart';
 import 'package:flutter_app/widgets/list_search.dart';
 import 'package:flutter_app/classes/Patient_name_list.dart';
 
 
-
-
+import 'package:printing/printing.dart';
+import '../classes/printer_setting.dart';
 
 import 'package:date_format/date_format.dart';
 import 'package:flutter_app/widgets/service_search_list.dart';
@@ -259,6 +260,16 @@ setState(() {
         title: Text('Add Visits' , ),
         actions: [
           IconButton(onPressed: (){
+
+
+
+
+
+
+            showDialog(context: context, builder: (context){
+
+              return Printer_Select_List(Complaint: Complaint,);
+            });
             Prnt();
 
           }, icon: Icon(Icons.print_outlined)),
