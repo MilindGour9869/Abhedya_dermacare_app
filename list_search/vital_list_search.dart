@@ -232,6 +232,9 @@ class _Vital_List_SearchState extends State<Vital_List_Search> {
 
 
 
+
+
+
     get();
 
   }
@@ -369,6 +372,8 @@ class _Vital_List_SearchState extends State<Vital_List_Search> {
                                     )
 
                                 ),
+                                SizedBox(width: 3,),
+
 
                                 SizedBox(
                                     width: MediaQuery.of(context).size.width*0.150,
@@ -402,6 +407,9 @@ class _Vital_List_SearchState extends State<Vital_List_Search> {
                       shrinkWrap: true,
                       children: group_search_data_list
                           .map<Widget>((e) {
+
+                            print(all_data_map);
+
 
                             String s = all_data_name_map[e];
 

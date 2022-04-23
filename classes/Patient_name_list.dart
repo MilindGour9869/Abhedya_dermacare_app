@@ -5,7 +5,7 @@ class Patient_name_data_list{
   //basic
 
   String name , DOB , gender , email , address   , image  , doc_id  ;
-  int age , mobile ;
+  int age , mobile  ,uid;
 
   List  group  , blood_group;
   Timestamp recent_visit;

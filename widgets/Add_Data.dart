@@ -33,7 +33,7 @@ class _AddDataState extends State<AddData> {
 
 
   void pop(){
-    List<String> time ;
+    List<String> time =[] ;
     String duration;
 
     print(result_map['aa']);

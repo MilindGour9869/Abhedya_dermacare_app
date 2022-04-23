@@ -18,7 +18,7 @@ class PdfInvoiceApi {
 
     List notes , List diagnosis , List advice  , List allergies , List group , List complaint , List clinical_finding , List investigation , List blood_group ,
 
-    Map<String,Map<String,dynamic>> medicinces , Map<String,dynamic> vitals ,
+    Map<String,Map<String,dynamic>> medicine_map , Map<String,Map<String,dynamic>> vitals ,
 
     String follow_up_date , bool hindi_dosage = true , bool hindi_duration = false
 
@@ -43,6 +43,9 @@ class PdfInvoiceApi {
     bool imgLeft =true;
 
    // print(diagnosis.isNotEmpty);
+
+    print(medicine_map==null);
+
 
 
 
@@ -162,7 +165,7 @@ class PdfInvoiceApi {
                           fontSize: three,
                         ),),
 
-                        pw.Text('${patient_detail['mobile'].toString()}', style: pw.TextStyle(
+                        pw.Text('${patient_detail['patient_mobile'].toString()}', style: pw.TextStyle(
                           fontSize: three,
                         ),),
 
@@ -231,7 +234,7 @@ class PdfInvoiceApi {
                       ),
                       pw.Row(
                           children: vitals.keys.map((e) {
-                            return pw.Text('${e.toString()} : ${vitals[e].toString()} / ', style: pw.TextStyle(
+                            return pw.Text('${vitals[e]['vital_name'].toString()} : ${vitals[e]['value'].toString() + ' ' +  vitals[e]['vital_unit']} / ', style: pw.TextStyle(
                               fontSize: three,
                             ),);
                           }).toList()
@@ -524,7 +527,7 @@ class PdfInvoiceApi {
 
 
 
-              child:  pw.Text(sr_no.toString(), style: pw.TextStyle(
+              child:  pw.Text('${sr_no.toString()}.', style: pw.TextStyle(
                   fontSize: three,
 
               )),),
@@ -613,7 +616,7 @@ class PdfInvoiceApi {
                 ]
               ),),
 
-            pw.Container(
+            map['tenure'].isNotEmpty?pw.Container(
 
 
               child:  pw.Row(
@@ -655,7 +658,7 @@ class PdfInvoiceApi {
 
 
                 ],
-              ),),
+              ),):pw.Container(),
 
           ]
       );
@@ -764,17 +767,17 @@ class PdfInvoiceApi {
 
     ];
 
-   if(medicinces!=null)
+   if(medicine_map!=null)
      { print('\n');
 
-       print(medicinces.length);
+       print(medicine_map.length);
 
      int n=0;
 
 
 
 
-     medicinces.forEach((key, value) {
+     medicine_map.forEach((key, value) {
 
        print(key);
 
@@ -787,8 +790,8 @@ class PdfInvoiceApi {
 
 
 
-       duration = medicinces[key]['duration']['tenure'].toString();
-       dosage  =  medicinces[key]['add_info'];
+       duration = medicine_map[key]['duration']['tenure'].toString();
+       dosage  =  medicine_map[key]['add_info'];
 
 
 
@@ -798,8 +801,8 @@ class PdfInvoiceApi {
 
 
        Map<String , dynamic> Duration={
-         'tenure' : medicinces[key]['duration']['tenure'].toString(),
-         'duration' : medicinces[key]['duration']['Duration'].toString()
+         'tenure' : medicine_map[key]['duration']['tenure'].toString(),
+         'duration' : medicine_map[key]['duration']['Duration'].toString()
 
 
 
@@ -813,7 +816,7 @@ class PdfInvoiceApi {
 
 
 
-       Abc.add(MainTable( map:  Duration  , time: medicinces[key]['time'] , add_info :  medicinces[key]['add_info'] , sr_no:n , medicine_name: key ));
+       Abc.add(MainTable( map:  Duration  , time: medicine_map[key]['time'] , add_info :  medicine_map[key]['add_info'] , sr_no:n , medicine_name: key ));
 
        Abc.add(MainDivider());
 
@@ -1734,7 +1737,7 @@ class PdfInvoiceApi {
 
                                                  patient_detail!=null?Patient_detail(patient_detail:patient_detail):Box_null(),
 
-                                                 patient_detail!=null?Patient_Address('Address'):Box_null(),
+                                                 patient_detail!=null?Patient_Address(patient_detail['address']):Box_null(),
 
                                                  Box(),
 
@@ -1772,18 +1775,18 @@ class PdfInvoiceApi {
                                            ),
 
 
-                                           pw.Image(Rx , height: 1 * PdfPageFormat.cm , width: 0.7 * PdfPageFormat.cm),
+                                           medicine_map!=null?pw.Image(Rx , height: 1 * PdfPageFormat.cm , width: 0.7 * PdfPageFormat.cm):pw.SizedBox(),
 
-                                           pw.SizedBox(height: five),
-
-
+                                           medicine_map!=null?pw.SizedBox(height: five):pw.SizedBox(),
 
 
 
 
 
 
-                                           medicinces!=null?pw.Table(
+
+
+                                           medicine_map!=null?pw.Table(
 
 
 
@@ -1796,14 +1799,14 @@ class PdfInvoiceApi {
                                                },
 
                                                children: Abc
-                                           ):Box_null(),
+                                           ):pw.SizedBox(),
 
 
 
 
                                            pw.Table(
                                                children: [
-                                                 medicinces!=null?Box():Box_null(),
+                                                 medicine_map!=null?Box():Box_null(),
                                                  Box(),
 
                                                  advice!=null?Advice(['aaa']):Box_null(),
@@ -1819,7 +1822,7 @@ class PdfInvoiceApi {
                                                      pw.Row(
                                                        children: [
                                                          pw.Text('Follow up Date : ' , style: pw.TextStyle(fontSize: three , fontWeight: bold)),
-                                                         pw.Text('22 Apr 2022' , style: pw.TextStyle(fontSize: three )),
+                                                         pw.Text(follow_up_date , style: pw.TextStyle(fontSize: three )),
 
                                                        ]
                                                      )

@@ -242,13 +242,22 @@ class _State extends State<Medicines> {
         onTap: () {
          if(delete)
            {
+
+             print('ggg');
+
+
+             print(map[name]);
+
+
              showDialog(
                  context: context,
                  builder: (context) => AddMedicine(
-                     composition: map[name]['composition'],
-                     company_name: map[name]['company_name'],
-                     tab: map[name]['tab'],
+
+
+                     medicine_map: map[name],
+
                      doc_id: map[name]['doc_id'],
+
                      medicine_name: name,
                      medicine_name_list: medicine_name,
                      result: all_data_doc_id_map,
@@ -548,7 +557,7 @@ class _State extends State<Medicines> {
           showDialog(
               context: context,
               builder: (context) => AddMedicine(
-                composition: null,
+
                 result: all_data_doc_id_map,
                 medicine_name_list: medicine_name,
                 add_icon_tap: true,

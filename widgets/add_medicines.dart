@@ -15,7 +15,10 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import '../list_search/tab_list_search.dart';
 
 class AddMedicine extends StatefulWidget {
-  List composition, company_name, tab;
+
+
+  Map<String , dynamic > medicine_map ;
+
   String  doc_id, medicine_name;
 
   bool add_icon_tap;
@@ -27,14 +30,13 @@ class AddMedicine extends StatefulWidget {
 
 
   AddMedicine(
-      {this.company_name ,
-      this.composition,
-      this.tab,
+      {
       this.doc_id,
       this.medicine_name,
       this.result,
        @required this.medicine_name_list,
-       @required   this.add_icon_tap
+       @required   this.add_icon_tap,
+        this.medicine_map
 
 
       });
@@ -77,44 +79,53 @@ class _AddMedicineState extends State<AddMedicine> {
     // TODO: implement initState
     super.initState();
 
-    if (widget.composition != null) {
+    if(widget.medicine_map != null)
+      {
+        if (widget.medicine_map['composition'] != null) {
 
-      Composition = widget.composition;
+          Composition = widget.medicine_map['composition'];
 
-      setState(() {
-        widget.composition.forEach((element) {
-          composition  = element.toString() + ' , ';
-        });
-        map['composition'] = true;
-      });
-    }
-    if (widget.company_name != null) {
+          setState(() {
+            widget.medicine_map['composition'].forEach((element) {
+              composition  = element.toString() + ' , ';
+            });
+            map['composition'] = true;
+          });
+        }
+        if (widget.medicine_map['company_name'] != null) {
 
-      Company_name = widget.company_name;
+          Company_name = widget.medicine_map['company_name'];
 
-      setState(() {
-        widget.company_name.forEach((element) {
-          company_name = element.toString() + " , ";
-        });
-        map['company_name'] = true;
-      });
-    }
-    if (widget.tab != null) {
+          setState(() {
+            widget.medicine_map['company_name'].forEach((element) {
+              company_name = element.toString() + " , ";
+            });
+            map['company_name'] = true;
+          });
+        }
+        if (widget.medicine_map['tab'] != null) {
 
-      Tab = widget.tab;
+          Tab = widget.medicine_map['tab'];
 
-      setState(() {
-        widget.tab.forEach((element) {
-          tab = element.toString()  + " , ";
-        });
-        map['tab'] = true;
-      });
-    }
-    if (widget.medicine_name != null) {
-      setState(() {
-        medicine_name_edit.text = widget.medicine_name;
-      });
-    }
+          setState(() {
+            widget.medicine_map['tab'].forEach((element) {
+              tab = element.toString()  + " , ";
+            });
+            map['tab'] = true;
+          });
+        }
+        if (widget.medicine_name != null) {
+          setState(() {
+            medicine_name_edit.text = widget.medicine_name;
+          });
+        }
+
+        if(widget.medicine_map['medicine_notes']!=null)
+        {
+          medicine_notes.text = widget.medicine_map['medicine_notes'];
+
+        }
+      }
   }
 
   @override
@@ -566,7 +577,7 @@ class _AddMedicineState extends State<AddMedicine> {
                               if(similar && widget.add_icon_tap)
                                 {
                                   showDialog(context: context, builder: (context)=>AlertDialog(
-                                    title: Text('Medicine Name is Similar Another Name\nPlease Change the Name ' , textScaleFactor: AppTheme.alert,),
+                                    title: Text('Medicine Name is Similar to Another medicine\nPlease Change the Name ' , textScaleFactor: AppTheme.alert,),
                                     actions: [
                                       TextButton(onPressed: (){
                                         Navigator.pop(context);
@@ -616,6 +627,9 @@ class _AddMedicineState extends State<AddMedicine> {
 
 
                                 if (widget.add_icon_tap) {
+
+                                  print('\nin if ');
+
                                   var doc = await FirebaseFirestore.instance
                                       .collection('Medicines')
                                       .doc();
@@ -635,6 +649,8 @@ class _AddMedicineState extends State<AddMedicine> {
 
                                 }
                                 else if (!widget.add_icon_tap) {
+
+                                  print('\nin else if ');
 
 
 

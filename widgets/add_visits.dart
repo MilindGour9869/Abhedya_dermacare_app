@@ -94,12 +94,17 @@ class _AddVisitsState extends State<AddVisits> {
 
 
 
+
+
+
   Map<String  , Map<String , dynamic>> medicine_result={};
   Map<String  , Map<String , dynamic>> vital_result={};
 
   Map<String , dynamic> map;
 
   String visit_date;
+  String follow_up_date;
+
 
   Timestamp date;
 
@@ -267,19 +272,76 @@ setState(() {
           IconButton(onPressed: (){
 
 
+            Map<String , dynamic> patient_detail = {
+
+              'patient_name' : widget.patient_data.name,
+              'patient_gender' : widget.patient_data.gender==null?"":widget.patient_data.gender,
+              'patient_age':widget.patient_data.age==null?"":widget.patient_data.age.toString(),
+              'patient_mobile': widget.patient_data.mobile==null?"":widget.patient_data.mobile.toString(),
+              'address' : widget.patient_data.address==null?"":widget.patient_data.address,
+
+            };
+
+
+
+
+
 
 
 
 
             showDialog(context: context, builder: (context){
 
-              return Printer_Select_List(Complaint: Complaint,);
+              return Printer_Select_List(map_list: {
+
+                'Visit Date' : visit_date ,
+
+                'UID' : widget.patient_data.uid,
+
+                'Patient Detail': patient_detail ,
+
+                'Vitals' : vital_result,
+
+                'Blood group' : Blood_group ,
+
+                'Complaint' : Complaint ,
+                'Investigation' : Investigation ,
+                'Clinical Finding' : Clinical_findings,
+                'Notes' : Notes ,
+                'Diagnosis' : Diagnosis ,
+                'Allergies' : Allergies ,
+                'Advices' : Advices ,
+                'Group' : Group ,
+
+
+                'Medicine' : medicine_result ,
+
+
+
+
+
+
+
+
+                'Follow up date' :follow_up_date,
+
+
+
+
+
+
+
+
+
+
+
+              },);
             });
             Prnt();
 
           }, icon: Icon(Icons.print_outlined)),
           Padding(
-            padding:  EdgeInsets.only(right: 1.h),
+            padding:  EdgeInsets.only(right: 1.w),
             child: IconButton(onPressed: (){
 
               var visit_doc = FirebaseFirestore.instance.collection('Patient').doc(widget.patient_data.doc_id).collection('visits').doc(visit_date);
@@ -407,7 +469,7 @@ setState(() {
 
                     child: Card(child: Center(child: TextButton(
 
-                        child: Text('${visit_date}' , ),
+                        child: Text('${visit_date}' ,style: TextStyle(color: Colors.black), ),
                         onPressed:(){
                           showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(1947), lastDate: DateTime(2050)).then((value){
                             print(value);
@@ -426,11 +488,58 @@ setState(() {
                     ))), //date
 
 
+                Padding(
+                  padding:  EdgeInsets.symmetric(horizontal: 1.w , vertical: 1.h),
+                  child: Material(
+                    elevation: 1,
+                    borderRadius: BorderRadius.circular(5),
+                    child: Padding(
+                      padding:  EdgeInsets.symmetric(horizontal: 2.w),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Select Follow Up date :'),
+
+                          SizedBox(
+                              height: MediaQuery.of(context).size.height*0.08,
+                              width: 40.w,
+
+                              child: Card(
+
+                                elevation: 1,
+                                  child: Center(child: TextButton(
+
+                                child: Text(follow_up_date==null?'Follow Up Date':follow_up_date ),
+                                onPressed:(){
+                                  showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(1947), lastDate: DateTime(2050)).then((value){
+                                    print(value);
+                                    setState(() {
+
+                                      date = Timestamp.fromDate(value);
+
+                                      follow_up_date = formatDate(Timestamp.fromDate(value).toDate(),[dd, '-', mm, '-', yyyy]).toString();
+                                    });
+                                  } );
+                                } ,
+
+                              )
+
+
+                              ))),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+
+
+
+
 
 
 
                 Padding(
-                  padding:  EdgeInsets.all(1.h),
+                  padding:  EdgeInsets.all(1.w),
                   child: Material(
                     borderRadius: BorderRadius.circular(10),
                     elevation: 2,
@@ -439,7 +548,7 @@ setState(() {
                     child: ListTile(
 
                       title: Padding(
-                        padding:  EdgeInsets.only(top: 1.h),
+                        padding:  EdgeInsets.only(top: 1.w),
                         child: Text(complaints , ),
                       ),
                       leading: Image.asset(img_complaint),
@@ -485,7 +594,7 @@ setState(() {
                       }, icon: Icon(Icons.arrow_drop_down_circle_outlined , color: Colors.black,)),
 
                      subtitle: Padding(
-                       padding:  EdgeInsets.only(top: 1.h),
+                       padding:  EdgeInsets.only(top: 1.w),
                        child: Container(
 
                          child: Column(
@@ -500,7 +609,7 @@ setState(() {
 
 
                 Padding(
-                  padding:  EdgeInsets.all(1.h),
+                  padding:  EdgeInsets.all(1.w),
                   child: Material(
                     borderRadius: BorderRadius.circular(10),
                     elevation: 2,
@@ -509,7 +618,7 @@ setState(() {
                     child: ListTile(
 
                       title: Padding(
-                        padding:  EdgeInsets.only(top: 1.h),
+                        padding:  EdgeInsets.only(top: 1.w),
                         child: Text(notes , ),
                       ),
                       leading: Icon(Icons.note),
@@ -558,7 +667,7 @@ setState(() {
                       }, icon: Icon(Icons.arrow_drop_down_circle_outlined , color: Colors.black,)),
 
                       subtitle: Padding(
-                        padding:  EdgeInsets.only(top: 1.h),
+                        padding:  EdgeInsets.only(top: 1.w),
                         child: Container(
 
                           child: Column(
@@ -572,7 +681,7 @@ setState(() {
                 ), // Notes
 
                 Padding(
-                  padding:  EdgeInsets.all(1.h),
+                  padding:  EdgeInsets.all(1.w),
                   child: Material(
                     borderRadius: BorderRadius.circular(10),
                     elevation: 2,
@@ -581,7 +690,7 @@ setState(() {
                     child: ListTile(
 
                       title: Padding(
-                        padding:  EdgeInsets.only(top: 1.h),
+                        padding:  EdgeInsets.only(top: 1.w),
                         child: Text(clinical_findings , ),
                       ),
                       leading: SizedBox(
@@ -636,7 +745,7 @@ setState(() {
                       }, icon: Icon(Icons.arrow_drop_down_circle_outlined , color: Colors.black,)),
 
                       subtitle: Padding(
-                        padding:  EdgeInsets.only(top: 1.h),
+                        padding:  EdgeInsets.only(top: 1.w),
                         child: Container(
 
                           child: Column(
@@ -650,7 +759,7 @@ setState(() {
                 ), // Clinical Finding
 
                 Padding(
-                  padding:  EdgeInsets.all(1.h),
+                  padding:  EdgeInsets.all(1.w),
                   child: Material(
                     borderRadius: BorderRadius.circular(10),
                     elevation: 2,
@@ -661,7 +770,7 @@ setState(() {
 
 
                       title: Padding(
-                        padding:  EdgeInsets.only(top: 1.h),
+                        padding:  EdgeInsets.only(top: 1.w),
                         child: Text(diagnosis , ),
                       ),
                       leading: Image.asset(img_diagnosis),
@@ -707,7 +816,7 @@ setState(() {
                       }, icon: Icon(Icons.arrow_drop_down_circle_outlined , color: Colors.black,)),
 
                       subtitle: Padding(
-                        padding:  EdgeInsets.only(top: 1.h),
+                        padding:  EdgeInsets.only(top: 1.w),
                         child: Container(
 
                           child: Column(
@@ -721,7 +830,7 @@ setState(() {
                 ), // Diagnosis
 
                 Padding(
-                  padding:  EdgeInsets.all(1.h),
+                  padding:  EdgeInsets.all(1.w),
                   child: Material(
                     borderRadius: BorderRadius.circular(10),
                     elevation: 2,
@@ -733,7 +842,7 @@ setState(() {
 
 
                       title: Padding(
-                        padding:  EdgeInsets.only(top: 1.h),
+                        padding:  EdgeInsets.only(top: 1.w),
                         child: Text(investigation , ),
                       ),
                       leading: Image.asset(img_investigation_color),
@@ -779,7 +888,7 @@ setState(() {
                       }, icon: Icon(Icons.arrow_drop_down_circle_outlined , color: Colors.black,)),
 
                       subtitle: Padding(
-                        padding:  EdgeInsets.only(top: 1.h),
+                        padding:  EdgeInsets.only(top: 1.w),
                         child: Container(
 
                           child: Column(
@@ -793,7 +902,7 @@ setState(() {
                 ), // Investigation
 
                 Padding(
-                  padding:  EdgeInsets.all(1.h),
+                  padding:  EdgeInsets.all(1.w),
                   child: Material(
                     borderRadius: BorderRadius.circular(10),
                     elevation: 2,
@@ -802,7 +911,7 @@ setState(() {
                     child: ListTile(
 
                       title: Padding(
-                        padding:  EdgeInsets.only(top: 1.h),
+                        padding:  EdgeInsets.only(top: 1.w),
                         child: Text(allergies , ),
                       ),
                       leading: Icon(Icons.add , size: AppTheme.icon_size,),
@@ -848,7 +957,7 @@ setState(() {
                       }, icon: Icon(Icons.arrow_drop_down_circle_outlined , color: Colors.black,)),
 
                       subtitle: Padding(
-                        padding:  EdgeInsets.only(top: 1.h),
+                        padding:  EdgeInsets.only(top: 1.w),
                         child: Container(
 
                           child: Column(
@@ -862,7 +971,7 @@ setState(() {
                 ), // Allergies
 
                 Padding(
-                  padding:  EdgeInsets.all(1.h),
+                  padding:  EdgeInsets.all(1.w),
                   child: Material(
                     borderRadius: BorderRadius.circular(10),
                     elevation: 2,
@@ -871,7 +980,7 @@ setState(() {
                     child: ListTile(
 
                       title: Padding(
-                        padding:  EdgeInsets.only(top: 1.h),
+                        padding:  EdgeInsets.only(top: 1.w),
                         child: Text(advices, ),
                       ),
                       leading: Icon(Icons.add),
@@ -917,7 +1026,7 @@ setState(() {
                       }, icon: Icon(Icons.arrow_drop_down_circle_outlined , color: Colors.black,)),
 
                       subtitle: Padding(
-                        padding:  EdgeInsets.only(top: 1.h),
+                        padding:  EdgeInsets.only(top: 1.w),
                         child: Container(
 
                           child: Column(
@@ -931,7 +1040,7 @@ setState(() {
                 ), // Advices
 
                 Padding(
-                  padding:  EdgeInsets.all(1.h),
+                  padding:  EdgeInsets.all(1.w),
                   child: Material(
                     borderRadius: BorderRadius.circular(10),
                     elevation: 2,
@@ -940,7 +1049,7 @@ setState(() {
                     child: ListTile(
 
                       title: Padding(
-                        padding:  EdgeInsets.only(top: 1.h),
+                        padding:  EdgeInsets.only(top: 1.w),
                         child: Text(group, ),
                       ),
                       leading: Icon(Icons.add),
@@ -986,7 +1095,7 @@ setState(() {
                       }, icon: Icon(Icons.arrow_drop_down_circle_outlined , color: Colors.black,)),
 
                       subtitle: Padding(
-                        padding:  EdgeInsets.only(top: 1.h),
+                        padding:  EdgeInsets.only(top: 1.w),
                         child: Container(
 
                           child: Column(
@@ -1000,7 +1109,7 @@ setState(() {
                 ), // Group
 
                 Padding(
-                  padding:  EdgeInsets.all(1.h),
+                  padding:  EdgeInsets.all(1.w),
                   child: Material(
                     borderRadius: BorderRadius.circular(10),
                     elevation: 2,
@@ -1009,7 +1118,7 @@ setState(() {
                     child: ListTile(
 
                       title: Padding(
-                        padding:  EdgeInsets.only(top: 1.h),
+                        padding:  EdgeInsets.only(top: 1.w),
                         child: Text(blood_group, ),
                       ),
                       leading: Icon(FontAwesomeIcons.droplet , color: Colors.redAccent,),
@@ -1055,7 +1164,7 @@ setState(() {
                       }, icon: Icon(Icons.arrow_drop_down_circle_outlined , color: Colors.black,)),
 
                       subtitle: Padding(
-                        padding:  EdgeInsets.only(top: 1.h),
+                        padding:  EdgeInsets.only(top: 1.w),
                         child: Container(
 
                           child: Column(
@@ -1069,7 +1178,7 @@ setState(() {
                 ), // Blood-Group
 
                 Padding(
-                  padding:  EdgeInsets.all(1.h),
+                  padding:  EdgeInsets.all(1.w),
                   child: Material(
                     borderRadius: BorderRadius.circular(10),
                     elevation: 2,
@@ -1078,7 +1187,7 @@ setState(() {
                     child: ListTile(
 
                       title: Padding(
-                        padding:  EdgeInsets.only(top: 1.h),
+                        padding:  EdgeInsets.only(top: 1.w),
                         child: Text(service, ),
                       ),
                       leading: Icon(Icons.add),
@@ -1124,7 +1233,7 @@ setState(() {
                       }, icon: Icon(Icons.arrow_drop_down_circle_outlined , color: Colors.black,)),
 
                       subtitle: Padding(
-                        padding:  EdgeInsets.only(top: 1.h),
+                        padding:  EdgeInsets.only(top: 1.w),
                         child: Container(
 
                           child: Column(
@@ -1141,7 +1250,7 @@ setState(() {
 
 
                 Padding(
-                  padding:  EdgeInsets.all(1.h),
+                  padding:  EdgeInsets.all(1.w),
                   child: Material(
                     borderRadius: BorderRadius.circular(10),
                     elevation: 2,
@@ -1150,7 +1259,7 @@ setState(() {
                     child: ListTile(
 
                       title: Padding(
-                        padding:  EdgeInsets.only(top: 1.h),
+                        padding:  EdgeInsets.only(top: 1.w),
                         child: Text(medicine, ),
                       ),
                       leading: Icon(Icons.add),
@@ -1207,7 +1316,7 @@ setState(() {
                       }, icon: Icon(Icons.arrow_drop_down_circle_outlined , color: Colors.black,)),
 
                       subtitle: Padding(
-                        padding:  EdgeInsets.only(top: 1.h),
+                        padding:  EdgeInsets.only(top: 1.w),
                         child: Container(
 
                           child: Column(
@@ -1229,7 +1338,7 @@ setState(() {
 
 
                 Padding(
-                  padding:  EdgeInsets.all(1.h),
+                  padding:  EdgeInsets.all(1.w),
                   child: Material(
                     borderRadius: BorderRadius.circular(10),
                     elevation: 2,
@@ -1238,7 +1347,7 @@ setState(() {
                     child: ListTile(
 
                       title: Padding(
-                        padding:  EdgeInsets.only(top: 1.h),
+                        padding:  EdgeInsets.only(top: 1.w),
                         child: Text(vital , ),
                       ),
                       leading: Icon(Icons.add , size: AppTheme.icon_size,),
@@ -1289,7 +1398,7 @@ setState(() {
                       }, icon: Icon(Icons.arrow_drop_down_circle_outlined , color: Colors.black,)),
 
                       subtitle: Padding(
-                        padding:  EdgeInsets.only(top: 1.h),
+                        padding:  EdgeInsets.only(top: 1.w),
                         child: Container(
 
                           child: Column(
@@ -1320,7 +1429,10 @@ setState(() {
 
                     ),
                   ),
-                ),
+                ), // Vital
+
+
+
 
 
 

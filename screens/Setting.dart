@@ -38,9 +38,7 @@ Widget build(BuildContext context) {
 return PdfPreview(
 
   build: ((format)=>PdfInvoiceApi.generatePdf(
-    medicinces: map,
-    diagnosis: ['aaa'],
-    visit_date: '23-04-21'
+
   )),
 
 
