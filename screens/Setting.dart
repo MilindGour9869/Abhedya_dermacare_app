@@ -21,7 +21,7 @@ Map<String,Map<String,dynamic>> map={
 
   'fud': {
 
-    'time': ['Afternoon'], 'duration': {'tenure': 23, 'Duration': 'Weeks'}, 'add_info': ['At Bed Time']}
+    'time': ['Afternoon'], 'duration': {'tenure': 23, 'Duration': 'Weeks'}, 'add_info': ['At Bed Time' ,'At Bed Time' , 'At Bed Time'  ]}
 };
 
 
@@ -38,7 +38,9 @@ Widget build(BuildContext context) {
 return PdfPreview(
 
   build: ((format)=>PdfInvoiceApi.generatePdf(
-    medicinces: map
+    medicinces: map,
+    diagnosis: ['aaa'],
+    visit_date: '23-04-21'
   )),
 
 
