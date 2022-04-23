@@ -250,7 +250,10 @@ class _State extends State<Medicines> {
                      tab: map[name]['tab'],
                      doc_id: map[name]['doc_id'],
                      medicine_name: name,
+                     medicine_name_list: medicine_name,
                      result: all_data_doc_id_map,
+                     add_icon_tap: false,
+
                    ),
                  ).then((value) {
                if (value == 'save') {
@@ -536,12 +539,19 @@ class _State extends State<Medicines> {
         elevation: 15,
         splashColor: AppTheme.notWhite,
         onPressed: () {
+
+          print('\ndbflbv');
+
+          print(medicine_name);
+
+
           showDialog(
               context: context,
               builder: (context) => AddMedicine(
                 composition: null,
                 result: all_data_doc_id_map,
                 medicine_name_list: medicine_name,
+                add_icon_tap: true,
               )).then((value) {
 
                     print('dd');

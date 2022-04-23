@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-import '../list_search/add_info.dart';
+import '../list_search/add_info_list_search.dart';
 import '../default.dart';
 
 class AddData extends StatefulWidget {

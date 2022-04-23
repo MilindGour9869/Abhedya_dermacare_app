@@ -18,6 +18,9 @@ class AddMedicine extends StatefulWidget {
   List composition, company_name, tab;
   String  doc_id, medicine_name;
 
+  bool add_icon_tap;
+
+
   Map<String , Map<String,dynamic> > result;
 
   List medicine_name_list = [];
@@ -30,7 +33,8 @@ class AddMedicine extends StatefulWidget {
       this.doc_id,
       this.medicine_name,
       this.result,
-        this.medicine_name_list
+       @required this.medicine_name_list,
+       @required   this.add_icon_tap
 
 
       });
@@ -145,7 +149,7 @@ class _AddMedicineState extends State<AddMedicine> {
                           ),
                         ),
                         Visibility(
-                          visible: widget.doc_id == null ? false : true,
+                          visible: widget.add_icon_tap? false : true,
                           child: IconButton(
                             icon: Icon(Icons.delete_outline_outlined),
                             onPressed: () async {
@@ -559,7 +563,7 @@ class _AddMedicineState extends State<AddMedicine> {
                                   }
                               });
 
-                              if(similar)
+                              if(similar && widget.add_icon_tap)
                                 {
                                   showDialog(context: context, builder: (context)=>AlertDialog(
                                     title: Text('Medicine Name is Similar Another Name\nPlease Change the Name ' , textScaleFactor: AppTheme.alert,),
@@ -611,7 +615,7 @@ class _AddMedicineState extends State<AddMedicine> {
 
 
 
-                                if (widget.doc_id == null) {
+                                if (widget.add_icon_tap) {
                                   var doc = await FirebaseFirestore.instance
                                       .collection('Medicines')
                                       .doc();
@@ -630,25 +634,8 @@ class _AddMedicineState extends State<AddMedicine> {
 
 
                                 }
-                                else if (widget.doc_id != null) {
+                                else if (!widget.add_icon_tap) {
 
-                                  print(widget.doc_id);
-
-                                  if(json['composition'] == null)
-                                  {
-                                    json['composition'] = widget.composition;
-
-                                  }
-                                  if(json['company_name'] == null)
-                                  {
-                                    json['company_name'] = widget.company_name;
-
-                                  }
-                                  if(json['tab'] == null)
-                                  {
-                                    json['tab'] = widget.tab;
-
-                                  }
 
 
 
