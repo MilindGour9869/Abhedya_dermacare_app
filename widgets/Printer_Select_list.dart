@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/classes/Patient_name_list.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../default.dart';
@@ -6,6 +7,8 @@ import '../default.dart';
 class Printer_Select_List extends StatefulWidget {
 
   List Complaint ;
+
+  Patient_name_data_list patient_data;
 
   Printer_Select_List({this.Complaint});
 
@@ -25,7 +28,7 @@ class _Printer_Select_ListState extends State<Printer_Select_List> {
   bool blood_grp_bool = false;
 
   bool vital_bool = false;
-  bool medicine_bool = false;
+  bool medicine_bool = true;
 
 
   @override

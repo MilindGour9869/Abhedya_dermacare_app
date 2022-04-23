@@ -2,9 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_app/default.dart';
+import 'package:flutter_app/list_search/notes_list_search.dart';
 import 'package:flutter_app/widgets/Printer_Select_list.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import '../list_search/Vitals.dart';
+import '../list_search/vital_list_search.dart';
 import 'package:flutter_app/widgets/list_search.dart';
 import 'package:flutter_app/classes/Patient_name_list.dart';
 
@@ -64,6 +65,8 @@ class _AddVisitsState extends State<AddVisits> {
   String service = "Services";
   String medicine = "Medicine";
   String vital = "Vitals";
+  String notes = 'Notes';
+
 
 
 
@@ -87,6 +90,8 @@ class _AddVisitsState extends State<AddVisits> {
   List Blood_group =[];
   List Services =[];
   List<String> Medicine = [];
+  List Notes = [];
+
 
 
   Map<String  , Map<String , dynamic>> medicine_result={};
@@ -492,6 +497,79 @@ setState(() {
                     ),
                   ),
                 ), // Complaint
+
+
+                Padding(
+                  padding:  EdgeInsets.all(1.h),
+                  child: Material(
+                    borderRadius: BorderRadius.circular(10),
+                    elevation: 2,
+
+
+                    child: ListTile(
+
+                      title: Padding(
+                        padding:  EdgeInsets.only(top: 1.h),
+                        child: Text(notes , ),
+                      ),
+                      leading: Icon(Icons.note),
+
+                      trailing: IconButton(onPressed: ()async{
+
+
+
+                        print(widget.patient_data.visits_mapData_list);
+
+
+                        showDialog(
+                            context: context,
+                            builder: (context)  {
+
+
+
+                              return  Padding(
+                                padding:  EdgeInsets.symmetric(horizontal: 6.w , vertical: 4.h),
+                                child: Notes_List_Search(result: Notes,),
+                              );}
+
+                        ).then((value)async{
+
+                          print(value);
+
+                          if(value != null)
+                          {
+                            setState(() {
+                              Notes = value;
+                            });
+
+
+                          }
+                        });
+
+
+
+
+
+
+
+
+
+
+                      }, icon: Icon(Icons.arrow_drop_down_circle_outlined , color: Colors.black,)),
+
+                      subtitle: Padding(
+                        padding:  EdgeInsets.only(top: 1.h),
+                        child: Container(
+
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: Notes.map<Widget>((e)=>DropDown(e) ).toList(),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ), // Notes
 
                 Padding(
                   padding:  EdgeInsets.all(1.h),

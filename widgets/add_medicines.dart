@@ -237,7 +237,7 @@ class _AddMedicineState extends State<AddMedicine> {
                                     context: context,
                                     builder: (context) {
                                       return Padding(
-                                        padding:  EdgeInsets.symmetric(horizontal: 8.w , vertical: 6.h),
+                                        padding:  EdgeInsets.symmetric(horizontal: 6.w , vertical: 4.h),
                                         child: Tab_List_Search(
                                           result: Tab,
                                         ),
@@ -338,7 +338,7 @@ class _AddMedicineState extends State<AddMedicine> {
                                     context: context,
                                     builder: (context) {
                                       return Padding(
-                                        padding:  EdgeInsets.symmetric(horizontal: 8.w , vertical: 6.h),
+                                        padding:  EdgeInsets.symmetric(horizontal: 6.w , vertical: 4.h),
                                         child: Composition_List_Search(
                                           result: Composition,
                                         ),
@@ -435,7 +435,7 @@ class _AddMedicineState extends State<AddMedicine> {
                                     context: context,
                                     builder: (context) {
                                       return Padding(
-                                        padding:  EdgeInsets.symmetric(horizontal: 8.w , vertical: 6.h),
+                                        padding:  EdgeInsets.symmetric(horizontal: 6.w , vertical: 4.h),
                                         child: Company_name_List_Search(
                                           result: Company_name,
                                         ),
@@ -662,7 +662,6 @@ class _AddMedicineState extends State<AddMedicine> {
 
                                 Navigator.pop(context, 'save');
                               }
-
 
                             }
 

@@ -11,7 +11,7 @@ class Storage {
 
   static final storage = FlutterSecureStorage();
 
-  static const medicine_additional_info_list = 'medicine_additional_info_list';
+  static const add_info = 'add_info';
   static  bool add_info_updated = false;
 
   static const tab = 'tab';
@@ -35,6 +35,9 @@ class Storage {
   static const vital = 'services';
   static bool vital_updated = false;
 
+  static const notes = 'tab';
+  static  bool notes_updated = false;
+
 
   static const allergies = 'allergies';
 
@@ -54,39 +57,58 @@ class Storage {
 
 
   // Add Info
-  static Future set_medicine_additional_info({List<String> value ,  @required bool updated}) async
+  static Future set_add_info({Map<String, Map<String, dynamic>> value , @required bool updated }) async
   {
-    add_info_updated = updated;
     print(updated && value != null);
+
+    Storage.add_info_updated = updated;
 
 
     if(updated)
-      {
-        final str = jsonEncode(value);
+    {
+      print('\nset');
+      print(value);
 
-        await storage.write(key: medicine_additional_info_list, value: str);
-      }
+
+      final str = jsonEncode(value);
+
+      await storage.write(key: add_info, value: str);
+    }
   }
 
-  static Future<List<String>> get_medicine_additional_info() async
+  static Future<Map<String, Map<String, dynamic>>> get_add_info() async
   {
-    var add_info = await storage.read(key: medicine_additional_info_list);
-    print(add_info);
+    var str = await storage.read(key: add_info);
 
-    final value = jsonDecode(add_info);
+    var value = str != null ? jsonDecode(str) : null;
 
-    return value == null ? null : List<String>.from(value);
+    value = Map<String, Map<String, dynamic>>.from(value);
+
+
+    print(value.runtimeType);
+
+
+    print('\n value :');
+
+
+    print(value);
+
+    return value == null ? null : value;
   }
 
-  static Future cloud_medicine_additional_info({List<String> value ,  @required bool updated}) async
+  static Future cloud_add_info({Map<String, Map<String, dynamic>> value  , @required bool updated})async
   {
 
+
+
+
+
   }
 
-  static Future delete_medicine_additional_info(){
-    storage.delete(key: medicine_additional_info_list);
-
+  static Future delete_add_info(){
+    storage.delete(key: add_info);
   }
+
 
 
 
@@ -433,16 +455,68 @@ class Storage {
   {
 
 
-
-
-
-
   }
 
   static Future delete_vital(){
     storage.delete(key: vital);
   }
 
+
+
+
+  // Notes
+  static Future set_notes({Map<String, Map<String, dynamic>> value , @required bool updated }) async
+  {
+    print(updated && value != null);
+
+    Storage.notes_updated = updated;
+
+
+    if(updated)
+    {
+      print('\nset');
+      print(value);
+
+
+      final str = jsonEncode(value);
+
+      await storage.write(key: notes, value: str);
+    }
+  }
+
+  static Future<Map<String, Map<String, dynamic>>> get_notes() async
+  {
+    var str = await storage.read(key: notes);
+
+    var value = str != null ? jsonDecode(str) : null;
+
+    value = Map<String, Map<String, dynamic>>.from(value);
+
+
+    print(value.runtimeType);
+
+
+    print('\n value :');
+
+
+    print(value);
+
+    return value == null ? null : value;
+  }
+
+  static Future cloud_notes({Map<String, Map<String, dynamic>> value  , @required bool updated})async
+  {
+
+
+
+
+
+
+  }
+
+  static Future delete_notes(){
+    storage.delete(key: notes);
+  }
 
 
 

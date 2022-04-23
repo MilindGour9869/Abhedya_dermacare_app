@@ -67,7 +67,7 @@ class _Composition_List_SearchState extends State<Composition_List_Search> {
 
 
       all_data_map.forEach((key, value) {
-        group_all_data_list.add(value['tab'].toString());
+        group_all_data_list.add(value['composition'].toString());
       });
       group_search_data_list=group_all_data_list;
 
@@ -329,7 +329,7 @@ class _Composition_List_SearchState extends State<Composition_List_Search> {
 
 
                                         all_data_map.forEach((key, value) {
-                                          if(value['tab'] ==e)
+                                          if(value['composition'] ==e)
                                           {
                                             s=key;
 
@@ -367,7 +367,7 @@ class _Composition_List_SearchState extends State<Composition_List_Search> {
                 child: TextButton.icon(
                     onPressed: ()async {
 
-                      var doc = await FirebaseFirestore.instance.collection('Tab').doc();
+                      var doc = await FirebaseFirestore.instance.collection('Composition').doc();
 
 
                       setState(() {
@@ -375,7 +375,7 @@ class _Composition_List_SearchState extends State<Composition_List_Search> {
                         Map<String , dynamic> map={};
 
                         map['doc_id'] = doc.id;
-                        map['tab'] = search_edit.text;
+                        map['composition'] = search_edit.text;
 
                         updated=true;
 

@@ -10,16 +10,16 @@ import 'package:flutter_app/default.dart';
 import 'package:flutter_app/storage/storage.dart';
 import 'package:flutter/services.dart';
 
-class Company_name_List_Search extends StatefulWidget {
+class Notes_List_Search extends StatefulWidget {
 
   List result;
-  Company_name_List_Search({this.result});
+  Notes_List_Search({this.result});
 
   @override
-  _Company_name_List_SearchState createState() => _Company_name_List_SearchState();
+  _Notes_List_SearchState createState() => _Notes_List_SearchState();
 }
 
-class _Company_name_List_SearchState extends State<Company_name_List_Search> {
+class _Notes_List_SearchState extends State<Notes_List_Search> {
 
 
   List group_all_data_list =[] ;
@@ -52,7 +52,7 @@ class _Company_name_List_SearchState extends State<Company_name_List_Search> {
 
 
 
-    var a = await Storage.get_company_name();
+    var a = await Storage.get_notes();
 
     print(a);
 
@@ -67,7 +67,7 @@ class _Company_name_List_SearchState extends State<Company_name_List_Search> {
 
 
       all_data_map.forEach((key, value) {
-        group_all_data_list.add(value['company_name'].toString());
+        group_all_data_list.add(value['notes'].toString());
       });
       group_search_data_list=group_all_data_list;
 
@@ -157,7 +157,7 @@ class _Company_name_List_SearchState extends State<Company_name_List_Search> {
 
 
 
-    await Storage.set_company_name(value: all_data_map , updated:  updated );
+    await Storage.set_notes(value: all_data_map , updated:  updated );
   }
 
   void pop(){
@@ -264,97 +264,97 @@ class _Company_name_List_SearchState extends State<Company_name_List_Search> {
                     shrinkWrap: true,
                     children: group_search_data_list
                         .map<Widget>((e) => Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Material(
-                            elevation: 2,
-                            child: ListTile(
-                              onTap: (){
-                                select[e] = !select[e];
+                      padding: const EdgeInsets.all(8.0),
+                      child: Material(
+                        elevation: 2,
 
-                                if (select[e] == true) {
-                                  group_updated_result.add(e);
-                                  print(group_updated_result);
+                        child: ListTile(
 
+                          onTap: (){
 
+                            select[e] = !select[e];
 
-                                }
-                                if (select[e] == false) {
-                                  group_updated_result.remove(e);
-                                  print(group_updated_result);
-                                }
-
-                                setState(() {
-
-                                  select[e]= select[e];
-
-
-                                });
-
-                              },
-                              title: SelectableText(
-                                e,
-                              ),
-
-                              leading: CircleAvatar(
-                                backgroundColor:
-                                select[e] ? AppTheme.teal : AppTheme.light_black,
-                                child: Icon(
-                                  Icons.done,
-                                  color: AppTheme.white,
-                                ),
-                              ),
-                              trailing: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-
-                                  IconButton(onPressed: (){
-
-                                    Clipboard.setData(ClipboardData(text: e)).then((value) {
-                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Copied to your clipboard !')));
-                                    });
-
-                                  }, icon: Icon(Icons.copy ,)),
-
-                                  IconButton(
-                                    icon: Icon(Icons.delete_outline_outlined),
-                                    onPressed: (){
-                                      setState(() {
-
-                                        String s;
-
-
-                                        all_data_map.forEach((key, value) {
-                                          if(value['company_name'] ==e)
-                                          {
-                                            s=key;
-
-                                          }
-                                        });
-
-
-                                        all_data_map.remove(s);
-
-                                        updated=true;
-
-
-                                        group_all_data_list.remove(e);
-                                        group_search_data_list.remove(e);
-                                        group_updated_result.remove(e);
+                            if (select[e] == true) {
+                              group_updated_result.add(e);
 
 
 
-                                        print(all_data_map);
+
+                            }
+                            if (select[e] == false) {
+                              group_updated_result.remove(e);
+
+                            }
+
+                            setState(() {
+
+                              select[e]= select[e];
 
 
-                                      });
+                            });
 
-                                    },
-                                  ),
-                                ],
-                              ),
+
+                          },
+                          title: SelectableText(
+                            e,
+                          ),
+
+                          leading: CircleAvatar(
+                            backgroundColor:
+                            select[e] ? AppTheme.teal : AppTheme.light_black,
+                            child: Icon(
+                              Icons.done,
+                              color: AppTheme.white,
                             ),
                           ),
-                        ))
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+
+                              IconButton(onPressed: (){
+
+                                Clipboard.setData(ClipboardData(text: e)).then((value) {
+                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Copied to your clipboard !')));
+                                });
+
+                              }, icon: Icon(Icons.copy ,)),
+
+                              IconButton(
+                                icon: Icon(Icons.delete_outline_outlined),
+                                onPressed: (){
+                                  setState(() {
+
+                                    String s;
+
+
+                                    all_data_map.forEach((key, value) {
+                                      if(value['notes'] ==e)
+                                      {
+                                        s=key;
+
+                                      }
+                                    });
+
+                                    all_data_map.remove(s);
+
+                                    updated=true;
+
+
+                                    group_all_data_list.remove(e);
+                                    group_search_data_list.remove(e);
+                                    group_updated_result.remove(e);
+
+
+
+                                  });
+
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ))
                         .toList(),
                   ));
 
@@ -365,7 +365,7 @@ class _Company_name_List_SearchState extends State<Company_name_List_Search> {
                 child: TextButton.icon(
                     onPressed: ()async {
 
-                      var doc = await FirebaseFirestore.instance.collection('Company_Name').doc();
+                      var doc = await FirebaseFirestore.instance.collection('Notes').doc();
 
 
                       setState(() {
@@ -373,7 +373,7 @@ class _Company_name_List_SearchState extends State<Company_name_List_Search> {
                         Map<String , dynamic> map={};
 
                         map['doc_id'] = doc.id;
-                        map['company_name'] = search_edit.text;
+                        map['notes'] = search_edit.text;
 
                         updated=true;
 

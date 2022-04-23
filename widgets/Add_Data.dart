@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-import 'add_info.dart';
+import '../list_search/add_info.dart';
 import '../default.dart';
 
 class AddData extends StatefulWidget {
@@ -527,7 +527,7 @@ class _AddDataState extends State<AddData> {
 
                           showDialog(context: context, builder: (context)=>Padding(
                             padding:  EdgeInsets.symmetric(horizontal: 7.w , vertical: 8.h),
-                            child: Add_Info(result: all_data_english_list,),
+                            child: Add_Info_List_Search(result: all_data_english_list,),
                           )).then((value) {
 
                             if(value != null)
