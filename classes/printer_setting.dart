@@ -8,6 +8,7 @@ import 'dart:typed_data';
 import 'package:printing/printing.dart';
 import 'package:pdf/pdf.dart';
 
+
 class PdfInvoiceApi {
 
 
@@ -27,6 +28,7 @@ class PdfInvoiceApi {
 
   }) async {
     final pdf = pw.Document(version: PdfVersion.pdf_1_5 , compress: true);
+
 
 
     final logo = await imageFromAssetBundle('images/logo_without_background.png');
@@ -2004,6 +2006,14 @@ class PdfInvoiceApi {
         },
       ),
     );
+
+
+  //  await Printing.sharePdf(bytes: await pdf.save(), filename: 'my-document.pdf');
+
+
+
+
+
 
 
 

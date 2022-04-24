@@ -373,7 +373,7 @@ class _State extends State<Patient> {
         resizeToAvoidBottomInset: false,
         backgroundColor: AppTheme.offwhite,
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(25.h),
+          preferredSize: Size.fromHeight(27.h),
           child: Container(
               decoration: BoxDecoration(
                   color: AppTheme.green,

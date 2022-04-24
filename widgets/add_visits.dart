@@ -353,7 +353,13 @@ setState(() {
 
 
 
-              },);
+              },
+
+                doc_id: widget.patient_data.doc_id,
+
+
+
+              );
             });
             Prnt();
 
