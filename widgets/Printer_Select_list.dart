@@ -8,6 +8,9 @@ import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
+
+
+
 import 'dart:io';
 
 import 'package:open_file/open_file.dart';
@@ -175,7 +178,23 @@ class _Printer_Select_ListState extends State<Printer_Select_List> {
                         ),
                         child: TextButton(onPressed: ()async{
 
-                          Future f;
+
+                          var pdf;
+
+                          Future<bool> hasNetwork() async {
+                            try {
+                              final result = await InternetAddress.lookup('example.com');
+                              return result.isNotEmpty && result[0].rawAddress.isNotEmpty;
+                            } on SocketException catch (_) {
+                              return false;
+                            }
+                          }
+
+                          if(!await hasNetwork())
+                          {
+                            return showDialog(context: context, builder: (context)=>AlertDialog(title: Material(child: Text('No Internet Connectivity\nTo Upload to cloud , Internet is required' ,))));
+
+                          }
 
 
 
@@ -183,7 +202,8 @@ class _Printer_Select_ListState extends State<Printer_Select_List> {
 
 
 
-                          var pdf = await PdfInvoiceApi.generatePdf(
+
+                          pdf =  PdfInvoiceApi.generatePdf(
 
                             visit_date: map_bool['Visit Date']?widget.map_list['Visit Date']:null ,
 
@@ -221,22 +241,43 @@ class _Printer_Select_ListState extends State<Printer_Select_List> {
 
 
                           );
-                          if(cloud)
-                            {
-                              final output = await getTemporaryDirectory();
 
-                              print(output.toString());
-
-                              final file = File('${output.path}/example.pdf');
-                              await file.writeAsBytes(pdf);
-
-                              await Cloud_Storage.Patient_Prescription_Upload(doc_id: widget.doc_id  , file: file , visit_date: widget.map_list['Visit Date'] );
-
-                              file.delete();
-                            }
+                       //  pdf==null?showDialog(context: context, builder: (context)=>CircularProgressIndicator()):null;
 
                           await Printing.layoutPdf(
-                              onLayout: (PdfPageFormat format) async => pdf);
+                              onLayout: (PdfPageFormat format) async => await pdf);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                          if(cloud)
+                            {
+                              if(await hasNetwork())
+                                {Cloud_Storage.Patient_Prescription_Upload(doc_id: widget.doc_id  , data: await pdf , visit_date: widget.map_list['Visit Date'] );}
+
+                              else
+                                {
+
+                                }
+
+
+                            }
+
+
+
+
 
 
 
