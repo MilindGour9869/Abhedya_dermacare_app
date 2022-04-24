@@ -8,6 +8,8 @@ import 'package:flutter_app/screens/Patients.dart';
 import 'package:flutter_app/classes/image_picker.dart';
 
 import 'package:email_validator/email_validator.dart';
+import 'package:flutter_app/storage/cloud_storage.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:image_picker/image_picker.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -61,6 +63,8 @@ class _AddPatientState extends State<AddPatient> {
  var mobile_edit = TextEditingController();
  var group_edit = TextEditingController();
  var blood_group_edit=TextEditingController();
+
+ String profile_link ;
 
 
 
@@ -117,11 +121,22 @@ class _AddPatientState extends State<AddPatient> {
    {
      name = widget.patient_data.name;
 
+     print('hhh');
+
+     print(widget.patient_data.profile_link.toString());
+
+
      setState(() {
 
-       age_edit.text=widget.patient_data.age.toString();
+       print('vb vbvb');
+
+
+       print(widget.patient_data.age);
+
+
+       age_edit.text=widget.patient_data.age==0?"":widget.patient_data.age.toString();
        name_edit.text=widget.patient_data.name.toString();
-       mobile_edit.text=widget.patient_data.mobile.toString();
+       mobile_edit.text=widget.patient_data.mobile==0?"":widget.patient_data.mobile.toString();
 
 
 
@@ -146,6 +161,11 @@ class _AddPatientState extends State<AddPatient> {
                female = true;
              }
 
+         }
+
+       if(widget.patient_data.profile_link !=null)
+         {
+           profile_link = widget.patient_data.profile_link ;
          }
 
 
@@ -288,11 +308,29 @@ class _AddPatientState extends State<AddPatient> {
 
 
                            }
-                           else
-                             {
-                               print('in else ');
+
+
+
                                if(icon_tap)
                                {
+                                 if(file!=null)
+                                   { print('file no null');
+
+                                     var link = Cloud_Storage.Patient_Profile_Image_Upload(
+                                       doc_id: widget.patient_data.doc_id ,
+                                       file: file,
+                                     );
+
+                                     final snapshot = await link.whenComplete((){});
+
+                                     profile_link = await snapshot.ref.getDownloadURL();
+
+
+
+
+
+
+                                   }
                                  var doc = await FirebaseFirestore.instance.collection('Patient').doc();
 
                                  final json = {
@@ -303,14 +341,36 @@ class _AddPatientState extends State<AddPatient> {
                                    'mobile':mobile_edit.text,
                                    'recent_visit':Timestamp.now(),
                                    'email':email_edit.text,
-                                   'id' : doc.id,
-                                   'blood_group':blood_group_edit.text
+                                   'doc_id' : doc.id,
+                                   'blood_group':blood_group_edit.text,
+                                   'profile_link' : profile_link==null?"":profile_link,
+
+
                                  };
 
                                  doc.set(json);
                                }
                                else if(icon_tap == false)
                                {
+
+                                 if(file!=null)
+                                 { print('file no null');
+
+                                 var link = Cloud_Storage.Patient_Profile_Image_Upload(
+                                   doc_id: widget.patient_data.doc_id ,
+                                   file: file,
+                                 );
+
+                                 final snapshot = await link.whenComplete((){});
+
+                                 profile_link = await snapshot.ref.getDownloadURL();
+
+
+
+
+
+
+                                 }
 
 
 
@@ -323,7 +383,8 @@ class _AddPatientState extends State<AddPatient> {
                                        'mobile':mobile_edit.text,
                                        'recent_visit':Timestamp.now(),
                                        'email':email_edit.text,
-                                       'blood_group':blood_group_edit.text
+                                       'blood_group':blood_group_edit.text,
+                                       'profile_link' : profile_link==null?"":profile_link,
 
 
 
@@ -331,7 +392,7 @@ class _AddPatientState extends State<AddPatient> {
 
                                      });
                                }
-                             }
+
 
                          return  Navigator.pop(context , 'save');
 
@@ -371,39 +432,51 @@ class _AddPatientState extends State<AddPatient> {
 
           children: [
 
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 2.h),
-              child: GestureDetector(
-                onTap: (){
-                  showDialog(context: context, builder:(context)=>AlertDialog(
-                    title: Card(
-                      child: Column(
-                        children: [
-                          TextButton.icon(icon :Icon(Icons.camera) , onPressed: (){
+        Container(
+        margin: EdgeInsets.symmetric(vertical: 2.h),
+        child: GestureDetector(
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                  title: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TextButton.icon(
+                          icon: Icon(FontAwesomeIcons.cameraRetro , color: AppTheme.green, ),
+                          onPressed: () {
                             imagepicker(ImageSource.camera);
-
-                          }, label: Text('Camera')),
-                          TextButton.icon(
-                              icon: Icon(Icons.browse_gallery),
-                              onPressed: (){
+                            Navigator.pop(context);
+                          },
+                          label: Text(' Camera' ,style: AppTheme.Black,)),
+                      TextButton.icon(
+                          icon: Icon(FontAwesomeIcons.photoFilm  , color: AppTheme.green, ),
+                          onPressed: () {
                             imagepicker(ImageSource.gallery);
-                          }, label: Text('Gallery'))
-                        ],
-                      ),
-                    ),
-                  ));
-                },
-                child: ClipOval(
-                  child: CircleAvatar(
-                    radius:MediaQuery.of(context).size.height*0.1,
-
-                    child: file==null?Icon(Icons.person_add_outlined , color: Colors.white,): Image.file(file , fit: BoxFit.fill,),
-                    backgroundColor: Colors.grey,
-
-                  ),
-                ),
+                            Navigator.pop(context);
+                          },
+                          label: Text(' Gallery' ,style: AppTheme.Black, ))
+                    ],
+                  )),
+            );
+          },
+          child: ClipOval(
+            child: CircleAvatar(
+              radius:  AppTheme.circle,
+              child: file == null
+                  ? Icon(
+                Icons.person_add_outlined,
+                color: Colors.white,
+              )
+                  : Image.file(
+                file,
+                fit: BoxFit.fill,
               ),
+              backgroundColor: AppTheme.offwhite,
             ),
+          ),
+        ),
+      ),
 
 
 

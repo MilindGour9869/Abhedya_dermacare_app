@@ -10,4 +10,21 @@ class Cloud_Storage {
 
 
   }
+
+  static Future Patient_Profile_Image_Upload( {String doc_id , File file})async{
+    try{
+      final ref = await FirebaseStorage.instance.ref('Patient/${doc_id}/Profile/Profile');
+
+      return ref.putFile(file);
+    }
+    on FirebaseException catch (e){
+
+      return null;
+
+    }
+
+
+
+  }
+
 }
