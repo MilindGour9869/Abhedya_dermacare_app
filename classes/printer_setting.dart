@@ -28,6 +28,7 @@ class PdfInvoiceApi {
   }) async {
     final pdf = pw.Document(version: PdfVersion.pdf_1_5 , compress: true);
 
+
     final logo = await imageFromAssetBundle('images/logo_without_background.png');
     final sign = await imageFromAssetBundle('images/sign.png');
     final playstore = await imageFromAssetBundle('images/playstore.png');
@@ -165,7 +166,11 @@ class PdfInvoiceApi {
                           fontSize: three,
                         ),),
 
-                        pw.Text('${patient_detail['patient_mobile'].toString()}', style: pw.TextStyle(
+                        pw.Text('${patient_detail['patient_mobile'].toString()} / ', style: pw.TextStyle(
+                          fontSize: three,
+                        ),),
+
+                        pw.Text('${patient_detail['patient_blood_group'].toString()}', style: pw.TextStyle(
                           fontSize: three,
                         ),),
 
@@ -1739,7 +1744,7 @@ class PdfInvoiceApi {
 
                                                  patient_detail!=null?Patient_Address(patient_detail['address']):Box_null(),
 
-                                                 Box(),
+                                                 patient_detail!=null?Box():Box_null(),
 
 
 

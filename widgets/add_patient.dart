@@ -3,6 +3,7 @@ import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/default.dart';
+import 'package:flutter_app/list_search/blood_group_list_search.dart';
 import 'package:flutter_app/screens/Patients.dart';
 import 'package:flutter_app/classes/image_picker.dart';
 
@@ -97,7 +98,7 @@ class _AddPatientState extends State<AddPatient> {
  void initState() {
    // TODO: implement initState
    super.initState();
-   data  = widget.patient_data;
+
    print('gbfgf');
 
    print(widget.all_patient_name_list);
@@ -112,44 +113,34 @@ class _AddPatientState extends State<AddPatient> {
    print(patient_list);
 
 
-   if(data!=null)
+   if(widget.patient_data!=null)
    {
-     name = data.name;
+     name = widget.patient_data.name;
 
      setState(() {
 
-       age_edit.text=data.age.toString();
-       name_edit.text=data.name.toString();
-       mobile_edit.text=data.mobile.toString();
+       age_edit.text=widget.patient_data.age.toString();
+       name_edit.text=widget.patient_data.name.toString();
+       mobile_edit.text=widget.patient_data.mobile.toString();
 
-       if(data.group != null)
-         {
 
-           data.group.forEach((element) {
-             group_edit.text = element + " , " + group_edit.text ;
 
-           });
-         }
-
-       if(data.blood_group != null)
+       if(widget.patient_data.blood_group != null)
          {
            print('data.bloodgroup not emtpy');
 
-           data.blood_group.forEach((element) {
-             blood_group_edit.text = element;
-
-           });
+           blood_group_edit.text  = widget.patient_data.blood_group.toString();
          }
 
-       if(data.gender != "")
+       if(widget.patient_data.gender != null)
          {
-           print(data.gender);
+           print(widget.patient_data.gender);
 
-           if(data.gender == "Male")
+           if(widget.patient_data.gender == "Male")
             {
 
               male=true;}
-           else if(data.gender == "Female")
+           else if(widget.patient_data.gender == "Female")
              {
 
                female = true;
@@ -313,6 +304,7 @@ class _AddPatientState extends State<AddPatient> {
                                    'recent_visit':Timestamp.now(),
                                    'email':email_edit.text,
                                    'id' : doc.id,
+                                   'blood_group':blood_group_edit.text
                                  };
 
                                  doc.set(json);
@@ -331,6 +323,7 @@ class _AddPatientState extends State<AddPatient> {
                                        'mobile':mobile_edit.text,
                                        'recent_visit':Timestamp.now(),
                                        'email':email_edit.text,
+                                       'blood_group':blood_group_edit.text
 
 
 
@@ -522,90 +515,6 @@ class _AddPatientState extends State<AddPatient> {
             ),
 
 
-
-
-            Padding(
-              padding: EdgeInsets.symmetric(vertical:1.h, horizontal: 6.w),
-              child:TextField(
-                controller: group_edit,
-                autofocus: false,
-
-                readOnly: true,
-                decoration: InputDecoration(
-
-
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.grey,
-                        width: 2,),
-                      borderRadius: BorderRadius.circular(10),),
-
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.teal,
-                        width: 2,),
-                      borderRadius: BorderRadius.circular(10),),
-
-                    labelText: "Group",
-                    prefixIcon: Icon(Icons.medication),
-                     // ignore: void_checks
-                     suffixIcon: IconButton(icon: Icon(Icons.arrow_drop_down_circle_outlined),onPressed: (){
-
-
-
-                     if(name_edit!=null && name_edit.text.isNotEmpty)
-                       {
-                         return   showDialog(
-                             context: context,
-                             builder: (context) => Padding(
-                               padding:  EdgeInsets.all(4.w),
-                               child: ListSearch(group: 'group', Group: 'Group', patient_doc_id: data.doc_id , date: formatDate(data.recent_visit.toDate(), [dd, '-', mm, '-', yyyy ]).toString()),
-                             )).then((value){
-                               print('ff');
-
-                               setState(() {
-                                 group_edit.text ="";
-                               });
-
-                               value.forEach((e){
-                                 group_edit.text = e + " , " + group_edit.text ;
-                               });
-
-                               setState(() {
-                                 group_edit = group_edit;
-
-                               });
-                         });
-                       }
-                     else
-                       {
-                         return showDialog(
-                             context: context,
-                             builder: (context) =>AlertDialog(
-                               title: Text('Please enter Name of Patient' , textScaleFactor: AppTheme.alert,),
-                               actions: [
-                                 TextButton(onPressed: (){
-                                   Navigator.pop(context);
-
-                                 }, child: Text('OK' ,  textScaleFactor: AppTheme.alert,))
-                               ],
-                             ));
-                       }
-                     },)
-                ),
-
-
-
-
-
-
-
-
-
-
-              )
-            ),
-
             Padding(
                 padding:  EdgeInsets.symmetric(vertical: 1.h , horizontal: 6.w),
                 child:TextField(
@@ -649,18 +558,24 @@ class _AddPatientState extends State<AddPatient> {
                               context: context,
                               builder: (context) => Padding(
                                 padding:  EdgeInsets.all(4.w),
-                                child: ListSearch(group: 'blood-group', Group: 'Blood-Group', patient_doc_id: data.doc_id , date: formatDate(data.recent_visit.toDate(), [dd, '-', mm, '-', yyyy ]).toString()),
+                                child: Blood_Group_List_Search(),
                               )).then((value){
                             print('ff');
 
-                            value.forEach((e){
-                              blood_group_edit.text = e ;
-                            });
+                            if(value!=null)
+                              {
+                                if(value.isNotEmpty)
+                                  {
+                                    setState(() {
+                                      blood_group_edit.text = value[0];
 
-                            setState(() {
-                              blood_group_edit = blood_group_edit;
+                                    });
+                                  }
+                              }
 
-                            });
+
+
+
                           });
                         }
                         else

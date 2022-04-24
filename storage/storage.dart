@@ -35,8 +35,11 @@ class Storage {
   static const vital = 'services';
   static bool vital_updated = false;
 
-  static const notes = 'tab';
+  static const notes = 'notes';
   static  bool notes_updated = false;
+
+  static const blood_group = 'blood_group';
+  static  bool blood_group__updated = false;
 
 
   static const allergies = 'allergies';
@@ -516,6 +519,62 @@ class Storage {
 
   static Future delete_notes(){
     storage.delete(key: notes);
+  }
+
+
+
+  //Blood Group
+  static Future set_blood_group({Map<String, Map<String, dynamic>> value , @required bool updated }) async
+  {
+    print(updated && value != null);
+
+    Storage.blood_group__updated = updated;
+
+
+    if(updated)
+    {
+      print('\nset');
+      print(value);
+
+
+      final str = jsonEncode(value);
+
+      await storage.write(key: blood_group, value: str);
+    }
+  }
+
+  static Future<Map<String, Map<String, dynamic>>> get_blood_group() async
+  {
+    var str = await storage.read(key: blood_group);
+
+    var value = str != null ? jsonDecode(str) : null;
+
+    value = Map<String, Map<String, dynamic>>.from(value);
+
+
+    print(value.runtimeType);
+
+
+    print('\n value :');
+
+
+    print(value);
+
+    return value == null ? null : value;
+  }
+
+  static Future cloud_blood_group({Map<String, Map<String, dynamic>> value  , @required bool updated})async
+  {
+
+
+
+
+
+
+  }
+
+  static Future delete_blood_group(){
+    storage.delete(key: blood_group);
   }
 
 

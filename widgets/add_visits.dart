@@ -2,7 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_app/default.dart';
+import 'package:flutter_app/list_search/blood_group_list_search.dart';
 import 'package:flutter_app/list_search/notes_list_search.dart';
+import 'package:flutter_app/storage/storage.dart';
 import 'package:flutter_app/widgets/Printer_Select_list.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../list_search/vital_list_search.dart';
@@ -87,7 +89,7 @@ class _AddVisitsState extends State<AddVisits> {
   List Allergies =[];
   List Clinical_findings =[];
   List Group =[];
-  List Blood_group =[];
+
   List Services =[];
   List<String> Medicine = [];
   List Notes = [];
@@ -164,10 +166,7 @@ setState(() {
   {
       Group = map['group'];
   }
-  if(map['blood_group'] != null)
-  {
-      Blood_group = map['blood_group'];
-  }
+
   if(map['allergies'] != null)
   {
       Allergies = map['allergies'];
@@ -182,6 +181,8 @@ setState(() {
   }
   if( map['medicine'] != null)
     {
+      print('in medicine');
+
       medicine_result = map['medicine'];
 
     }
@@ -217,6 +218,15 @@ setState(() {
     super.initState();
 
 
+    if(widget.patient_data.blood_group !=null)
+      {
+
+        blood_group = widget.patient_data.blood_group;
+
+
+      }
+
+
 
 
     print(widget.patient_data.hashCode);
@@ -224,7 +234,12 @@ setState(() {
 
     if(widget.map != null)
       {
+
+        print(widget.map);
+
         map = widget.map;
+
+
 
         print('\ninit');
 
@@ -275,12 +290,15 @@ setState(() {
             Map<String , dynamic> patient_detail = {
 
               'patient_name' : widget.patient_data.name,
-              'patient_gender' : widget.patient_data.gender==null?"":widget.patient_data.gender,
+              'patient_gender' : widget.patient_data.gender==null?"":widget.patient_data.gender.isNotEmpty?widget.patient_data.gender:"",
               'patient_age':widget.patient_data.age==null?"":widget.patient_data.age.toString(),
               'patient_mobile': widget.patient_data.mobile==null?"":widget.patient_data.mobile.toString(),
-              'address' : widget.patient_data.address==null?"":widget.patient_data.address,
+              'address' : widget.patient_data.address==null?"":widget.patient_data.address.isNotEmpty?widget.patient_data.address:"",
+               'patient_blood_group':widget.patient_data.blood_group==null?"":widget.patient_data.blood_group.isNotEmpty?widget.patient_data.blood_group:"",
 
             };
+
+
 
 
 
@@ -302,7 +320,7 @@ setState(() {
 
                 'Vitals' : vital_result,
 
-                'Blood group' : Blood_group ,
+
 
                 'Complaint' : Complaint ,
                 'Investigation' : Investigation ,
@@ -372,10 +390,7 @@ setState(() {
               {
                 map['group'] = Group;
               }
-              if(Blood_group.isNotEmpty)
-              {
-                map['blood_group'] = Blood_group;
-              }
+
               if(Allergies.isNotEmpty)
               {
                 map['allergies'] = Allergies;
@@ -398,6 +413,7 @@ setState(() {
                   map['visit_date'] = new Timestamp.now();
                   patient_doc.update({
                     'recent_visit' :Timestamp.now(),
+                    'blood_group' : blood_group=='Blood Group'?"":blood_group
 
                   } );
 
@@ -490,44 +506,80 @@ setState(() {
 
                 Padding(
                   padding:  EdgeInsets.symmetric(horizontal: 1.w , vertical: 1.h),
-                  child: Material(
-                    elevation: 1,
-                    borderRadius: BorderRadius.circular(5),
-                    child: Padding(
-                      padding:  EdgeInsets.symmetric(horizontal: 2.w),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('Select Follow Up date :'),
+                  child: Padding(
+                    padding:  EdgeInsets.symmetric(horizontal: 2.w),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                            height: MediaQuery.of(context).size.height*0.08,
+                            width: 45.w,
 
-                          SizedBox(
-                              height: MediaQuery.of(context).size.height*0.08,
-                              width: 40.w,
 
-                              child: Card(
+                            child: Card(
 
                                 elevation: 1,
-                                  child: Center(child: TextButton(
+                                child: Center(child: TextButton.icon(
 
-                                child: Text(follow_up_date==null?'Follow Up Date':follow_up_date ),
-                                onPressed:(){
-                                  showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(1947), lastDate: DateTime(2050)).then((value){
-                                    print(value);
-                                    setState(() {
+                                  icon: Icon(FontAwesomeIcons.droplet , color: Colors.red,),
 
-                                      date = Timestamp.fromDate(value);
 
-                                      follow_up_date = formatDate(Timestamp.fromDate(value).toDate(),[dd, '-', mm, '-', yyyy]).toString();
+
+                                  label: Text(blood_group.isEmpty?"Blood Group":blood_group , style: TextStyle(color: Colors.black), ),
+                                  onPressed:(){
+
+                                    showDialog(context: context, builder: (context)=>Padding(
+                                      padding:  EdgeInsets.symmetric(horizontal: 6.w , vertical: 4.w),
+                                      child: Blood_Group_List_Search(),
+                                    )).then((value) {
+
+                                      if(value!=null)
+                                        {
+                                          if(value.isNotEmpty)
+                                            {
+                                              setState(() {
+                                                blood_group = value[0].toString();
+
+                                              });
+                                            }
+                                        }
                                     });
-                                  } );
-                                } ,
+                                  } ,
 
-                              )
+                                )
 
 
-                              ))),
-                        ],
-                      ),
+                                ))),
+
+                        SizedBox(
+                            height: MediaQuery.of(context).size.height*0.08,
+
+
+                            child: Card(
+
+                              elevation: 1,
+                                child: Center(child: TextButton.icon(
+
+                                  icon: Icon(Icons.timelapse_rounded),
+
+                              label: Text(follow_up_date==null?'Follow Up Date':follow_up_date , style: TextStyle(color: Colors.black),  ),
+                              onPressed:(){
+                                showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(1947), lastDate: DateTime(2050)).then((value){
+                                  print(value);
+                                  setState(() {
+
+                                    date = Timestamp.fromDate(value);
+
+                                    follow_up_date = formatDate(Timestamp.fromDate(value).toDate(),[dd, '-', mm, '-', yyyy]).toString();
+                                  });
+                                } );
+                              } ,
+
+                            )
+
+
+                            ))),
+                      ],
                     ),
                   ),
                 ),
@@ -1108,74 +1160,7 @@ setState(() {
                   ),
                 ), // Group
 
-                Padding(
-                  padding:  EdgeInsets.all(1.w),
-                  child: Material(
-                    borderRadius: BorderRadius.circular(10),
-                    elevation: 2,
 
-
-                    child: ListTile(
-
-                      title: Padding(
-                        padding:  EdgeInsets.only(top: 1.w),
-                        child: Text(blood_group, ),
-                      ),
-                      leading: Icon(FontAwesomeIcons.droplet , color: Colors.redAccent,),
-
-                      trailing: IconButton(onPressed: ()async{
-
-
-
-                        // print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
-
-
-                        showDialog(
-                            context: context,
-                            builder: (context)  {
-
-
-
-                              return  ListSearch(group: 'blood-group', Group: 'Blood-Group', patient_doc_id: widget.patient_data.doc_id, date: visit_date);}
-
-                        ).then((value)async{
-
-                          print(value);
-
-                          if(value != null)
-                          {
-                            setState(() {
-                              Blood_group = value;
-                            });
-
-
-                          }
-                        });
-
-
-
-
-
-
-
-
-
-
-                      }, icon: Icon(Icons.arrow_drop_down_circle_outlined , color: Colors.black,)),
-
-                      subtitle: Padding(
-                        padding:  EdgeInsets.only(top: 1.w),
-                        child: Container(
-
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: Blood_group.map<Widget>((e)=>DropDown(e) ).toList(),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ), // Blood-Group
 
                 Padding(
                   padding:  EdgeInsets.all(1.w),

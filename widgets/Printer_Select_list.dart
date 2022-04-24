@@ -30,7 +30,6 @@ class _Printer_Select_ListState extends State<Printer_Select_List> {
     'Allergies' : true ,
     'Advices' : true ,
     'Group' : true ,
-    'Blood group' : true ,
 
     'Medicine' : true ,
     'Vitals' : true,
@@ -151,7 +150,7 @@ class _Printer_Select_ListState extends State<Printer_Select_List> {
 
                               complaint: map_bool['Complaint']?widget.map_list['Complaint'].isEmpty?null:widget.map_list['Complaint']:null ,
 
-                              blood_group: map_bool['Blood group']?widget.map_list['Blood group'].isEmpty?null:widget.map_list['Blood group']:null ,
+                            //  blood_group: map_bool['Blood group']?widget.map_list['Blood group'].isEmpty?null:widget.map_list['Blood group']:null ,
 
                               group: map_bool['Group']?widget.map_list['Group'].isEmpty?null:widget.map_list['Group']:null ,
 
