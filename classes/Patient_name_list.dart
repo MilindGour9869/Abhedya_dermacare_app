@@ -5,7 +5,7 @@ class Patient_name_data_list{
   //basic
 
   String name , DOB , gender , email , address   , image  , doc_id   , blood_group , profile_link;
-  int age , mobile  ,uid ;
+  String age , mobile  ,uid ;
 
 
   Timestamp recent_visit;
@@ -44,9 +44,9 @@ class Patient_name_data_list{
     return Patient_name_data_list(
 
       name: json['name'],
-      age: json['age'] =="" ? "" : int.parse(json['age']),
+      age: json['age'] =="" ? "" : json['age'].toString(),
       recent_visit:  json['recent_visit'],
-      mobile: json['mobile'] =="" ? "" : int.parse(json['mobile']),
+      mobile: json['mobile'] =="" ? "" : json['mobile'].toString(),
       gender: json['gender'] =="" ? "": json['gender'],
       email: json['email'] =="" ? "": json['email'],
       doc_id: json['doc_id'],

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -65,6 +66,12 @@ class _AddPatientState extends State<AddPatient> {
 
  String profile_link ;
 
+ bool profile_img_delete = false;
+
+ String one_result;
+
+
+
 
 
 
@@ -76,17 +83,21 @@ class _AddPatientState extends State<AddPatient> {
 
 
 
-   final image = await ImagePicker().pickImage(source: source);
+   final image = await ImagePicker().pickImage(source: source , imageQuality: 50);
 
    if(image==null)
-     return;
+     return null;
 
    setState(() {
 
 
      this.file = File(image.path);
+     profile_link = "";
 
    });
+
+   return 'change';
+
 
 
  }
@@ -143,7 +154,9 @@ class _AddPatientState extends State<AddPatient> {
          {
            print('data.bloodgroup not emtpy');
 
-           blood_group_edit.text  = widget.patient_data.blood_group.toString();
+           blood_group_edit.text  = widget.patient_data.blood_group.isNotEmpty?widget.patient_data.blood_group:"Blood Group";
+           one_result =widget.patient_data.blood_group;
+
          }
 
        if(widget.patient_data.gender != null)
@@ -164,7 +177,10 @@ class _AddPatientState extends State<AddPatient> {
 
        if(widget.patient_data.profile_link !=null)
          {
-           profile_link = widget.patient_data.profile_link ;
+           profile_link = widget.patient_data.profile_link.isEmpty?null:widget.patient_data.profile_link ;
+
+
+
          }
 
 
@@ -310,6 +326,8 @@ class _AddPatientState extends State<AddPatient> {
 
 
 
+
+
                                if(icon_tap)
                                {
                                  if(file!=null)
@@ -360,9 +378,12 @@ class _AddPatientState extends State<AddPatient> {
                                    file: file,
                                  );
 
+
                                  final snapshot = await link.whenComplete((){});
 
                                  profile_link = await snapshot.ref.getDownloadURL();
+
+
 
 
 
@@ -392,8 +413,10 @@ class _AddPatientState extends State<AddPatient> {
                                      });
                                }
 
+                               return Navigator.pop(context , 'save');
 
-                         return  Navigator.pop(context , 'save');
+
+
 
                          }
 
@@ -444,6 +467,8 @@ class _AddPatientState extends State<AddPatient> {
                       TextButton.icon(
                           icon: Icon(FontAwesomeIcons.cameraRetro , color: AppTheme.green, ),
                           onPressed: () {
+
+
                             imagepicker(ImageSource.camera);
                             Navigator.pop(context);
                           },
@@ -451,6 +476,7 @@ class _AddPatientState extends State<AddPatient> {
                       TextButton.icon(
                           icon: Icon(FontAwesomeIcons.photoFilm  , color: AppTheme.green, ),
                           onPressed: () {
+
                             imagepicker(ImageSource.gallery);
                             Navigator.pop(context);
                           },
@@ -459,23 +485,56 @@ class _AddPatientState extends State<AddPatient> {
                   )),
             );
           },
+
+          onDoubleTap: (){
+            setState(() {
+              profile_img_delete = !profile_img_delete;
+
+            });
+          },
+
+
           child: ClipOval(
             child: CircleAvatar(
               radius:  AppTheme.circle,
-              child: file == null
+              child: profile_link == null
                   ? Icon(
                 Icons.person_add_outlined,
                 color: Colors.white,
               )
-                  : Image.file(
+                  :  file!=null?Image.file(
                 file,
                 fit: BoxFit.fill,
-              ),
+              ):Image.network(profile_link),
+
               backgroundColor: AppTheme.offwhite,
             ),
           ),
         ),
       ),
+
+            Visibility(
+              visible: profile_img_delete,
+              child: CircleAvatar(
+                backgroundColor: AppTheme.white,
+                child: IconButton(
+                  onPressed: (){
+
+                    setState(() {
+
+                      profile_link.isNotEmpty?FirebaseStorage.instance.refFromURL(profile_link).delete():null;
+
+                      profile_link=null;
+                      file=null;
+                      profile_img_delete=false;
+
+
+                    });
+                  },
+                  icon: Icon(Icons.delete_outline_outlined ,color: Colors.red,),
+                ),
+              ),
+            ),
 
 
 
@@ -625,12 +684,20 @@ class _AddPatientState extends State<AddPatient> {
 
                         if(name_edit!=null && name_edit.text.isNotEmpty)
                         {
+                          print('fff');
+
+
+                          print(blood_group_edit.text);
+
 
                           return   showDialog(
                               context: context,
                               builder: (context) => Padding(
                                 padding:  EdgeInsets.all(4.w),
-                                child: Blood_Group_List_Search(),
+                                child: Blood_Group_List_Search(
+                                  result: [one_result
+                                  ],
+                                ),
                               )).then((value){
                             print('ff');
 
@@ -638,8 +705,14 @@ class _AddPatientState extends State<AddPatient> {
                               {
                                 if(value.isNotEmpty)
                                   {
+                                    print('dvfbabfds');
+
                                     setState(() {
                                       blood_group_edit.text = value[0];
+                                      one_result = value[0];
+
+
+
 
                                     });
                                   }

@@ -41,6 +41,9 @@ class Storage {
   static const blood_group = 'blood_group';
   static  bool blood_group__updated = false;
 
+  static const select_practice = 'select_practice';
+  static  bool select_practice_updated = false;
+
 
   static const allergies = 'allergies';
 
@@ -575,6 +578,61 @@ class Storage {
 
   static Future delete_blood_group(){
     storage.delete(key: blood_group);
+  }
+
+
+
+  //Select Practice
+  static Future set_select_practice({Map<String, Map<String, dynamic>> value , @required bool updated }) async
+  {
+    print(updated && value != null);
+
+    Storage.select_practice_updated = updated;
+
+
+    if(updated)
+    {
+      print('\nset');
+      print(value);
+
+
+      final str = jsonEncode(value);
+
+      await storage.write(key: select_practice, value: str);
+    }
+  }
+
+  static Future<Map<String, Map<String, dynamic>>> get_select_practice() async
+  {
+    var str = await storage.read(key: select_practice);
+
+    var value = str != null ? jsonDecode(str) : null;
+
+    value = Map<String, Map<String, dynamic>>.from(value);
+
+
+    print(value.runtimeType);
+
+
+    print('\n value :');
+
+
+    print(value);
+
+    return value == null ? null : value;
+  }
+
+  static Future cloud_select_practice({Map<String, Map<String, dynamic>> value  , @required bool updated})async
+  {
+
+
+
+
+
+  }
+
+  static Future delete_select_practice(){
+    storage.delete(key: select_practice);
   }
 
 

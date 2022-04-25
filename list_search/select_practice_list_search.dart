@@ -10,16 +10,16 @@ import 'package:flutter_app/default.dart';
 import 'package:flutter_app/storage/storage.dart';
 import 'package:flutter/services.dart';
 
-class Blood_Group_List_Search extends StatefulWidget {
+class Select_Practice_List_Search extends StatefulWidget {
 
   List result;
-  Blood_Group_List_Search({this.result});
+  Select_Practice_List_Search({this.result});
 
   @override
-  _Blood_Group_List_SearchState createState() => _Blood_Group_List_SearchState();
+  _Select_Practice_List_SearchState createState() => _Select_Practice_List_SearchState();
 }
 
-class _Blood_Group_List_SearchState extends State<Blood_Group_List_Search> {
+class _Select_Practice_List_SearchState extends State<Select_Practice_List_Search> {
 
 
   List group_all_data_list =[] ;
@@ -52,7 +52,7 @@ class _Blood_Group_List_SearchState extends State<Blood_Group_List_Search> {
 
 
 
-    var a = await Storage.get_blood_group();
+    var a = await Storage.get_select_practice();
 
     print(a);
 
@@ -67,7 +67,7 @@ class _Blood_Group_List_SearchState extends State<Blood_Group_List_Search> {
 
 
       all_data_map.forEach((key, value) {
-        group_all_data_list.add(value['blood_group'].toString());
+        group_all_data_list.add(value['select_practice'].toString());
       });
       group_search_data_list=group_all_data_list;
 
@@ -89,7 +89,7 @@ class _Blood_Group_List_SearchState extends State<Blood_Group_List_Search> {
       setState(() {
         widget.result.forEach((element) {
 
-          print(group_updated_result);
+
 
 
           group_all_data_list.forEach((e) {
@@ -101,9 +101,7 @@ class _Blood_Group_List_SearchState extends State<Blood_Group_List_Search> {
               select[e] = true;
               group_updated_result.add(e);
 
-
-
-
+              print(group_updated_result);
 
 
 
@@ -157,7 +155,7 @@ class _Blood_Group_List_SearchState extends State<Blood_Group_List_Search> {
 
 
 
-    await Storage.set_blood_group(value: all_data_map , updated:  updated );
+    await Storage.set_select_practice(value: all_data_map , updated:  updated );
   }
 
   void pop(){
@@ -189,6 +187,9 @@ class _Blood_Group_List_SearchState extends State<Blood_Group_List_Search> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
+
+
 
     get();
 
@@ -272,9 +273,6 @@ class _Blood_Group_List_SearchState extends State<Blood_Group_List_Search> {
 
                           onTap: (){
 
-                            print('fdfdf');
-
-
                             select.forEach((key, value) {
                               select[key] = false;
 
@@ -303,11 +301,9 @@ class _Blood_Group_List_SearchState extends State<Blood_Group_List_Search> {
 
                             });
 
-
                           },
                           title: SelectableText(
                             e,
-                            textScaleFactor: AppTheme.list_tile_subtile,
                           ),
 
                           leading: CircleAvatar(
@@ -339,7 +335,7 @@ class _Blood_Group_List_SearchState extends State<Blood_Group_List_Search> {
 
 
                                     all_data_map.forEach((key, value) {
-                                      if(value['blood_group'] ==e)
+                                      if(value['select_practice'] ==e)
                                       {
                                         s=key;
 
@@ -376,7 +372,7 @@ class _Blood_Group_List_SearchState extends State<Blood_Group_List_Search> {
                 child: TextButton.icon(
                     onPressed: ()async {
 
-                      var doc = await FirebaseFirestore.instance.collection('Blood_Group').doc();
+                      var doc = await FirebaseFirestore.instance.collection('Select_Practice').doc();
 
 
                       setState(() {
@@ -384,7 +380,7 @@ class _Blood_Group_List_SearchState extends State<Blood_Group_List_Search> {
                         Map<String , dynamic> map={};
 
                         map['doc_id'] = doc.id;
-                        map['blood_group'] = search_edit.text;
+                        map['select_practice'] = search_edit.text;
 
                         updated=true;
 

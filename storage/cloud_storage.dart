@@ -44,4 +44,25 @@ class Cloud_Storage {
 
   }
 
+
+
+  static Future Admin_Profile_Image_Upload( {String username , File file})async{
+    try{
+      final ref = await FirebaseStorage.instance.ref('Administration/Admin/${username}/Profile');
+
+      return ref.putFile(file);
+    }
+    on FirebaseException catch (e){
+
+      return null;
+
+    }
+
+
+
+  }
+
+
+
+
 }

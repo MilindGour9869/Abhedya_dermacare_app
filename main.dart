@@ -43,6 +43,8 @@ class MyApp extends StatelessWidget {
 
       home: ResponsiveSizer(
         builder: (context, orientation, screenType){
+
+
           return MediaQuery(
               data:MediaQuery.of(context).copyWith(textScaleFactor: 1.2),
               child: HomePage());

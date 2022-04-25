@@ -190,11 +190,14 @@ class _Printer_Select_ListState extends State<Printer_Select_List> {
                             }
                           }
 
-                          if(!await hasNetwork())
-                          {
-                            return showDialog(context: context, builder: (context)=>AlertDialog(title: Material(child: Text('No Internet Connectivity\nTo Upload to cloud , Internet is required' ,))));
+                         if(cloud)
+                           {
+                             if(!await hasNetwork())
+                             {
+                               return showDialog(context: context, builder: (context)=>AlertDialog(title: Material(child: Text('No Internet Connectivity\nTo Upload to cloud , Internet is required' ,))));
 
-                          }
+                             }
+                           }
 
 
 
