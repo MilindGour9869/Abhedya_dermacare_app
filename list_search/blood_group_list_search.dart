@@ -13,7 +13,9 @@ import 'package:flutter/services.dart';
 class Blood_Group_List_Search extends StatefulWidget {
 
   List result;
-  Blood_Group_List_Search({this.result});
+ 
+
+  Blood_Group_List_Search({this.result });
 
   @override
   _Blood_Group_List_SearchState createState() => _Blood_Group_List_SearchState();
@@ -275,12 +277,11 @@ class _Blood_Group_List_SearchState extends State<Blood_Group_List_Search> {
                             print('fdfdf');
 
 
-                            select.forEach((key, value) {
-                              select[key] = false;
 
-                            });
 
                             select[e] = !select[e];
+
+
 
                             group_updated_result=[];
 
@@ -299,6 +300,9 @@ class _Blood_Group_List_SearchState extends State<Blood_Group_List_Search> {
                             setState(() {
 
                               select[e]= select[e];
+
+                              print(select[e]);
+
 
 
                             });

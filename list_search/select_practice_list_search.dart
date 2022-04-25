@@ -273,32 +273,21 @@ class _Select_Practice_List_SearchState extends State<Select_Practice_List_Searc
 
                           onTap: (){
 
-                            select.forEach((key, value) {
-                              select[key] = false;
+                            print('fdfdf');
 
-                            });
 
                             select[e] = !select[e];
 
                             group_updated_result=[];
 
-
-
-
                             if (select[e] == true) {
                               group_updated_result.add(e);
-
                             }
                             if (select[e] == false) {
                               group_updated_result = [];
-
                             }
-
                             setState(() {
-
                               select[e]= select[e];
-
-
                             });
 
                           },

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_app/default.dart';
 import 'package:flutter_app/list_search/blood_group_list_search.dart';
+import 'package:flutter_app/list_search/list_search.dart';
 import 'package:flutter_app/list_search/notes_list_search.dart';
 import 'package:flutter_app/storage/storage.dart';
 import 'package:flutter_app/widgets/Printer_Select_list.dart';
@@ -63,11 +64,14 @@ class _AddVisitsState extends State<AddVisits> {
   String allergies="Allergies";
   String clinical_findings="Clinical Findings";
   String group = "Group";
-  String blood_group="Blood Group";
+
   String service = "Services";
   String medicine = "Medicine";
   String vital = "Vitals";
   String notes = 'Notes';
+
+
+  String blood_group ="";
 
 
 
@@ -534,9 +538,13 @@ setState(() {
                                   label: Text(blood_group.isEmpty?"Blood Group":blood_group , style: TextStyle(color: Colors.black), ),
                                   onPressed:(){
 
-                                    showDialog(context: context, builder: (context)=>Padding(
-                                      padding:  EdgeInsets.symmetric(horizontal: 6.w , vertical: 4.w),
-                                      child: Blood_Group_List_Search(),
+                                    showDialog(context: context, builder: (context)=>List_Search(
+                                      result: [blood_group],
+                                      get: Storage.get_blood_group,
+                                      set: Storage.set_blood_group,
+                                      one_select: true,
+                                      group: 'blood_group',
+                                      Group: 'Blood_Group',
                                     )).then((value) {
 
                                       if(value!=null)
@@ -548,6 +556,20 @@ setState(() {
 
                                               });
                                             }
+                                          else
+                                            {
+                                              setState(() {
+                                                blood_group="";
+                                              });
+
+                                            }
+                                        }
+                                      else
+                                        {
+                                          setState(() {
+                                            blood_group="";
+                                          });
+
                                         }
                                     });
                                   } ,

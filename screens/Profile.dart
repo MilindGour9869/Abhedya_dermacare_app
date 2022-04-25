@@ -8,6 +8,7 @@ import 'package:flutter_app/list_search/blood_group_list_search.dart';
 
 
 import 'package:email_validator/email_validator.dart';
+import 'package:flutter_app/list_search/list_search.dart';
 import 'package:flutter_app/list_search/select_practice_list_search.dart';
 import 'package:flutter_app/storage/cloud_storage.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -20,6 +21,8 @@ import 'dart:io';
 
 
 import 'package:flutter_app/classes/Patient_name_list.dart';
+
+import '../storage/storage.dart';
 
 
 
@@ -294,11 +297,15 @@ class _ProfileState extends State<Profile> {
 
                             return   showDialog(
                                 context: context,
-                                builder: (context) => Padding(
-                                  padding:  EdgeInsets.all(4.w),
-                                  child: Select_Practice_List_Search(
-                                    result: [result.isNotEmpty?result:""],
-                                  ),
+                                builder: (context) => List_Search(
+                                  result: [result],
+                                  one_select: true,
+                                  group: 'select_practice',
+                                  get: Storage.get_select_practice,
+                                  set: Storage.set_select_practice,
+                                  Group: 'Select_Practice',
+
+
                                 )).then((value){
                               print('ff');
 
@@ -315,7 +322,15 @@ class _ProfileState extends State<Profile> {
 
                                   });
                                 }
+                                else
+                                  result= null;
+
                               }
+                              else
+                                {
+                                  result = null;
+
+                                }
 
 
 
