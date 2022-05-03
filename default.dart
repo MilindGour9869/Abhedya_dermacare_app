@@ -54,6 +54,21 @@ class AppTheme{
 
 
 
+   static const k_list_tile_subtile= TextStyle(
+     color: Colors.grey,
+
+
+
+   );
+
+   static  final k_search_text_style =  TextStyle(
+       fontWeight: FontWeight.w900,
+       color: Colors.grey.shade400
+   );
+
+
+
+
 
    static double circle = 10.h;
 

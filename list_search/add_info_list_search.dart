@@ -52,7 +52,8 @@ class _Add_Info_List_SearchState extends State<Add_Info_List_Search> {
 
 
 
-    var a = await Storage.get_add_info();
+    var a = await Storage.get(
+    );
 
     print(a);
 
@@ -157,7 +158,7 @@ class _Add_Info_List_SearchState extends State<Add_Info_List_Search> {
 
 
 
-    await Storage.set_add_info(value: all_data_map , updated:  updated );
+    await Storage.set(value: all_data_map , updated:  updated , variable: Storage.add_info );
   }
 
   void pop(){

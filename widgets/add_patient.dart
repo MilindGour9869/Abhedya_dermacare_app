@@ -9,6 +9,7 @@ import 'package:flutter_app/list_search/blood_group_list_search.dart';
 
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter_app/storage/cloud_storage.dart';
+import 'package:flutter_app/storage/storage.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:image_picker/image_picker.dart';
@@ -115,6 +116,8 @@ class _AddPatientState extends State<AddPatient> {
 
    print('gbfgf');
 
+
+
    print(widget.all_patient_name_list);
    print(icon_tap);
 
@@ -210,137 +213,182 @@ class _AddPatientState extends State<AddPatient> {
 
 
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppTheme.teal,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back ,),
-          onPressed: (){
-            Navigator.pop(context , 'back');
-          },
-        ),
+    return MediaQuery(
+      data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: AppTheme.teal,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back ,),
+            onPressed: (){
+              Navigator.pop(context , 'back');
+            },
+          ),
 
 
 
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text('Patient'),
-            IconButton(
-                onPressed: () async {
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Patient'),
+              IconButton(
+                  onPressed: () async {
 
-                  print(Timestamp.now());
-                  print(icon_tap);
+                    print(Timestamp.now());
+                    print(icon_tap);
 
-                  print(age_edit.text);
-
-
+                    print(age_edit.text);
 
 
 
 
-                  if(name_edit.text!=null && name_edit.text.isNotEmpty)
-                    {
-                      bool isSame = false ;
 
-                      if(icon_tap)
-                        {
-                          for(int i =0 ;i<patient_list.length ;i++)
+
+                    if(name_edit.text!=null && name_edit.text.isNotEmpty)
+                      {
+                        bool isSame = false ;
+
+                        if(icon_tap)
                           {
-                            if(name_edit.text == patient_list[i])
+                            for(int i =0 ;i<patient_list.length ;i++)
                             {
-                              isSame = true;
+                              if(name_edit.text == patient_list[i])
+                              {
+                                isSame = true;
 
-                              print('\nisa same is trueee');
+                                print('\nisa same is trueee');
 
-                              break;
+                                break;
+                              }
+
                             }
-
                           }
-                        }
 
-                      print(isSame);
-
+                        print(isSame);
 
 
 
 
-                       if(isSame && icon_tap)
-                         {
-                           print('in if ');
+
+                         if(isSame && icon_tap)
+                           {
+                             print('in if ');
 
 
-                          return  showDialog(context: context , builder: (context)=>AlertDialog(
-                             title: Text('Name is similar to another patient\nPlease change the name'  ),
-                             actions: [
-                               TextButton(onPressed: (){
-                                 Navigator.pop(context);
+                            return  showDialog(context: context , builder: (context)=>AlertDialog(
+                               title: Text('Name is similar to another patient\nPlease change the name'  ),
+                               actions: [
+                                 TextButton(onPressed: (){
+                                   Navigator.pop(context);
 
-                               }, child: Text('OK' ,  textScaleFactor: AppTheme.alert,))
-                             ],
+                                 }, child: Text('OK' ,  textScaleFactor: AppTheme.alert,))
+                               ],
 
-                           ));
-                         }
-
-
-                       else
-                         {
-
-                           if(email_edit.text.isNotEmpty)
-                             {
-                               if(!EmailValidator.validate(email_edit.text))
-                                 {
-                                  return  showDialog(context: context, builder: (context)=>AlertDialog(
-                                     title: Text('Invalid Email ID'),
-                                    actions: [
-                                      TextButton(onPressed: (){
-                                        Navigator.pop(context);
-
-                                      }, child: Text('OK' , textScaleFactor: AppTheme.alert,))
-                                    ],
-                                   ));
-
-                                 }
-                             }
-                            if(mobile_edit.text.isNotEmpty){
-
-                             print('in else if');
-
-
-                             if(mobile_edit.text.length!=10)
-                               {
-                                 return  showDialog(context: context, builder: (context)=>AlertDialog(
-                                   title: Text('Invalid Mobile No.' ,  textScaleFactor: AppTheme.alert,),
-                                   actions: [
-                                     TextButton(onPressed: (){
-                                       Navigator.pop(context);
-
-                                     }, child: Text('OK' , textScaleFactor: AppTheme.alert,))
-                                   ],
-                                 ));
-
-                               }
-
-
+                             ));
                            }
 
 
+                         else
+                           {
 
-
-
-                               if(icon_tap)
+                             if(email_edit.text.isNotEmpty)
                                {
-                                 if(file!=null)
+                                 if(!EmailValidator.validate(email_edit.text))
+                                   {
+                                    return  showDialog(context: context, builder: (context)=>AlertDialog(
+                                       title: Text('Invalid Email ID'),
+                                      actions: [
+                                        TextButton(onPressed: (){
+                                          Navigator.pop(context);
+
+                                        }, child: Text('OK' , textScaleFactor: AppTheme.alert,))
+                                      ],
+                                     ));
+
+                                   }
+                               }
+                              if(mobile_edit.text.isNotEmpty){
+
+                               print('in else if');
+
+
+                               if(mobile_edit.text.length!=10)
+                                 {
+                                   return  showDialog(context: context, builder: (context)=>AlertDialog(
+                                     title: Text('Invalid Mobile No.' ,  textScaleFactor: AppTheme.alert,),
+                                     actions: [
+                                       TextButton(onPressed: (){
+                                         Navigator.pop(context);
+
+                                       }, child: Text('OK' , textScaleFactor: AppTheme.alert,))
+                                     ],
+                                   ));
+
+                                 }
+
+
+                             }
+
+
+
+
+
+                                 if(icon_tap)
+                                 {
+                                   if(file!=null)
+                                     { print('file no null');
+
+                                       var link = Cloud_Storage.Patient_Profile_Image_Upload(
+                                         doc_id: widget.patient_data.doc_id ,
+                                         file: file,
+                                       );
+
+                                       final snapshot = await link.whenComplete((){});
+
+                                       profile_link = await snapshot.ref.getDownloadURL();
+
+
+
+
+
+
+                                     }
+                                   var doc = await FirebaseFirestore.instance.collection('Patient').doc();
+
+                                   final json = {
+                                     'name':name_edit.text,
+                                     'age' : age_edit.text,
+                                     'gender':male==true?'Male':female==true?'Female':"",
+                                     'address': address_edit.text,
+                                     'mobile':mobile_edit.text,
+                                     'recent_visit':Timestamp.now(),
+                                     'email':email_edit.text,
+                                     'doc_id' : doc.id,
+                                     'blood_group':blood_group_edit.text,
+                                     'profile_link' : profile_link==null?"":profile_link,
+
+
+                                   };
+
+                                   doc.set(json);
+                                 }
+                                 else if(icon_tap == false)
+                                 {
+
+                                   if(file!=null)
                                    { print('file no null');
 
-                                     var link = Cloud_Storage.Patient_Profile_Image_Upload(
-                                       doc_id: widget.patient_data.doc_id ,
-                                       file: file,
-                                     );
+                                   var link = Cloud_Storage.Patient_Profile_Image_Upload(
+                                     doc_id: widget.patient_data.doc_id ,
+                                     file: file,
+                                   );
 
-                                     final snapshot = await link.whenComplete((){});
 
-                                     profile_link = await snapshot.ref.getDownloadURL();
+                                   final snapshot = await link.whenComplete((){});
+
+                                   profile_link = await snapshot.ref.getDownloadURL();
+
+
 
 
 
@@ -348,314 +396,229 @@ class _AddPatientState extends State<AddPatient> {
 
 
                                    }
-                                 var doc = await FirebaseFirestore.instance.collection('Patient').doc();
-
-                                 final json = {
-                                   'name':name_edit.text,
-                                   'age' : age_edit.text,
-                                   'gender':male==true?'Male':female==true?'Female':"",
-                                   'address': address_edit.text,
-                                   'mobile':mobile_edit.text,
-                                   'recent_visit':Timestamp.now(),
-                                   'email':email_edit.text,
-                                   'doc_id' : doc.id,
-                                   'blood_group':blood_group_edit.text,
-                                   'profile_link' : profile_link==null?"":profile_link,
 
 
-                                 };
 
-                                 doc.set(json);
-                               }
-                               else if(icon_tap == false)
-                               {
-
-                                 if(file!=null)
-                                 { print('file no null');
-
-                                 var link = Cloud_Storage.Patient_Profile_Image_Upload(
-                                   doc_id: widget.patient_data.doc_id ,
-                                   file: file,
-                                 );
-
-
-                                 final snapshot = await link.whenComplete((){});
-
-                                 profile_link = await snapshot.ref.getDownloadURL();
+                                   await FirebaseFirestore.instance.collection('Patient').doc(widget.patient_data.doc_id).update(
+                                       {
+                                         'name':name_edit.text,
+                                         'age' : age_edit.text,
+                                         'gender':male==true?'Male':female==true?'Female':"",
+                                         'address': address_edit.text,
+                                         'mobile':mobile_edit.text,
+                                         'recent_visit':Timestamp.now(),
+                                         'email':email_edit.text,
+                                         'blood_group':blood_group_edit.text,
+                                         'profile_link' : profile_link==null?"":profile_link,
 
 
 
 
 
-
-
-
+                                       });
                                  }
 
-
-
-                                 await FirebaseFirestore.instance.collection('Patient').doc(widget.patient_data.doc_id).update(
-                                     {
-                                       'name':name_edit.text,
-                                       'age' : age_edit.text,
-                                       'gender':male==true?'Male':female==true?'Female':"",
-                                       'address': address_edit.text,
-                                       'mobile':mobile_edit.text,
-                                       'recent_visit':Timestamp.now(),
-                                       'email':email_edit.text,
-                                       'blood_group':blood_group_edit.text,
-                                       'profile_link' : profile_link==null?"":profile_link,
+                                 return Navigator.pop(context , 'save');
 
 
 
 
-
-                                     });
-                               }
-
-                               return Navigator.pop(context , 'save');
+                           }
 
 
+                      }
+                    else
+                      {
+                        return showDialog(context: context , builder: (context)=>AlertDialog(
 
+                          title: Text('Name is Compulsory\nPlease write the name'  , textScaleFactor: AppTheme.alert,),
+                          actions: [
+                            TextButton(onPressed: (){
+                              Navigator.pop(context);
 
-                         }
+                            }, child: Text('OK' ,  textScaleFactor: AppTheme.alert,))
+                          ],
+                        ));
 
+                      }
 
-                    }
-                  else
-                    {
-                      return showDialog(context: context , builder: (context)=>AlertDialog(
+                  },
+                  icon: Icon(
+                    Icons.save,
+                    color: Colors.white,
 
-                        title: Text('Name is Compulsory\nPlease write the name'  , textScaleFactor: AppTheme.alert,),
-                        actions: [
-                          TextButton(onPressed: (){
-                            Navigator.pop(context);
-
-                          }, child: Text('OK' ,  textScaleFactor: AppTheme.alert,))
-                        ],
-                      ));
-
-                    }
-
-                },
-                icon: Icon(
-                  Icons.save,
-                  color: Colors.white,
-
-                ),
-            )
-          ],
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-
-
-
-          children: [
-
-        Container(
-        margin: EdgeInsets.symmetric(vertical: 2.h),
-        child: GestureDetector(
-          onTap: () {
-            showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                  title: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      TextButton.icon(
-                          icon: Icon(FontAwesomeIcons.cameraRetro , color: AppTheme.green, ),
-                          onPressed: () {
-
-
-                            imagepicker(ImageSource.camera);
-                            Navigator.pop(context);
-                          },
-                          label: Text(' Camera' ,style: AppTheme.Black,)),
-                      TextButton.icon(
-                          icon: Icon(FontAwesomeIcons.photoFilm  , color: AppTheme.green, ),
-                          onPressed: () {
-
-                            imagepicker(ImageSource.gallery);
-                            Navigator.pop(context);
-                          },
-                          label: Text(' Gallery' ,style: AppTheme.Black, ))
-                    ],
-                  )),
-            );
-          },
-
-          onDoubleTap: (){
-            setState(() {
-              profile_img_delete = !profile_img_delete;
-
-            });
-          },
-
-
-          child: ClipOval(
-            child: CircleAvatar(
-              radius:  AppTheme.circle,
-              child: profile_link == null
-                  ? Icon(
-                Icons.person_add_outlined,
-                color: Colors.white,
+                  ),
               )
-                  :  file!=null?Image.file(
-                file,
-                fit: BoxFit.fill,
-              ):Image.network(profile_link),
+            ],
+          ),
+        ),
+        body: SingleChildScrollView(
+          child: Column(
 
-              backgroundColor: AppTheme.offwhite,
+
+
+            children: [
+
+          Container(
+          margin: EdgeInsets.symmetric(vertical: 2.h),
+          child: GestureDetector(
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                    title: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        TextButton.icon(
+                            icon: Icon(FontAwesomeIcons.cameraRetro , color: AppTheme.green, ),
+                            onPressed: () {
+
+
+                              imagepicker(ImageSource.camera);
+                              Navigator.pop(context);
+                            },
+                            label: Text(' Camera' ,style: AppTheme.Black,)),
+                        TextButton.icon(
+                            icon: Icon(FontAwesomeIcons.photoFilm  , color: AppTheme.green, ),
+                            onPressed: () {
+
+                              imagepicker(ImageSource.gallery);
+                              Navigator.pop(context);
+                            },
+                            label: Text(' Gallery' ,style: AppTheme.Black, ))
+                      ],
+                    )),
+              );
+            },
+
+            onDoubleTap: (){
+              setState(() {
+                profile_img_delete = !profile_img_delete;
+
+              });
+            },
+
+
+            child: ClipOval(
+              child: CircleAvatar(
+                radius:  AppTheme.circle,
+                child: profile_link == null
+                    ? Icon(
+                  Icons.person_add_outlined,
+                  color: Colors.white,
+                )
+                    :  file!=null?Image.file(
+                  file,
+                  fit: BoxFit.fill,
+                ):Image.network(profile_link),
+
+                backgroundColor: AppTheme.offwhite,
+              ),
             ),
           ),
         ),
-      ),
 
-            Visibility(
-              visible: profile_img_delete,
-              child: CircleAvatar(
-                backgroundColor: AppTheme.white,
-                child: IconButton(
-                  onPressed: (){
+              Visibility(
+                visible: profile_img_delete,
+                child: CircleAvatar(
+                  backgroundColor: AppTheme.white,
+                  child: IconButton(
+                    onPressed: (){
 
+                      setState(() {
+
+                        profile_link.isNotEmpty?FirebaseStorage.instance.refFromURL(profile_link).delete():null;
+
+                        profile_link=null;
+                        file=null;
+                        profile_img_delete=false;
+
+
+                      });
+                    },
+                    icon: Icon(Icons.delete_outline_outlined ,color: Colors.red,),
+                  ),
+                ),
+              ),
+
+
+
+
+              txtfield(text_edit: name_edit, hint: "Name", keyboard: TextInputType.text , icon: Icon(Icons.person_outline),),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ChoiceChip(label: Text('Male'), selected:male,selectedColor: Colors.teal,onSelected: (bool selected){
                     setState(() {
+                      male=true;
+                      female=false;
 
-                      profile_link.isNotEmpty?FirebaseStorage.instance.refFromURL(profile_link).delete():null;
-
-                      profile_link=null;
-                      file=null;
-                      profile_img_delete=false;
 
 
                     });
-                  },
-                  icon: Icon(Icons.delete_outline_outlined ,color: Colors.red,),
-                ),
+
+                  }, ),
+
+                  ChoiceChip(label: Text('Female' , ), selected:female ,selectedColor: Colors.teal,onSelected: (bool a){
+                    setState(() {
+                      male=false;
+                      female=true;
+
+                    });
+                  }, ),
+
+                  Container(
+                    width: 39.w,
+
+
+                      child: TextField(
+                        controller: age_edit,
+
+                        decoration: InputDecoration(
+
+
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.grey,
+                                width: 2,),
+                              borderRadius: BorderRadius.circular(10),),
+
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.teal,
+                                width: 2,),
+                              borderRadius: BorderRadius.circular(10),),
+
+                            hintText: "Age",
+                            prefixIcon: Icon(Icons.cake_outlined),
+
+
+
+
+
+
+
+                      )
+                      ,
+                        keyboardType: TextInputType.number,
+                      )
+
+                  ),
+
+
+                ],
               ),
-            ),
 
 
-
-
-            txtfield(text_edit: name_edit, hint: "Name", keyboard: TextInputType.text , icon: Icon(Icons.person_outline),),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ChoiceChip(label: Text('Male'), selected:male,selectedColor: Colors.teal,onSelected: (bool selected){
-                  setState(() {
-                    male=true;
-                    female=false;
-
-
-
-                  });
-
-                }, ),
-
-                ChoiceChip(label: Text('Female' , ), selected:female ,selectedColor: Colors.teal,onSelected: (bool a){
-                  setState(() {
-                    male=false;
-                    female=true;
-
-                  });
-                }, ),
-
-                Container(
-                  width: 39.w,
-
-
-                    child: TextField(
-                      controller: age_edit,
-
-                      decoration: InputDecoration(
-
-
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Colors.grey,
-                              width: 2,),
-                            borderRadius: BorderRadius.circular(10),),
-
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Colors.teal,
-                              width: 2,),
-                            borderRadius: BorderRadius.circular(10),),
-
-                          hintText: "Age",
-                          prefixIcon: Icon(Icons.cake_outlined),
-
-
-
-
-
-
-
-                    )
-                    ,
-                      keyboardType: TextInputType.number,
-                    )
-
-                ),
-
-
-              ],
-            ),
-
-
-            txtfield(text_edit: address_edit, hint: "Address", keyboard: TextInputType.text , icon: Icon(Icons.place_outlined), ),
-            txtfield(text_edit: email_edit, hint: "Email", keyboard:TextInputType.emailAddress , icon: Icon(Icons.email),),
-            Padding(
-              padding:  EdgeInsets.symmetric(horizontal: 6.w , vertical: 1.h),
-              child: TextField(
-                controller: mobile_edit,
-
-                decoration: InputDecoration(
-
-
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.grey,
-                        width: 2,),
-                      borderRadius: BorderRadius.circular(10),),
-
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.teal,
-                        width: 2,),
-                      borderRadius: BorderRadius.circular(10),),
-
-                    labelText: 'Mobile no.',
-                    prefixIcon: Icon(Icons.call)),
-
-
-                keyboardType: TextInputType.number,
-                maxLength: 10,
-
-
-
-
-
-
-
-
-              ),
-            ),
-
-
-            Padding(
-                padding:  EdgeInsets.symmetric(vertical: 1.h , horizontal: 6.w),
-                child:TextField(
-                  controller: blood_group_edit,
-                  autofocus: false,
-
-                  readOnly: true,
+              txtfield(text_edit: address_edit, hint: "Address", keyboard: TextInputType.text , icon: Icon(Icons.place_outlined), ),
+              txtfield(text_edit: email_edit, hint: "Email", keyboard:TextInputType.emailAddress , icon: Icon(Icons.email),),
+              Padding(
+                padding:  EdgeInsets.symmetric(horizontal: 6.w , vertical: 1.h),
+                child: TextField(
+                  controller: mobile_edit,
 
                   decoration: InputDecoration(
-
 
 
                       enabledBorder: OutlineInputBorder(
@@ -670,78 +633,117 @@ class _AddPatientState extends State<AddPatient> {
                           width: 2,),
                         borderRadius: BorderRadius.circular(10),),
 
-                      labelText: "Blood Group",
-                      prefixIcon: Icon(Icons.medication),
-                      // ignore: void_checks
-                      suffixIcon: IconButton(icon: Icon(Icons.arrow_drop_down_circle_outlined),onPressed: (){
-
-                        setState(() {
-                          blood_group_edit.text ="";
-
-                        });
+                      labelText: 'Mobile no.',
+                      prefixIcon: Icon(Icons.call)),
 
 
-
-                        if(name_edit!=null && name_edit.text.isNotEmpty)
-                        {
-                          print('fff');
-
-
-                          print(blood_group_edit.text);
-
-
-                          return   showDialog(
-                              context: context,
-                              builder: (context) => Padding(
-                                padding:  EdgeInsets.all(4.w),
-                                child: Blood_Group_List_Search(
-                                  result: [one_result
-                                  ],
-                                ),
-                              )).then((value){
-                            print('ff');
-
-                            if(value!=null)
-                              {
-                                if(value.isNotEmpty)
-                                  {
-                                    print('dvfbabfds');
-
-                                    setState(() {
-                                      blood_group_edit.text = value[0];
-                                      one_result = value[0];
+                  keyboardType: TextInputType.number,
+                  maxLength: 10,
 
 
 
 
-                                    });
-                                  }
-                              }
 
 
 
+
+                ),
+              ),
+
+
+              Padding(
+                  padding:  EdgeInsets.symmetric(vertical: 1.h , horizontal: 6.w),
+                  child:TextField(
+                    controller: blood_group_edit,
+                    autofocus: false,
+
+                    readOnly: true,
+
+                    decoration: InputDecoration(
+
+
+
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.grey,
+                            width: 2,),
+                          borderRadius: BorderRadius.circular(10),),
+
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.teal,
+                            width: 2,),
+                          borderRadius: BorderRadius.circular(10),),
+
+                        labelText: "Blood Group",
+                        prefixIcon: Icon(Icons.medication),
+                        // ignore: void_checks
+                        suffixIcon: IconButton(icon: Icon(Icons.arrow_drop_down_circle_outlined),onPressed: (){
+
+                          setState(() {
+                            blood_group_edit.text ="";
 
                           });
-                        }
-                        else
-                        {
-                          return showDialog(
-                              context: context,
-                              builder: (context) =>AlertDialog(
-                                title: Text('Please enter Name of Patient'  , textScaleFactor: AppTheme.alert,),
-                                actions: [
-                                  TextButton(onPressed: (){
-                                    Navigator.pop(context);
-
-                                  }, child: Text('OK' ,  textScaleFactor: AppTheme.alert,))
-                                ],
-                              ));
-                        }
-                      },)
-                  ),
 
 
 
+                          if(name_edit!=null && name_edit.text.isNotEmpty)
+                          {
+                            print('fff');
+
+
+                            print(blood_group_edit.text);
+
+
+                            return   showDialog(
+                                context: context,
+                                builder: (context) => Padding(
+                                  padding:  EdgeInsets.all(4.w),
+                                  child: Blood_Group_List_Search(
+                                    result: [one_result
+                                    ],
+                                  ),
+                                )).then((value){
+                              print('ff');
+
+                              if(value!=null)
+                                {
+                                  if(value.isNotEmpty)
+                                    {
+                                      print('dvfbabfds');
+
+                                      setState(() {
+                                        blood_group_edit.text = value[0];
+                                        one_result = value[0];
+
+
+
+
+                                      });
+                                    }
+                                }
+
+
+
+
+                            });
+                          }
+                          else
+                          {
+                            return showDialog(
+                                context: context,
+                                builder: (context) =>AlertDialog(
+                                  title: Text('Please enter Name of Patient'  , textScaleFactor: AppTheme.alert,),
+                                  actions: [
+                                    TextButton(onPressed: (){
+                                      Navigator.pop(context);
+
+                                    }, child: Text('OK' ,  textScaleFactor: AppTheme.alert,))
+                                  ],
+                                ));
+                          }
+                        },)
+                    ),
 
 
 
@@ -749,8 +751,11 @@ class _AddPatientState extends State<AddPatient> {
 
 
 
-                )
-            ),
+
+
+
+                  )
+              ),
 
 
 
@@ -771,7 +776,8 @@ class _AddPatientState extends State<AddPatient> {
 
 
 
-          ],
+            ],
+          ),
         ),
       ),
     );

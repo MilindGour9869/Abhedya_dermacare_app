@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_app/default.dart';
 import 'package:flutter_app/storage/storage.dart';
-import 'package:flutter_app/widgets/Add_Data.dart';
+import '../widgets/Add_Data.dart';
 import 'package:flutter_app/widgets/add_medicines.dart';
 
 

@@ -11,6 +11,11 @@ class Storage {
 
   static final storage = FlutterSecureStorage();
 
+
+  static bool is_get_cloud_called = false;
+  static const one_time_get_cloud = 'one_time_get_cloud';
+
+
   static const add_info = 'add_info';
   static  bool add_info_updated = false;
 
@@ -54,20 +59,27 @@ class Storage {
   static const clinical_finding = 'clinical_finding';
 
 
+  static Future get_all_cloud_data({@required Map<String, Map<String, dynamic>> user})async{
+    FirebaseFirestore.instance.collection('Complaint').get().then(( QuerySnapshot querySnapshot) {
+
+      querySnapshot.docs.forEach((element) {
+        print(element);
+
+      });
+
+    });
+  }
 
 
 
 
-
-
-
-
-  // Add Info
-  static Future set_add_info({Map<String, Map<String, dynamic>> value , @required bool updated }) async
+  static Future set({@required Map<String, Map<String, dynamic>> value , @required bool updated , @required String variable }) async
   {
     print(updated && value != null);
 
-    Storage.add_info_updated = updated;
+
+
+
 
 
     if(updated)
@@ -78,13 +90,13 @@ class Storage {
 
       final str = jsonEncode(value);
 
-      await storage.write(key: add_info, value: str);
+      await storage.write(key: variable, value: str);
     }
   }
 
-  static Future<Map<String, Map<String, dynamic>>> get_add_info() async
+  static Future<Map<String, Map<String, dynamic>>> get({@required String variable}) async
   {
-    var str = await storage.read(key: add_info);
+    var str = await storage.read(key: variable);
 
     var value = str != null ? jsonDecode(str) : null;
 
@@ -102,18 +114,52 @@ class Storage {
     return value == null ? null : value;
   }
 
-  static Future cloud_add_info({Map<String, Map<String, dynamic>> value  , @required bool updated})async
+  static Future delete({@required String variable}){
+    storage.delete(key: variable);
+  }
+
+
+
+  static Future cloud({ @required String Group , @required Function get , String user ,  })async
   {
 
+    print('cloud called');
+
+
+    var json = await  get();
+
+    print(json);
+
+    json.forEach((key, value) {
+
+      FirebaseFirestore.instance.collection(Group).doc(key).set(value ,SetOptions(merge: true) );
+    });
+
+
+
+
+
+
 
 
 
 
   }
 
-  static Future delete_add_info(){
-    storage.delete(key: add_info);
-  }
+
+
+
+
+
+
+
+
+
+
+
+  // Add Info
+
+
 
 
 
@@ -566,15 +612,7 @@ class Storage {
     return value == null ? null : value;
   }
 
-  static Future cloud_blood_group({Map<String, Map<String, dynamic>> value  , @required bool updated})async
-  {
 
-
-
-
-
-
-  }
 
   static Future delete_blood_group(){
     storage.delete(key: blood_group);

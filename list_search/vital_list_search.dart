@@ -522,155 +522,158 @@ Widget Dialogue(
       TextEditingController vital_unit,
       BuildContext context,
     }) {
-  return Scaffold(
-    backgroundColor: Colors.transparent,
-    body: Padding(
-      padding: EdgeInsets.symmetric(horizontal: 5.w),
-      child: Column(
+  return MediaQuery(
+    data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+    child: Scaffold(
+      backgroundColor: Colors.transparent,
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 5.w),
+        child: Column(
 
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Material(
-            child: Padding(
-              padding:  EdgeInsets.symmetric(horizontal: 2.w),
-              child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                SizedBox(
-                  height: 1.h,
-                ),
-                Text(
-                  vital_name.text.isEmpty?'Add Vital':vital_name.text,
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      ),
-                ),
-                SizedBox(
-                  height: 2.h,
-                ),
-                Material(
-                  child: TextField(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Material(
+              child: Padding(
+                padding:  EdgeInsets.symmetric(horizontal: 2.w),
+                child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  SizedBox(
+                    height: 1.h,
+                  ),
+                  Text(
+                    vital_name.text.isEmpty?'Add Vital':vital_name.text,
                     style: TextStyle(
-                        fontSize: 4.w
-                    ),
-                    controller: vital_name,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      labelText: 'Vital Name',
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 2.h,
-                ),
-                Material(
-                  child: TextField(
-                    style: TextStyle(
-                        fontSize: 4.w
-                    ),
-                    controller: vital_unit,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      labelText: 'Vital Unit',
-
-                    ),
-                    keyboardType: TextInputType.name,
-                  ),
-                ),
-                SizedBox(
-                  height: 2.h,
-                ),
-                Container(
-                  alignment: Alignment.bottomCenter,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.grey),
-                        child: TextButton(
-                          child: Text(
-                            'Cancel',
-                            style: TextStyle(color: Colors.black),
-                          ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
+                        fontWeight: FontWeight.bold,
                         ),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: AppTheme.green),
-                        child: TextButton(
-                          child: Text(
-                            'Done',
-                            style: TextStyle(color: Colors.black),
-                          ),
-                          onPressed: () async {
-
-
-                            print('done');
-
-                            if (vital_name.text.isEmpty) {
-                              showDialog(
-                                  context: context,
-                                  builder: (context) => AlertDialog(
-                                    title: Text('Vital Name field is required'),
-                                  ));
-                            }
-
-                            if (vital_unit.text.isEmpty) {
-                              showDialog(
-                                  context: context,
-                                  builder: (context) => AlertDialog(
-                                    title: Text('Vital Unit field is required'),
-                                  ));
-                            }
-
-                            Map<String, Map<String, dynamic>> all_data_map = {};
-
-                            var doc = await FirebaseFirestore.instance
-                                .collection('Vital')
-                                .doc();
-
-
-
-                            final json = {
-
-                              'vital_name': vital_name.text,
-                              'vital_unit': vital_unit.text,
-                              'doc_id': doc.id,
-
-
-                            };
-
-                            all_data_map[doc.id] = json;
-                            print(all_data_map);
-
-                            //  Services();
-
-                            Navigator.pop(context, all_data_map);
-
-                            vital_unit.clear();
-                            vital_name.clear();
-                          },
-                        ),
-                      ),
-                    ],
                   ),
-                ),
+                  SizedBox(
+                    height: 2.h,
+                  ),
+                  Material(
+                    child: TextField(
+                      style: TextStyle(
+                          fontSize: 4.w
+                      ),
+                      controller: vital_name,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        labelText: 'Vital Name',
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 2.h,
+                  ),
+                  Material(
+                    child: TextField(
+                      style: TextStyle(
+                          fontSize: 4.w
+                      ),
+                      controller: vital_unit,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        labelText: 'Vital Unit',
 
-                SizedBox(height: 1.h,)
-              ]),
+                      ),
+                      keyboardType: TextInputType.name,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 2.h,
+                  ),
+                  Container(
+                    alignment: Alignment.bottomCenter,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.grey),
+                          child: TextButton(
+                            child: Text(
+                              'Cancel',
+                              style: TextStyle(color: Colors.black),
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: AppTheme.green),
+                          child: TextButton(
+                            child: Text(
+                              'Done',
+                              style: TextStyle(color: Colors.black),
+                            ),
+                            onPressed: () async {
+
+
+                              print('done');
+
+                              if (vital_name.text.isEmpty) {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                      title: Text('Vital Name field is required'),
+                                    ));
+                              }
+
+                              if (vital_unit.text.isEmpty) {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                      title: Text('Vital Unit field is required'),
+                                    ));
+                              }
+
+                              Map<String, Map<String, dynamic>> all_data_map = {};
+
+                              var doc = await FirebaseFirestore.instance
+                                  .collection('Vital')
+                                  .doc();
+
+
+
+                              final json = {
+
+                                'vital_name': vital_name.text,
+                                'vital_unit': vital_unit.text,
+                                'doc_id': doc.id,
+
+
+                              };
+
+                              all_data_map[doc.id] = json;
+                              print(all_data_map);
+
+                              //  Services();
+
+                              Navigator.pop(context, all_data_map);
+
+                              vital_unit.clear();
+                              vital_name.clear();
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  SizedBox(height: 1.h,)
+                ]),
+              ),
             ),
-          ),
 
-        ],
+          ],
+        ),
       ),
     ),
   );

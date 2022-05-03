@@ -1,12 +1,14 @@
 
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_app/screens/login_screen.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -45,14 +47,12 @@ class MyApp extends StatelessWidget {
         builder: (context, orientation, screenType){
 
 
-          return MediaQuery(
-              data:MediaQuery.of(context).copyWith(textScaleFactor: 1.2),
-              child: HomePage());
+          return HomePage();
 
         },
       ),
       theme: ThemeData(
-        fontFamily: 'Nunito-Regular',
+        fontFamily: 'Nunito-SemiBold',
 
       ),
 
@@ -80,10 +80,15 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       backgroundColor: AppTheme.green,
-      body:Patient(),
-      drawer:NavigationDrawer(),
+      resizeToAvoidBottomInset: false,
+      body: Patient(),
+      drawer:MediaQuery(
+          data:MediaQuery.of(context).copyWith(textScaleFactor: 1.2),
+
+          child: NavigationDrawer()),
+
+
     );
   }
 
