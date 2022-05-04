@@ -437,154 +437,157 @@ class _State extends State<Medicines> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(25.h),
-        child: Container(
+    return MediaQuery(
+      data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(25.h),
+          child: Container(
 
-            decoration: BoxDecoration(
-                color: AppTheme.green,
-                borderRadius: BorderRadius.only(
-                  bottomRight: Radius.circular(30),
-                  bottomLeft: Radius.circular(30),
-                )),
+              decoration: BoxDecoration(
+                  color: AppTheme.green,
+                  borderRadius: BorderRadius.only(
+                    bottomRight: Radius.circular(30),
+                    bottomLeft: Radius.circular(30),
+                  )),
 
-            child: Column(
+              child: Column(
 
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
-              children: [
-
-
-                AppBar(
-                  title: Text('Medicine' ),
-                  backgroundColor: Colors.transparent,
-                  elevation: 0,
-                  actions: [
-                    Visibility(
-                        visible: delete?false:true,
-                        child: IconButton(
-                          icon: Icon(Icons.save),
-                          onPressed: (){
-                            Navigator.pop(context , result_map);
-
-                          },
-                        ))
-                  ],
-                ),
-
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 10.w , vertical: 2.h),
-
-                  height: 6.h,
-
-                  decoration: BoxDecoration(
-                      color: AppTheme.notWhite,
-                      borderRadius: BorderRadius.circular(10)),
-                  child: TextField(
-
-                    controller: textcontroller,
+                children: [
 
 
+                  AppBar(
+                    title: Text('Medicine' ),
+                    backgroundColor: Colors.transparent,
+                    elevation: 0,
+                    actions: [
+                      Visibility(
+                          visible: delete?false:true,
+                          child: IconButton(
+                            icon: Icon(Icons.save),
+                            onPressed: (){
+                              Navigator.pop(context , result_map);
 
-                    onChanged: onItemChanged,
-                    decoration: InputDecoration(
-                        isDense: true,
-                        isCollapsed: true,
-                        contentPadding: EdgeInsets.symmetric(horizontal: 7.w , vertical: 1.3.h ),
-                        border: InputBorder.none,
-                        hintText: 'search',
-
-
-
-
-                        suffixIcon: Icon(Icons.search)),
-                    keyboardType: TextInputType.name,
+                            },
+                          ))
+                    ],
                   ),
-                ),
-              ],
-            )),
-      ),
-      body: SingleChildScrollView(
-          child: FutureBuilder(
-              future: f,
-              builder: (context, snapshot) {
-                c = -1;
 
-                print(snapshot.data);
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 10.w , vertical: 2.h),
 
-                if (search_medicine_list.isEmpty) {
-                  return Center(
-                      child: Card(
-                          color: AppTheme.notWhite,
-                          child: Padding(
-                            padding:  EdgeInsets.all(5.w),
-                            child: Text('loading' ),
-                          )));
-                }
+                    height: 6.h,
+
+                    decoration: BoxDecoration(
+                        color: AppTheme.notWhite,
+                        borderRadius: BorderRadius.circular(10)),
+                    child: TextField(
+
+                      controller: textcontroller,
 
 
 
+                      onChanged: onItemChanged,
+                      decoration: InputDecoration(
+                          isDense: true,
+                          isCollapsed: true,
+                          contentPadding: EdgeInsets.symmetric(horizontal: 7.w , vertical: 1.3.h ),
+                          border: InputBorder.none,
+                          hintText: 'search',
 
-                return Container(
-                  height: MediaQuery.of(context).size.height * 0.727,
-                  child: RefreshIndicator(
-                    onRefresh: getMedicineData,
-                    child: ListView(
-                      children: search_medicine_list.map<Widget>((e) {
-                        c++;
 
-                        return Tile(
-                            map: all_data_name_map,
-                            name: e.toString(),
-                            color: color[c]);
-                      }).toList(),
+
+
+                          suffixIcon: Icon(Icons.search)),
+                      keyboardType: TextInputType.name,
                     ),
                   ),
-                );
-              })),
-      floatingActionButton: FloatingActionButton(
-        elevation: 15,
-        splashColor: AppTheme.notWhite,
-        onPressed: () {
-
-          print('\ndbflbv');
-
-          print(medicine_name);
-
-
-          showDialog(
-              context: context,
-              builder: (context) => AddMedicine(
-
-                result: all_data_doc_id_map,
-                medicine_name_list: medicine_name,
-                add_icon_tap: true,
-              )).then((value) {
-
-                    print('dd');
-
-
-                    if(value == 'save')
-                      { print('\nggg');
-                        getMedicineData();
-                      }
-          });
-        },
-        child: Icon(
-          Icons.add,
-          color: AppTheme.white,
+                ],
+              )),
         ),
-        backgroundColor: AppTheme.teal,
-      ),
-      bottomNavigationBar: BottomAppBar(
-        color: AppTheme.offwhite,
-        child: Container(
-          height: MediaQuery.of(context).size.height * 0.08,
+        body: SingleChildScrollView(
+            child: FutureBuilder(
+                future: f,
+                builder: (context, snapshot) {
+                  c = -1;
+
+                  print(snapshot.data);
+
+                  if (search_medicine_list.isEmpty) {
+                    return Center(
+                        child: Card(
+                            color: AppTheme.notWhite,
+                            child: Padding(
+                              padding:  EdgeInsets.all(5.w),
+                              child: Text('loading' ),
+                            )));
+                  }
+
+
+
+
+                  return Container(
+                    height: MediaQuery.of(context).size.height * 0.727,
+                    child: RefreshIndicator(
+                      onRefresh: getMedicineData,
+                      child: ListView(
+                        children: search_medicine_list.map<Widget>((e) {
+                          c++;
+
+                          return Tile(
+                              map: all_data_name_map,
+                              name: e.toString(),
+                              color: color[c]);
+                        }).toList(),
+                      ),
+                    ),
+                  );
+                })),
+        floatingActionButton: FloatingActionButton(
+          elevation: 15,
+          splashColor: AppTheme.notWhite,
+          onPressed: () {
+
+            print('\ndbflbv');
+
+            print(medicine_name);
+
+
+            showDialog(
+                context: context,
+                builder: (context) => AddMedicine(
+
+                  result: all_data_doc_id_map,
+                  medicine_name_list: medicine_name,
+                  add_icon_tap: true,
+                )).then((value) {
+
+                      print('dd');
+
+
+                      if(value == 'save')
+                        { print('\nggg');
+                          getMedicineData();
+                        }
+            });
+          },
+          child: Icon(
+            Icons.add,
+            color: AppTheme.white,
+          ),
+          backgroundColor: AppTheme.teal,
         ),
+        bottomNavigationBar: BottomAppBar(
+          color: AppTheme.offwhite,
+          child: Container(
+            height: MediaQuery.of(context).size.height * 0.08,
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }

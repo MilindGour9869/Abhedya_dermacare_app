@@ -264,7 +264,7 @@ class _Service_Search_ListState extends State<Service_Search_List> {
 
 
 
-                      trailing: Text('₹ ${m['charge']}'),
+                      trailing: Text('₹ ${m['charge']}' ),
 
 
 

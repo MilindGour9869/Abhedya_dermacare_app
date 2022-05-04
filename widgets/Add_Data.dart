@@ -134,9 +134,18 @@ class _AddDataState extends State<AddData> {
 
 
 
-        if(widget.result_map['time'] != null)
+        if(widget.result_map['time'] != null )
         {
-          map2[widget.result_map['time']] = true;
+          print('gggg');
+          widget.result_map['time'].forEach((e){
+
+            map2[e] = true;
+
+          });
+
+
+
+
         }
         if(widget.result_map['duration'] != null)
 

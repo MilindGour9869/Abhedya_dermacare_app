@@ -144,1134 +144,1137 @@ class _State extends State<Services> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(25.h),
-        child: Container(
-            decoration: BoxDecoration(
-                color: AppTheme.teal,
-                borderRadius: BorderRadius.only(
-                  bottomRight: Radius.circular(30),
-                  bottomLeft: Radius.circular(30),
-                )),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                AppBar(
-                  title: Text('Services'),
-                  backgroundColor: Colors.transparent,
-                  elevation: 0,
-                ),
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 2.h),
-                  height: 6.h,
-                  decoration: BoxDecoration(
-                      color: AppTheme.notWhite,
-                      borderRadius: BorderRadius.circular(10)),
-                  child: TextField(
-                    controller: search_edit,
-                    onChanged: onItemChanged,
-                    decoration: InputDecoration(
-                        isDense: true,
-                        isCollapsed: true,
-                        contentPadding: EdgeInsets.symmetric(
-                            horizontal: 7.w, vertical: 1.3.h),
-                        border: InputBorder.none,
-                        hintText: 'search',
-                        suffixIcon: Icon(Icons.search)),
-                    keyboardType: TextInputType.name,
+    return MediaQuery(
+      data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(25.h),
+          child: Container(
+              decoration: BoxDecoration(
+                  color: AppTheme.teal,
+                  borderRadius: BorderRadius.only(
+                    bottomRight: Radius.circular(30),
+                    bottomLeft: Radius.circular(30),
+                  )),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  AppBar(
+                    title: Text('Services'),
+                    backgroundColor: Colors.transparent,
+                    elevation: 0,
                   ),
-                ),
-              ],
-            )),
-      ),
-      body: Center(
-        child: Container(
-            child: search_edit.text == ""
-                ? RefreshIndicator(
-                    onRefresh: getServiceData,
-                    child: ListView(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.all(2.w),
-                          child: Container(
-                            child: Material(
-                              elevation: 2,
-                              borderRadius: BorderRadius.circular(10),
-                              child: ListTile(
-                                title: Text('Consultation'),
-                                leading: Icon(
-                                  Icons.arrow_forward_ios,
-                                  size:
-                                      MediaQuery.of(context).size.height * 0.03,
-                                  color: AppTheme.teal,
-                                ),
-                                onTap: () {
-                                  setState(() {
-                                    consultation = !consultation;
-
-                                    print(consultation);
-                                  });
-                                },
-                                trailing: IconButton(
-                                  icon: Icon(
-                                    Icons.add,
-                                    color: AppTheme.teal,
-                                  ),
-                                  onPressed: () {
-                                    showDialog(
-                                            context: context,
-                                            builder: (context) => Dialogue(
-                                                service_name: 'Consultation',
-                                                service: service_edit,
-                                                charges: charges_edit,
-                                                context: context,
-                                                size: services_length))
-                                        .then((value) {
-
-
-
-                                          print('ddd');
-
-                                      if (value != null) {
-                                        all_data_map.addAll(value);
-                                        updated = true;
-
-                                        set();
-                                        getServiceData();
-                                      }
-                                    });
-                                  },
-                                ),
-                              ),
-                            ),
-                          ),
-                        ), // Consultation
-                        Visibility(
-                            visible: consultation,
-                            child: ListView(
-                              shrinkWrap: true,
-                              children: [
-                                ListView(
-                                  shrinkWrap: true,
-                                  children: Consulation.keys.map((e) {
-                                    List a = Consulation[e].keys.toList();
-                                    String s = a[0].toString();
-
-                                    List b = Consulation[e].values.toList();
-                                    String c = b[0].toString();
-
-                                    return GestureDetector(
-                                      onTap: () {
-                                        service.text = s;
-                                        charge.text = c;
-
-                                        showDialog(
-                                            context: context,
-                                            builder: (context) =>
-                                                ServiceDialogue.Dialogue(
-                                                    service_name: 'Consultation',
-                                                    service: service,
-                                                    context: context,
-                                                    charges: charge,
-                                                    doc_id: e)).then((value) {
-                                          if (value == 'delete') {
-                                            all_data_map.remove(a[0]);
-                                            updated = true;
-                                            set();
-                                            getServiceData();
-                                          } else if (value != null) {
-                                            all_data_map.remove(e);
-                                            all_data_map.addAll(value);
-                                            updated = true;
-                                            set();
-                                            getServiceData();
-                                          }
-                                        });
-                                      },
-                                      child: Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 2.w, vertical: 2),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(7),
-                                          ),
-                                          height:
-                                          MediaQuery.of(context).size.height *
-                                              0.06,
-                                          child: Material(
-                                            elevation: 2,
-                                            child: Center(
-                                              child: Container(
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 10),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                                  children: [
-                                                    Row(
-                                                      mainAxisSize:
-                                                      MainAxisSize.min,
-                                                      children: [
-                                                        Icon(
-                                                          Icons
-                                                              .arrow_forward_ios_rounded,
-                                                          color: Colors.grey,
-                                                        ),
-                                                        SizedBox(
-                                                          width: 2,
-                                                        ),
-                                                        Text(
-                                                          ' ${s[0].toUpperCase() + s.substring(1)}',
-                                                          textScaleFactor: AppTheme
-                                                              .list_tile_subtile,
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    Row(
-                                                      mainAxisSize:
-                                                      MainAxisSize.min,
-                                                      children: [
-                                                        Text(
-                                                          c + ' ₹',
-
-                                                        ),
-                                                        IconButton(
-                                                            onPressed: () {
-                                                              setState(() {
-                                                                Consulation.remove(
-                                                                    e);
-                                                                all_data_map
-                                                                    .remove(e);
-                                                                updated = true;
-
-                                                                set();
-                                                                getServiceData();
-                                                              });
-                                                            },
-                                                            icon: Icon(
-                                                              Icons
-                                                                  .delete_outline_outlined,
-                                                              color: Colors.grey,
-                                                            ))
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  }).toList(),
-                                ),
-                                Consulation.isNotEmpty?Padding(
-                                  padding:  EdgeInsets.symmetric(horizontal: 2.w , vertical: 2.w),
-                                  child: Divider(
-                                    height: 0,
-                                    thickness: 2,color: Colors.grey,
-                                  ),
-                                ):Center(child: Card(child: Padding(
-                                  padding:  EdgeInsets.all(1.w),
-                                  child: Text('No Data'),
-                                ))),
-
-                              ],
-                            )), // Consultation
-
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-
-                          vertical: 1.h, horizontal: 2.w),
-                          child: Container(
-                            child: Material(
-                              elevation: 2,
-                              borderRadius: BorderRadius.circular(10),
-                              child: ListTile(
-                                title: Text('Nursing'),
-                                leading: Icon(
-                                  Icons.arrow_forward_ios,
-                                  size:
-                                      MediaQuery.of(context).size.height * 0.03,
-                                  color: AppTheme.teal,
-                                ),
-                                onTap: () {
-                                  setState(() {
-                                    nursing = !nursing;
-
-                                    // print(consultation);
-                                  });
-                                },
-                                trailing: IconButton(
-                                  icon: Icon(
-                                    Icons.add,
-                                    color: AppTheme.teal,
-                                  ),
-                                  onPressed: () {
-                                    showDialog(
-                                            context: context,
-                                            builder: (context) => Dialogue(
-                                                service_name: 'Nursing',
-                                                service: service_edit,
-                                                charges: charges_edit,
-                                                context: context,
-                                                size: services_length))
-                                        .then((value) {
-                                      if (value != null) {
-                                        all_data_map.addAll(value);
-                                        updated = true;
-
-                                        set();
-                                        getServiceData();
-                                      }
-                                    });
-                                  },
-                                ),
-                              ),
-                            ),
-                          ),
-                        ), //Nursing
-                        Visibility(
-                            visible: nursing,
-                            child: ListView(
-                              shrinkWrap: true,
-                              children: [
-                                ListView(
-                                  shrinkWrap: true,
-                                  children: Nursing.keys.map((e) {
-                                    List a = Nursing[e].keys.toList();
-                                    String s = a[0].toString();
-
-                                    List b = Nursing[e].values.toList();
-                                    String c = b[0].toString();
-
-                                    return GestureDetector(
-                                      onTap: () {
-                                        service.text = s;
-                                        charge.text = c;
-
-                                        showDialog(
-                                            context: context,
-                                            builder: (context) =>
-                                                ServiceDialogue.Dialogue(
-                                                    service_name: 'Nursing',
-                                                    service: service,
-                                                    context: context,
-                                                    charges: charge,
-                                                    doc_id: e)).then((value) {
-                                          if (value == 'delete') {
-                                            all_data_map.remove(a[0]);
-                                            updated = true;
-                                            set();
-                                            getServiceData();
-                                          } else if (value != null) {
-                                            all_data_map.remove(e);
-                                            all_data_map.addAll(value);
-                                            updated = true;
-                                            set();
-                                            getServiceData();
-                                          }
-                                        });
-                                      },
-                                      child: Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 2.w, vertical: 2),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(7),
-                                          ),
-                                          height:
-                                          MediaQuery.of(context).size.height *
-                                              0.06,
-                                          child: Material(
-                                            elevation: 2,
-                                            child: Center(
-                                              child: Container(
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 10),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                                  children: [
-                                                    Row(
-                                                      mainAxisSize:
-                                                      MainAxisSize.min,
-                                                      children: [
-                                                        Icon(
-                                                          Icons
-                                                              .arrow_forward_ios_rounded,
-                                                          color: Colors.grey,
-                                                        ),
-                                                        SizedBox(
-                                                          width: 2,
-                                                        ),
-                                                        Text(
-                                                          ' ${s[0].toUpperCase() + s.substring(1)}',
-                                                          textScaleFactor: AppTheme
-                                                              .list_tile_subtile,
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    Row(
-                                                      mainAxisSize:
-                                                      MainAxisSize.min,
-                                                      children: [
-                                                        Text(
-                                                          c + ' ₹',
-
-                                                        ),
-                                                        IconButton(
-                                                            onPressed: () {
-                                                              setState(() {
-                                                                Nursing.remove(e);
-                                                                all_data_map
-                                                                    .remove(e);
-                                                                updated = true;
-
-                                                                set();
-                                                                getServiceData();
-                                                              });
-                                                            },
-                                                            icon: Icon(
-                                                              Icons
-                                                                  .delete_outline_outlined,
-                                                              color: Colors.grey,
-                                                            ))
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  }).toList(),
-                                ),
-                                Nursing.isNotEmpty?Padding(
-                                  padding:  EdgeInsets.symmetric(horizontal: 2.w , vertical: 2.w),
-                                  child: Divider(
-                                    height: 0,
-                                    thickness: 2,color: Colors.grey,
-                                  ),
-                                ):Center(child: Card(child: Padding(
-                                  padding:  EdgeInsets.all(1.w),
-                                  child: Text('No Data'),
-                                ))),
-                              ],
-                            )), // Nursing
-
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-
-                          vertical: 1.h, horizontal: 2.w),
-                          child: Container(
-                            child: Material(
-                              elevation: 2,
-                              borderRadius: BorderRadius.circular(10),
-                              child: ListTile(
-                                title: Text('Procedures'),
-                                leading: Icon(
-                                  Icons.arrow_forward_ios,
-                                  size:
-                                      MediaQuery.of(context).size.height * 0.03,
-                                  color: AppTheme.teal,
-                                ),
-                                onTap: () {
-                                  setState(() {
-                                    procedures = !procedures;
-
-                                    // print(consultation);
-                                  });
-                                },
-                                trailing: IconButton(
-                                  icon: Icon(
-                                    Icons.add,
-                                    color: AppTheme.teal,
-                                  ),
-                                  onPressed: () {
-                                    showDialog(
-                                            context: context,
-                                            builder: (context) => Dialogue(
-                                                service_name: 'Procedures',
-                                                service: service_edit,
-                                                charges: charges_edit,
-                                                context: context,
-                                                size: services_length))
-                                        .then((value) {
-                                      if (value != null) {
-                                        all_data_map.addAll(value);
-                                        updated = true;
-
-                                        set();
-                                        getServiceData();
-                                      }
-                                    });
-                                  },
-                                ),
-                              ),
-                            ),
-                          ),
-                        ), //Procedures
-                        Visibility(
-                            visible: procedures,
-                            child: ListView(
-                              shrinkWrap: true,
-                              children: [
-                                ListView(
-                                  shrinkWrap: true,
-                                  children: Procedures.keys.map((e) {
-                                    List a = Procedures[e].keys.toList();
-                                    String s = a[0].toString();
-
-                                    List b = Procedures[e].values.toList();
-                                    String c = b[0].toString();
-
-                                    return GestureDetector(
-                                      onTap: () {
-                                        service.text = s;
-                                        charge.text = c;
-
-                                        showDialog(
-                                            context: context,
-                                            builder: (context) =>
-                                                ServiceDialogue.Dialogue(
-                                                    service_name: 'Procedures',
-                                                    service: service,
-                                                    context: context,
-                                                    charges: charge,
-                                                    doc_id: e)).then((value) {
-                                          if (value == 'delete') {
-                                            all_data_map.remove(a[0]);
-                                            updated = true;
-                                            set();
-                                            getServiceData();
-                                          } else if (value != null) {
-                                            all_data_map.remove(e);
-                                            all_data_map.addAll(value);
-                                            updated = true;
-                                            set();
-                                            getServiceData();
-                                          }
-                                        });
-                                      },
-                                      child: Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 2.w, vertical: 2),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(7),
-                                          ),
-                                          height:
-                                          MediaQuery.of(context).size.height *
-                                              0.06,
-                                          child: Material(
-                                            elevation: 2,
-                                            child: Center(
-                                              child: Container(
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 10),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                                  children: [
-                                                    Row(
-                                                      mainAxisSize:
-                                                      MainAxisSize.min,
-                                                      children: [
-                                                        Icon(
-                                                          Icons
-                                                              .arrow_forward_ios_rounded,
-                                                          color: Colors.grey,
-                                                        ),
-                                                        SizedBox(
-                                                          width: 2,
-                                                        ),
-                                                        Text(
-                                                          ' ${s[0].toUpperCase() + s.substring(1)}',
-                                                          textScaleFactor: AppTheme
-                                                              .list_tile_subtile,
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    Row(
-                                                      mainAxisSize:
-                                                      MainAxisSize.min,
-                                                      children: [
-                                                        Text(
-                                                          c + ' ₹',
-
-                                                        ),
-                                                        IconButton(
-                                                            onPressed: () {
-                                                              setState(() {
-                                                                Procedures.remove(
-                                                                    e);
-                                                                all_data_map
-                                                                    .remove(e);
-                                                                updated = true;
-
-                                                                set();
-                                                                getServiceData();
-                                                              });
-                                                            },
-                                                            icon: Icon(
-                                                              Icons
-                                                                  .delete_outline_outlined,
-                                                              color: Colors.grey,
-                                                            ))
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  }).toList(),
-                                ),
-                                Procedures.isNotEmpty?Padding(
-                                  padding:  EdgeInsets.symmetric(horizontal: 2.w , vertical: 2.w),
-                                  child: Divider(
-                                    height: 0,
-                                    thickness: 2,color: Colors.grey,
-                                  ),
-                                ):Center(child: Card(child: Padding(
-                                  padding:  EdgeInsets.all(1.w),
-                                  child: Text('No Data'),
-                                ))),
-                              ],
-                            )), // Procedures
-
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-
-                          vertical: 1.h, horizontal: 2.w),
-                          child: Container(
-                            child: Material(
-                              elevation: 2,
-                              borderRadius: BorderRadius.circular(10),
-                              child: ListTile(
-                                title: Text('Vaccination'),
-                                leading: Icon(
-                                  Icons.arrow_forward_ios,
-                                  size:
-                                      MediaQuery.of(context).size.height * 0.03,
-                                  color: AppTheme.teal,
-                                ),
-                                onTap: () {
-                                  setState(() {
-                                    vacination = !vacination;
-
-                                    // print(consultation);
-                                  });
-                                },
-                                trailing: IconButton(
-                                  icon: Icon(
-                                    Icons.add,
-                                    color: AppTheme.teal,
-                                  ),
-                                  onPressed: () {
-                                    showDialog(
-                                            context: context,
-                                            builder: (context) => Dialogue(
-                                                service_name: 'Vaccination',
-                                                service: service_edit,
-                                                charges: charges_edit,
-                                                context: context,
-                                                size: services_length))
-                                        .then((value) {
-                                      if (value != null) {
-                                        all_data_map.addAll(value);
-                                        updated = true;
-
-                                        set();
-                                        getServiceData();
-                                      }
-                                    });
-                                  },
-                                ),
-                              ),
-                            ),
-                          ),
-                        ), //Vaccination
-                        Visibility(
-                            visible: vacination,
-                            child:ListView(
-                              shrinkWrap: true,
-                              children: [
-                                ListView(
-                                  shrinkWrap: true,
-                                  children: Vaccination.keys.map((e) {
-                                    List a = Vaccination[e].keys.toList();
-                                    String s = a[0].toString();
-
-                                    List b = Vaccination[e].values.toList();
-                                    String c = b[0].toString();
-
-                                    return GestureDetector(
-                                      onTap: () {
-                                        service.text = s;
-                                        charge.text = c;
-
-                                        showDialog(
-                                            context: context,
-                                            builder: (context) =>
-                                                ServiceDialogue.Dialogue(
-                                                    service_name: 'Vaccination',
-                                                    service: service,
-                                                    context: context,
-                                                    charges: charge,
-                                                    doc_id: e)).then((value) {
-                                          if (value == 'delete') {
-                                            all_data_map.remove(a[0]);
-                                            updated = true;
-                                            set();
-                                            getServiceData();
-                                          } else if (value != null) {
-                                            all_data_map.remove(e);
-                                            all_data_map.addAll(value);
-                                            updated = true;
-                                            set();
-                                            getServiceData();
-                                          }
-                                        });
-                                      },
-                                      child: Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 2.w, vertical: 2),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(7),
-                                          ),
-                                          height:
-                                          MediaQuery.of(context).size.height *
-                                              0.06,
-                                          child: Material(
-                                            elevation: 2,
-                                            child: Center(
-                                              child: Container(
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 10),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                                  children: [
-                                                    Row(
-                                                      mainAxisSize:
-                                                      MainAxisSize.min,
-                                                      children: [
-                                                        Icon(
-                                                          Icons
-                                                              .arrow_forward_ios_rounded,
-                                                          color: Colors.grey,
-                                                        ),
-                                                        SizedBox(
-                                                          width: 2,
-                                                        ),
-                                                        Text(
-                                                          ' ${s[0].toUpperCase() + s.substring(1)}',
-                                                          textScaleFactor: AppTheme
-                                                              .list_tile_subtile,
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    Row(
-                                                      mainAxisSize:
-                                                      MainAxisSize.min,
-                                                      children: [
-                                                        Text(
-                                                          c + ' ₹',
-
-                                                        ),
-                                                        IconButton(
-                                                            onPressed: () {
-                                                              setState(() {
-                                                                Vaccination.remove(
-                                                                    e);
-                                                                all_data_map
-                                                                    .remove(e);
-                                                                updated = true;
-
-                                                                set();
-                                                                getServiceData();
-                                                              });
-                                                            },
-                                                            icon: Icon(
-                                                              Icons
-                                                                  .delete_outline_outlined,
-                                                              color: Colors.grey,
-                                                            ))
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  }).toList(),
-                                ),
-                                Vaccination.isNotEmpty?Padding(
-                                  padding:  EdgeInsets.symmetric(horizontal: 2.w , vertical: 2.w),
-                                  child: Divider(
-                                    height: 0,
-                                    thickness: 2,color: Colors.grey,
-                                  ),
-                                ):Center(child: Card(child: Padding(
-                                  padding:  EdgeInsets.all(1.w),
-                                  child: Text('No Data'),
-                                ))),
-                              ],
-                            )), // Vaccination
-
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 2.h, horizontal: 2.w),
-                          child: Container(
-                            child: Material(
-                              elevation: 2,
-                              borderRadius: BorderRadius.circular(10),
-                              child: ListTile(
-                                title: Text('By You'),
-                                leading: Icon(
-                                  Icons.arrow_forward_ios,
-                                  size:
-                                      MediaQuery.of(context).size.height * 0.03,
-                                  color: AppTheme.teal,
-                                ),
-                                onTap: () {
-                                  setState(() {
-                                    by_you = !by_you;
-
-                                    // print(consultation);
-                                  });
-                                },
-                                trailing: IconButton(
-                                  icon: Icon(
-                                    Icons.add,
-                                    color: AppTheme.teal,
-                                  ),
-                                  onPressed: () {
-                                    showDialog(
-                                            context: context,
-                                            builder: (context) => Dialogue(
-                                                service_name: 'By You',
-                                                service: service_edit,
-                                                charges: charges_edit,
-                                                context: context,
-                                                size: services_length))
-                                        .then((value) {
-                                      if (value != null) {
-                                        all_data_map.addAll(value);
-                                        updated = true;
-
-                                        set();
-                                        getServiceData();
-                                      }
-                                    });
-                                  },
-                                ),
-                              ),
-                            ),
-                          ),
-                        ), //By You
-                        Visibility(
-                            visible: by_you,
-                            child: ListView(
-                              shrinkWrap: true,
-                              children: [
-                                ListView(
-                                  shrinkWrap: true,
-                                  children: By_You.keys.map((e) {
-                                    List a = By_You[e].keys.toList();
-                                    String s = a[0].toString();
-
-                                    List b = By_You[e].values.toList();
-                                    String c = b[0].toString();
-
-                                    return GestureDetector(
-                                      onTap: () {
-                                        service.text = s;
-                                        charge.text = c;
-
-                                        showDialog(
-                                            context: context,
-                                            builder: (context) =>
-                                                ServiceDialogue.Dialogue(
-                                                    service_name: 'Nursing',
-                                                    service: service,
-                                                    context: context,
-                                                    charges: charge,
-                                                    doc_id: e)).then((value) {
-                                          if (value == 'delete') {
-                                            all_data_map.remove(a[0]);
-                                            updated = true;
-                                            set();
-                                            getServiceData();
-                                          } else if (value != null) {
-                                            all_data_map.remove(e);
-                                            all_data_map.addAll(value);
-                                            updated = true;
-                                            set();
-                                            getServiceData();
-                                          }
-                                        });
-                                      },
-                                      child: Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 2.w, vertical: 1.h),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(7),
-                                          ),
-                                          height:
-                                          MediaQuery.of(context).size.height *
-                                              0.06,
-                                          child: Material(
-                                            elevation: 2,
-                                            child: Center(
-                                              child: Container(
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 1.h),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                                  children: [
-                                                    Row(
-                                                      mainAxisSize:
-                                                      MainAxisSize.min,
-                                                      children: [
-                                                        Icon(
-                                                          Icons
-                                                              .arrow_forward_ios_rounded,
-                                                          color: Colors.grey,
-                                                        ),
-                                                        SizedBox(
-                                                          width: 2.w,
-                                                        ),
-                                                        Text(
-                                                          ' ${s[0].toUpperCase() + s.substring(1)}',
-                                                          textScaleFactor: AppTheme
-                                                              .list_tile_subtile,
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    Row(
-                                                      mainAxisSize:
-                                                      MainAxisSize.min,
-                                                      children: [
-                                                        Text(
-                                                          c + ' ₹',
-                                                          textScaleFactor: AppTheme
-                                                              .list_tile_subtile,
-                                                        ),
-                                                        IconButton(
-                                                            onPressed: () {
-                                                              setState(() {
-                                                                By_You.remove(e);
-                                                                all_data_map
-                                                                    .remove(e);
-                                                                updated = true;
-
-                                                                set();
-                                                                getServiceData();
-                                                              });
-                                                            },
-                                                            icon: Icon(
-                                                              Icons
-                                                                  .delete_outline_outlined,
-                                                              color: Colors.grey,
-                                                            ))
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  }).toList(),
-                                ),
-                                By_You.isNotEmpty?Padding(
-                                  padding:  EdgeInsets.symmetric(horizontal: 2.w , vertical: 2.w),
-                                  child: Divider(
-                                    height: 0,
-                                    thickness: 2,color: Colors.grey,
-                                  ),
-                                ):Center(child: Card(child: Padding(
-                                  padding:  EdgeInsets.all(1.w),
-                                  child: Text('No Data'),
-                                ))),
-                              ],
-                            )), // By You
-                      ],
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 2.h),
+                    height: 6.h,
+                    decoration: BoxDecoration(
+                        color: AppTheme.notWhite,
+                        borderRadius: BorderRadius.circular(10)),
+                    child: TextField(
+                      controller: search_edit,
+                      onChanged: onItemChanged,
+                      decoration: InputDecoration(
+                          isDense: true,
+                          isCollapsed: true,
+                          contentPadding: EdgeInsets.symmetric(
+                              horizontal: 7.w, vertical: 1.3.h),
+                          border: InputBorder.none,
+                          hintText: 'search',
+                          suffixIcon: Icon(Icons.search)),
+                      keyboardType: TextInputType.name,
                     ),
-                  )
-                : Container(
-                    alignment: Alignment.topCenter,
-                    child: Padding(
-                      padding: EdgeInsets.all(2.w),
-                      child: Material(
-                        elevation: 2,
-                        borderRadius: BorderRadius.circular(10),
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: search_service_list.map<Widget>((e) {
-                              List a = service_list[e].keys.toList();
-                              List b = service_list[e].values.toList();
-                              List c;
-
-                              service.text = e.toString();
-
-                              if (b[0] == "Consultation") {
-                                c = Consulation[a[0].toString()]
-                                    .values
-                                    .toList();
-                              } else if (b[0] == "Nursing") {
-                                c = Nursing[a[0].toString()].values.toList();
-                              } else if (b[0] == "Procedures") {
-                                c = Procedures[a[0].toString()].values.toList();
-                              } else if (b[0] == "Vaccination") {
-                                c = Vaccination[a[0].toString()]
-                                    .values
-                                    .toList();
-                              } else if (b[0] == "By_You") {
-                                c = By_You[a[0].toString()].values.toList();
-                              }
-
-                              charge.text = c[0].toString();
-
-                              return GestureDetector(
-                                onTap: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) =>
-                                          ServiceDialogue.Dialogue(
-                                            service: service,
-                                            charges: charge,
-                                            service_name: b[0].toString(),
-                                            doc_id: a[0].toString(),
-                                            context: context,
-                                          )).then((value) {
-                                    if (value == 'delete') {
-                                      all_data_map.remove(a[0]);
-                                      updated = true;
-                                      set();
-                                      getServiceData();
-                                    }
-                                    if (value != null) {
-                                      all_data_map.remove(e);
-                                      all_data_map.addAll(value);
-                                      updated = true;
-                                      set();
-                                      getServiceData();
-                                    }
-                                  });
-                                },
+                  ),
+                ],
+              )),
+        ),
+        body: Center(
+          child: Container(
+              child: search_edit.text == ""
+                  ? RefreshIndicator(
+                      onRefresh: getServiceData,
+                      child: ListView(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.all(2.w),
+                            child: Container(
+                              child: Material(
+                                elevation: 2,
+                                borderRadius: BorderRadius.circular(10),
                                 child: ListTile(
-                                  title: Text(
-                                      '${e[0].toString().toUpperCase() + e.toString().substring(1)}'),
+                                  title: Text('Consultation'),
                                   leading: Icon(
                                     Icons.arrow_forward_ios,
-                                    size: MediaQuery.of(context).size.height *
-                                        0.03,
+                                    size:
+                                        MediaQuery.of(context).size.height * 0.03,
                                     color: AppTheme.teal,
                                   ),
+                                  onTap: () {
+                                    setState(() {
+                                      consultation = !consultation;
+
+                                      print(consultation);
+                                    });
+                                  },
                                   trailing: IconButton(
                                     icon: Icon(
-                                      Icons.delete_outline_outlined,
+                                      Icons.add,
                                       color: AppTheme.teal,
                                     ),
-                                    onPressed: () async {
+                                    onPressed: () {
                                       showDialog(
-                                          context: context,
-                                          builder: (context) => AlertDialog(
-                                                titlePadding: EdgeInsets.all(0),
-                                                title: Center(
-                                                    child:
-                                                        Text('Are you Sure ?')),
-                                                actions: [
-                                                  Row(
-                                                    children: [
-                                                      Container(
-                                                        child: TextButton(
-                                                            onPressed:
-                                                                () async {
-                                                              all_data_map
-                                                                  .remove(a[0]
-                                                                      .toString());
-                                                              updated = true;
-                                                              set();
-                                                              getServiceData();
+                                              context: context,
+                                              builder: (context) => Dialogue(
+                                                  service_name: 'Consultation',
+                                                  service: service_edit,
+                                                  charges: charges_edit,
+                                                  context: context,
+                                                  size: services_length))
+                                          .then((value) {
 
-                                                              Navigator.pop(
-                                                                  context);
-                                                            },
-                                                            child: Text(
-                                                              'yes',
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .white),
-                                                            )),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(15),
-                                                          color: AppTheme.green,
-                                                        ),
-                                                      ),
-                                                      Container(
-                                                        child: TextButton(
-                                                            onPressed: () {
-                                                              Navigator.pop(
-                                                                  context);
-                                                            },
-                                                            child: Text(
-                                                              'no',
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .white),
-                                                            )),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(15),
-                                                          color: Colors.grey,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                  )
-                                                ],
-                                              ));
+
+
+                                            print('ddd');
+
+                                        if (value != null) {
+                                          all_data_map.addAll(value);
+                                          updated = true;
+
+                                          set();
+                                          getServiceData();
+                                        }
+                                      });
                                     },
                                   ),
                                 ),
-                              );
-                            }).toList(),
+                              ),
+                            ),
+                          ), // Consultation
+                          Visibility(
+                              visible: consultation,
+                              child: ListView(
+                                shrinkWrap: true,
+                                children: [
+                                  ListView(
+                                    shrinkWrap: true,
+                                    children: Consulation.keys.map((e) {
+                                      List a = Consulation[e].keys.toList();
+                                      String s = a[0].toString();
+
+                                      List b = Consulation[e].values.toList();
+                                      String c = b[0].toString();
+
+                                      return GestureDetector(
+                                        onTap: () {
+                                          service.text = s;
+                                          charge.text = c;
+
+                                          showDialog(
+                                              context: context,
+                                              builder: (context) =>
+                                                  ServiceDialogue.Dialogue(
+                                                      service_name: 'Consultation',
+                                                      service: service,
+                                                      context: context,
+                                                      charges: charge,
+                                                      doc_id: e)).then((value) {
+                                            if (value == 'delete') {
+                                              all_data_map.remove(a[0]);
+                                              updated = true;
+                                              set();
+                                              getServiceData();
+                                            } else if (value != null) {
+                                              all_data_map.remove(e);
+                                              all_data_map.addAll(value);
+                                              updated = true;
+                                              set();
+                                              getServiceData();
+                                            }
+                                          });
+                                        },
+                                        child: Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 2.w, vertical: 2),
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(7),
+                                            ),
+                                            height:
+                                            MediaQuery.of(context).size.height *
+                                                0.06,
+                                            child: Material(
+                                              elevation: 2,
+                                              child: Center(
+                                                child: Container(
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 10),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                    children: [
+                                                      Row(
+                                                        mainAxisSize:
+                                                        MainAxisSize.min,
+                                                        children: [
+                                                          Icon(
+                                                            Icons
+                                                                .arrow_forward_ios_rounded,
+                                                            color: Colors.grey,
+                                                          ),
+                                                          SizedBox(
+                                                            width: 2,
+                                                          ),
+                                                          Text(
+                                                            ' ${s[0].toUpperCase() + s.substring(1)}',
+                                                            textScaleFactor: AppTheme
+                                                                .list_tile_subtile,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      Row(
+                                                        mainAxisSize:
+                                                        MainAxisSize.min,
+                                                        children: [
+                                                          Text(
+                                                            c + ' ₹',
+
+                                                          ),
+                                                          IconButton(
+                                                              onPressed: () {
+                                                                setState(() {
+                                                                  Consulation.remove(
+                                                                      e);
+                                                                  all_data_map
+                                                                      .remove(e);
+                                                                  updated = true;
+
+                                                                  set();
+                                                                  getServiceData();
+                                                                });
+                                                              },
+                                                              icon: Icon(
+                                                                Icons
+                                                                    .delete_outline_outlined,
+                                                                color: Colors.grey,
+                                                              ))
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ),
+                                  Consulation.isNotEmpty?Padding(
+                                    padding:  EdgeInsets.symmetric(horizontal: 2.w , vertical: 2.w),
+                                    child: Divider(
+                                      height: 0,
+                                      thickness: 2,color: Colors.grey,
+                                    ),
+                                  ):Center(child: Card(child: Padding(
+                                    padding:  EdgeInsets.all(1.w),
+                                    child: Text('No Data'),
+                                  ))),
+
+                                ],
+                              )), // Consultation
+
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+
+                            vertical: 1.h, horizontal: 2.w),
+                            child: Container(
+                              child: Material(
+                                elevation: 2,
+                                borderRadius: BorderRadius.circular(10),
+                                child: ListTile(
+                                  title: Text('Nursing'),
+                                  leading: Icon(
+                                    Icons.arrow_forward_ios,
+                                    size:
+                                        MediaQuery.of(context).size.height * 0.03,
+                                    color: AppTheme.teal,
+                                  ),
+                                  onTap: () {
+                                    setState(() {
+                                      nursing = !nursing;
+
+                                      // print(consultation);
+                                    });
+                                  },
+                                  trailing: IconButton(
+                                    icon: Icon(
+                                      Icons.add,
+                                      color: AppTheme.teal,
+                                    ),
+                                    onPressed: () {
+                                      showDialog(
+                                              context: context,
+                                              builder: (context) => Dialogue(
+                                                  service_name: 'Nursing',
+                                                  service: service_edit,
+                                                  charges: charges_edit,
+                                                  context: context,
+                                                  size: services_length))
+                                          .then((value) {
+                                        if (value != null) {
+                                          all_data_map.addAll(value);
+                                          updated = true;
+
+                                          set();
+                                          getServiceData();
+                                        }
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ), //Nursing
+                          Visibility(
+                              visible: nursing,
+                              child: ListView(
+                                shrinkWrap: true,
+                                children: [
+                                  ListView(
+                                    shrinkWrap: true,
+                                    children: Nursing.keys.map((e) {
+                                      List a = Nursing[e].keys.toList();
+                                      String s = a[0].toString();
+
+                                      List b = Nursing[e].values.toList();
+                                      String c = b[0].toString();
+
+                                      return GestureDetector(
+                                        onTap: () {
+                                          service.text = s;
+                                          charge.text = c;
+
+                                          showDialog(
+                                              context: context,
+                                              builder: (context) =>
+                                                  ServiceDialogue.Dialogue(
+                                                      service_name: 'Nursing',
+                                                      service: service,
+                                                      context: context,
+                                                      charges: charge,
+                                                      doc_id: e)).then((value) {
+                                            if (value == 'delete') {
+                                              all_data_map.remove(a[0]);
+                                              updated = true;
+                                              set();
+                                              getServiceData();
+                                            } else if (value != null) {
+                                              all_data_map.remove(e);
+                                              all_data_map.addAll(value);
+                                              updated = true;
+                                              set();
+                                              getServiceData();
+                                            }
+                                          });
+                                        },
+                                        child: Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 2.w, vertical: 2),
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(7),
+                                            ),
+                                            height:
+                                            MediaQuery.of(context).size.height *
+                                                0.06,
+                                            child: Material(
+                                              elevation: 2,
+                                              child: Center(
+                                                child: Container(
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 10),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                    children: [
+                                                      Row(
+                                                        mainAxisSize:
+                                                        MainAxisSize.min,
+                                                        children: [
+                                                          Icon(
+                                                            Icons
+                                                                .arrow_forward_ios_rounded,
+                                                            color: Colors.grey,
+                                                          ),
+                                                          SizedBox(
+                                                            width: 2,
+                                                          ),
+                                                          Text(
+                                                            ' ${s[0].toUpperCase() + s.substring(1)}',
+                                                            textScaleFactor: AppTheme
+                                                                .list_tile_subtile,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      Row(
+                                                        mainAxisSize:
+                                                        MainAxisSize.min,
+                                                        children: [
+                                                          Text(
+                                                            c + ' ₹',
+
+                                                          ),
+                                                          IconButton(
+                                                              onPressed: () {
+                                                                setState(() {
+                                                                  Nursing.remove(e);
+                                                                  all_data_map
+                                                                      .remove(e);
+                                                                  updated = true;
+
+                                                                  set();
+                                                                  getServiceData();
+                                                                });
+                                                              },
+                                                              icon: Icon(
+                                                                Icons
+                                                                    .delete_outline_outlined,
+                                                                color: Colors.grey,
+                                                              ))
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ),
+                                  Nursing.isNotEmpty?Padding(
+                                    padding:  EdgeInsets.symmetric(horizontal: 2.w , vertical: 2.w),
+                                    child: Divider(
+                                      height: 0,
+                                      thickness: 2,color: Colors.grey,
+                                    ),
+                                  ):Center(child: Card(child: Padding(
+                                    padding:  EdgeInsets.all(1.w),
+                                    child: Text('No Data'),
+                                  ))),
+                                ],
+                              )), // Nursing
+
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+
+                            vertical: 1.h, horizontal: 2.w),
+                            child: Container(
+                              child: Material(
+                                elevation: 2,
+                                borderRadius: BorderRadius.circular(10),
+                                child: ListTile(
+                                  title: Text('Procedures'),
+                                  leading: Icon(
+                                    Icons.arrow_forward_ios,
+                                    size:
+                                        MediaQuery.of(context).size.height * 0.03,
+                                    color: AppTheme.teal,
+                                  ),
+                                  onTap: () {
+                                    setState(() {
+                                      procedures = !procedures;
+
+                                      // print(consultation);
+                                    });
+                                  },
+                                  trailing: IconButton(
+                                    icon: Icon(
+                                      Icons.add,
+                                      color: AppTheme.teal,
+                                    ),
+                                    onPressed: () {
+                                      showDialog(
+                                              context: context,
+                                              builder: (context) => Dialogue(
+                                                  service_name: 'Procedures',
+                                                  service: service_edit,
+                                                  charges: charges_edit,
+                                                  context: context,
+                                                  size: services_length))
+                                          .then((value) {
+                                        if (value != null) {
+                                          all_data_map.addAll(value);
+                                          updated = true;
+
+                                          set();
+                                          getServiceData();
+                                        }
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ), //Procedures
+                          Visibility(
+                              visible: procedures,
+                              child: ListView(
+                                shrinkWrap: true,
+                                children: [
+                                  ListView(
+                                    shrinkWrap: true,
+                                    children: Procedures.keys.map((e) {
+                                      List a = Procedures[e].keys.toList();
+                                      String s = a[0].toString();
+
+                                      List b = Procedures[e].values.toList();
+                                      String c = b[0].toString();
+
+                                      return GestureDetector(
+                                        onTap: () {
+                                          service.text = s;
+                                          charge.text = c;
+
+                                          showDialog(
+                                              context: context,
+                                              builder: (context) =>
+                                                  ServiceDialogue.Dialogue(
+                                                      service_name: 'Procedures',
+                                                      service: service,
+                                                      context: context,
+                                                      charges: charge,
+                                                      doc_id: e)).then((value) {
+                                            if (value == 'delete') {
+                                              all_data_map.remove(a[0]);
+                                              updated = true;
+                                              set();
+                                              getServiceData();
+                                            } else if (value != null) {
+                                              all_data_map.remove(e);
+                                              all_data_map.addAll(value);
+                                              updated = true;
+                                              set();
+                                              getServiceData();
+                                            }
+                                          });
+                                        },
+                                        child: Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 2.w, vertical: 2),
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(7),
+                                            ),
+                                            height:
+                                            MediaQuery.of(context).size.height *
+                                                0.06,
+                                            child: Material(
+                                              elevation: 2,
+                                              child: Center(
+                                                child: Container(
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 10),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                    children: [
+                                                      Row(
+                                                        mainAxisSize:
+                                                        MainAxisSize.min,
+                                                        children: [
+                                                          Icon(
+                                                            Icons
+                                                                .arrow_forward_ios_rounded,
+                                                            color: Colors.grey,
+                                                          ),
+                                                          SizedBox(
+                                                            width: 2,
+                                                          ),
+                                                          Text(
+                                                            ' ${s[0].toUpperCase() + s.substring(1)}',
+                                                            textScaleFactor: AppTheme
+                                                                .list_tile_subtile,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      Row(
+                                                        mainAxisSize:
+                                                        MainAxisSize.min,
+                                                        children: [
+                                                          Text(
+                                                            c + ' ₹',
+
+                                                          ),
+                                                          IconButton(
+                                                              onPressed: () {
+                                                                setState(() {
+                                                                  Procedures.remove(
+                                                                      e);
+                                                                  all_data_map
+                                                                      .remove(e);
+                                                                  updated = true;
+
+                                                                  set();
+                                                                  getServiceData();
+                                                                });
+                                                              },
+                                                              icon: Icon(
+                                                                Icons
+                                                                    .delete_outline_outlined,
+                                                                color: Colors.grey,
+                                                              ))
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ),
+                                  Procedures.isNotEmpty?Padding(
+                                    padding:  EdgeInsets.symmetric(horizontal: 2.w , vertical: 2.w),
+                                    child: Divider(
+                                      height: 0,
+                                      thickness: 2,color: Colors.grey,
+                                    ),
+                                  ):Center(child: Card(child: Padding(
+                                    padding:  EdgeInsets.all(1.w),
+                                    child: Text('No Data'),
+                                  ))),
+                                ],
+                              )), // Procedures
+
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+
+                            vertical: 1.h, horizontal: 2.w),
+                            child: Container(
+                              child: Material(
+                                elevation: 2,
+                                borderRadius: BorderRadius.circular(10),
+                                child: ListTile(
+                                  title: Text('Vaccination'),
+                                  leading: Icon(
+                                    Icons.arrow_forward_ios,
+                                    size:
+                                        MediaQuery.of(context).size.height * 0.03,
+                                    color: AppTheme.teal,
+                                  ),
+                                  onTap: () {
+                                    setState(() {
+                                      vacination = !vacination;
+
+                                      // print(consultation);
+                                    });
+                                  },
+                                  trailing: IconButton(
+                                    icon: Icon(
+                                      Icons.add,
+                                      color: AppTheme.teal,
+                                    ),
+                                    onPressed: () {
+                                      showDialog(
+                                              context: context,
+                                              builder: (context) => Dialogue(
+                                                  service_name: 'Vaccination',
+                                                  service: service_edit,
+                                                  charges: charges_edit,
+                                                  context: context,
+                                                  size: services_length))
+                                          .then((value) {
+                                        if (value != null) {
+                                          all_data_map.addAll(value);
+                                          updated = true;
+
+                                          set();
+                                          getServiceData();
+                                        }
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ), //Vaccination
+                          Visibility(
+                              visible: vacination,
+                              child:ListView(
+                                shrinkWrap: true,
+                                children: [
+                                  ListView(
+                                    shrinkWrap: true,
+                                    children: Vaccination.keys.map((e) {
+                                      List a = Vaccination[e].keys.toList();
+                                      String s = a[0].toString();
+
+                                      List b = Vaccination[e].values.toList();
+                                      String c = b[0].toString();
+
+                                      return GestureDetector(
+                                        onTap: () {
+                                          service.text = s;
+                                          charge.text = c;
+
+                                          showDialog(
+                                              context: context,
+                                              builder: (context) =>
+                                                  ServiceDialogue.Dialogue(
+                                                      service_name: 'Vaccination',
+                                                      service: service,
+                                                      context: context,
+                                                      charges: charge,
+                                                      doc_id: e)).then((value) {
+                                            if (value == 'delete') {
+                                              all_data_map.remove(a[0]);
+                                              updated = true;
+                                              set();
+                                              getServiceData();
+                                            } else if (value != null) {
+                                              all_data_map.remove(e);
+                                              all_data_map.addAll(value);
+                                              updated = true;
+                                              set();
+                                              getServiceData();
+                                            }
+                                          });
+                                        },
+                                        child: Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 2.w, vertical: 2),
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(7),
+                                            ),
+                                            height:
+                                            MediaQuery.of(context).size.height *
+                                                0.06,
+                                            child: Material(
+                                              elevation: 2,
+                                              child: Center(
+                                                child: Container(
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 10),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                    children: [
+                                                      Row(
+                                                        mainAxisSize:
+                                                        MainAxisSize.min,
+                                                        children: [
+                                                          Icon(
+                                                            Icons
+                                                                .arrow_forward_ios_rounded,
+                                                            color: Colors.grey,
+                                                          ),
+                                                          SizedBox(
+                                                            width: 2,
+                                                          ),
+                                                          Text(
+                                                            ' ${s[0].toUpperCase() + s.substring(1)}',
+                                                            textScaleFactor: AppTheme
+                                                                .list_tile_subtile,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      Row(
+                                                        mainAxisSize:
+                                                        MainAxisSize.min,
+                                                        children: [
+                                                          Text(
+                                                            c + ' ₹',
+
+                                                          ),
+                                                          IconButton(
+                                                              onPressed: () {
+                                                                setState(() {
+                                                                  Vaccination.remove(
+                                                                      e);
+                                                                  all_data_map
+                                                                      .remove(e);
+                                                                  updated = true;
+
+                                                                  set();
+                                                                  getServiceData();
+                                                                });
+                                                              },
+                                                              icon: Icon(
+                                                                Icons
+                                                                    .delete_outline_outlined,
+                                                                color: Colors.grey,
+                                                              ))
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ),
+                                  Vaccination.isNotEmpty?Padding(
+                                    padding:  EdgeInsets.symmetric(horizontal: 2.w , vertical: 2.w),
+                                    child: Divider(
+                                      height: 0,
+                                      thickness: 2,color: Colors.grey,
+                                    ),
+                                  ):Center(child: Card(child: Padding(
+                                    padding:  EdgeInsets.all(1.w),
+                                    child: Text('No Data'),
+                                  ))),
+                                ],
+                              )), // Vaccination
+
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 2.h, horizontal: 2.w),
+                            child: Container(
+                              child: Material(
+                                elevation: 2,
+                                borderRadius: BorderRadius.circular(10),
+                                child: ListTile(
+                                  title: Text('By You'),
+                                  leading: Icon(
+                                    Icons.arrow_forward_ios,
+                                    size:
+                                        MediaQuery.of(context).size.height * 0.03,
+                                    color: AppTheme.teal,
+                                  ),
+                                  onTap: () {
+                                    setState(() {
+                                      by_you = !by_you;
+
+                                      // print(consultation);
+                                    });
+                                  },
+                                  trailing: IconButton(
+                                    icon: Icon(
+                                      Icons.add,
+                                      color: AppTheme.teal,
+                                    ),
+                                    onPressed: () {
+                                      showDialog(
+                                              context: context,
+                                              builder: (context) => Dialogue(
+                                                  service_name: 'By You',
+                                                  service: service_edit,
+                                                  charges: charges_edit,
+                                                  context: context,
+                                                  size: services_length))
+                                          .then((value) {
+                                        if (value != null) {
+                                          all_data_map.addAll(value);
+                                          updated = true;
+
+                                          set();
+                                          getServiceData();
+                                        }
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ), //By You
+                          Visibility(
+                              visible: by_you,
+                              child: ListView(
+                                shrinkWrap: true,
+                                children: [
+                                  ListView(
+                                    shrinkWrap: true,
+                                    children: By_You.keys.map((e) {
+                                      List a = By_You[e].keys.toList();
+                                      String s = a[0].toString();
+
+                                      List b = By_You[e].values.toList();
+                                      String c = b[0].toString();
+
+                                      return GestureDetector(
+                                        onTap: () {
+                                          service.text = s;
+                                          charge.text = c;
+
+                                          showDialog(
+                                              context: context,
+                                              builder: (context) =>
+                                                  ServiceDialogue.Dialogue(
+                                                      service_name: 'Nursing',
+                                                      service: service,
+                                                      context: context,
+                                                      charges: charge,
+                                                      doc_id: e)).then((value) {
+                                            if (value == 'delete') {
+                                              all_data_map.remove(a[0]);
+                                              updated = true;
+                                              set();
+                                              getServiceData();
+                                            } else if (value != null) {
+                                              all_data_map.remove(e);
+                                              all_data_map.addAll(value);
+                                              updated = true;
+                                              set();
+                                              getServiceData();
+                                            }
+                                          });
+                                        },
+                                        child: Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 2.w, vertical: 1.h),
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(7),
+                                            ),
+                                            height:
+                                            MediaQuery.of(context).size.height *
+                                                0.06,
+                                            child: Material(
+                                              elevation: 2,
+                                              child: Center(
+                                                child: Container(
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 1.h),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                    children: [
+                                                      Row(
+                                                        mainAxisSize:
+                                                        MainAxisSize.min,
+                                                        children: [
+                                                          Icon(
+                                                            Icons
+                                                                .arrow_forward_ios_rounded,
+                                                            color: Colors.grey,
+                                                          ),
+                                                          SizedBox(
+                                                            width: 2.w,
+                                                          ),
+                                                          Text(
+                                                            ' ${s[0].toUpperCase() + s.substring(1)}',
+                                                            textScaleFactor: AppTheme
+                                                                .list_tile_subtile,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      Row(
+                                                        mainAxisSize:
+                                                        MainAxisSize.min,
+                                                        children: [
+                                                          Text(
+                                                            c + ' ₹',
+                                                            textScaleFactor: AppTheme
+                                                                .list_tile_subtile,
+                                                          ),
+                                                          IconButton(
+                                                              onPressed: () {
+                                                                setState(() {
+                                                                  By_You.remove(e);
+                                                                  all_data_map
+                                                                      .remove(e);
+                                                                  updated = true;
+
+                                                                  set();
+                                                                  getServiceData();
+                                                                });
+                                                              },
+                                                              icon: Icon(
+                                                                Icons
+                                                                    .delete_outline_outlined,
+                                                                color: Colors.grey,
+                                                              ))
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ),
+                                  By_You.isNotEmpty?Padding(
+                                    padding:  EdgeInsets.symmetric(horizontal: 2.w , vertical: 2.w),
+                                    child: Divider(
+                                      height: 0,
+                                      thickness: 2,color: Colors.grey,
+                                    ),
+                                  ):Center(child: Card(child: Padding(
+                                    padding:  EdgeInsets.all(1.w),
+                                    child: Text('No Data'),
+                                  ))),
+                                ],
+                              )), // By You
+                        ],
+                      ),
+                    )
+                  : Container(
+                      alignment: Alignment.topCenter,
+                      child: Padding(
+                        padding: EdgeInsets.all(2.w),
+                        child: Material(
+                          elevation: 2,
+                          borderRadius: BorderRadius.circular(10),
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: search_service_list.map<Widget>((e) {
+                                List a = service_list[e].keys.toList();
+                                List b = service_list[e].values.toList();
+                                List c;
+
+                                service.text = e.toString();
+
+                                if (b[0] == "Consultation") {
+                                  c = Consulation[a[0].toString()]
+                                      .values
+                                      .toList();
+                                } else if (b[0] == "Nursing") {
+                                  c = Nursing[a[0].toString()].values.toList();
+                                } else if (b[0] == "Procedures") {
+                                  c = Procedures[a[0].toString()].values.toList();
+                                } else if (b[0] == "Vaccination") {
+                                  c = Vaccination[a[0].toString()]
+                                      .values
+                                      .toList();
+                                } else if (b[0] == "By_You") {
+                                  c = By_You[a[0].toString()].values.toList();
+                                }
+
+                                charge.text = c[0].toString();
+
+                                return GestureDetector(
+                                  onTap: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) =>
+                                            ServiceDialogue.Dialogue(
+                                              service: service,
+                                              charges: charge,
+                                              service_name: b[0].toString(),
+                                              doc_id: a[0].toString(),
+                                              context: context,
+                                            )).then((value) {
+                                      if (value == 'delete') {
+                                        all_data_map.remove(a[0]);
+                                        updated = true;
+                                        set();
+                                        getServiceData();
+                                      }
+                                      if (value != null) {
+                                        all_data_map.remove(e);
+                                        all_data_map.addAll(value);
+                                        updated = true;
+                                        set();
+                                        getServiceData();
+                                      }
+                                    });
+                                  },
+                                  child: ListTile(
+                                    title: Text(
+                                        '${e[0].toString().toUpperCase() + e.toString().substring(1)}'),
+                                    leading: Icon(
+                                      Icons.arrow_forward_ios,
+                                      size: MediaQuery.of(context).size.height *
+                                          0.03,
+                                      color: AppTheme.teal,
+                                    ),
+                                    trailing: IconButton(
+                                      icon: Icon(
+                                        Icons.delete_outline_outlined,
+                                        color: AppTheme.teal,
+                                      ),
+                                      onPressed: () async {
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) => AlertDialog(
+                                                  titlePadding: EdgeInsets.all(0),
+                                                  title: Center(
+                                                      child:
+                                                          Text('Are you Sure ?')),
+                                                  actions: [
+                                                    Row(
+                                                      children: [
+                                                        Container(
+                                                          child: TextButton(
+                                                              onPressed:
+                                                                  () async {
+                                                                all_data_map
+                                                                    .remove(a[0]
+                                                                        .toString());
+                                                                updated = true;
+                                                                set();
+                                                                getServiceData();
+
+                                                                Navigator.pop(
+                                                                    context);
+                                                              },
+                                                              child: Text(
+                                                                'yes',
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .white),
+                                                              )),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(15),
+                                                            color: AppTheme.green,
+                                                          ),
+                                                        ),
+                                                        Container(
+                                                          child: TextButton(
+                                                              onPressed: () {
+                                                                Navigator.pop(
+                                                                    context);
+                                                              },
+                                                              child: Text(
+                                                                'no',
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .white),
+                                                              )),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(15),
+                                                            color: Colors.grey,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                    )
+                                                  ],
+                                                ));
+                                      },
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  )),
+                    )),
+        ),
       ),
     );
   }
