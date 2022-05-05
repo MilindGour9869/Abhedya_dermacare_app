@@ -4,17 +4,19 @@ class DefaultStreamBuilder {
 
 
 
-  static deafult_stream_builder(BuildContext context , Stream<Function> f  ) {
+  static deafult_stream_builder(BuildContext context , Stream stream  ) {
     return StreamBuilder(
-        stream: f,
+        stream: stream,
 
 
         builder: (context, AsyncSnapshot snapshot) {
           if(snapshot.connectionState == ConnectionState.waiting)
             {
-              return Text('hhh');
+              return Material(child: Text('waiitng'));
 
             }
+          return null;
+
 
         });
   }

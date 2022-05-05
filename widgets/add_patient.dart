@@ -9,6 +9,7 @@ import 'package:flutter_app/list_search/blood_group_list_search.dart';
 
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter_app/storage/cloud_storage.dart';
+import 'package:flutter_app/widgets/stream_builder.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -102,6 +103,8 @@ class _AddPatientState extends State<AddPatient> {
 
 
  }
+
+
 
 
 
@@ -289,42 +292,43 @@ class _AddPatientState extends State<AddPatient> {
 
 
                          else
+                         {
                            {
 
                              if(email_edit.text.isNotEmpty)
+                             {
+                               if(!EmailValidator.validate(email_edit.text))
                                {
-                                 if(!EmailValidator.validate(email_edit.text))
-                                   {
-                                    return  showDialog(context: context, builder: (context)=>AlertDialog(
-                                       title: Text('Invalid Email ID'),
-                                      actions: [
-                                        TextButton(onPressed: (){
-                                          Navigator.pop(context);
+                                 showDialog(context: context, builder: (context)=>AlertDialog(
+                                   title: Text('Invalid Email ID'),
+                                   actions: [
+                                     TextButton(onPressed: (){
+                                       Navigator.pop(context);
 
-                                        }, child: Text('OK' , textScaleFactor: AppTheme.alert,))
-                                      ],
-                                     ));
+                                     }, child: Text('OK' , textScaleFactor: AppTheme.alert,))
+                                   ],
+                                 ));
 
-                                   }
                                }
-                              if(mobile_edit.text.isNotEmpty){
+                             }
+                             if(mobile_edit.text.isNotEmpty){
 
                                print('in else if');
 
 
                                if(mobile_edit.text.length!=10)
-                                 {
-                                   return  showDialog(context: context, builder: (context)=>AlertDialog(
-                                     title: Text('Invalid Mobile No.' ,  textScaleFactor: AppTheme.alert,),
-                                     actions: [
-                                       TextButton(onPressed: (){
-                                         Navigator.pop(context);
+                               {
+                                 showDialog(context: context, builder: (context)=>AlertDialog(
+                                   title: Text('Invalid Mobile No.' ,  textScaleFactor: AppTheme.alert,),
+                                   actions: [
+                                     TextButton(onPressed: (){
+                                       Navigator.pop(context);
 
-                                       }, child: Text('OK' , textScaleFactor: AppTheme.alert,))
-                                     ],
-                                   ));
+                                     }, child: Text('OK' , textScaleFactor: AppTheme.alert,))
+                                   ],
+                                 ));
 
-                                 }
+                               }
 
 
                              }
@@ -333,30 +337,78 @@ class _AddPatientState extends State<AddPatient> {
 
 
 
-                                 if(icon_tap)
-                                 {
-                                   if(file!=null)
-                                     { print('file no null');
+                             if(icon_tap)
+                             {
+                               var doc = await FirebaseFirestore.instance.collection('Patient').doc();
+                               if(file!=null)
+                               {
 
-                                       var link = Cloud_Storage.Patient_Profile_Image_Upload(
-                                         doc_id: widget.patient_data.doc_id ,
-                                         file: file,
-                                       );
-
-                                       final snapshot = await link.whenComplete((){});
-
-
-                                       profile_link = await snapshot.ref.getDownloadURL();
+                                 print('file no null');
 
 
 
 
 
+                               var link = Cloud_Storage.Patient_Profile_Image_Upload(
+                                 doc_id:  doc.id,
+                                 file: file,
+                               );
 
-                                     }
-                                   var doc = await FirebaseFirestore.instance.collection('Patient').doc();
+                               final snapshot =   await link.whenComplete((){});
 
-                                   final json = {
+
+
+                               profile_link =  await snapshot.ref.getDownloadURL();
+
+                               }
+
+
+                               final json = {
+                                 'name':name_edit.text,
+                                 'age' : age_edit.text,
+                                 'gender':male==true?'Male':female==true?'Female':"",
+                                 'address': address_edit.text,
+                                 'mobile':mobile_edit.text,
+                                 'recent_visit':Timestamp.now(),
+                                 'email':email_edit.text,
+                                 'doc_id' : doc.id,
+                                 'blood_group':blood_group_edit.text,
+                                 'profile_link' : profile_link==null?"":profile_link,
+
+
+                               };
+
+                               doc.set(json);
+                             }
+                             else if(icon_tap == false)
+                             {
+
+                               if(file!=null)
+                               { print('file no null');
+
+                               var link = Cloud_Storage.Patient_Profile_Image_Upload(
+                                 doc_id: widget.patient_data.doc_id ,
+                                 file: file,
+                               );
+
+
+                               final snapshot = await link.whenComplete((){});
+
+                               profile_link = await snapshot.ref.getDownloadURL();
+
+
+
+
+
+
+
+
+                               }
+
+
+
+                               await FirebaseFirestore.instance.collection('Patient').doc(widget.patient_data.doc_id).update(
+                                   {
                                      'name':name_edit.text,
                                      'age' : age_edit.text,
                                      'gender':male==true?'Male':female==true?'Female':"",
@@ -364,67 +416,25 @@ class _AddPatientState extends State<AddPatient> {
                                      'mobile':mobile_edit.text,
                                      'recent_visit':Timestamp.now(),
                                      'email':email_edit.text,
-                                     'doc_id' : doc.id,
                                      'blood_group':blood_group_edit.text,
                                      'profile_link' : profile_link==null?"":profile_link,
 
 
-                                   };
-
-                                   doc.set(json);
-                                 }
-                                 else if(icon_tap == false)
-                                 {
-
-                                   if(file!=null)
-                                   { print('file no null');
-
-                                   var link = Cloud_Storage.Patient_Profile_Image_Upload(
-                                     doc_id: widget.patient_data.doc_id ,
-                                     file: file,
-                                   );
-
-
-                                   final snapshot = await link.whenComplete((){});
-
-                                   profile_link = await snapshot.ref.getDownloadURL();
 
 
 
+                                   });
+                             }
 
-
-
-
-
-                                   }
-
-
-
-                                   await FirebaseFirestore.instance.collection('Patient').doc(widget.patient_data.doc_id).update(
-                                       {
-                                         'name':name_edit.text,
-                                         'age' : age_edit.text,
-                                         'gender':male==true?'Male':female==true?'Female':"",
-                                         'address': address_edit.text,
-                                         'mobile':mobile_edit.text,
-                                         'recent_visit':Timestamp.now(),
-                                         'email':email_edit.text,
-                                         'blood_group':blood_group_edit.text,
-                                         'profile_link' : profile_link==null?"":profile_link,
-
-
-
-
-
-                                       });
-                                 }
-
-                                 return Navigator.pop(context , 'save');
+                             Navigator.pop(context , 'save');
 
 
 
 
                            }
+
+
+                         }
 
 
                       }

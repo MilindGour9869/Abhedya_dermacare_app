@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/default.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -33,42 +34,106 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding:  EdgeInsets.symmetric(horizontal: 6.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
+    return MediaQuery(
+      data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        resizeToAvoidBottomInset: false,
+        body: Padding(
+          padding:  EdgeInsets.symmetric(horizontal: 6.w),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
-              height: 20.h,
+            children: [
+              Padding(
+                padding:  EdgeInsets.only(top: 8.h),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                        alignment: Alignment.center,
 
-                child: Image.asset('images/logo_without_background.png')),
+                        height: 25.h,
 
-            txtfield(text_edit: username_edit, hint: 'Username', keyboard: TextInputType.emailAddress, icon: Icon(Icons.email_outlined)),
-            txtfield(text_edit: password_edit, hint: 'Password', keyboard: TextInputType.text, icon: Icon(Icons.lock_open)),
-            Column(
-              children: [
-                Text('Login As :'),
+                        child: Image.asset('images/login_img.jpg')),
 
-                User(user: 'Admin'),
-                User(user: 'Reception'),
-                User(user: 'Guest'),
+                    Container(
+                        alignment: Alignment.center,
+                        child: Text('Login' , style: TextStyle(
 
+                          fontSize: 40,
+                          fontWeight: FontWeight.w900,
 
-
-
-              ],
-            ),
-
-
-            txtfield(text_edit: password_edit, hint: 'Passcode', keyboard: TextInputType.text, icon: Icon(Icons.lock_open)),
-
-
+                        ),)),
 
 
-          ],
+                    txtfield(text_edit: username_edit, hint: 'Username', keyboard: TextInputType.emailAddress, icon: Icon(Icons.email_outlined , color: Colors.grey.shade300, )),
+                    txtfield(text_edit: password_edit, hint: 'Password', keyboard: TextInputType.text, icon: Icon(Icons.lock_open , color: Colors.grey.shade300,)),
+
+                    Padding(
+                      padding:  EdgeInsets.symmetric(horizontal: 4.w , vertical: 1.h ),
+                      child: Container(
+                        alignment: Alignment.centerRight,
+                        child: Text('Forgot Password' , style: TextStyle(
+                          color: AppTheme.teal,
+                          fontWeight: FontWeight.w900,
+
+                        ),),
+                      ),
+                    ),
+
+
+                    Container(
+                      height: 8.h,
+                      margin: EdgeInsets.symmetric(vertical: 1.5.h),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(40),
+                          color: AppTheme.green
+                      ),
+                      child: Center(child: Text('Sign In' , style: TextStyle(
+                          fontWeight: FontWeight.w900,
+                          color: Colors.white
+                      ),)),
+                    ),
+                  ],
+                ),
+              ),
+
+
+              GestureDetector(
+                onTap: (){
+                  print('ddd');
+
+                },
+                child: Container(
+
+                  decoration: BoxDecoration(
+                    color: AppTheme.teal,
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(30),
+                      topLeft: Radius.circular(30),
+                    )
+                  ),
+
+                  child:Padding(
+                    padding:  EdgeInsets.symmetric(vertical: 3.w , horizontal: 6.w),
+                    child: Text('Sign Up' , style: TextStyle(
+                      color: AppTheme.white ,
+                      fontWeight: FontWeight.w900,
+                    ),),
+                  )
+                ),
+              ),
+
+
+
+
+
+
+            ],
+          ),
         ),
       ),
     );
@@ -97,26 +162,43 @@ class _txtfieldState extends State<txtfield> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 1.h),
+      padding: EdgeInsets.symmetric(vertical: 1.5.h),
       child: TextField(
+
         controller: widget.text_edit,
+
         decoration: InputDecoration(
+            contentPadding: EdgeInsets.symmetric(horizontal: 7.w , vertical: 2.7.h ),
+
+
+
+            hintText: widget.hint,
+            hintStyle: TextStyle(
+              fontWeight: FontWeight.w900,
+              color: Colors.grey.shade300
+            ),
             enabledBorder: OutlineInputBorder(
+
               borderSide: BorderSide(
-                color: Colors.grey,
+                color: Colors.grey.shade300,
+                  
                 width: 2,
               ),
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(40),
             ),
             focusedBorder: OutlineInputBorder(
+
               borderSide: BorderSide(
-                color: Colors.teal,
+                color: AppTheme.green,
                 width: 2,
               ),
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(40),
             ),
-            labelText: widget.hint,
-            prefixIcon: widget.icon),
+
+            prefixIcon: widget.icon ,
+
+
+        ),
         keyboardType: widget.keyboard,
       ),
     );

@@ -79,14 +79,31 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
-      backgroundColor: AppTheme.green,
-      resizeToAvoidBottomInset: false,
-      body: Patient(),
-      drawer:MediaQuery(
-          data:MediaQuery.of(context).copyWith(textScaleFactor: 1.2),
+    return StreamBuilder<User>(
 
-          child: NavigationDrawer()),
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context,snapshot){
+
+        if(snapshot.hasData)
+        {
+          return Scaffold(
+            backgroundColor: AppTheme.green,
+            resizeToAvoidBottomInset: false,
+            body: Patient(),
+            drawer:MediaQuery(
+                data:MediaQuery.of(context).copyWith(textScaleFactor: 1.2),
+
+                child: NavigationDrawer()),
+
+
+          );
+        }
+        else{
+
+          return LoginScreen();
+        }
+      },
+
 
 
     );
