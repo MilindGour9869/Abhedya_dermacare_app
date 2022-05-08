@@ -26,6 +26,10 @@ class Cloud_Storage {
 
   }
 
+  static Future Patient_Cloud_Data_Delete({String doc_id}){
+    FirebaseStorage.instance.ref('Patient/${doc_id}/').delete();
+  }
+
 
 
   static Future Patient_Profile_Image_Upload( {String doc_id , File file})async{

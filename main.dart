@@ -8,7 +8,11 @@ import 'package:flutter/material.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_app/classes/AuthPage.dart';
+import 'package:flutter_app/screens/forgot_password.dart';
 import 'package:flutter_app/screens/login_screen.dart';
+import 'package:flutter_app/screens/sign_up_screen.dart';
+import 'package:flutter_app/storage/storage.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -37,11 +41,14 @@ void main() async {
   runApp(MyApp());
 }
 
+final navigatorKey = GlobalKey<NavigatorState>();
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      navigatorKey: navigatorKey,
 
       home: ResponsiveSizer(
         builder: (context, orientation, screenType){
@@ -51,13 +58,25 @@ class MyApp extends StatelessWidget {
 
         },
       ),
+
+
       theme: ThemeData(
         fontFamily: 'Nunito-SemiBold',
 
       ),
 
 
-      routes: {},
+      routes: {
+        'Patient' : (context)=>Patient(),
+        'Home' : (context)=>HomePage(),
+        'Login' : (context) => LoginScreen(),
+        'ForgotPassword':(context)=>ForgotPasswordScreen(),
+
+
+
+
+
+      },
     );
   }
 }
@@ -100,7 +119,7 @@ class _HomePageState extends State<HomePage> {
         }
         else{
 
-          return LoginScreen();
+          return AuthPage();
         }
       },
 
@@ -268,6 +287,19 @@ Widget Menu(BuildContext context) {
       ),
 
       Dividerr(),
+
+      ListTile(
+        title: Text('Sign Out' , ),
+        leading: Icon(FontAwesomeIcons.signOut ,  color: AppTheme.grey,),
+        onTap: ()async {
+          await Storage.delete_all_date();
+
+          await FirebaseAuth.instance.signOut();
+
+        },
+      )
+
+
 
 //      ListTile(
 //        title: Text('Services'),

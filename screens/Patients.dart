@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/screens/visits_date.dart';
+import 'package:flutter_app/storage/cloud_storage.dart';
+import 'package:flutter_app/storage/storage.dart';
 import 'package:flutter_app/widgets/add_patient.dart';
 import 'package:flutter_app/default.dart';
 
@@ -67,7 +69,7 @@ class _State extends State<Patient> {
 
             print(value);
 
-            if (value == 'save') {
+            if (value == true) {
 
               patient_data();
             }
@@ -104,7 +106,7 @@ class _State extends State<Patient> {
                                       children: [
                                         Container(
                                           child: TextButton(
-                                              onPressed: () {
+                                              onPressed: () async{
                                                 setState(() {
                                                   patient_instance_list
                                                       .remove(patient_data_tile);
@@ -116,7 +118,14 @@ class _State extends State<Patient> {
                                                       .remove(patient_data_tile.name);
                                                   PatientDataDelete(
                                                       patient_data_tile.doc_id);
+
+
+
                                                 });
+
+                                                  await Cloud_Storage.Patient_Cloud_Data_Delete(
+                                                    doc_id: patient_data_tile.doc_id
+                                                );
 
                                                 Navigator.pop(context);
                                               },
@@ -339,6 +348,9 @@ class _State extends State<Patient> {
 
 
      print('\ninit\n');
+
+     print(Storage.is_guest);
+
 
 
 

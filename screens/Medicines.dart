@@ -209,10 +209,13 @@ class _State extends State<Medicines> {
   Widget Tile(
       {Map<String, Map<String, dynamic>> map, String name, Color color}) {
 
+    print(map);
+
+
     String tab="" , composition ="" , company_name = "";
 
-    List a = map[name]['tab'];
-    tab=a==null?"":a[0].toString();
+    String a = map[name]['tab'];
+    tab=a==null?"":a;
 
     List b = map[name]['composition']==null?[]:map[name]['composition'];
 

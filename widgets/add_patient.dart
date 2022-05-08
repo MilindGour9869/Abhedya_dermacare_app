@@ -293,7 +293,8 @@ class _AddPatientState extends State<AddPatient> {
 
                          else
                          {
-                           {
+                           showDialog(context: context, builder: (context)=>Center(child: CircularProgressIndicator()));
+
 
                              if(email_edit.text.isNotEmpty)
                              {
@@ -426,12 +427,15 @@ class _AddPatientState extends State<AddPatient> {
                                    });
                              }
 
-                             Navigator.pop(context , 'save');
+                             Navigator.popUntil(context, (route) {
+                               return route.isFirst;
+
+                             }, );
 
 
 
 
-                           }
+
 
 
                          }

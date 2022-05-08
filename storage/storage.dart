@@ -58,14 +58,94 @@ class Storage {
 
   static const clinical_finding = 'clinical_finding';
 
+  static const String guest = 'Guest';
+  static bool is_guest = false;
 
-  static Future get_all_cloud_data({@required Map<String, Map<String, dynamic>> user})async{
-    FirebaseFirestore.instance.collection('Complaint').get().then(( QuerySnapshot querySnapshot) {
 
-      querySnapshot.docs.forEach((element) {
-        print(element);
+
+
+
+  static Map<String ,String> list_all_map ={
+
+    'Complaint' : 'complaint' ,
+    'Blood_Group' : 'blood_group' ,
+    'Composition' : 'composition' ,
+    'Diagnosis' : 'diagnosis' ,
+    'Allergies' : 'allergies' ,
+    'Investigation' : 'investigation' ,
+    'Medicines' : 'medicine' ,
+    'Services' : 'services' ,
+    'Tab' : 'tab' ,
+    'Clinical_finding' : 'clinical_finding'
+
+
+
+
+
+  };
+
+
+  static Future set_guest_true()async{
+
+    await storage.write(key: guest, value: 'true');
+  }
+
+  static Future get_guest()async{
+    var result = await storage.read(key: guest);
+
+
+    if(result =='true')
+      {
+        is_guest=true;
+
+      }
+    else
+      {
+        is_guest=false;
+
+      }
+
+  }
+
+
+  static Future get_all_cloud_data()async{
+    list_all_map.keys.forEach((element) {
+
+      Map<String , Map<String , dynamic>> result = {} ;
+
+      FirebaseFirestore.instance.collection(element).get().then(( QuerySnapshot querySnapshot) {
+
+        querySnapshot.docs.forEach((element) {
+
+          Map<String,dynamic> map = element.data();
+
+          result[element.id] = map;
+
+
+        });
+        Storage.set(value: result, updated: true, key: list_all_map[element]);
+
+
+
 
       });
+
+
+
+
+
+
+
+
+    });
+
+  }
+  static Future set_all_cloud_date()async{
+
+  }
+  static Future delete_all_date()async{
+    list_all_map.values.forEach((element) {
+      storage.delete(key: element);
 
     });
   }
@@ -73,7 +153,7 @@ class Storage {
 
 
 
-  static Future set({@required Map<String, Map<String, dynamic>> value , @required bool updated , @required String variable }) async
+  static Future set({@required Map<String, Map<String, dynamic>> value , @required bool updated , @required String key }) async
   {
     print(updated && value != null);
 
@@ -90,13 +170,13 @@ class Storage {
 
       final str = jsonEncode(value);
 
-      await storage.write(key: variable, value: str);
+      await storage.write(key: key, value: str);
     }
   }
 
-  static Future<Map<String, Map<String, dynamic>>> get({@required String variable}) async
+  static Future<Map<String, Map<String, dynamic>>> get({@required String key}) async
   {
-    var str = await storage.read(key: variable);
+    var str = await storage.read(key: key);
 
     var value = str != null ? jsonDecode(str) : null;
 

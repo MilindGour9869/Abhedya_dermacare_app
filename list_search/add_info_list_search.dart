@@ -158,7 +158,7 @@ class _Add_Info_List_SearchState extends State<Add_Info_List_Search> {
 
 
 
-    await Storage.set(value: all_data_map , updated:  updated , variable: Storage.add_info );
+    await Storage.set(value: all_data_map , updated:  updated , key: Storage.add_info );
   }
 
   void pop(){

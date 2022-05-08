@@ -1,9 +1,16 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/default.dart';
+import 'package:flutter_app/main.dart';
+import 'package:flutter_app/screens/sign_up_screen.dart';
+import 'package:flutter_app/widgets/user_administration.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class LoginScreen extends StatefulWidget {
+
+  Function f;
+  LoginScreen({this.f});
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -68,34 +75,99 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),)),
 
 
-                    txtfield(text_edit: username_edit, hint: 'Username', keyboard: TextInputType.emailAddress, icon: Icon(Icons.email_outlined , color: Colors.grey.shade300, )),
-                    txtfield(text_edit: password_edit, hint: 'Password', keyboard: TextInputType.text, icon: Icon(Icons.lock_open , color: Colors.grey.shade300,)),
+                    txtfield(obsecure:false,text_edit: username_edit, hint: 'Email', keyboard: TextInputType.emailAddress, icon: Icon(Icons.email_outlined , color: username_edit.text.isEmpty?Colors.grey.shade300:Colors.black54, )),
+                    txtfield(obsecure:true,text_edit: password_edit, hint: 'Password', keyboard: TextInputType.text, icon: Icon(Icons.lock_open , color: password_edit.text.isEmpty?Colors.grey.shade300:Colors.black54)),
 
-                    Padding(
-                      padding:  EdgeInsets.symmetric(horizontal: 4.w , vertical: 1.h ),
-                      child: Container(
-                        alignment: Alignment.centerRight,
-                        child: Text('Forgot Password' , style: TextStyle(
-                          color: AppTheme.teal,
-                          fontWeight: FontWeight.w900,
+                    GestureDetector(
+                      onTap: ()async{
 
-                        ),),
+                        Navigator.pushNamed(context, 'ForgotPassword');
+
+
+
+
+
+                      },
+                      child: Padding(
+                        padding:  EdgeInsets.symmetric(horizontal: 4.w , vertical: 1.h ),
+                        child: Container(
+                          alignment: Alignment.centerRight,
+                          child: Text('Forgot Password ?' , style: TextStyle(
+                            color: AppTheme.teal,
+                            fontWeight: FontWeight.w900,
+
+                          ),),
+                        ),
                       ),
                     ),
 
 
-                    Container(
-                      height: 8.h,
-                      margin: EdgeInsets.symmetric(vertical: 1.5.h),
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(40),
-                          color: AppTheme.green
+                    GestureDetector(
+                      onTap: ()async{
+                        if(username_edit.text.isEmpty || password_edit.text.isEmpty)
+                          {
+                            showDialog(context: context, builder: (context)=>AlertDialog(
+                              title: Text('Credential is not filled' , textScaleFactor: AppTheme.alert,),
+                              actions: [
+                                TextButton(onPressed: (){
+                                  Navigator.pop(context);
+
+                                }, child: Text('OK' ,  textScaleFactor: AppTheme.alert,))
+                              ],
+
+                            ));
+
+                          }
+                        else
+                          {
+
+                          showDialog(context: context, builder: (context)=>UserAdministration()).then((value)async {
+                            try{
+                              showDialog(context: context, builder: (context)=>Center(child: CircularProgressIndicator()));
+
+                              await FirebaseAuth.instance.signInWithEmailAndPassword(email: username_edit.text, password: password_edit.text);
+
+                              navigatorKey.currentState.popUntil( (route) => route.isFirst);
+
+                            }
+                            on FirebaseAuthException catch(e){
+
+                              showDialog(context: context, builder: (context)=>AlertDialog(
+                                title: Text(e.toString() , textScaleFactor: AppTheme.alert,),
+                                actions: [
+                                  TextButton(onPressed: (){
+                                    Navigator.pop(context);
+
+                                  }, child: Text('OK' ,  textScaleFactor: AppTheme.alert,))
+                                ],
+
+                              ));
+
+
+                            }
+                          });
+                           
+                           
+
+
+
+
+
+                          }
+                      },
+                      child: Container(
+                        height: 8.h,
+                        margin: EdgeInsets.symmetric(vertical: 1.5.h),
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(40),
+                            color: AppTheme.green
+                        ),
+                        child: Center(child: Text('Sign In' , style: TextStyle(
+                            fontWeight: FontWeight.w900,
+                            color: Colors.white
+                        ),)),
                       ),
-                      child: Center(child: Text('Sign In' , style: TextStyle(
-                          fontWeight: FontWeight.w900,
-                          color: Colors.white
-                      ),)),
                     ),
                   ],
                 ),
@@ -117,12 +189,20 @@ class _LoginScreenState extends State<LoginScreen> {
                     )
                   ),
 
-                  child:Padding(
-                    padding:  EdgeInsets.symmetric(vertical: 3.w , horizontal: 6.w),
-                    child: Text('Sign Up' , style: TextStyle(
-                      color: AppTheme.white ,
-                      fontWeight: FontWeight.w900,
-                    ),),
+                  child:GestureDetector(
+                    onTap: (){
+
+                      widget.f();
+
+
+                    },
+                    child: Padding(
+                      padding:  EdgeInsets.symmetric(vertical: 3.w , horizontal: 6.w),
+                      child: Text('Sign Up' , style: TextStyle(
+                        color: AppTheme.white ,
+                        fontWeight: FontWeight.w900,
+                      ),),
+                    ),
                   )
                 ),
               ),
@@ -147,12 +227,18 @@ class txtfield extends StatefulWidget {
     @required this.hint,
     @required this.keyboard,
     @required this.icon,
+    @required this.obsecure,
+    @required this.suffix,
+
+
   }) : super(key: key);
 
   TextEditingController text_edit;
   String hint;
   TextInputType keyboard;
   Icon icon;
+  bool obsecure;
+  bool suffix;
 
   @override
   State<txtfield> createState() => _txtfieldState();
@@ -166,6 +252,7 @@ class _txtfieldState extends State<txtfield> {
       child: TextField(
 
         controller: widget.text_edit,
+        obscureText: widget.obsecure,
 
         decoration: InputDecoration(
             contentPadding: EdgeInsets.symmetric(horizontal: 7.w , vertical: 2.7.h ),
@@ -173,6 +260,7 @@ class _txtfieldState extends State<txtfield> {
 
 
             hintText: widget.hint,
+
             hintStyle: TextStyle(
               fontWeight: FontWeight.w900,
               color: Colors.grey.shade300
@@ -180,7 +268,7 @@ class _txtfieldState extends State<txtfield> {
             enabledBorder: OutlineInputBorder(
 
               borderSide: BorderSide(
-                color: Colors.grey.shade300,
+                color: widget.text_edit.text.isEmpty?Colors.grey.shade300:AppTheme.green,
                   
                 width: 2,
               ),
@@ -196,6 +284,8 @@ class _txtfieldState extends State<txtfield> {
             ),
 
             prefixIcon: widget.icon ,
+
+
 
 
         ),
