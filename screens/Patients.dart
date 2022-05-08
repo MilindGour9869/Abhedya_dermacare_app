@@ -349,7 +349,7 @@ class _State extends State<Patient> {
 
      print('\ninit\n');
 
-     print(Storage.is_guest);
+     print(Storage.user_map);
 
 
 

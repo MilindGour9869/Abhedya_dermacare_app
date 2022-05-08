@@ -253,11 +253,22 @@ class _UserAdministrationState extends State<UserAdministration> {
                               {
                                if(passcode_edit.text.isNotEmpty )
                                  {
+
+
                                    String collection ;
                                    map3.forEach((key, value) async{
                                      if(value)
                                        {
                                          collection = key;
+                                         if(collection=='Admin')
+                                           {
+                                             await Storage.set_admin_true();
+                                           }
+                                         else if(collection == 'Reception')
+                                           {
+                                             await Storage.set_reception_true();
+
+                                           }
                                        }
 
                                    });

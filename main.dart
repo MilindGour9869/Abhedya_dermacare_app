@@ -293,6 +293,10 @@ Widget Menu(BuildContext context) {
         leading: Icon(FontAwesomeIcons.signOut ,  color: AppTheme.grey,),
         onTap: ()async {
           await Storage.delete_all_date();
+          await Storage.set_guest_false();
+          await Storage.set_admin_false();
+          await Storage.set_reception_false();
+
 
           await FirebaseAuth.instance.signOut();
 

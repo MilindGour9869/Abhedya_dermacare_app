@@ -7,6 +7,8 @@ import 'package:flutter_app/screens/sign_up_screen.dart';
 import 'package:flutter_app/widgets/user_administration.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
+import '../storage/storage.dart';
+
 class LoginScreen extends StatefulWidget {
 
   Function f;
@@ -124,6 +126,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           showDialog(context: context, builder: (context)=>UserAdministration()).then((value)async {
                             try{
                               showDialog(context: context, builder: (context)=>Center(child: CircularProgressIndicator()));
+
+                              if(value!='guest')
+                              {
+                                await Storage.get_all_cloud_data();
+                              }
 
                               await FirebaseAuth.instance.signInWithEmailAndPassword(email: username_edit.text, password: password_edit.text);
 

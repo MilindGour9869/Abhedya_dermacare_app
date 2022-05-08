@@ -59,7 +59,19 @@ class Storage {
   static const clinical_finding = 'clinical_finding';
 
   static const String guest = 'Guest';
-  static bool is_guest = false;
+  static const String admin = 'Admin';
+  static const String reception = 'Reception';
+
+
+
+
+  static Map<String,bool> user_map={
+
+    'is_guest' :false,
+    'is_admin' :false,
+    'is_reception' : false,
+  };
+
 
 
 
@@ -87,7 +99,16 @@ class Storage {
 
   static Future set_guest_true()async{
 
+    user_map['is_guest']=true;
+
     await storage.write(key: guest, value: 'true');
+  }
+
+  static Future set_guest_false()async{
+    user_map['is_guest']=false;
+
+    await storage.write(key: guest, value: 'false');
+
   }
 
   static Future get_guest()async{
@@ -96,14 +117,77 @@ class Storage {
 
     if(result =='true')
       {
-        is_guest=true;
+        user_map['is_guest']=true;
 
       }
     else
       {
-        is_guest=false;
+        user_map['is_guest']=false;
 
       }
+
+  }
+
+  static Future set_admin_true()async{
+
+    user_map['is_admin']=true;
+
+    await storage.write(key: admin, value: 'true');
+  }
+
+  static Future set_admin_false()async{
+
+    user_map['is_admin']=false;
+
+    await storage.write(key: admin, value: 'false');
+  }
+
+  static Future get_admin()async{
+    var result = await storage.read(key: admin);
+
+
+    if(result =='true')
+    {
+      user_map['is_admin']=true;
+
+    }
+    else
+    {
+      user_map['is_admin']=false;
+
+    }
+
+  }
+
+
+  static Future set_reception_true()async{
+
+    user_map['is_reception']=true;
+
+    await storage.write(key: reception, value: 'true');
+  }
+
+  static Future set_reception_false()async{
+
+    user_map['is_reception']=false;
+
+    await storage.write(key: reception, value: 'false');
+  }
+
+  static Future get_reception()async{
+    var result = await storage.read(key: reception);
+
+
+    if(result =='true')
+    {
+      user_map['is_reception']=true;
+
+    }
+    else
+    {
+      user_map['is_reception']=false;
+
+    }
 
   }
 
