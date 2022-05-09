@@ -7,13 +7,11 @@ import 'package:flutter_app/list_search/list_search.dart';
 import 'package:flutter_app/list_search/notes_list_search.dart';
 import 'package:flutter_app/storage/storage.dart';
 import 'package:flutter_app/widgets/Printer_Select_list.dart';
+import 'package:flutter_app/widgets/Tile.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../list_search/vital_list_search.dart';
 import 'package:flutter_app/widgets/list_search.dart';
 import 'package:flutter_app/classes/Patient_name_list.dart';
-
-
-
 
 import 'package:date_format/date_format.dart';
 import 'package:flutter_app/widgets/service_search_list.dart';
@@ -21,47 +19,29 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../screens/Medicines.dart';
 
-
 class AddVisits extends StatefulWidget {
-
-
   Patient_name_data_list patient_data;
 
   String visit_date;
 
-  Map<String , dynamic> map;
-
-
-
-
+  Map<String, dynamic> map;
 
   bool icon_tap;
 
-
-
-
-
-
-
-
-
-
-  AddVisits({ this.map , this.visit_date , this.icon_tap = false  , this.patient_data});
-
+  AddVisits(
+      {this.map, this.visit_date, this.icon_tap = false, this.patient_data});
 
   @override
   _AddVisitsState createState() => _AddVisitsState();
 }
 
 class _AddVisitsState extends State<AddVisits> {
-
-
-  String complaints="Complaints";
-  String diagnosis="Diagnosis";
-  String advices="Advices";
-  String investigation="Investigation";
-  String allergies="Allergies";
-  String clinical_findings="Clinical Findings";
+  String complaints = "Complaints";
+  String diagnosis = "Diagnosis";
+  String advices = "Advices";
+  String investigation = "Investigation";
+  String allergies = "Allergies";
+  String clinical_finding = "Clinical Finding";
   String group = "Group";
 
   String service = "Services";
@@ -69,212 +49,236 @@ class _AddVisitsState extends State<AddVisits> {
   String vital = "Vitals";
   String notes = 'Notes';
 
+  String blood_group = "";
 
-  String blood_group ="";
-
-
-
-
-  String img_complaint =  'images/complaint_color.webp';
-  String img_clinical_finding_color =  'images/clinical_finding_color.png';
-  String img_diagnosis =  'images/diagnosis.webp';
-  String img_medicine_color =  'images/medicine_color.webp';
-  String img_vital_color =  'images/vital_color.webp';
-  String img_investigation_color =  'images/investigation_color.webp';
-
-
+  String img_complaint = 'images/complaint_color.webp';
+  String img_clinical_finding_color = 'images/clinical_finding_color.png';
+  String img_diagnosis = 'images/diagnosis.webp';
+  String img_medicine_color = 'images/medicine_color.webp';
+  String img_vital_color = 'images/vital_color.webp';
+  String img_investigation_color = 'images/investigation_color.webp';
 
   //10
-  List Complaint =[];
-  List Diagnosis =[];
-  List Advices =[];
-  List Investigation =[];
-  List Allergies =[];
-  List Clinical_findings =[];
-  List Group =[];
+  List Complaint = [];
+  List Diagnosis = [];
+  List Advices = [];
+  List Investigation = [];
+  List Allergies = [];
+  List Clinical_finding = [];
+  List Group = [];
 
-  List Services =[];
+  List Services = [];
   List<String> Medicine = [];
   List Notes = [];
 
+  Map<String, Map<String, dynamic>> medicine_result = {};
+  Map<String, Map<String, dynamic>> vital_result = {};
 
-
-
-
-
-  Map<String  , Map<String , dynamic>> medicine_result={};
-  Map<String  , Map<String , dynamic>> vital_result={};
-
-  Map<String , dynamic> map;
+  Map<String, dynamic> map;
 
   String visit_date;
   String follow_up_date;
 
-
   Timestamp date;
 
+  dynamic set(List<String> list, Map<String, dynamic> map, String name) {
+    if (list.isNotEmpty) {
+      map[name] = list;
+      return map;
+    }
+  }
 
-  dynamic set(List<String> list , Map<String , dynamic> map , String name){
+  Widget DropDown(String menu) {
+    return Text(
+      menu,
+      textScaleFactor: AppTheme.list_tile_subtile,
+    );
+  }
 
-    if(list.isNotEmpty)
-      {
-        map[name] = list;
-        return map;
+  void f({@required List l}){
+    setState(() {
 
-      }
 
+
+    });
 
   }
 
+  Widget Tile(
+  {
+    String name  , group , Group , ky,
+    List list ,
+    bool one_select ,
+    Widget widget
+}
+      ){
 
-  void Prnt(){
+    print(list);
+
+    return Padding(
+      padding:  EdgeInsets.all(1.w),
+      child: Material(
+        borderRadius: BorderRadius.circular(10),
+        elevation: 2,
+
+
+        child: ListTile(
+
+          title: Padding(
+            padding:  EdgeInsets.only(top: 1.w),
+            child: Text(name, ),
+          ),
+          leading:  widget,
+
+          trailing: IconButton(onPressed: ()async{
+
+
+
+            // print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
+
+
+            showDialog(
+                context: context,
+                builder: (context)  {
+
+
+
+                  return  List_Search(result: list, get: Storage.get, set: Storage.set, group: group, Group: Group, one_select: false, ky: ky);}
+
+            ).then((value)async{
+
+              print(value);
+
+              if(value != null)
+              {
+
+
+                  list = value;
+                  print('dgb');
+                  print(Complaint);
+
+
+
+
+
+              }
+            });
+
+
+
+
+
+
+
+
+
+
+          }, icon: Icon(Icons.arrow_drop_down_circle_outlined , color: Colors.black,)),
+
+          subtitle: Padding(
+            padding:  EdgeInsets.only(top: 1.w),
+            child: Container(
+
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: list.map<Widget>((e){
+
+                  print('ddwefr');
+
+
+                  print(Complaint);
+
+
+                  return Text(
+                    e,
+                    textScaleFactor: AppTheme.list_tile_subtile,
+                  );
+                } ).toList(),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void Prnt() {
     print(Complaint);
-    print(Clinical_findings);
-
+    print(Clinical_finding);
   }
-
-
-
-
-
-
-
 
   Timestamp followUp_date;
 
+  void setdata() {
+    setState(() {
+      // Complaint = map['complaint'];
 
-  void setdata(){
+      if (map['complaint'] != null) {
+        Complaint = map['complaint'];
+      }
+      if (map['investigation'] != null) {
+        Investigation = map['investigation'];
+      }
+      if (map['diagnosis'] != null) {
+        Diagnosis = map['diagnosis'];
+      }
+      if (map['advices'] != null) {
+        Advices = map['advices'];
+      }
+      if (map['group'] != null) {
+        Group = map['group'];
+      }
 
-setState(() {
+      if (map['allergies'] != null) {
+        Allergies = map['allergies'];
+      }
+      if (map['service'] != null) {
+        Services = map['service'];
+      }
+      if (map['clinical_finding'] != null) {
+        Clinical_finding = map['clinical_finding'];
+      }
+      if (map['medicine'] != null) {
+        print('in medicine');
 
- // Complaint = map['complaint'];
-
-  if(map['complaint'] != null)
-  {
-     Complaint = map['complaint'];
+        medicine_result = map['medicine'];
+      }
+      if (map['vital'] != null) {
+        vital_result = map['vital'];
+      }
+    });
   }
-  if(map['investigation'] != null)
-  {
-      Investigation = map['investigation'];
-  }
-  if(map['diagnosis'] != null )
-  {
-      Diagnosis = map['diagnosis'];
-  }
-  if(map['advices'] != null)
-  {
-      Advices = map['advices'];
-  }
-  if(map['group'] != null)
-  {
-      Group = map['group'];
-  }
-
-  if(map['allergies'] != null)
-  {
-      Allergies = map['allergies'];
-  }
-  if(map['service'] != null)
-  {
-      Services = map['service'];
-  }
-  if( map['clinical_finding'] != null)
-  {
-     Clinical_findings =  map['clinical_finding'];
-  }
-  if( map['medicine'] != null)
-    {
-      print('in medicine');
-
-      medicine_result = map['medicine'];
-
-    }
-  if( map['vital'] != null)
-  {
-    vital_result = map['vital'];
-
-  }
-
-
-
-
-
-
-
-
-
-
-});
-
-  }
-
-
-
-
-
-
-
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
-
-    if(widget.patient_data.blood_group !=null)
-      {
-
-        blood_group = widget.patient_data.blood_group;
-
-
-      }
-
-
-
+    if (widget.patient_data.blood_group != null) {
+      blood_group = widget.patient_data.blood_group;
+    }
 
     print(widget.patient_data.hashCode);
 
+    if (widget.map != null) {
+      print(widget.map);
 
-    if(widget.map != null)
-      {
+      map = widget.map;
 
-        print(widget.map);
+      print('\ninit');
 
-        map = widget.map;
+      print(map);
 
+      setdata();
+    } else {
+      print('add visit init else ');
+    }
 
-
-        print('\ninit');
-
-
-        print(map);
-
-
-
-         setdata();
-
-
-
-
-      }
-    else
-      {
-        print('add visit init else ');
-      }
-
-    visit_date=widget.visit_date;
-
-
-
-
-
+    visit_date = widget.visit_date;
   }
 
   @override
   Widget build(BuildContext context) {
-
-
-
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
       child: Scaffold(
@@ -282,197 +286,147 @@ setState(() {
         appBar: AppBar(
           backgroundColor: AppTheme.teal,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back ,size: AppTheme.icon_size,),
-            onPressed: (){
-              Navigator.pop(context , 'back');
+            icon: Icon(
+              Icons.arrow_back,
+              size: AppTheme.icon_size,
+            ),
+            onPressed: () {
+              Navigator.pop(context, 'back');
             },
           ),
-          title: Text('Add Visits' , ),
+          title: Text(
+            'Add Visits',
+          ),
           actions: [
-            IconButton(onPressed: (){
+            IconButton(
+                onPressed: () {
+                  Map<String, dynamic> patient_detail = {
+                    'patient_name': widget.patient_data.name,
+                    'patient_gender': widget.patient_data.gender == null
+                        ? ""
+                        : widget.patient_data.gender.isNotEmpty
+                            ? widget.patient_data.gender
+                            : "",
+                    'patient_age': widget.patient_data.age == null
+                        ? ""
+                        : widget.patient_data.age.toString(),
+                    'patient_mobile': widget.patient_data.mobile == null
+                        ? ""
+                        : widget.patient_data.mobile.toString(),
+                    'address': widget.patient_data.address == null
+                        ? ""
+                        : widget.patient_data.address.isNotEmpty
+                            ? widget.patient_data.address
+                            : "",
+                    'patient_blood_group':
+                        widget.patient_data.blood_group == null
+                            ? ""
+                            : widget.patient_data.blood_group.isNotEmpty
+                                ? widget.patient_data.blood_group
+                                : "",
+                  };
 
-
-              Map<String , dynamic> patient_detail = {
-
-                'patient_name' : widget.patient_data.name,
-                'patient_gender' : widget.patient_data.gender==null?"":widget.patient_data.gender.isNotEmpty?widget.patient_data.gender:"",
-                'patient_age':widget.patient_data.age==null?"":widget.patient_data.age.toString(),
-                'patient_mobile': widget.patient_data.mobile==null?"":widget.patient_data.mobile.toString(),
-                'address' : widget.patient_data.address==null?"":widget.patient_data.address.isNotEmpty?widget.patient_data.address:"",
-                 'patient_blood_group':widget.patient_data.blood_group==null?"":widget.patient_data.blood_group.isNotEmpty?widget.patient_data.blood_group:"",
-
-              };
-
-
-
-
-
-
-
-
-
-
-
-              showDialog(context: context, builder: (context){
-
-                return Printer_Select_List(map_list: {
-
-                  'Visit Date' : visit_date ,
-
-                  'UID' : widget.patient_data.uid,
-
-                  'Patient Detail': patient_detail ,
-
-                  'Vitals' : vital_result,
-
-
-
-                  'Complaint' : Complaint ,
-                  'Investigation' : Investigation ,
-                  'Clinical Finding' : Clinical_findings,
-                  'Notes' : Notes ,
-                  'Diagnosis' : Diagnosis ,
-                  'Allergies' : Allergies ,
-                  'Advices' : Advices ,
-                  'Group' : Group ,
-
-
-                  'Medicine' : medicine_result ,
-
-
-
-
-
-
-
-
-                  'Follow up date' :follow_up_date,
-
-
-
-
-
-
-
-
-
-
-
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return Printer_Select_List(
+                          map_list: {
+                            'Visit Date': visit_date,
+                            'UID': widget.patient_data.uid,
+                            'Patient Detail': patient_detail,
+                            'Vitals': vital_result,
+                            'Complaint': Complaint,
+                            'Investigation': Investigation,
+                            'Clinical Finding': Clinical_finding,
+                            'Notes': Notes,
+                            'Diagnosis': Diagnosis,
+                            'Allergies': Allergies,
+                            'Advices': Advices,
+                            'Group': Group,
+                            'Medicine': medicine_result,
+                            'Follow up date': follow_up_date,
+                          },
+                          doc_id: widget.patient_data.doc_id,
+                        );
+                      });
+                  Prnt();
                 },
-
-                  doc_id: widget.patient_data.doc_id,
-
-
-
-                );
-              });
-              Prnt();
-
-            }, icon: Icon(Icons.print_outlined)),
+                icon: Icon(Icons.print_outlined)),
             Padding(
-              padding:  EdgeInsets.only(right: 1.w),
-              child: IconButton(onPressed: (){
+              padding: EdgeInsets.only(right: 1.w),
+              child: IconButton(
+                  onPressed: () {
+                    var visit_doc = FirebaseFirestore.instance
+                        .collection('Patient')
+                        .doc(widget.patient_data.doc_id)
+                        .collection('visits')
+                        .doc(visit_date);
+                    var patient_doc = FirebaseFirestore.instance
+                        .collection('Patient')
+                        .doc(widget.patient_data.doc_id);
 
-                var visit_doc = FirebaseFirestore.instance.collection('Patient').doc(widget.patient_data.doc_id).collection('visits').doc(visit_date);
-                var patient_doc = FirebaseFirestore.instance.collection('Patient').doc(widget.patient_data.doc_id);
+                    Map<String, dynamic> map = {};
 
-                Map<String , dynamic> map ={};
-
-
-
-
-                if(Complaint.isNotEmpty)
-                  {
-                    map['complaint'] = Complaint;
-                  }
-                if(Investigation.isNotEmpty)
-                {
-                  map['investigation'] = Investigation;
-                }
-                if(Diagnosis.isNotEmpty)
-                {
-                  map['diagnosis'] = Diagnosis;
-                }
-                if(Advices.isNotEmpty)
-                {
-                  map['advices'] = Advices;
-                }
-                if(Group.isNotEmpty)
-                {
-                  map['group'] = Group;
-                }
-
-                if(Allergies.isNotEmpty)
-                {
-                  map['allergies'] = Allergies;
-                }
-                if(Services.isNotEmpty)
-                {
-                  map['service'] = Services;
-                }
-                if(Clinical_findings.isNotEmpty)
-                {
-                  map['clinical_finding'] = Clinical_findings;
-                }
+                    print('ffffeergre');
 
 
-                widget.patient_data.visits_mapData_list[visit_date]=map;
+                    print(Complaint);
 
 
-                if(visit_date == formatDate(Timestamp.now().toDate(), [ dd, '-', mm, '-', yyyy]).toString())
-                  {
-                    map['visit_date'] = new Timestamp.now();
-                    patient_doc.update({
-                      'recent_visit' :Timestamp.now(),
-                      'blood_group' : blood_group=='Blood Group'?"":blood_group
+                    if (Complaint.isNotEmpty) {
+                      map['complaint'] = Complaint;
+                    }
+                    if (Investigation.isNotEmpty) {
+                      map['investigation'] = Investigation;
+                    }
+                    if (Diagnosis.isNotEmpty) {
+                      map['diagnosis'] = Diagnosis;
+                    }
+                    if (Advices.isNotEmpty) {
+                      map['advices'] = Advices;
+                    }
+                    if (Group.isNotEmpty) {
+                      map['group'] = Group;
+                    }
 
-                    } );
+                    if (Allergies.isNotEmpty) {
+                      map['allergies'] = Allergies;
+                    }
+                    if (Services.isNotEmpty) {
+                      map['service'] = Services;
+                    }
+                    if (Clinical_finding.isNotEmpty) {
+                      map['clinical_finding'] = Clinical_finding;
+                    }
 
-                  }
+                    widget.patient_data.visits_mapData_list[visit_date] = map;
 
-                if(date != null)
-                  {
-                    map['visit_date'] = date;
-                    patient_doc.update({
-                      'recent_visit' :date,
+                    if (visit_date ==
+                        formatDate(Timestamp.now().toDate(),
+                            [dd, '-', mm, '-', yyyy]).toString()) {
+                      map['visit_date'] = new Timestamp.now();
+                      patient_doc.update({
+                        'recent_visit': Timestamp.now(),
+                        'blood_group':
+                            blood_group == 'Blood Group' ? "" : blood_group
+                      });
+                    }
 
+                    if (date != null) {
+                      map['visit_date'] = date;
+                      patient_doc.update({
+                        'recent_visit': date,
+                      });
+                    }
 
-                    } );
+                    visit_doc.set(map, SetOptions(merge: true));
 
-                  }
-
-
-
-
-
-
-
-
-
-
-
-                visit_doc.set(map , SetOptions(merge: true));
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                Navigator.pop(context , 'save');
-
-
-
-              }, icon: Icon(Icons.save , size: AppTheme.icon_size,)),
+                    Navigator.pop(context, 'save');
+                  },
+                  icon: Icon(
+                    Icons.save,
+                    size: AppTheme.icon_size,
+                  )),
             )
           ],
         ),
@@ -480,144 +434,123 @@ setState(() {
           child: Center(
             child: Container(
               color: Colors.transparent,
-             // height: MediaQuery.of(context).size.height*0.9,
+              // height: MediaQuery.of(context).size.height*0.9,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-
-
-
-
-
                 children: [
-
                   SizedBox(
-                      height: MediaQuery.of(context).size.height*0.08,
+                      height: MediaQuery.of(context).size.height * 0.08,
                       width: 40.w,
+                      child: Card(
+                          child: Center(
+                              child: TextButton(
+                        child: Text(
+                          '${visit_date}',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        onPressed: () {
+                          showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime(1947),
+                                  lastDate: DateTime(2050))
+                              .then((value) {
+                            print(value);
+                            setState(() {
+                              date = Timestamp.fromDate(value);
 
-                      child: Card(child: Center(child: TextButton(
-
-                          child: Text('${visit_date}' ,style: TextStyle(color: Colors.black), ),
-                          onPressed:(){
-                            showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(1947), lastDate: DateTime(2050)).then((value){
-                              print(value);
-                              setState(() {
-
-                                date = Timestamp.fromDate(value);
-
-                                visit_date = formatDate(Timestamp.fromDate(value).toDate(),[dd, '-', mm, '-', yyyy]).toString();
-                              });
-                            } );
-                          } ,
-
-                      )
-
-
-                      ))), //date
-
+                              visit_date = formatDate(
+                                  Timestamp.fromDate(value).toDate(),
+                                  [dd, '-', mm, '-', yyyy]).toString();
+                            });
+                          });
+                        },
+                      )))), //date
 
                   Padding(
-                    padding:  EdgeInsets.symmetric(horizontal: 1.w , vertical: 1.h),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 1.w, vertical: 1.h),
                     child: Padding(
-                      padding:  EdgeInsets.symmetric(horizontal: 2.w),
+                      padding: EdgeInsets.symmetric(horizontal: 2.w),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           SizedBox(
-                              height: MediaQuery.of(context).size.height*0.08,
+                              height: MediaQuery.of(context).size.height * 0.08,
                               width: 45.w,
-
-
                               child: Card(
-
                                   elevation: 1,
-                                  child: Center(child: TextButton.icon(
-
-                                    icon: Icon(FontAwesomeIcons.droplet , color: Colors.red,),
-
-
-
-                                    label: Text(blood_group.isEmpty?"Blood Group":blood_group , style: TextStyle(color: Colors.black), ),
-                                    onPressed:(){
-
-                                      showDialog(context: context, builder: (context)=>List_Search(
-                                        result: [blood_group],
-                                        get: Storage.get_blood_group,
-                                        set: Storage.set_blood_group,
-                                        one_select: true,
-                                        group: 'blood_group',
-                                        Group: 'Blood_Group',
-                                      )).then((value) {
-
-                                        if(value!=null)
-                                          {
-                                            if(value.isNotEmpty)
-                                              {
-                                                setState(() {
-                                                  blood_group = value[0].toString();
-
-                                                });
-                                              }
-                                            else
-                                              {
-                                                setState(() {
-                                                  blood_group="";
-                                                });
-
-                                              }
-                                          }
-                                        else
-                                          {
+                                  child: Center(
+                                      child: TextButton.icon(
+                                    icon: Icon(
+                                      FontAwesomeIcons.droplet,
+                                      color: Colors.red,
+                                    ),
+                                    label: Text(
+                                      blood_group.isEmpty
+                                          ? "Blood Group"
+                                          : blood_group,
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                    onPressed: () {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) => List_Search(
+                                                result: [blood_group],
+                                                get: Storage.get,
+                                                set: Storage.set,
+                                                one_select: true,
+                                                group: 'blood_group',
+                                                Group: 'Blood_Group',
+                                                ky: 'blood_group',
+                                              )).then((value) {
+                                        if (value != null) {
+                                          if (value.isNotEmpty) {
                                             setState(() {
-                                              blood_group="";
+                                              blood_group = value[0].toString();
                                             });
-
                                           }
+                                        }
                                       });
-                                    } ,
-
-                                  )
-
-
-                                  ))),
-
+                                    },
+                                  )))),
                           SizedBox(
-                              height: MediaQuery.of(context).size.height*0.08,
-
-
+                              height: MediaQuery.of(context).size.height * 0.08,
                               child: Card(
-
-                                elevation: 1,
-                                  child: Center(child: TextButton.icon(
-
+                                  elevation: 1,
+                                  child: Center(
+                                      child: TextButton.icon(
                                     icon: Icon(Icons.timelapse_rounded),
+                                    label: Text(
+                                      follow_up_date == null
+                                          ? 'Follow Up Date'
+                                          : follow_up_date,
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                    onPressed: () {
+                                      showDatePicker(
+                                              context: context,
+                                              initialDate: DateTime.now(),
+                                              firstDate: DateTime(1947),
+                                              lastDate: DateTime(2050))
+                                          .then((value) {
+                                        print(value);
+                                        setState(() {
+                                          date = Timestamp.fromDate(value);
 
-                                label: Text(follow_up_date==null?'Follow Up Date':follow_up_date , style: TextStyle(color: Colors.black),  ),
-                                onPressed:(){
-                                  showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(1947), lastDate: DateTime(2050)).then((value){
-                                    print(value);
-                                    setState(() {
-
-                                      date = Timestamp.fromDate(value);
-
-                                      follow_up_date = formatDate(Timestamp.fromDate(value).toDate(),[dd, '-', mm, '-', yyyy]).toString();
-                                    });
-                                  } );
-                                } ,
-
-                              )
-
-
-                              ))),
+                                          follow_up_date = formatDate(
+                                                  Timestamp.fromDate(value)
+                                                      .toDate(),
+                                                  [dd, '-', mm, '-', yyyy])
+                                              .toString();
+                                        });
+                                      });
+                                    },
+                                  )))),
                         ],
                       ),
                     ),
                   ),
-
-
-
-
-
-
 
                   Padding(
                     padding:  EdgeInsets.all(1.w),
@@ -638,7 +571,7 @@ setState(() {
 
 
 
-                           print(widget.patient_data.visits_mapData_list);
+                          print(widget.patient_data.visits_mapData_list);
 
 
                           showDialog(
@@ -647,8 +580,7 @@ setState(() {
 
 
 
-                                return  ListSearch(group: 'complaint', Group: 'Complaint', patient_doc_id: widget.patient_data.doc_id, date: visit_date, patient_name_data_list: widget.patient_data,);}
-
+                                return  List_Search(result: Complaint, get: Storage.get, set: Storage.set, group: 'complaint', Group: 'Complaint', one_select: false, ky: 'complaint');}
                           ).then((value)async{
 
                             print(value);
@@ -674,20 +606,19 @@ setState(() {
 
                         }, icon: Icon(Icons.arrow_drop_down_circle_outlined , color: Colors.black,)),
 
-                       subtitle: Padding(
-                         padding:  EdgeInsets.only(top: 1.w),
-                         child: Container(
+                        subtitle: Padding(
+                          padding:  EdgeInsets.only(top: 1.w),
+                          child: Container(
 
-                           child: Column(
-                             crossAxisAlignment: CrossAxisAlignment.start,
-                             children: Complaint.map<Widget>((e)=>DropDown(e) ).toList(),
-                           ),
-                         ),
-                       ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: Complaint.map<Widget>((e)=>DropDown(e) ).toList(),
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ), // Complaint
-
 
                   Padding(
                     padding:  EdgeInsets.all(1.w),
@@ -717,10 +648,10 @@ setState(() {
 
 
 
-                                return  Padding(
-                                  padding:  EdgeInsets.symmetric(horizontal: 6.w , vertical: 4.h),
-                                  child: Notes_List_Search(result: Notes,),
-                                );}
+                                return  List_Search(result: Notes, get: Storage.get, set: Storage.set, group: 'notes', Group: 'Notes', one_select: false, ky: 'notes');
+
+
+                              }
 
                           ).then((value)async{
 
@@ -761,6 +692,7 @@ setState(() {
                     ),
                   ), // Notes
 
+
                   Padding(
                     padding:  EdgeInsets.all(1.w),
                     child: Material(
@@ -772,7 +704,7 @@ setState(() {
 
                         title: Padding(
                           padding:  EdgeInsets.only(top: 1.w),
-                          child: Text(clinical_findings , ),
+                          child: Text(clinical_finding , ),
                         ),
                         leading: SizedBox(
                             width: 50,
@@ -798,8 +730,7 @@ setState(() {
 
 
 
-                                return  ListSearch(group: 'clinical_finding', Group: 'Clinical_finding', patient_doc_id: widget.patient_data.doc_id, date: visit_date);}
-
+                                return  List_Search(result: Clinical_finding, get: Storage.get, set: Storage.set, group: 'clinical_finding', Group: 'Clinical_finding', one_select: false, ky: 'clinical_finding');}
                           ).then((value)async{
 
                             print(value);
@@ -807,7 +738,7 @@ setState(() {
                             if(value != null)
                             {
                               setState(() {
-                                Clinical_findings = value;
+                                Clinical_finding = value;
                               });
 
 
@@ -831,7 +762,7 @@ setState(() {
 
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: Clinical_findings.map<Widget>((e)=>DropDown(e) ).toList(),
+                              children: Clinical_finding.map<Widget>((e)=>DropDown(e) ).toList(),
                             ),
                           ),
                         ),
@@ -869,9 +800,10 @@ setState(() {
 
 
 
-                                return  ListSearch(group: 'diagnosis', Group: 'Diagnosis', patient_doc_id: widget.patient_data.doc_id, date:visit_date);}
+                                return  List_Search(result: Diagnosis, get: Storage.get, set: Storage.set, group: 'diagnosis', Group: 'Diagnosis', one_select: false, ky: 'diagnosis');
+}
 
-                          ).then((value)async{
+    ).then((value)async{
 
                             print(value);
 
@@ -941,8 +873,8 @@ setState(() {
 
 
 
-                                return  ListSearch(group: 'investigation', Group: 'Investigation', patient_doc_id: widget.patient_data.doc_id, date: visit_date);}
-
+                                return  List_Search(result: Investigation, get: Storage.get, set: Storage.set, group: 'investigation', Group: 'Investigation', one_select: false, ky: 'investigation');
+                              }
                           ).then((value)async{
 
                             print(value);
@@ -1010,8 +942,8 @@ setState(() {
 
 
 
-                                return  ListSearch(group: 'allergies', Group: 'Allergies', patient_doc_id: widget.patient_data.doc_id, date:visit_date);}
-
+                                return List_Search(result: Allergies, get: Storage.get, set: Storage.set, group: 'allergies', Group: 'Allergies', one_select: false, ky: 'allergies');
+                              }
                           ).then((value)async{
 
                             print(value);
@@ -1079,8 +1011,8 @@ setState(() {
 
 
 
-                                return  ListSearch(group: 'advices', Group: 'Advices', patient_doc_id: widget.patient_data.doc_id, date: visit_date);}
-
+                                return  List_Search(result: Advices, get: Storage.get, set: Storage.set, group: 'advices', Group: 'Advices', one_select: false, ky: 'advices');
+                              }
                           ).then((value)async{
 
                             print(value);
@@ -1121,67 +1053,47 @@ setState(() {
                   ), // Advices
 
                   Padding(
-                    padding:  EdgeInsets.all(1.w),
+                    padding: EdgeInsets.all(1.w),
                     child: Material(
                       borderRadius: BorderRadius.circular(10),
                       elevation: 2,
-
-
                       child: ListTile(
-
                         title: Padding(
-                          padding:  EdgeInsets.only(top: 1.w),
-                          child: Text(group, ),
+                          padding: EdgeInsets.only(top: 1.w),
+                          child: Text(
+                            group,
+                          ),
                         ),
                         leading: Icon(Icons.add),
+                        trailing: IconButton(
+                            onPressed: () async {
+                              // print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
 
-                        trailing: IconButton(onPressed: ()async{
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return List_Search(result: Group, get: Storage.get, set: Storage.set, group: 'group', Group: 'Group', one_select: false, ky: 'group');
+                                  }).then((value) async {
+                                print(value);
 
-
-
-                          // print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
-
-
-                          showDialog(
-                              context: context,
-                              builder: (context)  {
-
-
-
-                                return  ListSearch(group: 'group', Group: 'Group', patient_doc_id: widget.patient_data.doc_id, date: visit_date,);}
-
-                          ).then((value)async{
-
-                            print(value);
-
-                            if(value != null)
-                            {
-                              setState(() {
-                                Group = value;
+                                if (value != null) {
+                                  setState(() {
+                                    Group = value;
+                                  });
+                                }
                               });
-
-
-                            }
-                          });
-
-
-
-
-
-
-
-
-
-
-                        }, icon: Icon(Icons.arrow_drop_down_circle_outlined , color: Colors.black,)),
-
+                            },
+                            icon: Icon(
+                              Icons.arrow_drop_down_circle_outlined,
+                              color: Colors.black,
+                            )),
                         subtitle: Padding(
-                          padding:  EdgeInsets.only(top: 1.w),
+                          padding: EdgeInsets.only(top: 1.w),
                           child: Container(
-
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: Group.map<Widget>((e)=>DropDown(e) ).toList(),
+                              children: Group.map<Widget>((e) => DropDown(e))
+                                  .toList(),
                             ),
                           ),
                         ),
@@ -1189,277 +1101,205 @@ setState(() {
                     ),
                   ), // Group
 
-
-
                   Padding(
-                    padding:  EdgeInsets.all(1.w),
+                    padding: EdgeInsets.all(1.w),
                     child: Material(
                       borderRadius: BorderRadius.circular(10),
                       elevation: 2,
-
-
                       child: ListTile(
-
                         title: Padding(
-                          padding:  EdgeInsets.only(top: 1.w),
-                          child: Text(service, ),
+                          padding: EdgeInsets.only(top: 1.w),
+                          child: Text(
+                            service,
+                          ),
                         ),
                         leading: Icon(Icons.add),
+                        trailing: IconButton(
+                            onPressed: () async {
+                              // print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
 
-                        trailing: IconButton(onPressed: ()async{
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return Service_Search_List(
+                                      result: Services,
+                                    );
+                                  }).then((value) async {
+                                print(value);
 
+                                if (value != null) {
+                                  setState(() {
+                                    Services = [];
 
-
-                          // print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
-
-
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return Service_Search_List( result: Services,
-                                );
-
-                              }).then((value)async{
-
-                            print(value);
-
-                            if(value != null)
-                            {
-                              setState(() {
-                                Services=[];
-
-                                Services = value;
+                                    Services = value;
+                                  });
+                                }
                               });
-
-
-                            }
-                          });
-
-
-
-
-
-
-
-
-
-
-                        }, icon: Icon(Icons.arrow_drop_down_circle_outlined , color: Colors.black,)),
-
+                            },
+                            icon: Icon(
+                              Icons.arrow_drop_down_circle_outlined,
+                              color: Colors.black,
+                            )),
                         subtitle: Padding(
-                          padding:  EdgeInsets.only(top: 1.w),
+                          padding: EdgeInsets.only(top: 1.w),
                           child: Container(
-
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: Services.map<Widget>((e)=>DropDown(e) ).toList(),
+                              children: Services.map<Widget>((e) => DropDown(e))
+                                  .toList(),
                             ),
                           ),
                         ),
-
-
                       ),
                     ),
                   ),
 
-
                   Padding(
-                    padding:  EdgeInsets.all(1.w),
+                    padding: EdgeInsets.all(1.w),
                     child: Material(
                       borderRadius: BorderRadius.circular(10),
                       elevation: 2,
-
-
                       child: ListTile(
-
                         title: Padding(
-                          padding:  EdgeInsets.only(top: 1.w),
-                          child: Text(medicine, ),
-                        ),
-                        leading: Icon(Icons.add),
-
-                        trailing: IconButton(onPressed: ()async{
-
-                          print(medicine_result);
-
-
-
-
-                          // print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
-
-
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>Medicines(delete: false, name: Medicine,result_map: medicine_result,))).then((value) {
-
-                            print('ccc');
-                            print(value);
-
-
-                            if(value != null)
-                              { Medicine =[];
-
-                                medicine_result = value;
-
-                                setState(() {
-                                  Medicine = medicine_result.keys.toList();
-
-
-                                });
-
-                                print(Medicine);
-
-
-                              }
-
-
-                          });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                        }, icon: Icon(Icons.arrow_drop_down_circle_outlined , color: Colors.black,)),
-
-                        subtitle: Padding(
-                          padding:  EdgeInsets.only(top: 1.w),
-                          child: Container(
-
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: medicine_result.keys.map<Widget>((e){
-
-                               return DropDown(e);
-
-                              } ).toList(),
-                            ),
+                          padding: EdgeInsets.only(top: 1.w),
+                          child: Text(
+                            medicine,
                           ),
                         ),
+                        leading: Icon(Icons.add),
+                        trailing: IconButton(
+                            onPressed: () async {
+                              print(medicine_result);
 
+                              // print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
 
-                      ),
-                    ),
-                  ),
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Medicines(
+                                            delete: false,
+                                            name: Medicine,
+                                            result_map: medicine_result,
+                                          ))).then((value) {
+                                print('ccc');
+                                print(value);
 
+                                if (value != null) {
+                                  Medicine = [];
 
+                                  medicine_result = value;
 
-                  Padding(
-                    padding:  EdgeInsets.all(1.w),
-                    child: Material(
-                      borderRadius: BorderRadius.circular(10),
-                      elevation: 2,
+                                  setState(() {
+                                    Medicine = medicine_result.keys.toList();
+                                  });
 
-
-                      child: ListTile(
-
-                        title: Padding(
-                          padding:  EdgeInsets.only(top: 1.w),
-                          child: Text(vital , ),
-                        ),
-                        leading: Icon(Icons.add , size: AppTheme.icon_size,),
-
-                        trailing: IconButton(onPressed: ()async{
-
-
-
-                          // print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
-
-
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return Vital_List_Search( result: vital_result,);
-
-                              }).then((value)async{
-
-                                print('dsdsds');
-
-
-                            print(value);
-
-                            if(value != null)
-                            {
-                              setState(() {
-
-                                vital_result = value;
-
-
-
-
+                                  print(Medicine);
+                                }
                               });
-
-
-                            }
-                          });
-
-
-
-
-
-
-
-
-
-
-                        }, icon: Icon(Icons.arrow_drop_down_circle_outlined , color: Colors.black,)),
-
+                            },
+                            icon: Icon(
+                              Icons.arrow_drop_down_circle_outlined,
+                              color: Colors.black,
+                            )),
                         subtitle: Padding(
-                          padding:  EdgeInsets.only(top: 1.w),
+                          padding: EdgeInsets.only(top: 1.w),
                           child: Container(
-
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: vital_result.keys.map<Widget>((e){
-
-                                return Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(vital_result[e]['vital_name'] ,textScaleFactor: AppTheme.list_tile_subtile,),
-                                    Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Text(vital_result[e]['value'] , textScaleFactor: AppTheme.list_tile_subtile,),
-                                        SizedBox(width: 0.5.w,),
-                                        Text(vital_result[e]['vital_unit'] , textScaleFactor: AppTheme.list_tile_subtile,),
-
-                                      ],
-                                    )
-                                  ],
-                                );
-
+                              children: medicine_result.keys.map<Widget>((e) {
+                                return DropDown(e);
                               }).toList(),
                             ),
                           ),
                         ),
+                      ),
+                    ),
+                  ),
 
+                  Padding(
+                    padding: EdgeInsets.all(1.w),
+                    child: Material(
+                      borderRadius: BorderRadius.circular(10),
+                      elevation: 2,
+                      child: ListTile(
+                        title: Padding(
+                          padding: EdgeInsets.only(top: 1.w),
+                          child: Text(
+                            vital,
+                          ),
+                        ),
+                        leading: Icon(
+                          Icons.add,
+                          size: AppTheme.icon_size,
+                        ),
+                        trailing: IconButton(
+                            onPressed: () async {
+                              // print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
 
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return Vital_List_Search(
+                                      result: vital_result,
+                                    );
+                                  }).then((value) async {
+                                print('dsdsds');
+
+                                print(value);
+
+                                if (value != null) {
+                                  setState(() {
+                                    vital_result = value;
+                                  });
+                                }
+                              });
+                            },
+                            icon: Icon(
+                              Icons.arrow_drop_down_circle_outlined,
+                              color: Colors.black,
+                            )),
+                        subtitle: Padding(
+                          padding: EdgeInsets.only(top: 1.w),
+                          child: Container(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: vital_result.keys.map<Widget>((e) {
+                                return Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      vital_result[e]['vital_name'],
+                                      textScaleFactor:
+                                          AppTheme.list_tile_subtile,
+                                    ),
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                          vital_result[e]['value'],
+                                          textScaleFactor:
+                                              AppTheme.list_tile_subtile,
+                                        ),
+                                        SizedBox(
+                                          width: 0.5.w,
+                                        ),
+                                        Text(
+                                          vital_result[e]['vital_unit'],
+                                          textScaleFactor:
+                                              AppTheme.list_tile_subtile,
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ), // Vital
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                 ],
               ),
             ),
@@ -1471,7 +1311,3 @@ setState(() {
 }
 
 
-Widget DropDown (String menu)
-{
-  return Text(menu , textScaleFactor: AppTheme.list_tile_subtile,);
-}

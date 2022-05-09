@@ -34,8 +34,8 @@ class AddMedicine extends StatefulWidget {
       this.doc_id,
       this.medicine_name,
       this.result,
-       @required this.medicine_name_list,
-       @required   this.add_icon_tap,
+       @required this.medicine_name_list, //check whether the medicine name is exist or not
+       @required   this.add_icon_tap,    // new or older
         this.medicine_map
 
 
@@ -94,23 +94,20 @@ class _AddMedicineState extends State<AddMedicine> {
         }
         if (widget.medicine_map['company_name'] != null) {
 
-          Company_name = widget.medicine_map['company_name'];
+          Company_name.add(widget.medicine_map['company_name']);
 
           setState(() {
-            widget.medicine_map['company_name'].forEach((element) {
-              company_name = element.toString() + " , ";
-            });
+            company_name=widget.medicine_map['company_name'];
             map['company_name'] = true;
           });
         }
         if (widget.medicine_map['tab'] != null) {
 
-          Tab = widget.medicine_map['tab'];
+          Tab.add(widget.medicine_map['tab']);
 
           setState(() {
-            widget.medicine_map['tab'].forEach((element) {
-              tab = element.toString()  + " , ";
-            });
+            tab = widget.medicine_map['tab'];
+
             map['tab'] = true;
           });
         }
@@ -598,11 +595,11 @@ class _AddMedicineState extends State<AddMedicine> {
                                 }
                                 if(Tab.isNotEmpty)
                                 {
-                                  json['tab']= Tab;
+                                  json['tab']= Tab[0].toString();
                                 }
                                 if(Company_name.isNotEmpty)
                                 {
-                                  json['company_name'] = Company_name;
+                                  json['company_name'] = Company_name[0].toString();
                                 }
                                 if(Composition.isNotEmpty)
                                 {
@@ -661,7 +658,7 @@ class _AddMedicineState extends State<AddMedicine> {
 
                                   Storage.set_medicine( value: widget.result,updated: true);
 
-                                }
+                                 }
 
                                 Navigator.pop(context, 'save');
                               }

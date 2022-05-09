@@ -88,6 +88,10 @@ class _State extends State<Medicines> {
 
         print('Nor errcsdwq');
 
+        value['select'] = false;
+
+
+
 
        all_data_name_map[value['medicine_name'].toString()] = value;
 
@@ -219,10 +223,19 @@ class _State extends State<Medicines> {
 
     List b = map[name]['composition']==null?[]:map[name]['composition'];
 
+    print(map[name]['compositon']);
+
+
+    print(b);
+
+
     print('\ncds');
 
     if(b != null && b.isNotEmpty) {
       b.forEach((element) {
+
+        print('sss');
+
 
         composition = element.toString() + ' , ';
       });
@@ -233,8 +246,7 @@ class _State extends State<Medicines> {
 
 
 
-    List c = map[name]['company_name'];
-    company_name=c==null?"":c[0].toString();
+    company_name=map[name]['company_name']==null?"": map[name]['company_name'];
 
 
 

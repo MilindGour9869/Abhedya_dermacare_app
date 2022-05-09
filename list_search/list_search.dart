@@ -19,6 +19,9 @@ class List_Search extends StatefulWidget {
   Function set;
   Function delete;
 
+  String ky ;
+
+
   String group , Group ;
   bool one_select ;
 
@@ -26,7 +29,7 @@ class List_Search extends StatefulWidget {
 
 
 
-  List_Search({@required this.result , @required this.get , @required this.set , this.delete ,  @required this.group ,  @required this.Group  ,  @required  this.one_select});
+  List_Search({@required this.result , @required this.get , @required this.set , this.delete ,  @required this.group ,  @required this.Group  ,  @required  this.one_select , @required this.ky});
 
   @override
   _List_SearchState createState() => _List_SearchState();
@@ -65,7 +68,7 @@ class _List_SearchState extends State<List_Search> {
 
 
 
-    var a = await widget.get();
+    var a = await widget.get(key:widget.ky);
 
     print(a);
 
@@ -170,7 +173,7 @@ class _List_SearchState extends State<List_Search> {
 
 
 
-    await widget.set(value: all_data_map , updated:  updated );
+    await widget.set(value: all_data_map , updated:  updated , key : widget.ky );
   }
 
   void pop(){

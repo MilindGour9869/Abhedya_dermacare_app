@@ -213,21 +213,17 @@ class Storage {
 
 
       });
-
-
-
-
-
-
-
-
     });
 
   }
-  static Future set_all_cloud_date()async{
+  static Future set_all_cloud_data()async{
+
+
+
+
 
   }
-  static Future delete_all_date()async{
+  static Future delete_all_data()async{
     list_all_map.values.forEach((element) {
       storage.delete(key: element);
 
