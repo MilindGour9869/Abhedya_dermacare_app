@@ -13,6 +13,7 @@ import 'package:flutter_app/screens/forgot_password.dart';
 import 'package:flutter_app/screens/login_screen.dart';
 import 'package:flutter_app/screens/sign_up_screen.dart';
 import 'package:flutter_app/storage/storage.dart';
+import 'package:flutter_app/widgets/add_patient.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -23,7 +24,7 @@ import 'default.dart';
 
 //screens
 import 'screens/Profile.dart';
-import 'screens/Patients.dart';
+import 'screens/Patient.dart';
 import 'screens/Medicines.dart';
 import 'screens/Services.dart';
 import 'screens/Setting.dart';
@@ -71,6 +72,8 @@ class MyApp extends StatelessWidget {
         'Home' : (context)=>HomePage(),
         'Login' : (context) => LoginScreen(),
         'ForgotPassword':(context)=>ForgotPasswordScreen(),
+        'AddPatient' : (context)=>AddPatient(),
+
 
 
 

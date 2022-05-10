@@ -72,6 +72,9 @@ class _AddPatientState extends State<AddPatient> {
 
  String one_result;
 
+ bool circle = true;
+
+
 
 
 
@@ -293,7 +296,8 @@ class _AddPatientState extends State<AddPatient> {
 
                          else
                          {
-                           showDialog(context: context, builder: (context)=>Center(child: CircularProgressIndicator()));
+                         showDialog(context: context, builder: (context)=>Center(child: CircularProgressIndicator()));
+
 
 
                              if(email_edit.text.isNotEmpty)
@@ -427,7 +431,8 @@ class _AddPatientState extends State<AddPatient> {
                                    });
                              }
 
-                             Navigator.popUntil(context, ModalRoute.withName('Patient') ,  );
+
+                         Navigator.popUntil(context,(route)=>route.isFirst);
 
 
 

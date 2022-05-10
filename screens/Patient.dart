@@ -67,6 +67,12 @@ class _State extends State<Patient> {
                       ))).then((value) {
             print('\n\nka boom ');
 
+            print(value);
+
+            if (value !='back') {
+
+              patient_data();
+            }
 
           });
         },
