@@ -156,208 +156,220 @@ class _UserAdministrationState extends State<UserAdministration> {
 
   @override
   Widget build(BuildContext context) {
-    return MediaQuery(
-      data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-      child: Padding(
-        padding:  EdgeInsets.symmetric(horizontal: 2.w),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Material(
-              borderRadius: BorderRadius.circular(5),
-              child: Padding(
-                  padding:  EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.w),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Padding(
-                        padding:  EdgeInsets.only(bottom: 3.w),
-                        child: Center(
-                          child: Text('Login As :' , style: TextStyle(
-                            fontWeight: FontWeight.w900
-                          ),),
-                        ),
-                      ),
-
-                      Padding(
-                        padding:  EdgeInsets.symmetric(vertical: 2.w),
-                        child: User(),
-                      ),
-
-                      Visibility(
-                        visible:!map3['Guest'] ,
-                        child: Padding(
-                          padding:  EdgeInsets.symmetric(vertical: 2.w),
-                          child: Center(
-                            child: Container(
-                                width: 41.w,
+    return GestureDetector(
+      onTap: (){
+        Navigator.pop(context , 'back');
 
 
-
-                                child: TextField(
-                                  controller: passcode_edit,
-
-                                  decoration: InputDecoration(
+      },
+      child: Container(
+        color: Colors.transparent,
 
 
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Colors.grey,
-                                        width: 2,),
-                                      borderRadius: BorderRadius.circular(10),),
-
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Colors.teal,
-                                        width: 2,),
-                                      borderRadius: BorderRadius.circular(10),),
-
-                                    hintText: "Passcode",
-                                    prefixIcon: Icon(Icons.lock_outline),
-
-
-
-
-
-
-
-                                  )
-                                  ,
-                                  keyboardType: TextInputType.number,
-                                ),
-
-
-
-
+        child: MediaQuery(
+          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+          child: Padding(
+            padding:  EdgeInsets.symmetric(horizontal: 2.w),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Material(
+                  borderRadius: BorderRadius.circular(5),
+                  child: Padding(
+                      padding:  EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.w),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Padding(
+                            padding:  EdgeInsets.only(bottom: 3.w),
+                            child: Center(
+                              child: Text('Login As :' , style: TextStyle(
+                                fontWeight: FontWeight.w900
+                              ),),
                             ),
                           ),
-                        ),
-                      ),
 
-                      Padding(
-                        padding:  EdgeInsets.symmetric(vertical: 2.w),
-                        child: Center(child: GestureDetector(
-                          onTap: ()async {
+                          Padding(
+                            padding:  EdgeInsets.symmetric(vertical: 2.w),
+                            child: User(),
+                          ),
 
-
-
-                            if(map3['Guest'])
-                              {
-                                await Storage.set_guest_true();
-                                Navigator.pop(context , 'guest');
-                              }
-                            else
-                              {
-                               if(passcode_edit.text.isNotEmpty )
-                                 {
-
-
-                                   String collection ;
-                                   map3.forEach((key, value) async{
-                                     if(value)
-                                       {
-                                         collection = key;
-                                         if(collection=='Admin')
-                                           {
-                                             await Storage.set_admin_true();
-                                           }
-                                         else if(collection == 'Reception')
-                                           {
-                                             await Storage.set_reception_true();
-
-                                           }
-                                       }
-
-                                   });
-
-                                     collection!=null?await FirebaseFirestore.instance.collection('Administration').doc(collection).get().then((value)async  {
-
-                                       print(value['passcode']);
-
-
-                                       if(value['passcode'].toString() == passcode_edit.text)
-                                       {  print('ffff');
-
-                                       Navigator.pop(context);
-
-
-                                       }
-                                       else
-                                       {
-                                         showDialog(context: context, builder: (context)=>AlertDialog(
-                                           title: Text('Invalid Passcode' , textScaleFactor: AppTheme.alert,),
-                                           actions: [
-                                             TextButton(onPressed: (){
-                                               Navigator.pop(context);
-
-                                             }, child: Text('OK' ,  textScaleFactor: AppTheme.alert,))
-                                           ],
-                                         ));
-
-                                       }
-
-                                       print(passcode);
+                          Visibility(
+                            visible:!map3['Guest'] ,
+                            child: Padding(
+                              padding:  EdgeInsets.symmetric(vertical: 2.w),
+                              child: Center(
+                                child: Container(
+                                    width: 41.w,
 
 
 
-                                     }):null;
+                                    child: TextField(
+                                      controller: passcode_edit,
+
+                                      decoration: InputDecoration(
+
+
+                                        enabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: Colors.grey,
+                                            width: 2,),
+                                          borderRadius: BorderRadius.circular(10),),
+
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: Colors.teal,
+                                            width: 2,),
+                                          borderRadius: BorderRadius.circular(10),),
+
+                                        hintText: "Passcode",
+                                        prefixIcon: Icon(Icons.lock_outline),
 
 
 
 
 
 
-                                 }
-                               else
-                                 {
-                                   showDialog(context: context, builder: (context)=>AlertDialog(
-                                     title: Text('Passcode is Required' , textScaleFactor: AppTheme.alert,),
-                                     actions: [
-                                       TextButton(onPressed: (){
-                                         Navigator.pop(context);
 
-                                       }, child: Text('OK' ,  textScaleFactor: AppTheme.alert,))
-                                     ],
-
-                                   ));
-                                 }
+                                      )
+                                      ,
+                                      keyboardType: TextInputType.number,
+                                    ),
 
 
 
 
-
-
-                              }
-
-
-
-
-
-
-                          },
-                          child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: AppTheme.teal
+                                ),
                               ),
-                              padding: EdgeInsets.all(2.w),
-                              child: Text('Login In' , style: TextStyle(
-                                color: Colors.white
-                              ),)),
-                        )),
+                            ),
+                          ),
+
+                          Padding(
+                            padding:  EdgeInsets.symmetric(vertical: 2.w),
+                            child: Center(child: GestureDetector(
+                              onTap: ()async {
+
+
+
+                                if(map3['Guest'])
+                                  {
+                                    await Storage.set_guest_true();
+                                    Navigator.pop(context , 'guest');
+                                  }
+                                else
+                                  {
+                                   if(passcode_edit.text.isNotEmpty )
+                                     {
+
+
+                                       String collection ;
+                                       map3.forEach((key, value) async{
+                                         if(value)
+                                           {
+                                             collection = key;
+                                             if(collection=='Admin')
+                                               {
+                                                 await Storage.set_admin_true();
+                                               }
+                                             else if(collection == 'Reception')
+                                               {
+                                                 await Storage.set_reception_true();
+
+                                               }
+                                           }
+
+                                       });
+
+                                         collection!=null?await FirebaseFirestore.instance.collection('Administration').doc(collection).get().then((value)async  {
+
+                                           print(value['passcode']);
+
+
+                                           if(value['passcode'].toString() == passcode_edit.text)
+                                           {  print('ffff');
+
+                                           Navigator.pop(context);
+
+
+                                           }
+                                           else
+                                           {
+                                             showDialog(context: context, builder: (context)=>AlertDialog(
+                                               title: Text('Invalid Passcode' , textScaleFactor: AppTheme.alert,),
+                                               actions: [
+                                                 TextButton(onPressed: (){
+                                                   Navigator.pop(context);
+
+                                                 }, child: Text('OK' ,  textScaleFactor: AppTheme.alert,))
+                                               ],
+                                             ));
+
+                                           }
+
+                                           print(passcode);
+
+
+
+                                         }):null;
+
+
+
+
+
+
+                                     }
+                                   else
+                                     {
+                                       showDialog(context: context, builder: (context)=>AlertDialog(
+                                         title: Text('Passcode is Required' , textScaleFactor: AppTheme.alert,),
+                                         actions: [
+                                           TextButton(onPressed: (){
+                                             Navigator.pop(context);
+
+                                           }, child: Text('OK' ,  textScaleFactor: AppTheme.alert,))
+                                         ],
+
+                                       ));
+                                     }
+
+
+
+
+
+
+                                  }
+
+
+
+
+
+
+                              },
+                              child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: AppTheme.teal
+                                  ),
+                                  padding: EdgeInsets.all(2.w),
+                                  child: Text('Login In' , style: TextStyle(
+                                    color: Colors.white
+                                  ),)),
+                            )),
+                          )
+                        ],
                       )
-                    ],
-                  )
-              ),
-            )
+                  ),
+                )
 
 
 
 
-          ],
+              ],
+            ),
+          ),
         ),
       ),
     );

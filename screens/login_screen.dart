@@ -125,16 +125,30 @@ class _LoginScreenState extends State<LoginScreen> {
 
                           showDialog(context: context, builder: (context)=>UserAdministration()).then((value)async {
                             try{
-                              showDialog(context: context, builder: (context)=>Center(child: CircularProgressIndicator()));
 
-                              if(value!='guest')
-                              {
-                                await Storage.get_all_cloud_data();
-                              }
+                              print('svavra');
 
-                              await FirebaseAuth.instance.signInWithEmailAndPassword(email: username_edit.text, password: password_edit.text);
 
-                              navigatorKey.currentState.popUntil( (route) => route.isFirst);
+
+                              print(value);
+
+
+
+                              if(value !='back')
+                                {
+
+                                  showDialog(context: context, builder: (context)=>Center(child: CircularProgressIndicator()));
+
+                                  if(value!='guest')
+                                  {
+                                    await Storage.get_all_cloud_data();
+                                  }
+
+                                  await FirebaseAuth.instance.signInWithEmailAndPassword(email: username_edit.text, password: password_edit.text);
+
+                                  navigatorKey.currentState.popUntil( (route) => route.isFirst);
+                                }
+
 
                             }
                             on FirebaseAuthException catch(e){

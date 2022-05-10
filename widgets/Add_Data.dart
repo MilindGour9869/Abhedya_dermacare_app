@@ -86,7 +86,7 @@ class _AddDataState extends State<AddData> {
 
 
 
-  List<String> all_data_english_list =[] ;
+  List all_data_english_list =[] ;
 
   var duration_edit = TextEditingController();
 
@@ -182,8 +182,8 @@ class _AddDataState extends State<AddData> {
 
     String tab="" , composition ="" , company_name = "";
 
-    List a = map[name]['tab'];
-    tab=a==null?"":a[0].toString();
+
+    tab=map[name]['tab']==null?"":map[name]['tab'];
 
     List b = map[name]['composition'];
     if(b != null) {
@@ -197,8 +197,8 @@ class _AddDataState extends State<AddData> {
 
 
 
-    List c = map[name]['company_name'];
-    company_name=c==null?"":c[0].toString();
+
+    company_name=map[name]['company_name']==null?"":map[name]['company_name'];
 
 
 

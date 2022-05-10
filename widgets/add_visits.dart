@@ -22,7 +22,7 @@ import '../screens/Medicines.dart';
 class AddVisits extends StatefulWidget {
   Patient_name_data_list patient_data;
 
-  String visit_date;
+  Timestamp visit_date;
 
   Map<String, dynamic> map;
 
@@ -71,7 +71,9 @@ class _AddVisitsState extends State<AddVisits> {
   List<String> Medicine = [];
   List Notes = [];
 
+
   Map<String, Map<String, dynamic>> medicine_result = {};
+  Map<String, Map<String, dynamic>> service_result = {};
   Map<String, Map<String, dynamic>> vital_result = {};
 
   Map<String, dynamic> map;
@@ -104,103 +106,7 @@ class _AddVisitsState extends State<AddVisits> {
 
   }
 
-  Widget Tile(
-  {
-    String name  , group , Group , ky,
-    List list ,
-    bool one_select ,
-    Widget widget
-}
-      ){
 
-    print(list);
-
-    return Padding(
-      padding:  EdgeInsets.all(1.w),
-      child: Material(
-        borderRadius: BorderRadius.circular(10),
-        elevation: 2,
-
-
-        child: ListTile(
-
-          title: Padding(
-            padding:  EdgeInsets.only(top: 1.w),
-            child: Text(name, ),
-          ),
-          leading:  widget,
-
-          trailing: IconButton(onPressed: ()async{
-
-
-
-            // print(formatDate(widget.data.visit_date.toDate(),[dd, '-', mm, '-', yyyy]).toString());
-
-
-            showDialog(
-                context: context,
-                builder: (context)  {
-
-
-
-                  return  List_Search(result: list, get: Storage.get, set: Storage.set, group: group, Group: Group, one_select: false, ky: ky);}
-
-            ).then((value)async{
-
-              print(value);
-
-              if(value != null)
-              {
-
-
-                  list = value;
-                  print('dgb');
-                  print(Complaint);
-
-
-
-
-
-              }
-            });
-
-
-
-
-
-
-
-
-
-
-          }, icon: Icon(Icons.arrow_drop_down_circle_outlined , color: Colors.black,)),
-
-          subtitle: Padding(
-            padding:  EdgeInsets.only(top: 1.w),
-            child: Container(
-
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: list.map<Widget>((e){
-
-                  print('ddwefr');
-
-
-                  print(Complaint);
-
-
-                  return Text(
-                    e,
-                    textScaleFactor: AppTheme.list_tile_subtile,
-                  );
-                } ).toList(),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
 
   void Prnt() {
     print(Complaint);
@@ -216,6 +122,11 @@ class _AddVisitsState extends State<AddVisits> {
       if (map['complaint'] != null) {
         Complaint = map['complaint'];
       }
+
+      if (map['notes'] != null) {
+        Notes = map['notes'];
+      }
+
       if (map['investigation'] != null) {
         Investigation = map['investigation'];
       }
@@ -241,11 +152,17 @@ class _AddVisitsState extends State<AddVisits> {
       if (map['medicine'] != null) {
         print('in medicine');
 
-        medicine_result = map['medicine'];
+        map['medicine'].forEach((k ,e){
+          medicine_result[k]= e;
+
+        });
+
+
       }
-      if (map['vital'] != null) {
-        vital_result = map['vital'];
+      if (map['vitals'] != null) {
+        vital_result = map['vitals'];
       }
+
     });
   }
 
@@ -274,7 +191,7 @@ class _AddVisitsState extends State<AddVisits> {
       print('add visit init else ');
     }
 
-    visit_date = widget.visit_date;
+    visit_date = formatDate(widget.visit_date.toDate(), [ dd, '-', mm, '-', yyyy]).toString();
   }
 
   @override
@@ -376,6 +293,10 @@ class _AddVisitsState extends State<AddVisits> {
                     if (Complaint.isNotEmpty) {
                       map['complaint'] = Complaint;
                     }
+                    if(Notes.isNotEmpty)
+                      {
+                        map['notes'] = Notes;
+                      }
                     if (Investigation.isNotEmpty) {
                       map['investigation'] = Investigation;
                     }
@@ -398,28 +319,38 @@ class _AddVisitsState extends State<AddVisits> {
                     if (Clinical_finding.isNotEmpty) {
                       map['clinical_finding'] = Clinical_finding;
                     }
+                    if(medicine_result.isNotEmpty)
+                      {
+                        map['medicine']=medicine_result;
+                      }
+                    if(vital_result.isNotEmpty)
+                      {
+                        map['vitals'] = vital_result;
+
+                      }
+
 
                     widget.patient_data.visits_mapData_list[visit_date] = map;
 
-                    if (visit_date ==
-                        formatDate(Timestamp.now().toDate(),
-                            [dd, '-', mm, '-', yyyy]).toString()) {
-                      map['visit_date'] = new Timestamp.now();
+                    if (widget.icon_tap==true) {
+                      map['visit_date'] =  Timestamp.now();
                       patient_doc.update({
                         'recent_visit': Timestamp.now(),
                         'blood_group':
                             blood_group == 'Blood Group' ? "" : blood_group
                       });
                     }
+                    else
+                      {
+                        map['visit_date'] = widget.visit_date;
+                        patient_doc.update({
+                          'recent_visit': widget.visit_date,
+                          'blood_group':
+                          blood_group == 'Blood Group' ? "" : blood_group
+                        });
+                      }
 
-                    if (date != null) {
-                      map['visit_date'] = date;
-                      patient_doc.update({
-                        'recent_visit': date,
-                      });
-                    }
-
-                    visit_doc.set(map, SetOptions(merge: true));
+                    visit_doc.set(map);
 
                     Navigator.pop(context, 'save');
                   },
@@ -1125,13 +1056,18 @@ class _AddVisitsState extends State<AddVisits> {
                                       result: Services,
                                     );
                                   }).then((value) async {
-                                print(value);
+
 
                                 if (value != null) {
                                   setState(() {
-                                    Services = [];
+                                   Services = value.keys.toList();
+                                   service_result = value;
 
-                                    Services = value;
+                                   print('frr');
+
+
+
+
                                   });
                                 }
                               });

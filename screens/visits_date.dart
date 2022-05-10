@@ -38,6 +38,9 @@ class _VisitsDateState extends State<VisitsDate> {
 
   List<String> visit_dates=[];
 
+  Map<String , Timestamp> date_map={};
+
+
   bool delete = false;
 
 
@@ -50,11 +53,13 @@ class _VisitsDateState extends State<VisitsDate> {
 
   Future<dynamic> visist_date()async{
 
+    visit_dates=[];
+
     FirebaseFirestore.instance.collection('Patient').doc(widget.patient_data.doc_id).collection('visits').get().then((QuerySnapshot querySnapshot){
 
 
 
-      visit_dates=[];
+
 
 
       querySnapshot.docs.forEach((element) {
@@ -73,6 +78,7 @@ class _VisitsDateState extends State<VisitsDate> {
         widget.patient_data.Visit_Map_Data(map: element.data() , visit_date:formatDate(map['visit_date'].toDate(), [ dd, '-', mm, '-', yyyy]).toString()  );
         
         visit_dates.add(formatDate(map['visit_date'].toDate(), [ dd, '-', mm, '-', yyyy]).toString());
+        date_map[formatDate(map['visit_date'].toDate(), [ dd, '-', mm, '-', yyyy]).toString()] =map['visit_date'];
 
 
         
@@ -200,7 +206,7 @@ class _VisitsDateState extends State<VisitsDate> {
                                   onTap: (){
                                     Navigator.push(context , MaterialPageRoute(builder: (context)=>AddVisits(
 
-                                      visit_date: date.toString(),
+                                      visit_date: date_map[date],
 
                                       icon_tap: false,
 
@@ -278,7 +284,7 @@ class _VisitsDateState extends State<VisitsDate> {
 
                 patient_data: widget.patient_data,
 
-                visit_date: formatDate(Timestamp.now().toDate(), [ dd, '-', mm, '-', yyyy]).toString(),
+                visit_date: Timestamp.now(),
 
 
 

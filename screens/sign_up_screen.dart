@@ -116,17 +116,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               )).then((value) async{
                                 print('sign up aagssssaye');
 
-                                 showDialog(context: context, builder: (context)=>Center(child: CircularProgressIndicator()));
+                                print(value);
+
+
 
 
 
                                 try{
-                                  if(value!='guest')
+                                  if(value !='back')
                                     {
-                                      await Storage.get_all_cloud_data();
+                                      showDialog(context: context, builder: (context)=>Center(child: CircularProgressIndicator()));
+
+
+                                      if(value!='guest')
+                                      {
+                                        await Storage.get_all_cloud_data();
+                                      }
+                                      await FirebaseAuth.instance.createUserWithEmailAndPassword(email: username_edit.text, password: password_edit.text);
+                                      navigatorKey.currentState.popUntil( (route) => route.isFirst);
                                     }
-                                  await FirebaseAuth.instance.createUserWithEmailAndPassword(email: username_edit.text, password: password_edit.text);
-                                  navigatorKey.currentState.popUntil( (route) => route.isFirst);
 
 
                                 }

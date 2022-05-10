@@ -427,10 +427,7 @@ class _AddPatientState extends State<AddPatient> {
                                    });
                              }
 
-                             Navigator.popUntil(context, (route) {
-                               return route.isFirst;
-
-                             }, );
+                             Navigator.popUntil(context, ModalRoute.withName('Patient') ,  );
 
 
 

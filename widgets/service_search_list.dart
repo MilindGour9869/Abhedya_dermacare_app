@@ -56,9 +56,9 @@ class _Service_Search_ListState extends State<Service_Search_List> {
 
        all_data_map.forEach((key, element) {
          service_list[element['service']] = {
-           'service_id' : element['id'],
+           'id' : element['id'],
            'doc_id' : element['doc_id'],
-           'charge' : element['charge'].toString(),
+           'charge' : element['charge'],
            'service' : element['service'],
            'color':  false,
 
@@ -158,8 +158,25 @@ class _Service_Search_ListState extends State<Service_Search_List> {
           leading: IconButton(icon: Icon(Icons.arrow_back_ios , color: Colors.black, size: AppTheme.icon_size,), onPressed: (){
 
             print(group_updated_result);
+            Map<String , Map<String,dynamic>> result_map={};
+            group_updated_result.forEach((e) {
+              result_map[e]=service_list[e];
+            });
 
-            Navigator.pop(context , group_updated_result );
+            print(result_map);
+
+            result_map.forEach((key, value) {
+
+              value.remove('color');
+
+              result_map[key]=value;
+
+
+            });
+
+
+
+            Navigator.pop(context , result_map );
           },),
           title: Padding(
             padding:  EdgeInsets.all(0),
