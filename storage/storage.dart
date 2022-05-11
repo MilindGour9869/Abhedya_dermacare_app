@@ -145,6 +145,11 @@ class Storage {
   static Future get_admin()async{
     var result = await storage.read(key: admin);
 
+    print('ggg');
+
+
+    print(result);
+
 
     if(result =='true')
     {

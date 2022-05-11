@@ -80,8 +80,14 @@ class _AddVisitsState extends State<AddVisits> {
 
   String visit_date;
   String follow_up_date;
+  Timestamp followUp_date;
+
 
   Timestamp date;
+
+
+  int total_charge = 0;
+
 
   dynamic set(List<String> list, Map<String, dynamic> map, String name) {
     if (list.isNotEmpty) {
@@ -97,14 +103,7 @@ class _AddVisitsState extends State<AddVisits> {
     );
   }
 
-  void f({@required List l}){
-    setState(() {
 
-
-
-    });
-
-  }
 
 
 
@@ -113,7 +112,7 @@ class _AddVisitsState extends State<AddVisits> {
     print(Clinical_finding);
   }
 
-  Timestamp followUp_date;
+
 
   void setdata() {
     setState(() {
@@ -144,7 +143,11 @@ class _AddVisitsState extends State<AddVisits> {
         Allergies = map['allergies'];
       }
       if (map['service'] != null) {
-        Services = map['service'];
+        Services = map['service'].keys.toList();
+        service_result = Map<String, Map<String, dynamic>>.from(map['service']);
+
+
+
       }
       if (map['clinical_finding'] != null) {
         Clinical_finding = map['clinical_finding'];
@@ -152,16 +155,26 @@ class _AddVisitsState extends State<AddVisits> {
       if (map['medicine'] != null) {
         print('in medicine');
 
-        map['medicine'].forEach((k ,e){
-          medicine_result[k]= e;
-
-        });
+        medicine_result = Map<String, Map<String, dynamic>>.from(map['medicine']);
 
 
       }
       if (map['vitals'] != null) {
         vital_result = map['vitals'];
       }
+
+      if(map['follow_up_date'] != null)
+        {
+          followUp_date = map['follow_up_date'];
+          follow_up_date = formatDate(followUp_date.toDate(), [ dd, '-', mm, '-', yyyy]).toString();
+
+        }
+
+      if(map['total_charge'] !=null)
+        {
+          total_charge = map['total_charge'];
+
+        }
 
     });
   }
@@ -313,8 +326,8 @@ class _AddVisitsState extends State<AddVisits> {
                     if (Allergies.isNotEmpty) {
                       map['allergies'] = Allergies;
                     }
-                    if (Services.isNotEmpty) {
-                      map['service'] = Services;
+                    if (service_result.isNotEmpty) {
+                      map['service'] = service_result;
                     }
                     if (Clinical_finding.isNotEmpty) {
                       map['clinical_finding'] = Clinical_finding;
@@ -328,6 +341,13 @@ class _AddVisitsState extends State<AddVisits> {
                         map['vitals'] = vital_result;
 
                       }
+                    if(followUp_date != null)
+                      {
+                        map['follow_up_date'] = followUp_date;
+                      }
+                    map['total_charge'] = total_charge;
+
+
 
 
                     widget.patient_data.visits_mapData_list[visit_date] = map;
@@ -339,6 +359,12 @@ class _AddVisitsState extends State<AddVisits> {
                         'blood_group':
                             blood_group == 'Blood Group' ? "" : blood_group
                       });
+
+                      if(blood_group != 'Blood Group')
+                        {
+                          widget.patient_data.blood_group = blood_group;
+
+                        }
                     }
                     else
                       {
@@ -348,6 +374,11 @@ class _AddVisitsState extends State<AddVisits> {
                           'blood_group':
                           blood_group == 'Blood Group' ? "" : blood_group
                         });
+                        if(blood_group != 'Blood Group')
+                        {
+                          widget.patient_data.blood_group = blood_group;
+
+                        }
                       }
 
                     visit_doc.set(map);
@@ -467,13 +498,14 @@ class _AddVisitsState extends State<AddVisits> {
                                           .then((value) {
                                         print(value);
                                         setState(() {
-                                          date = Timestamp.fromDate(value);
+
 
                                           follow_up_date = formatDate(
                                                   Timestamp.fromDate(value)
                                                       .toDate(),
                                                   [dd, '-', mm, '-', yyyy])
                                               .toString();
+                                          followUp_date = Timestamp.fromDate(value);
                                         });
                                       });
                                     },
@@ -1064,6 +1096,28 @@ class _AddVisitsState extends State<AddVisits> {
                                    service_result = value;
 
                                    print('frr');
+                                   print(service_result);
+
+                                   total_charge = 0;
+
+
+                                   service_result.forEach((key, value) {
+
+
+                                     print(total_charge);
+
+
+
+
+
+
+
+                                     total_charge += value['charge'];
+
+
+
+                                   });
+
 
 
 
@@ -1080,9 +1134,31 @@ class _AddVisitsState extends State<AddVisits> {
                           padding: EdgeInsets.only(top: 1.w),
                           child: Container(
                             child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: Services.map<Widget>((e) => DropDown(e))
-                                  .toList(),
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: service_result.keys.map((e) {
+                                    return Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(e[0].toUpperCase() + e.substring(1)),
+
+                                        Text('₹ ${service_result[e]['charge'].toString()}' )
+                                      ],
+                                    );
+                                  }).toList(),
+                                ),
+                                Divider(
+                                  thickness: 1.2,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text('Total Charge'),
+                                    Text('₹ ${total_charge.toString()}' )
+                                  ],
+                                )
+                              ],
                             ),
                           ),
                         ),

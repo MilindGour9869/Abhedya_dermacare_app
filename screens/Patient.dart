@@ -41,7 +41,57 @@ class _State extends State<Patient> {
     final doc =
         await FirebaseFirestore.instance.collection('Patient').doc(doc_Id);
 
+    doc.collection('visits').get().then((value) => value.docs.forEach((element) { element.reference.delete();
+    }));
+
+
+
     doc.delete();
+  }
+
+  Future PatientVisitData({@required Patient_name_data_list p , @required String doc_id }) async{
+
+
+
+    await FirebaseFirestore.instance.collection('Patient').doc(doc_id).collection('visits').get().then((QuerySnapshot querySnapshot){
+
+
+
+
+
+
+      querySnapshot.docs.forEach((element) {
+
+
+        print('cccc');
+
+
+
+        print(element.data());
+
+        //visits_instance_list.add(Patient_name_data_list.visits(element.data()));
+
+        Map<String,dynamic> map = element.data();
+
+        print(p.hashCode);
+
+
+        print(map['visit_date']);
+
+
+
+
+        p.Visit_Map_Data(map: element.data() , visit_date:formatDate(map['visit_date'].toDate(), [ dd, '-', mm, '-', yyyy]).toString()  );
+
+
+
+
+
+
+
+      });
+  });
+
   }
 
   String greeting() {
@@ -225,15 +275,12 @@ class _State extends State<Patient> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        VisitsDate(patient_data_tile))).then((value) {
+                                        VisitsDate(patient_data: patient_data_tile, path: 'visit',))).then((value) {
+                              if(value == 'save')
+                              {
+                                patient_data();
 
-                                          if(value == 'change')
-                                            {
-                                              patient_data();
-
-
-                                            }
-
+                              }
                             });
                           },
                           child: Text(
@@ -249,14 +296,32 @@ class _State extends State<Patient> {
 
                       ),
                       TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        VisitsDate(patient_data: patient_data_tile, path: 'payment',))).then((value) {
+                                          if(value == 'save')
+                                            {
+                                              patient_data();
+
+                                            }
+                            });
+                          },
                           child: Text(
                             'Payment',
                             style: AppTheme.k_list_tile_subtile,
 
                           )),
                       TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        VisitsDate(patient_data: patient_data_tile, path: 'document',)));
+                          },
                           child: Text(
                             'Documents',
                             style: AppTheme.k_list_tile_subtile,
@@ -281,26 +346,53 @@ class _State extends State<Patient> {
   Future<dynamic> patient_data() async => await FirebaseFirestore.instance
           .collection('Patient')
           .get()
-          .then((QuerySnapshot querySnapshot) {
+          .then((QuerySnapshot querySnapshot)async {
+
+
+
+
+
 
     patient_instance_list = [];
     all_patient_name_list = [];
     search_patient_list = [];
     map_name_patientInstance_list = {};
+    int i=0;
+
+    // admin status
+    await  Storage.get_admin();
+    await  Storage.get_reception();
+    await  Storage.get_guest();
 
 
-        querySnapshot.docs.forEach((element) {
+    print(Storage.user_map);
+
+
+        querySnapshot.docs.forEach((element)async {
+
+
+
+
+
 
 
           print(element.data());
 
           Patient_name_data_list p = new Patient_name_data_list();
 
-          patient_instance_list
+
+         await  patient_instance_list
               .add(p.fromJson(element.data()));
 
           print('aa');
+
+
+          await PatientVisitData(p: patient_instance_list[i], doc_id: element.id);
+          i++;
+
         });
+
+
 
         patient_instance_list.forEach((element) {
           print(element.hashCode);
@@ -350,7 +442,7 @@ class _State extends State<Patient> {
 
      print('\ninit\n');
 
-     print(Storage.user_map);
+
 
 
 
@@ -553,7 +645,7 @@ class _State extends State<Patient> {
                       child: FutureBuilder(
                           future: f,
                           builder: (context, snapshot) {
-                            // print(snapshot.data);
+                             print('ttrr');
 
                             if (search_patient_list.isEmpty) {
                               return Center(
@@ -611,13 +703,11 @@ class _State extends State<Patient> {
                               all_patient_name_list: all_patient_name_list,
                               icon_tap: true,
                             ))).then((value) {
-                  print('ggb');
+                  print('\n\nka boom ');
 
-                  if (value == 'save') {
-                    patient_instance_list = [];
-                    all_patient_name_list = [];
-                    search_patient_list = [];
-                    map_name_patientInstance_list = {};
+                  print(value);
+
+                  if (value !='back') {
 
                     patient_data();
                   }

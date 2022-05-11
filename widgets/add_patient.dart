@@ -296,6 +296,8 @@ class _AddPatientState extends State<AddPatient> {
 
                          else
                          {
+                           print('show dialogue ');
+
                          showDialog(context: context, builder: (context)=>Center(child: CircularProgressIndicator()));
 
 

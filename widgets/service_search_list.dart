@@ -149,93 +149,98 @@ class _Service_Search_ListState extends State<Service_Search_List> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding:  EdgeInsets.all(4.h),
-      child: Scaffold(
+      padding:  EdgeInsets.all(4.w),
+      child: MediaQuery(
+        data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
+        child: Scaffold(
 
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-          leading: IconButton(icon: Icon(Icons.arrow_back_ios , color: Colors.black, size: AppTheme.icon_size,), onPressed: (){
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            elevation: 0,
+            leading: IconButton(icon: Icon(Icons.arrow_back_ios , color: Colors.black, size: AppTheme.icon_size,), onPressed: (){
 
-            print(group_updated_result);
-            Map<String , Map<String,dynamic>> result_map={};
-            group_updated_result.forEach((e) {
-              result_map[e]=service_list[e];
-            });
+              print(group_updated_result);
+              Map<String , Map<String,dynamic>> result_map={};
+              group_updated_result.forEach((e) {
+                result_map[e]=service_list[e];
+              });
 
-            print(result_map);
+              print(result_map);
 
-            result_map.forEach((key, value) {
+              result_map.forEach((key, value) {
 
-              value.remove('color');
-
-              result_map[key]=value;
-
-
-            });
-
+                value.remove('color');
+                value.remove('doc_id');
+                value.remove('id');
 
 
-            Navigator.pop(context , result_map );
-          },),
-          title: Padding(
-            padding:  EdgeInsets.all(0),
-            child: TextField(
-              controller: _textController_group,
+                result_map[key]=value;
 
-              decoration: InputDecoration(
-                hintText: 'Search / Add ',
+
+              });
 
 
 
+              Navigator.pop(context , result_map );
+            },),
+            title: Padding(
+              padding:  EdgeInsets.all(0),
+              child: TextField(
+                controller: _textController_group,
+
+                decoration: InputDecoration(
+                  hintText: 'Search / Add ',
+
+
+
+                ),
+                onChanged: onItemChanged,
               ),
-              onChanged: onItemChanged,
             ),
+            actions: [
+              Padding(
+                padding:  EdgeInsets.only(right: 1.w),
+                child: CircleAvatar(child: Text(all_service_list.length==null?"":all_service_list.length.toString()),),
+              )
+            ],
           ),
-          actions: [
-            Padding(
-              padding:  EdgeInsets.only(right: 1.w),
-              child: CircleAvatar(child: Text(all_service_list.length==null?"":all_service_list.length.toString()),),
-            )
-          ],
-        ),
 
 
-        body: Container(
+          body: Container(
 
-          child: Padding(
-            padding:  EdgeInsets.all(2.w),
-            child: Material(
-              elevation: 2,
+            child: Padding(
+              padding:  EdgeInsets.all(2.w),
+              child: Material(
+                elevation: 2,
 
-              borderRadius: BorderRadius.circular(10),
-              child: SingleChildScrollView(
-                child: Column(
+                borderRadius: BorderRadius.circular(10),
+                child: SingleChildScrollView(
+                  child: Column(
 
 
-                  children: search_service_list.map<Widget>((e){
+                    children: search_service_list.map<Widget>((e){
 
-                    print('sdsdv');
-                    print(service_list);
+                      print('sdsdv');
+                      print(service_list);
 
 
 
 
 
-                    Map<String,dynamic> m = service_list[e];
+                      Map<String,dynamic> m = service_list[e];
 
-                    print(m);
+                      print(m);
 
-                    String service_name , doc_id  ;
-                    bool color;
+                      String service_name , doc_id  ;
+                      bool color;
 
-                    var charge = TextEditingController();
-                    var service = TextEditingController();
+                      var charge = TextEditingController();
+                      var service = TextEditingController();
 
-                    service.text = m['service'].toString();
-                    doc_id = m['doc_id'].toString();
-                    charge.text = m['charge'].toString();
-                    service_name= m['service_id'].toString();
+                      service.text = m['service'].toString();
+                      doc_id = m['doc_id'].toString();
+                      charge.text = m['charge'].toString();
+                      service_name= m['service_id'].toString();
 
 
 
@@ -249,47 +254,48 @@ class _Service_Search_ListState extends State<Service_Search_List> {
 
 
 
-                    return  ListTile(
-                      title: Text(e.toString() ),
-                      leading: CircleAvatar(
+                      return  ListTile(
+                        title: Text(e.toString() ),
+                        leading: CircleAvatar(
 
-                          backgroundColor: m['color']?AppTheme.teal:AppTheme.light_black,
-
-
-                          child: Icon(Icons.arrow_forward_ios_rounded, size: AppTheme.icon_size, color: AppTheme.white,)),
-
-                      tileColor: AppTheme.white,
-                      onTap: (){
-                        setState(() {
-                          m['color'] = ! m['color'];
-                          if(m['color'] == true)
-                          {
-                            group_updated_result.add(e);
-                            print(group_updated_result);
+                            backgroundColor: m['color']?AppTheme.teal:AppTheme.light_black,
 
 
+                            child: Icon(Icons.arrow_forward_ios_rounded, size: AppTheme.icon_size, color: AppTheme.white,)),
 
-
-                          }
-                          else if(m['color'] == false)
-                          {
-                            group_updated_result.remove(e);
-                          }
-
-                        });
-                      },
-
-
-
-                      trailing: Text('₹ ${m['charge']}' ),
+                        tileColor: AppTheme.white,
+                        onTap: (){
+                          setState(() {
+                            m['color'] = ! m['color'];
+                            if(m['color'] == true)
+                            {
+                              group_updated_result.add(e);
+                              print(group_updated_result);
 
 
 
 
+                            }
+                            else if(m['color'] == false)
+                            {
+                              group_updated_result.remove(e);
+                            }
 
-                    );
+                          });
+                        },
 
-                  }).toList(),
+
+
+                        trailing: Text('₹ ${m['charge']}' ),
+
+
+
+
+
+                      );
+
+                    }).toList(),
+                  ),
                 ),
               ),
             ),
