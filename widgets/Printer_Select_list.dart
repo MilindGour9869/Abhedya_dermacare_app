@@ -265,6 +265,10 @@ class _Printer_Select_ListState extends State<Printer_Select_List> {
 
 
 
+
+
+
+
                             if(cloud)
                               {
                                 if(await hasNetwork())

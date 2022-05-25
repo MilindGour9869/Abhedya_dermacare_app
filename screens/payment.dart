@@ -49,8 +49,8 @@ class _PaymentState extends State<Payment> {
     super.initState();
 
     visit_date = formatDate(widget.visit_date.toDate(), [ dd, '-', mm, '-', yyyy]).toString();
-    print(widget.patient_data.visits_mapData_list[visit_date]['service']);
-    service_result = widget.patient_data.visits_mapData_list[visit_date]['service']!=null?Map<String, Map<String, dynamic>>.from(widget.patient_data.visits_mapData_list[visit_date]['service']):{};
+   // print(widget.patient_data.visits_mapData_list[visit_date]['service']);
+    service_result = widget.patient_data.visits_mapData_list[visit_date]!=null?Map<String, Map<String, dynamic>>.from(widget.patient_data.visits_mapData_list[visit_date]['service']):{};
     if(service_result.isNotEmpty)
       {
         Services = service_result.keys.toList();
@@ -80,7 +80,7 @@ class _PaymentState extends State<Payment> {
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Payment'),
+          title: Text('Add Payment'),
           backgroundColor: AppTheme.teal,
           actions: [
 
@@ -123,18 +123,44 @@ class _PaymentState extends State<Payment> {
 
           Padding(
             padding:  EdgeInsets.symmetric(vertical: 2.w),
-            child: Material(
+            child: Card(
               elevation: 2,
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  color: Colors.white,
+              child: TextButton(
+                child: Text(
+                  '${visit_date}',
+                  style: TextStyle(color: Colors.black),
                 ),
+                onPressed: () {
+                  showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(1947),
+                      lastDate: DateTime(2050))
+                      .then((value) {
+                    print(value);
+                    setState(() {
 
+
+                      visit_date = formatDate(
+                          Timestamp.fromDate(value).toDate(),
+                          [dd, '-', mm, '-', yyyy]).toString();
+
+
+                    });
+                  });
+                },
+              ),
+            ),
+          ),
+              Padding(
+                padding:  EdgeInsets.symmetric(vertical: 1.w),
+                child: Card(
+                  elevation: 4,
+                  color: AppTheme.green,
                   child: TextButton(
                     child: Text(
-                      '${visit_date}',
-                      style: TextStyle(color: Colors.black),
+                      'Total Charges : ₹ ${total_charge}',
+                      style: TextStyle(color: Colors.white),
                     ),
                     onPressed: () {
                       showDatePicker(
@@ -155,44 +181,7 @@ class _PaymentState extends State<Payment> {
                         });
                       });
                     },
-                  )),
-            ),
-          ),
-              Padding(
-                padding:  EdgeInsets.symmetric(vertical: 1.w),
-                child: Material(
-                  elevation: 2,
-                  child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: AppTheme.green,
-                      ),
-
-                      child: TextButton(
-                        child: Text(
-                          'Total Charges : ₹ ${total_charge}',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        onPressed: () {
-                          showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime(1947),
-                              lastDate: DateTime(2050))
-                              .then((value) {
-                            print(value);
-                            setState(() {
-
-
-                              visit_date = formatDate(
-                                  Timestamp.fromDate(value).toDate(),
-                                  [dd, '-', mm, '-', yyyy]).toString();
-
-
-                            });
-                          });
-                        },
-                      )),
+                  ),
                 ),
               ),
 

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/screens/document.dart';
 import 'package:flutter_app/screens/visits_date.dart';
 import 'package:flutter_app/storage/cloud_storage.dart';
 import 'package:flutter_app/storage/storage.dart';
@@ -320,7 +321,7 @@ class _State extends State<Patient> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        VisitsDate(patient_data: patient_data_tile, path: 'document',)));
+                                        DocumentScreen(patient_data: patient_data_tile,)));
                           },
                           child: Text(
                             'Documents',

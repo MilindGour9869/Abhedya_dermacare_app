@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter_app/default.dart';
+import 'package:flutter_app/screens/document.dart';
 import 'package:flutter_app/screens/payment.dart';
 import '../widgets/add_visits.dart';
 import 'package:flutter_app/classes/Patient_name_list.dart';
@@ -246,10 +247,6 @@ class _VisitsDateState extends State<VisitsDate> {
 
 
                                         }
-                                      else if(widget.path == 'document')
-                                        {
-
-                                        }
 
 
                                     },
@@ -306,8 +303,11 @@ class _VisitsDateState extends State<VisitsDate> {
             )
           ),
 
-          floatingActionButton: FloatingActionButton(
+          floatingActionButton: FloatingActionButton.extended(
             elevation: 15,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10)
+            ),
 
             splashColor: AppTheme.notWhite,
             onPressed: (){
@@ -339,14 +339,31 @@ class _VisitsDateState extends State<VisitsDate> {
               else if(widget.path == 'payment')
               {
 
+                  Navigator.push(context , MaterialPageRoute(builder: (context)=>Payment(
+
+                    icon_tap: true,
+
+                    patient_data: widget.patient_data,
+
+                    visit_date: Timestamp.now(),
+
+
+
+                  ))).then((value) {
+                    print("ascdve");
+                    if(value == 'save')
+                    {
+                      visit_date();
+                    }
+                  });
+
+
               }
 
-              else if(widget.path == 'document')
-              {
 
-              }
             },
-            child: Icon(Icons.add , color: Colors.white,),
+            icon: Icon(Icons.add , color: Colors.white,),
+            label: Text('Add ${widget.path[0].toUpperCase() + widget.path.substring(1)}'),
             backgroundColor: AppTheme.teal,
           ),
           bottomNavigationBar: BottomAppBar(

@@ -519,19 +519,37 @@ class _AddPatientState extends State<AddPatient> {
 
 
             child: ClipOval(
-              child: CircleAvatar(
-                radius:  AppTheme.circle,
-                child: profile_link == null
-                    ? Icon(
+              child: profile_link == null
+                  ? CircleAvatar(
+                backgroundColor: AppTheme.grey,
+                radius: 20.w,
+                child: Icon(
                   Icons.person_add_outlined,
                   color: Colors.white,
-                )
-                    :  file!=null?Image.file(
-                  file,
-                  fit: BoxFit.fill,
-                ):Image.network(profile_link),
-
-                backgroundColor: AppTheme.offwhite,
+                ),
+              )
+                  :  file!=null?Image.file(
+                file,
+                fit: BoxFit.cover,
+                height: 40.w,
+                width: 40.w,
+              ):Image.network(
+                profile_link ,
+                height: 40.w,
+                width: 40.w,
+                fit: BoxFit.fill,
+                loadingBuilder: (BuildContext context, Widget child,
+                    ImageChunkEvent loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return Center(
+                    child: CircularProgressIndicator(
+                      value: loadingProgress.expectedTotalBytes != null
+                          ? loadingProgress.cumulativeBytesLoaded /
+                          loadingProgress.expectedTotalBytes
+                          : null,
+                    ),
+                  );
+                },
               ),
             ),
           ),

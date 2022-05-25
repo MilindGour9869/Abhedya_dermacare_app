@@ -199,18 +199,20 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                     );
                   },
                   child: ClipOval(
-                    child: CircleAvatar(
-                      radius:  AppTheme.circle,
-                      child: file == null
-                          ? Icon(
-                        Icons.person_add_outlined,
-                        color: Colors.white,
-                      )
-                          : Image.file(
-                        file,
-                        fit: BoxFit.fill,
-                      ),
-                      backgroundColor: AppTheme.offwhite,
+                    child: file == null
+                        ? CircleAvatar(
+                       radius: 20.w,
+                          backgroundColor: AppTheme.grey,
+                          child: Icon(
+                      Icons.person_add_outlined,
+                      color: Colors.white,
+                    ),
+                        )
+                        : Image.file(
+                      file,
+                      height: 40.w,
+                      width: 40.w,
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),

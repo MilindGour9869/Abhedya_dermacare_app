@@ -31,6 +31,7 @@ class PdfInvoiceApi {
 
 
 
+
     final logo = await imageFromAssetBundle('images/logo_without_background.png');
     final sign = await imageFromAssetBundle('images/sign.png');
     final playstore = await imageFromAssetBundle('images/playstore.png');
@@ -2009,7 +2010,6 @@ class PdfInvoiceApi {
 
 
   //  await Printing.sharePdf(bytes: await pdf.save(), filename: 'my-document.pdf');
-
 
 
 
