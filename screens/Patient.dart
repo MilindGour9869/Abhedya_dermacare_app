@@ -321,7 +321,18 @@ class _State extends State<Patient> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        DocumentScreen(patient_data: patient_data_tile,)));
+                                        DocumentScreen(patient_data: patient_data_tile,))).then((value) {
+                                          if(value == null)
+                                            {
+                                              patient_data();
+
+                                            }
+                                          else if (value == 'change')
+                                            {
+                                              patient_data();
+
+                                            }
+                            });
                           },
                           child: Text(
                             'Documents',

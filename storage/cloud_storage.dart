@@ -12,7 +12,7 @@ class Cloud_Storage {
 
     try{
 
-      final ref = await FirebaseStorage.instance.ref('Patient/${doc_id}/Prescription/${visit_date}');
+      final ref = await FirebaseStorage.instance.ref('Patient/${doc_id}/Prescription/${visit_date}.pdf');
 
 
 
@@ -76,6 +76,19 @@ class Cloud_Storage {
   static Future Patient_Other_Document_Upload( {@required String doc_id , @required File file , @required String file_name})async{
     try{
       final ref = await FirebaseStorage.instance.ref('Patient/${doc_id}/OtherDocument/${file_name}');
+
+      return ref.putFile(file);
+    }
+    on FirebaseException catch (e){
+
+      return e;
+
+    }
+  }
+
+  static Future Patient_Receipt_Upload( {@required String doc_id , @required File file , @required String file_name})async{
+    try{
+      final ref = await FirebaseStorage.instance.ref('Patient/${doc_id}/Receipt/${file_name}');
 
       return ref.putFile(file);
     }
