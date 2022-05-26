@@ -130,16 +130,17 @@ class _AddMedicineState extends State<AddMedicine> {
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
+        child: Card(
 
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-                Material(
-                  child: Padding(
+          child: Column(
+
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+                  Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: Column(
-              children: [
+                children: [
                     SizedBox(
                       height: 1.h,
                     ),
@@ -507,15 +508,18 @@ class _AddMedicineState extends State<AddMedicine> {
 
 
 
-              ],
-            ),
+                ],
+              ),
                   ),
-                ),
-                Material(
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 8.0),
-              alignment: Alignment.bottomCenter,
-              child: Row(
+                  Container(
+                    margin:  EdgeInsets.symmetric(horizontal: 2.w , vertical: 2.w),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.vertical(
+                        bottom:Radius.circular(4)
+                      )
+                    ),
+                alignment: Alignment.bottomCenter,
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
@@ -670,16 +674,11 @@ class _AddMedicineState extends State<AddMedicine> {
                       ),
                     ),
                   ],
+                ),
               ),
-            ),
-                ),
-                Material(
-                  child: Container(
-                    color: Colors.white,
-              height: 1.h,
-            ),
-                ),
-          ],
+
+            ],
+          ),
         ),
       ),
     );
