@@ -542,11 +542,17 @@ class _AddPatientState extends State<AddPatient> {
                     ImageChunkEvent loadingProgress) {
                   if (loadingProgress == null) return child;
                   return Center(
-                    child: CircularProgressIndicator(
-                      value: loadingProgress.expectedTotalBytes != null
-                          ? loadingProgress.cumulativeBytesLoaded /
-                          loadingProgress.expectedTotalBytes
-                          : null,
+                    child: CircleAvatar(
+                      radius: 20.w,
+                      backgroundColor: Colors.white70,
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          value: loadingProgress.expectedTotalBytes != null
+                              ? loadingProgress.cumulativeBytesLoaded /
+                              loadingProgress.expectedTotalBytes
+                              : null,
+                        ),
+                      ),
                     ),
                   );
                 },
@@ -572,6 +578,8 @@ class _AddPatientState extends State<AddPatient> {
 
 
                       });
+
+
                     },
                     icon: Icon(Icons.delete_outline_outlined ,color: Colors.red,),
                   ),
