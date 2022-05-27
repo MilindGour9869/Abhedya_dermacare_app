@@ -49,8 +49,14 @@ class _DocumentScreenState extends State<DocumentScreen> {
   Future freceipt ;
 
 
+  File profile_file;
+  String profile_name;
+  String profile_link;
+
 
   List prescript = [];
+
+
 
   File other_doc_file ;
   Map<String , dynamic> other_doc_file_map ={};
@@ -68,6 +74,9 @@ class _DocumentScreenState extends State<DocumentScreen> {
 
 
   Future imagepicker_profile(ImageSource source) async {
+
+    ischange = true;
+
     final image =
         await ImagePicker().pickImage(source: source, imageQuality: 50);
 
@@ -75,6 +84,10 @@ class _DocumentScreenState extends State<DocumentScreen> {
 
     setState(() {
       this.profile_file = File(image.path);
+      profile_name = 'Profile'+ getFileExtension(profile_file.path);
+
+
+
 
       print(profile_file.path);
     });
@@ -84,6 +97,9 @@ class _DocumentScreenState extends State<DocumentScreen> {
 
 
   Future imagepicker_other_doc(ImageSource source) async {
+
+    ischange = true;
+
     final image =
     await ImagePicker().pickImage(source: source, imageQuality: 50);
 
@@ -102,6 +118,10 @@ class _DocumentScreenState extends State<DocumentScreen> {
   }
 
   Future imagepicker_receipt(ImageSource source) async {
+
+
+    ischange = true;
+
     final image =
     await ImagePicker().pickImage(source: source, imageQuality: 50);
 
@@ -109,6 +129,7 @@ class _DocumentScreenState extends State<DocumentScreen> {
 
     setState(() {
       receipt_file = File(image.path);
+
 
 
     });
@@ -119,9 +140,22 @@ class _DocumentScreenState extends State<DocumentScreen> {
   Future f_profile() async {
     try {
       var r = await FirebaseStorage.instance
-          .ref('Patient/${widget.patient_data.doc_id}/Profile/Profile');
+          .ref('Patient/${widget.patient_data.doc_id}/Profile/');
 
-      profile_cloud_data = await r.getData();
+      await r.listAll().then((value) async {
+
+        profile_name =  value.items.first.name;
+        profile_cloud_data = await value.items.first.getData();
+        profile_link = await value.items.first.getDownloadURL();
+
+
+      });
+
+
+
+
+
+
 
 
       return r.name;
@@ -172,7 +206,7 @@ class _DocumentScreenState extends State<DocumentScreen> {
     }
   }
 
-  File profile_file;
+
 
   Future f_prescription() async {
     var ref = await FirebaseStorage.instance
@@ -211,880 +245,573 @@ class _DocumentScreenState extends State<DocumentScreen> {
     fprescription = f_prescription();
     fother_doc = f_other_doc();
     freceipt = f_receipt();
+    profile_link = widget.patient_data.profile_link;
+
 
 
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
+    return MediaQuery(
+      data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
 
-      appBar: AppBar(
-          title: Text('Add Document'),
-          backgroundColor: AppTheme.teal,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: (){
-              if(ischange)
-                {
-                  Navigator.pop(context , 'change');
-                }
-              else
-                {
-                  Navigator.pop(context , 'back');
-
-                }
-            },
-          ),
-          actions: [
-            IconButton(
-                onPressed: () async {
-
-                  if(other_doc_file_map.isNotEmpty)
-                    {
-                      showDialog(context: context, builder: (context)=>Center(child: CircularProgressIndicator()));
-
-
-
-                         await Future.wait(other_doc_file_map.keys.map((key)async {
-
-
-                            await Cloud_Storage.Patient_Other_Document_Upload(
-                              doc_id: widget.patient_data.doc_id,
-                              file: other_doc_file_map[key],
-                              file_name: key,
-
-                            );
-
-
-
-
-                          }));
-
-                      Navigator.popUntil(context,(route)=>route.isFirst);
-                    }
-                  if(receipt_file_map.isNotEmpty)
+        appBar: AppBar(
+            title: Text('Add Document'),
+            backgroundColor: AppTheme.teal,
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: (){
+                if(ischange)
                   {
-                    showDialog(context: context, builder: (context)=>Center(child: CircularProgressIndicator()));
-
-
-
-                    await Future.wait(receipt_file_map.keys.map((key)async {
-
-
-                      await Cloud_Storage.Patient_Receipt_Upload(
-                        doc_id: widget.patient_data.doc_id,
-                        file: receipt_file_map[key],
-                        file_name: key,
-
-                      );
-
-
-
-
-                    }));
-
-                    Navigator.popUntil(context,(route)=>route.isFirst);
+                    Navigator.pop(context , 'change');
                   }
-                  else
-                    {
-                      if(ischange)
-                      {
-                        Navigator.pop(context , 'change');
-                      }
-                      else
-                      {
-                        Navigator.pop(context , 'back');
+                else
+                  {
+                    Navigator.pop(context , 'back');
 
-                      }
-
-
-                    }
-                },
-                icon: Icon(Icons.save))
-          ]),
-      body: Column(
-        children: [
-          GestureDetector(
-            onTap: () {
-              setState(() {
-                isprofile = !isprofile;
-              });
-            },
-            child: Card(
-              elevation: 2,
-              child: ListTile(
-                title: Row(
-                  children: [
-                    Icon(
-                      Icons.arrow_forward_ios_rounded,
-                      color: AppTheme.teal,
-                    ),
-                    SizedBox(
-                      width: 2.w,
-                    ),
-                    Text('Profile'),
-                  ],
-                ),
-              ),
+                  }
+              },
             ),
-          ), // Profile
-          Visibility(
-              visible: isprofile,
-              child: FutureBuilder(
-                future: fprofile,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
-                  }
-                  if (profile_cloud_data != null || profile_file != null) {
-                    print('erevdd\n');
-
-                    print(snapshot.data);
-
-                    return GestureDetector(
-                      onTap: () async {
-                        print(snapshot.hasData);
-
-                        if (profile_cloud_data != null) {
-                          final tempDir = await getTemporaryDirectory();
-
-                          print(tempDir.path);
-
-                          File f = await File('${tempDir.path}/profile.png')
-                              .create();
-                          f.writeAsBytesSync(profile_cloud_data);
-
-                          OpenFile.open(f.path);
-                        } else if (profile_file != null) {
+            actions: [
+              IconButton(
+                  onPressed: () async {
 
 
-                          OpenFile.open(profile_file.path);
-                        }
-                      },
-                      child: Card(
-                        child: ListTile(
-                          title: Row(
-                            children: [
-                              Icon(Icons.person_outline),
-                              SizedBox(width: 2.w),
-                              Text('Profile'),
-                            ],
-                          ),
-                          trailing: IconButton(
-                            icon: Icon(
-                              Icons.delete_outline_outlined,
-                              color: Colors.red,
-                            ),
-                            onPressed: ()async{
-
-                              if(profile_cloud_data !=null)
-                                {
-                                  ischange = true;
-
-                                  var link = widget.patient_data.profile_link;
-
-                                  await FirebaseStorage.instance.refFromURL(link).delete();
-                                  await FirebaseFirestore.instance.collection('Patient').doc(widget.patient_data.doc_id).update(
-                                    {
-                                      'profile_link' : ""
-                                    }
-                                  );
 
 
-                                }
-                              setState(() {
-                                profile_cloud_data = null;
-                                profile_file = null;
+
+                        if(ischange)
+                        {
+
+                          showDialog(context: context, builder: (context)=>Center(child: CircularProgressIndicator()));
+
+                          if(other_doc_file_map.isNotEmpty)
+                          {
+
+
+
+
+
+
+
+                            await Future.wait(other_doc_file_map.keys.map((key)async {
+
+
+                              await Cloud_Storage.Patient_Other_Document_Upload(
+                                doc_id: widget.patient_data.doc_id,
+                                file: other_doc_file_map[key],
+                                file_name: key,
+
+                              );
+
+
+
+
+                            }));
+
+
+                          }
+                          if(receipt_file_map.isNotEmpty)
+                          {
+
+
+
+
+
+
+
+                            await Future.wait(receipt_file_map.keys.map((key)async {
+
+
+                              await Cloud_Storage.Patient_Receipt_Upload(
+                                doc_id: widget.patient_data.doc_id,
+                                file: receipt_file_map[key],
+                                file_name: key,
+
+                              );
+
+
+
+
+                            }));
+
+
+                          }
+                          if(profile_file !=null)
+                            {
+                              await Cloud_Storage.Patient_Profile_Image_Upload(
+                                doc_id: widget.patient_data.doc_id,
+                                file: profile_file,
+                                file_name: profile_name
+                              ).then((value) async{
+                                await FirebaseFirestore.instance.collection('Patient').doc(widget.patient_data.doc_id).update({
+
+                                  'profile_link' : value
+                                });
                               });
 
 
 
+                            }
+
+                          Navigator.popUntil(context,(route)=>route.isFirst);
+
+
+
+                        }
+                        else
+                        {
+                          Navigator.pop(context , 'back');
+
+                        }
+
+
+                      }
+                  ,
+                  icon: Icon(Icons.save))
+            ]),
+        body: Column(
+          children: [
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  isprofile = !isprofile;
+                });
+              },
+              child: Card(
+                elevation: 2,
+                child: ListTile(
+                  title: Row(
+                    children: [
+                      Icon(
+                        Icons.arrow_forward_ios_rounded,
+                        color: AppTheme.teal,
+                      ),
+                      SizedBox(
+                        width: 2.w,
+                      ),
+                      Text('Profile'),
+                    ],
+                  ),
+                ),
+              ),
+            ), // Profile
+            Visibility(
+                visible: isprofile,
+                child: FutureBuilder(
+                  future: fprofile,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    }
+                    if (profile_cloud_data != null || profile_file != null) {
+                      print('erevdd\n');
+
+                      print(snapshot.data);
+
+                      return GestureDetector(
+                        onTap: () async {
+                          print(snapshot.hasData);
+
+                          if (profile_cloud_data != null) {
+                            final tempDir = await getTemporaryDirectory();
+
+                            print(tempDir.path);
+
+                            File f = await File('${tempDir.path}/profile.png')
+                                .create();
+                            f.writeAsBytesSync(profile_cloud_data);
+
+                            OpenFile.open(f.path);
+                          } else if (profile_file != null) {
+
+
+                            OpenFile.open(profile_file.path);
+                          }
+                        },
+                        child: Card(
+                          child: ListTile(
+                            title: Row(
+                              children: [
+                                Icon(Icons.person_outline),
+                                SizedBox(width: 2.w),
+                                Text(profile_name==null?'Profile':profile_name),
+                              ],
+                            ),
+                            trailing: IconButton(
+                              icon: Icon(
+                                Icons.delete_outline_outlined,
+                                color: Colors.red,
+                              ),
+                              onPressed: ()async{
+
+                                if(profile_cloud_data !=null)
+                                  {
+                                    ischange = true;
+
+
+                                        if(profile_link != null )
+                                          {
+                                            if(profile_link.isNotEmpty)
+                                              {
+                                                 FirebaseStorage.instance.refFromURL(profile_link).delete();
+
+                                              }
+                                          }
+
+
+                                     FirebaseFirestore.instance.collection('Patient').doc(widget.patient_data.doc_id).update(
+                                      {
+                                        'profile_link' : ""
+                                      }
+                                    );
+
+
+                                  }
+                                setState(() {
+                                  profile_cloud_data = null;
+                                  profile_file = null;
+                                });
 
 
 
 
 
-                            },
+
+
+
+                              },
+                            ),
                           ),
                         ),
+                      );
+                    }
+
+                    if (profile_cloud_data == null) {
+                      return Card(
+                          child: TextButton.icon(
+                              onPressed: () {
+                                print('dwee');
+
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                      title: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      TextButton.icon(
+                                          icon: Icon(
+                                            FontAwesomeIcons.cameraRetro,
+                                            color: AppTheme.green,
+                                          ),
+                                          onPressed: () {
+                                            imagepicker_profile(ImageSource.camera);
+                                            Navigator.pop(context);
+                                          },
+                                          label: Text(
+                                            ' Camera',
+                                            style: AppTheme.Black,
+                                          )),
+                                      TextButton.icon(
+                                          icon: Icon(
+                                            FontAwesomeIcons.photoFilm,
+                                            color: AppTheme.green,
+                                          ),
+                                          onPressed: () {
+                                            imagepicker_profile(ImageSource.gallery);
+                                            Navigator.pop(context);
+                                          },
+                                          label: Text(
+                                            ' Gallery',
+                                            style: AppTheme.Black,
+                                          ))
+                                    ],
+                                  )),
+                                );
+                              },
+                              icon: Icon(Icons.add),
+                              label: Text('Add Profile')));
+                    } else {
+                      return const Text('errror');
+                    }
+                  },
+                )),
+
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  isprescription = !isprescription;
+                });
+              },
+              child: Card(
+                elevation: 2,
+                child: ListTile(
+                  title: Row(
+                    children: [
+                      Icon(
+                        Icons.arrow_forward_ios_rounded,
+                        color: AppTheme.teal,
                       ),
-                    );
-                  }
-
-                  if (profile_cloud_data == null) {
-                    return Card(
-                        child: TextButton.icon(
-                            onPressed: () {
-                              print('dwee');
-
-                              showDialog(
-                                context: context,
-                                builder: (context) => AlertDialog(
-                                    title: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    TextButton.icon(
-                                        icon: Icon(
-                                          FontAwesomeIcons.cameraRetro,
-                                          color: AppTheme.green,
-                                        ),
-                                        onPressed: () {
-                                          imagepicker_profile(ImageSource.camera);
-                                          Navigator.pop(context);
-                                        },
-                                        label: Text(
-                                          ' Camera',
-                                          style: AppTheme.Black,
-                                        )),
-                                    TextButton.icon(
-                                        icon: Icon(
-                                          FontAwesomeIcons.photoFilm,
-                                          color: AppTheme.green,
-                                        ),
-                                        onPressed: () {
-                                          imagepicker_profile(ImageSource.gallery);
-                                          Navigator.pop(context);
-                                        },
-                                        label: Text(
-                                          ' Gallery',
-                                          style: AppTheme.Black,
-                                        ))
-                                  ],
-                                )),
-                              );
-                            },
-                            icon: Icon(Icons.add),
-                            label: Text('Add Profile')));
-                  } else {
-                    return const Text('errror');
-                  }
-                },
-              )),
-
-          GestureDetector(
-            onTap: () {
-              setState(() {
-                isprescription = !isprescription;
-              });
-            },
-            child: Card(
-              elevation: 2,
-              child: ListTile(
-                title: Row(
-                  children: [
-                    Icon(
-                      Icons.arrow_forward_ios_rounded,
-                      color: AppTheme.teal,
-                    ),
-                    SizedBox(
-                      width: 2.w,
-                    ),
-                    Text('Prescription'),
-                  ],
+                      SizedBox(
+                        width: 2.w,
+                      ),
+                      Text('Prescription'),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-          Visibility(
-              visible: isprescription,
-              child: FutureBuilder(
-                future: fprescription,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
-                  }
-                  if (prescript.isNotEmpty) {
-                    return ListView(
-                      shrinkWrap: true,
-                      children: prescript
-                          .map<Widget>((e) => Card(
-                            child: ListTile(
-                                  title: Row(
-                                    children: [
-                                      Icon(Icons.picture_as_pdf_outlined),
-                                      SizedBox(width: 2.w),
-                                      Text('${e.name}'),
-                                    ],
-                                  ),
-                                  onTap: () async {
-                                    final tempDir =
-                                        await getTemporaryDirectory();
+            Visibility(
+                visible: isprescription,
+                child: FutureBuilder(
+                  future: fprescription,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    }
+                    if (prescript.isNotEmpty) {
+                      return ListView(
+                        shrinkWrap: true,
+                        children: prescript
+                            .map<Widget>((e) => Card(
+                              child: ListTile(
+                                    title: Row(
+                                      children: [
+                                        Icon(Icons.picture_as_pdf_outlined),
+                                        SizedBox(width: 2.w),
+                                        Text('${e.name}'),
+                                      ],
+                                    ),
+                                    onTap: () async {
+                                      final tempDir =
+                                          await getTemporaryDirectory();
 
-                                    print(tempDir.path);
+                                      print(tempDir.path);
 
-                                    print(e.name);
-
+                                      print(e.name);
 
 
-                                    File f =
-                                        await File('${tempDir.path}/${e.name}.pdf')
-                                            .create();
-                                    f.writeAsBytesSync(await e.getData());
 
-                                    OpenFile.open(f.path);
-                                  },
-                                  trailing: IconButton(
-                                    onPressed: ()async {
-                                      setState(() {
-                                        prescript.remove(e);
-                                      });
+                                      File f =
+                                          await File('${tempDir.path}/${e.name}.pdf')
+                                              .create();
+                                      f.writeAsBytesSync(await e.getData());
 
-                                       await FirebaseStorage.instance.refFromURL(await e.getDownloadURL()).delete();
-                                       ischange = true;
+                                      OpenFile.open(f.path);
                                     },
-                                    icon: Icon(
-                                      Icons.delete_outline_outlined,
-                                      color: Colors.red,
+                                    trailing: IconButton(
+                                      onPressed: ()async {
+                                        setState(() {
+                                          prescript.remove(e);
+                                        });
+
+                                         await FirebaseStorage.instance.refFromURL(await e.getDownloadURL()).delete();
+                                         ischange = true;
+                                      },
+                                      icon: Icon(
+                                        Icons.delete_outline_outlined,
+                                        color: Colors.red,
+                                      ),
                                     ),
                                   ),
-                                ),
-                          ))
-                          .toList(),
-                    );
-                  }
-                  if (prescript.isEmpty) {
-                    return Card(
-                      child: Padding(
-                        padding: EdgeInsets.all(2.w),
-                        child: Text('No Data'),
+                            ))
+                            .toList(),
+                      );
+                    }
+                    if (prescript.isEmpty) {
+                      return Card(
+                        child: Padding(
+                          padding: EdgeInsets.all(2.w),
+                          child: Text('No Data'),
+                        ),
+                      );
+                    } else {
+                      return const Text('errror');
+                    }
+                  },
+                )),
+
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  isreceipt = !isreceipt;
+                });
+              },
+              child: Card(
+                elevation: 2,
+                child: ListTile(
+                  title: Row(
+                    children: [
+                      Icon(
+                        Icons.arrow_forward_ios_rounded,
+                        color: AppTheme.teal,
                       ),
-                    );
-                  } else {
-                    return const Text('errror');
-                  }
-                },
-              )),
+                      SizedBox(
+                        width: 2.w,
+                      ),
+                      Text('Receipts'),
 
-          GestureDetector(
-            onTap: () {
-              setState(() {
-                isreceipt = !isreceipt;
-              });
-            },
-            child: Card(
-              elevation: 2,
-              child: ListTile(
-                title: Row(
-                  children: [
-                    Icon(
-                      Icons.arrow_forward_ios_rounded,
-                      color: AppTheme.teal,
-                    ),
-                    SizedBox(
-                      width: 2.w,
-                    ),
-                    Text('Receipts'),
+                    ],
+                  ),
 
-                  ],
                 ),
-
               ),
             ),
-          ),
-          Visibility(
-              visible: isreceipt,
-              child: FutureBuilder(
-                future: freceipt,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
-                  }
-                  if (!snapshot.hasError) {
-                    return Column(
-                      mainAxisSize: MainAxisSize.min,
+            Visibility(
+                visible: isreceipt,
+                child: FutureBuilder(
+                  future: freceipt,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    }
+                    if (!snapshot.hasError) {
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
 
-                      children: [
-                        ListView(
-                          shrinkWrap: true,
-                          children: receipt_list
-                              .map<Widget>((e) => Card(
-                            child: ListTile(
-                              title: Row(
-                                children: [
-                                  Icon(Icons.file_copy_outlined),
-                                  SizedBox(width: 2.w),
-                                  Text('${e.name}'),
-                                ],
-                              ),
-                              onTap: () async {
-                                final tempDir =
-                                await getTemporaryDirectory();
+                        children: [
+                          ListView(
+                            shrinkWrap: true,
+                            children: receipt_list
+                                .map<Widget>((e) => Card(
+                              child: ListTile(
+                                title: Row(
+                                  children: [
+                                    Icon(Icons.file_copy_outlined),
+                                    SizedBox(width: 2.w),
+                                    Text('${e.name}'),
+                                  ],
+                                ),
+                                onTap: () async {
+                                  final tempDir =
+                                  await getTemporaryDirectory();
 
-                                print(tempDir.path);
+                                  print(tempDir.path);
 
-                                print(e.name);
-
+                                  print(e.name);
 
 
 
-                                File f =
-                                await File('${tempDir.path}/${e.name}')
-                                    .create();
-                                f.writeAsBytesSync(await e.getData());
 
-                                OpenFile.open(f.path);
-                              },
-                              trailing: IconButton(
-                                onPressed: () async{
-                                  setState(() {
-                                    receipt_list.remove(e);
-                                  });
-                                  await FirebaseStorage.instance.refFromURL(await e.getDownloadURL()).delete();
-                                  ischange = true;
+                                  File f =
+                                  await File('${tempDir.path}/${e.name}')
+                                      .create();
+                                  f.writeAsBytesSync(await e.getData());
+
+                                  OpenFile.open(f.path);
                                 },
-                                icon: Icon(
-                                  Icons.delete_outline_outlined,
-                                  color: Colors.red,
+                                trailing: IconButton(
+                                  onPressed: () async{
+                                    setState(() {
+                                      receipt_list.remove(e);
+                                    });
+                                    await FirebaseStorage.instance.refFromURL(await e.getDownloadURL()).delete();
+                                    ischange = true;
+                                  },
+                                  icon: Icon(
+                                    Icons.delete_outline_outlined,
+                                    color: Colors.red,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ))
-                              .toList(),
-                        ),
-                        ListView(
-                          shrinkWrap: true,
-                          children: receipt_file_map.keys
-                              .map<Widget>((e) => Card(
-                            child: ListTile(
-                              title: Row(
-                                children: [
-                                  Icon(Icons.photo_library_outlined),
-                                  SizedBox(width: 2.w),
-                                  Text(e),
-                                ],
-                              ),
-                              onTap: () async {
+                            ))
+                                .toList(),
+                          ),
+                          ListView(
+                            shrinkWrap: true,
+                            children: receipt_file_map.keys
+                                .map<Widget>((e) => Card(
+                              child: ListTile(
+                                title: Row(
+                                  children: [
+                                    Icon(Icons.photo_library_outlined),
+                                    SizedBox(width: 2.w),
+                                    Text(e),
+                                  ],
+                                ),
+                                onTap: () async {
 
 
 
-                                OpenFile.open(receipt_file_map[e].path);
-                              },
-                              trailing: IconButton(
-                                onPressed: () async{
-                                  setState(() {
-                                    receipt_file_map.remove(e);
-
-
-                                  });
-
-
+                                  OpenFile.open(receipt_file_map[e].path);
                                 },
-                                icon: Icon(
-                                  Icons.delete_outline_outlined,
-                                  color: Colors.red,
+                                trailing: IconButton(
+                                  onPressed: () async{
+                                    setState(() {
+                                      receipt_file_map.remove(e);
+
+
+                                    });
+
+
+                                  },
+                                  icon: Icon(
+                                    Icons.delete_outline_outlined,
+                                    color: Colors.red,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ))
-                              .toList(),
-                        ),
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Card(
-                                child: TextButton.icon(
-                                    onPressed: () {
-                                      print('dwee');
+                            ))
+                                .toList(),
+                          ),
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Card(
+                                  child: TextButton.icon(
+                                      onPressed: () {
+                                        print('dwee');
 
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) => AlertDialog(
-                                            title: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                TextButton.icon(
-                                                    icon: Icon(
-                                                      FontAwesomeIcons.cameraRetro,
-                                                      color: AppTheme.green,
-                                                    ),
-                                                    onPressed: () {
-                                                      var r =  imagepicker_receipt(ImageSource.camera);
-                                                      Navigator.pop(context , r);
-                                                    },
-                                                    label: Text(
-                                                      ' Camera',
-                                                      style: AppTheme.Black,
-                                                    )),
-                                                TextButton.icon(
-                                                    icon: Icon(
-                                                      FontAwesomeIcons.photoFilm,
-                                                      color: AppTheme.green,
-                                                    ),
-                                                    onPressed: () {
-                                                      var r = imagepicker_receipt(ImageSource.gallery);
-                                                      Navigator.pop(context , r);
-                                                    },
-                                                    label: Text(
-                                                      ' Gallery',
-                                                      style: AppTheme.Black,
-                                                    ))
-                                              ],
-                                            )),
-                                      ).then((value) {
-
-                                        if(value != null)
-                                        {
-                                          receipt_file_rename.clear();
-
-
-                                          showDialog(context: context, builder: (context)=>WillPopScope(
-                                            onWillPop: (){
-                                              if(receipt_file_rename.text.isNotEmpty)
-                                              {
-                                                Navigator.pop(context , receipt_file_rename.text);
-                                                receipt_file_rename.clear();
-
-                                              }
-                                              else
-                                              {
-                                                showDialog(context: context , builder: (context)=>AlertDialog(
-                                                  title: Text('Name is Compulsory'  ),
-                                                  actions: [
-                                                    TextButton(onPressed: (){
-                                                      Navigator.pop(context , receipt_file_rename.text);
-
-                                                    }, child: Text('OK' ,  textScaleFactor: AppTheme.alert,))
-                                                  ],
-
-                                                ));
-
-
-                                              }
-
-                                            },
-                                            child: GestureDetector(
-                                              onTap: (){
-                                                if(receipt_file_rename.text.isNotEmpty)
-                                                {
-                                                  Navigator.pop(context , receipt_file_rename.text);
-
-                                                  receipt_file_rename.clear();
-
-
-                                                }
-                                                else
-                                                {
-
-                                                  showDialog(context: context , builder: (context)=>AlertDialog(
-                                                    title: Text('Name is Compulsory'  ),
-                                                    actions: [
-                                                      TextButton(onPressed: (){
-                                                        Navigator.pop(context);
-
-                                                      }, child: Text('OK' ,  textScaleFactor: AppTheme.alert,))
-                                                    ],
-
-                                                  ));
-
-                                                }
-                                              },
-                                              child: Scaffold(
-                                                backgroundColor: Colors.transparent,
-
-                                                body: Padding(
-                                                  padding:  EdgeInsets.symmetric(horizontal: 2.w),
-                                                  child: Column(
-                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                    children: [
-                                                      Card(
-
-                                                        elevation: 2,
-                                                        child: Column(
-
-                                                          children: [
-
-                                                            Padding(
-                                                              padding:  EdgeInsets.symmetric(vertical: 2.w),
-                                                              child: Text('Rename' , style: TextStyle(
-                                                                fontWeight: FontWeight.bold,
-                                                                fontSize: 20,
-
-
-                                                              ),),
-                                                            ),
-                                                            Padding(
-                                                              padding:  EdgeInsets.all( 2.w),
-                                                              child: TextField(
-                                                                controller: receipt_file_rename,
-
-                                                                decoration: InputDecoration(
-
-
-                                                                    enabledBorder: OutlineInputBorder(
-                                                                      borderSide: BorderSide(
-                                                                        color: Colors.grey,
-                                                                        width: 2,),
-                                                                      borderRadius: BorderRadius.circular(10),),
-
-                                                                    focusedBorder: OutlineInputBorder(
-                                                                      borderSide: BorderSide(
-                                                                        color: Colors.teal,
-                                                                        width: 2,),
-                                                                      borderRadius: BorderRadius.circular(10),),
-
-                                                                    labelText: 'Rename',
-                                                                    prefixIcon: Icon(Icons.edit_outlined)),
-
-
-
-
-
-
-
-
-                                                              ),
-                                                            ),
-                                                            Padding(
-                                                              padding:  EdgeInsets.symmetric(vertical: 2.w , horizontal: 2.w),
-                                                              child: Row(
-                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                children: [
-                                                                  TextButton(onPressed: (){
-
-                                                                    Navigator.pop(context);
-
-                                                                  }, child: Text('Cancel')),
-                                                                  TextButton(onPressed: (){
-
-                                                                    Navigator.pop(context , receipt_file_rename.text);
-                                                                  }, child: Text('OK')),
-
-                                                                ],
-                                                              ),
-                                                            ),
-
-
-
-                                                          ],
-                                                        ),
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) => AlertDialog(
+                                              title: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  TextButton.icon(
+                                                      icon: Icon(
+                                                        FontAwesomeIcons.cameraRetro,
+                                                        color: AppTheme.green,
                                                       ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          )).then((value) {
+                                                      onPressed: () {
+                                                        var r =  imagepicker_receipt(ImageSource.camera);
+                                                        Navigator.pop(context , r);
+                                                      },
+                                                      label: Text(
+                                                        ' Camera',
+                                                        style: AppTheme.Black,
+                                                      )),
+                                                  TextButton.icon(
+                                                      icon: Icon(
+                                                        FontAwesomeIcons.photoFilm,
+                                                        color: AppTheme.green,
+                                                      ),
+                                                      onPressed: () {
+                                                        var r = imagepicker_receipt(ImageSource.gallery);
+                                                        Navigator.pop(context , r);
+                                                      },
+                                                      label: Text(
+                                                        ' Gallery',
+                                                        style: AppTheme.Black,
+                                                      ))
+                                                ],
+                                              )),
+                                        ).then((value) {
 
-                                            if(value !=null)
-                                            {
-                                              setState(() {
-
-                                                value = value + getFileExtension(receipt_file.path);
-
-                                                receipt_file_map[value] = receipt_file;
-
-                                                print('tbvds');
-
-
-
-
-
-
-
-
-                                              });
-                                            }
-                                          });
-                                        }
-
-
-                                      });
-                                    },
-                                    icon: Icon(Icons.add),
-                                    label: Text('Add Document'))),
-                          ],
-                        )
-                      ],
-                    );
-                  }
-                  else {
-                    return const Text('errror');
-                  }
-                },
-              )),
-
-
-
-          GestureDetector(
-            onTap: () {
-              setState(() {
-                is_other_doc = !is_other_doc;
-              });
-            },
-            child: Card(
-              elevation: 2,
-              child: ListTile(
-                title: Row(
-                  children: [
-                    Icon(
-                      Icons.arrow_forward_ios_rounded,
-                      color: AppTheme.teal,
-                    ),
-                    SizedBox(
-                      width: 2.w,
-                    ),
-                    Text('Other Documents'),
-
-                  ],
-                ),
-
-              ),
-            ),
-          ),
-          Visibility(
-              visible: is_other_doc,
-              child: FutureBuilder(
-                future: fother_doc,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
-                  }
-                  if (!snapshot.hasError) {
-                    return Column(
-                      mainAxisSize: MainAxisSize.min,
-
-                      children: [
-                        ListView(
-                          shrinkWrap: true,
-                          children: other_doc_list
-                              .map<Widget>((e) => Card(
-                            child: ListTile(
-                              title: Row(
-                                children: [
-                                  Icon(Icons.file_copy_outlined),
-                                  SizedBox(width: 2.w),
-                                  Text('${e.name}'),
-                                ],
-                              ),
-                              onTap: () async {
-                                final tempDir =
-                                await getTemporaryDirectory();
-
-                                print(tempDir.path);
-
-                                print(e.name);
-
-
-
-
-                                File f =
-                                await File('${tempDir.path}/${e.name}')
-                                    .create();
-                                f.writeAsBytesSync(await e.getData());
-
-                                OpenFile.open(f.path);
-                              },
-                              trailing: IconButton(
-                                onPressed: () async{
-                                  setState(() {
-                                    other_doc_list.remove(e);
-                                  });
-                                  await FirebaseStorage.instance.refFromURL(await e.getDownloadURL()).delete();
-                                  ischange = true;
-                                },
-                                icon: Icon(
-                                  Icons.delete_outline_outlined,
-                                  color: Colors.red,
-                                ),
-                              ),
-                            ),
-                          ))
-                              .toList(),
-                        ),
-                        ListView(
-                          shrinkWrap: true,
-                          children: other_doc_file_map.keys
-                              .map<Widget>((e) => Card(
-                            child: ListTile(
-                              title: Row(
-                                children: [
-                                  Icon(Icons.photo_library_outlined),
-                                  SizedBox(width: 2.w),
-                                  Text(e),
-                                ],
-                              ),
-                              onTap: () async {
-
-
-
-                                OpenFile.open(other_doc_file_map[e].path);
-                              },
-                              trailing: IconButton(
-                                onPressed: () async{
-                                  setState(() {
-                                    other_doc_file_map.remove(e);
-
-
-                                  });
-
-
-                                },
-                                icon: Icon(
-                                  Icons.delete_outline_outlined,
-                                  color: Colors.red,
-                                ),
-                              ),
-                            ),
-                          ))
-                              .toList(),
-                        ),
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Card(
-                                child: TextButton.icon(
-                                    onPressed: () {
-                                      print('dwee');
-
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) => AlertDialog(
-                                            title: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                TextButton.icon(
-                                                    icon: Icon(
-                                                      FontAwesomeIcons.cameraRetro,
-                                                      color: AppTheme.green,
-                                                    ),
-                                                    onPressed: () {
-                                                      var r =  imagepicker_other_doc(ImageSource.camera);
-                                                      Navigator.pop(context , r);
-                                                    },
-                                                    label: Text(
-                                                      ' Camera',
-                                                      style: AppTheme.Black,
-                                                    )),
-                                                TextButton.icon(
-                                                    icon: Icon(
-                                                      FontAwesomeIcons.photoFilm,
-                                                      color: AppTheme.green,
-                                                    ),
-                                                    onPressed: () {
-                                                      var r = imagepicker_other_doc(ImageSource.gallery);
-                                                      Navigator.pop(context , r);
-                                                    },
-                                                    label: Text(
-                                                      ' Gallery',
-                                                      style: AppTheme.Black,
-                                                    ))
-                                              ],
-                                            )),
-                                      ).then((value) {
-
-                                        if(value != null)
+                                          if(value != null)
                                           {
-                                            other_doc_file_rename.clear();
+                                            receipt_file_rename.clear();
 
 
                                             showDialog(context: context, builder: (context)=>WillPopScope(
                                               onWillPop: (){
-                                                if(other_doc_file_rename.text.isNotEmpty)
+                                                if(receipt_file_rename.text.isNotEmpty)
                                                 {
-                                                  Navigator.pop(context , other_doc_file_rename.text);
-                                                  other_doc_file_rename.clear();
+                                                  Navigator.pop(context , receipt_file_rename.text);
+                                                  receipt_file_rename.clear();
 
                                                 }
                                                 else
@@ -1093,7 +820,7 @@ class _DocumentScreenState extends State<DocumentScreen> {
                                                     title: Text('Name is Compulsory'  ),
                                                     actions: [
                                                       TextButton(onPressed: (){
-                                                        Navigator.pop(context , other_doc_file_rename.text);
+                                                        Navigator.pop(context , receipt_file_rename.text);
 
                                                       }, child: Text('OK' ,  textScaleFactor: AppTheme.alert,))
                                                     ],
@@ -1106,29 +833,29 @@ class _DocumentScreenState extends State<DocumentScreen> {
                                               },
                                               child: GestureDetector(
                                                 onTap: (){
-                                                  if(other_doc_file_rename.text.isNotEmpty)
-                                                    {
-                                                      Navigator.pop(context , other_doc_file_rename.text);
+                                                  if(receipt_file_rename.text.isNotEmpty)
+                                                  {
+                                                    Navigator.pop(context , receipt_file_rename.text);
 
-                                                      other_doc_file_rename.clear();
+                                                    receipt_file_rename.clear();
 
 
-                                                    }
+                                                  }
                                                   else
-                                                    {
+                                                  {
 
-                                                      showDialog(context: context , builder: (context)=>AlertDialog(
-                                                        title: Text('Name is Compulsory'  ),
-                                                        actions: [
-                                                          TextButton(onPressed: (){
-                                                            Navigator.pop(context);
+                                                    showDialog(context: context , builder: (context)=>AlertDialog(
+                                                      title: Text('Name is Compulsory'  ),
+                                                      actions: [
+                                                        TextButton(onPressed: (){
+                                                          Navigator.pop(context);
 
-                                                          }, child: Text('OK' ,  textScaleFactor: AppTheme.alert,))
-                                                        ],
+                                                        }, child: Text('OK' ,  textScaleFactor: AppTheme.alert,))
+                                                      ],
 
-                                                      ));
+                                                    ));
 
-                                                    }
+                                                  }
                                                 },
                                                 child: Scaffold(
                                                   backgroundColor: Colors.transparent,
@@ -1157,7 +884,7 @@ class _DocumentScreenState extends State<DocumentScreen> {
                                                               Padding(
                                                                 padding:  EdgeInsets.all( 2.w),
                                                                 child: TextField(
-                                                                  controller: other_doc_file_rename,
+                                                                  controller: receipt_file_rename,
 
                                                                   decoration: InputDecoration(
 
@@ -1191,14 +918,14 @@ class _DocumentScreenState extends State<DocumentScreen> {
                                                                 child: Row(
                                                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                   children: [
-                                                                  TextButton(onPressed: (){
-
-                                                                    Navigator.pop(context);
-
-                                                                  }, child: Text('Cancel')),
                                                                     TextButton(onPressed: (){
 
-                                                                      Navigator.pop(context , other_doc_file_rename.text);
+                                                                      Navigator.pop(context);
+
+                                                                    }, child: Text('Cancel')),
+                                                                    TextButton(onPressed: (){
+
+                                                                      Navigator.pop(context , receipt_file_rename.text);
                                                                     }, child: Text('OK')),
 
                                                                   ],
@@ -1218,16 +945,14 @@ class _DocumentScreenState extends State<DocumentScreen> {
                                             )).then((value) {
 
                                               if(value !=null)
-                                                {
-                                                  setState(() {
+                                              {
+                                                setState(() {
 
-                                                    value = value + getFileExtension(other_doc_file.path);
+                                                  value = value + getFileExtension(receipt_file.path);
 
+                                                  receipt_file_map[value] = receipt_file;
 
-                                                    other_doc_file_map[value] = other_doc_file;
-
-                                                    print('tbvds');
-
+                                                  print('tbvds');
 
 
 
@@ -1235,30 +960,383 @@ class _DocumentScreenState extends State<DocumentScreen> {
 
 
 
-                                                  });
-                                                }
+
+                                                });
+                                              }
                                             });
                                           }
 
 
-                                      });
-                                    },
-                                    icon: Icon(Icons.add),
-                                    label: Text('Add Document'))),
-                          ],
-                        )
-                      ],
-                    );
-                  }
-                   else {
-                    return const Text('errror');
-                  }
-                },
-              )),
+                                        });
+                                      },
+                                      icon: Icon(Icons.add),
+                                      label: Text('Add Receipt'))),
+                            ],
+                          )
+                        ],
+                      );
+                    }
+                    else {
+                      return const Text('errror');
+                    }
+                  },
+                )),
 
 
 
-        ],
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  is_other_doc = !is_other_doc;
+                });
+              },
+              child: Card(
+                elevation: 2,
+                child: ListTile(
+                  title: Row(
+                    children: [
+                      Icon(
+                        Icons.arrow_forward_ios_rounded,
+                        color: AppTheme.teal,
+                      ),
+                      SizedBox(
+                        width: 2.w,
+                      ),
+                      Text('Other Documents'),
+
+                    ],
+                  ),
+
+                ),
+              ),
+            ),
+            Visibility(
+                visible: is_other_doc,
+                child: FutureBuilder(
+                  future: fother_doc,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    }
+                    if (!snapshot.hasError) {
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+
+                        children: [
+                          ListView(
+                            shrinkWrap: true,
+                            children: other_doc_list
+                                .map<Widget>((e) => Card(
+                              child: ListTile(
+                                title: Row(
+                                  children: [
+                                    Icon(Icons.file_copy_outlined),
+                                    SizedBox(width: 2.w),
+                                    Text('${e.name}'),
+                                  ],
+                                ),
+                                onTap: () async {
+                                  final tempDir =
+                                  await getTemporaryDirectory();
+
+                                  print(tempDir.path);
+
+                                  print(e.name);
+
+
+
+
+                                  File f =
+                                  await File('${tempDir.path}/${e.name}')
+                                      .create();
+                                  f.writeAsBytesSync(await e.getData());
+
+                                  OpenFile.open(f.path);
+                                },
+                                trailing: IconButton(
+                                  onPressed: () async{
+                                    setState(() {
+                                      other_doc_list.remove(e);
+                                    });
+                                    await FirebaseStorage.instance.refFromURL(await e.getDownloadURL()).delete();
+                                    ischange = true;
+                                  },
+                                  icon: Icon(
+                                    Icons.delete_outline_outlined,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ),
+                            ))
+                                .toList(),
+                          ),
+                          ListView(
+                            shrinkWrap: true,
+                            children: other_doc_file_map.keys
+                                .map<Widget>((e) => Card(
+                              child: ListTile(
+                                title: Row(
+                                  children: [
+                                    Icon(Icons.photo_library_outlined),
+                                    SizedBox(width: 2.w),
+                                    Text(e),
+                                  ],
+                                ),
+                                onTap: () async {
+
+
+
+                                  OpenFile.open(other_doc_file_map[e].path);
+                                },
+                                trailing: IconButton(
+                                  onPressed: () async{
+                                    setState(() {
+                                      other_doc_file_map.remove(e);
+
+
+                                    });
+
+
+                                  },
+                                  icon: Icon(
+                                    Icons.delete_outline_outlined,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ),
+                            ))
+                                .toList(),
+                          ),
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Card(
+                                  child: TextButton.icon(
+                                      onPressed: () {
+                                        print('dwee');
+
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) => AlertDialog(
+                                              title: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  TextButton.icon(
+                                                      icon: Icon(
+                                                        FontAwesomeIcons.cameraRetro,
+                                                        color: AppTheme.green,
+                                                      ),
+                                                      onPressed: () {
+                                                        var r =  imagepicker_other_doc(ImageSource.camera);
+                                                        Navigator.pop(context , r);
+                                                      },
+                                                      label: Text(
+                                                        ' Camera',
+                                                        style: AppTheme.Black,
+                                                      )),
+                                                  TextButton.icon(
+                                                      icon: Icon(
+                                                        FontAwesomeIcons.photoFilm,
+                                                        color: AppTheme.green,
+                                                      ),
+                                                      onPressed: () {
+                                                        var r = imagepicker_other_doc(ImageSource.gallery);
+                                                        Navigator.pop(context , r);
+                                                      },
+                                                      label: Text(
+                                                        ' Gallery',
+                                                        style: AppTheme.Black,
+                                                      ))
+                                                ],
+                                              )),
+                                        ).then((value) {
+
+                                          if(value != null)
+                                            {
+                                              other_doc_file_rename.clear();
+
+
+                                              showDialog(context: context, builder: (context)=>WillPopScope(
+                                                onWillPop: (){
+                                                  if(other_doc_file_rename.text.isNotEmpty)
+                                                  {
+                                                    Navigator.pop(context , other_doc_file_rename.text);
+                                                    other_doc_file_rename.clear();
+
+                                                  }
+                                                  else
+                                                  {
+                                                    showDialog(context: context , builder: (context)=>AlertDialog(
+                                                      title: Text('Name is Compulsory'  ),
+                                                      actions: [
+                                                        TextButton(onPressed: (){
+                                                          Navigator.pop(context , other_doc_file_rename.text);
+
+                                                        }, child: Text('OK' ,  textScaleFactor: AppTheme.alert,))
+                                                      ],
+
+                                                    ));
+
+
+                                                  }
+
+                                                },
+                                                child: GestureDetector(
+                                                  onTap: (){
+                                                    if(other_doc_file_rename.text.isNotEmpty)
+                                                      {
+                                                        Navigator.pop(context , other_doc_file_rename.text);
+
+                                                        other_doc_file_rename.clear();
+
+
+                                                      }
+                                                    else
+                                                      {
+
+                                                        showDialog(context: context , builder: (context)=>AlertDialog(
+                                                          title: Text('Name is Compulsory'  ),
+                                                          actions: [
+                                                            TextButton(onPressed: (){
+                                                              Navigator.pop(context);
+
+                                                            }, child: Text('OK' ,  textScaleFactor: AppTheme.alert,))
+                                                          ],
+
+                                                        ));
+
+                                                      }
+                                                  },
+                                                  child: Scaffold(
+                                                    backgroundColor: Colors.transparent,
+
+                                                    body: Padding(
+                                                      padding:  EdgeInsets.symmetric(horizontal: 2.w),
+                                                      child: Column(
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        children: [
+                                                          Card(
+
+                                                            elevation: 2,
+                                                            child: Column(
+
+                                                              children: [
+
+                                                                Padding(
+                                                                  padding:  EdgeInsets.symmetric(vertical: 2.w),
+                                                                  child: Text('Rename' , style: TextStyle(
+                                                                    fontWeight: FontWeight.bold,
+                                                                    fontSize: 20,
+
+
+                                                                  ),),
+                                                                ),
+                                                                Padding(
+                                                                  padding:  EdgeInsets.all( 2.w),
+                                                                  child: TextField(
+                                                                    controller: other_doc_file_rename,
+
+                                                                    decoration: InputDecoration(
+
+
+                                                                        enabledBorder: OutlineInputBorder(
+                                                                          borderSide: BorderSide(
+                                                                            color: Colors.grey,
+                                                                            width: 2,),
+                                                                          borderRadius: BorderRadius.circular(10),),
+
+                                                                        focusedBorder: OutlineInputBorder(
+                                                                          borderSide: BorderSide(
+                                                                            color: Colors.teal,
+                                                                            width: 2,),
+                                                                          borderRadius: BorderRadius.circular(10),),
+
+                                                                        labelText: 'Rename',
+                                                                        prefixIcon: Icon(Icons.edit_outlined)),
+
+
+
+
+
+
+
+
+                                                                  ),
+                                                                ),
+                                                                Padding(
+                                                                  padding:  EdgeInsets.symmetric(vertical: 2.w , horizontal: 2.w),
+                                                                  child: Row(
+                                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                    children: [
+                                                                    TextButton(onPressed: (){
+
+                                                                      Navigator.pop(context);
+
+                                                                    }, child: Text('Cancel')),
+                                                                      TextButton(onPressed: (){
+
+                                                                        Navigator.pop(context , other_doc_file_rename.text);
+                                                                      }, child: Text('OK')),
+
+                                                                    ],
+                                                                  ),
+                                                                ),
+
+
+
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              )).then((value) {
+
+                                                if(value !=null)
+                                                  {
+                                                    setState(() {
+
+                                                      value = value + getFileExtension(other_doc_file.path);
+
+
+                                                      other_doc_file_map[value] = other_doc_file;
+
+                                                      print('tbvds');
+
+
+
+
+
+
+
+
+                                                    });
+                                                  }
+                                              });
+                                            }
+
+
+                                        });
+                                      },
+                                      icon: Icon(Icons.add),
+                                      label: Text('Add Document'))),
+                            ],
+                          )
+                        ],
+                      );
+                    }
+                     else {
+                      return const Text('errror');
+                    }
+                  },
+                )),
+
+
+
+          ],
+        ),
       ),
     );
   }
