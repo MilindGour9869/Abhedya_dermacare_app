@@ -533,6 +533,7 @@ class _AddPatientState extends State<AddPatient> {
                 fit: BoxFit.cover,
                 height: 40.w,
                 width: 40.w,
+
               ):Image.network(
                 profile_link ,
                 height: 40.w,

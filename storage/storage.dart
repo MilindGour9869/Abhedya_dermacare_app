@@ -63,6 +63,12 @@ class Storage {
   static const String reception = 'Reception';
 
 
+  static const String dr_name = 'dr_name';
+
+
+
+
+
 
 
   static Map<String,bool> user_map={
@@ -95,6 +101,40 @@ class Storage {
 
 
   };
+
+
+
+  static Future set_dr_name_true()async{
+
+
+
+    await storage.write(key: dr_name, value: 'true');
+  }
+
+  static Future set_dr_name_false()async{
+
+
+    await storage.write(key: dr_name, value: 'false');
+
+  }
+
+  static Future<bool> get_dr_name()async{
+    var result = await storage.read(key: guest);
+
+
+    if(result =='true')
+    {
+      return true;
+
+    }
+    else
+    {
+      return false;
+
+
+    }
+
+  }
 
 
   static Future set_guest_true()async{

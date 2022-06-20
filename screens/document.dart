@@ -15,6 +15,7 @@ import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:open_file/open_file.dart';
+import 'package:flutter_app/custom_widgets/loading_indicator.dart';
 
 import '../default.dart';
 
@@ -286,7 +287,7 @@ class _DocumentScreenState extends State<DocumentScreen> {
                         if(ischange)
                         {
 
-                          showDialog(context: context, builder: (context)=>Center(child: CircularProgressIndicator()));
+                          showDialog(context: context, builder: (context)=>Center(child: LoadingIndicator()));
 
                           if(other_doc_file_map.isNotEmpty)
                           {
@@ -405,7 +406,7 @@ class _DocumentScreenState extends State<DocumentScreen> {
                   future: fprofile,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const CircularProgressIndicator();
+                      return LoadingIndicator();
                     }
                     if (profile_cloud_data != null || profile_file != null) {
                       print('erevdd\n');
@@ -570,7 +571,7 @@ class _DocumentScreenState extends State<DocumentScreen> {
                   future: fprescription,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const CircularProgressIndicator();
+                      return LoadingIndicator();
                     }
                     if (prescript.isNotEmpty) {
                       return ListView(
@@ -666,7 +667,7 @@ class _DocumentScreenState extends State<DocumentScreen> {
                   future: freceipt,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const CircularProgressIndicator();
+                      return LoadingIndicator();
                     }
                     if (!snapshot.hasError) {
                       return Column(
@@ -1016,7 +1017,7 @@ class _DocumentScreenState extends State<DocumentScreen> {
                   future: fother_doc,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const CircularProgressIndicator();
+                      return LoadingIndicator();
                     }
                     if (!snapshot.hasError) {
                       return Column(
