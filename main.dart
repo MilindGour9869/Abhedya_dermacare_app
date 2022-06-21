@@ -9,11 +9,13 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_app/classes/AuthPage.dart';
+import 'package:flutter_app/custom_widgets/loading_screen.dart';
 import 'package:flutter_app/screens/forgot_password.dart';
 import 'package:flutter_app/screens/login_screen.dart';
 import 'package:flutter_app/screens/sign_up_screen.dart';
 import 'package:flutter_app/storage/storage.dart';
 import 'package:flutter_app/widgets/add_patient.dart';
+import 'package:flutter_app/widgets/printer_setting.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -73,6 +75,8 @@ class MyApp extends StatelessWidget {
         'Login' : (context) => LoginScreen(),
         'ForgotPassword':(context)=>ForgotPasswordScreen(),
         'AddPatient' : (context)=>AddPatient(),
+        'LaodingScreen' : (context)=>LoadingScreen()
+
 
 
 
@@ -278,7 +282,7 @@ Widget Menu(BuildContext context) {
         leading: Icon(FontAwesomeIcons.gear , color: AppTheme.grey,),
         onTap: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => Setting()));
+              context, MaterialPageRoute(builder: (context) => PrinterSetting()));
         },
       ),
 

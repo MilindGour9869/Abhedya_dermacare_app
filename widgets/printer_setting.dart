@@ -16,6 +16,11 @@ class _PrinterSettingState extends State<PrinterSetting> {
 
     dr_name =await Storage.get_dr_name();
 
+
+    setState(() {
+      dr_name = dr_name;
+    });
+
   }
 
 
@@ -33,24 +38,27 @@ class _PrinterSettingState extends State<PrinterSetting> {
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          Row(
-            children: [
-              Text('Print Doctor Name'),
-              CupertinoSwitch(
-                value: dr_name,
-                onChanged: (value) {
-                  setState(() {
-                    dr_name = value;
-                  });
-                },
-              ),
+    return MediaQuery(
+      data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
+      child: Scaffold(
+        body: Column(
+          children: [
+            Row(
+              children: [
+                Text('Print Doctor Name'),
+                CupertinoSwitch(
+                  value: dr_name,
+                  onChanged: (value) {
+                    setState(() {
+                      dr_name = value;
+                    });
+                  },
+                ),
 
-            ],
-          )
-        ],
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

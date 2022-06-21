@@ -7,6 +7,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/classes/Patient_name_list.dart';
+import 'package:flutter_app/custom_widgets/loading_screen.dart';
 import 'package:flutter_app/storage/cloud_storage.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
@@ -587,21 +588,49 @@ class _DocumentScreenState extends State<DocumentScreen> {
                                       ],
                                     ),
                                     onTap: () async {
+
+
+
                                       final tempDir =
-                                          await getTemporaryDirectory();
+                                      await getTemporaryDirectory();
 
                                       print(tempDir.path);
 
                                       print(e.name);
 
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+
+                                            content: Text('Opening File....'),
+                                            duration: Duration(
+                                              minutes: 2
+                                            ),
+                                          backgroundColor: AppTheme.green,
+
+
+                                        )
+
+                                      );
+
 
 
                                       File f =
-                                          await File('${tempDir.path}/${e.name}.pdf')
-                                              .create();
+                                      await File('${tempDir.path}/${e.name}.pdf')
+                                          .create();
                                       f.writeAsBytesSync(await e.getData());
 
+                                      ScaffoldMessenger.of(context)..removeCurrentSnackBar();
+
+
+
+
+
+
+
+
                                       OpenFile.open(f.path);
+
+
                                     },
                                     trailing: IconButton(
                                       onPressed: ()async {
