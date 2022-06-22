@@ -698,10 +698,12 @@ class _State extends State<Patient> {
               ),
             ],
           ),
-          floatingActionButton: FloatingActionButton(
+          floatingActionButton: FloatingActionButton.extended(
               elevation: 15,
 
-              splashColor: AppTheme.notWhite,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)
+              ),
               onPressed: () {
                 Navigator.push(
                     context,
@@ -720,11 +722,9 @@ class _State extends State<Patient> {
                   }
                 });
               },
-              child: Icon(
-                Icons.add,
-                color: AppTheme.white,
-                semanticLabel: 'ss',
-              ),
+              icon: Icon(Icons.add),
+              label: Text('Add Patient'),
+
               backgroundColor: AppTheme.teal),
           bottomNavigationBar: BottomAppBar(
             color: AppTheme.white,

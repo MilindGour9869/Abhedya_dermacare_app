@@ -512,11 +512,13 @@ class _State extends State<Medicines> {
                           contentPadding: EdgeInsets.symmetric(horizontal: 7.w , vertical: 1.3.h ),
                           border: InputBorder.none,
                           hintText: 'search',
+                          hintStyle:  AppTheme.k_search_text_style
 
 
 
 
-                          suffixIcon: Icon(Icons.search)),
+
+                      ),
                       keyboardType: TextInputType.name,
                     ),
                   ),

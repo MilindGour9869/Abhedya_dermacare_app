@@ -176,11 +176,16 @@ class _State extends State<Services> {
                       decoration: InputDecoration(
                           isDense: true,
                           isCollapsed: true,
-                          contentPadding: EdgeInsets.symmetric(
-                              horizontal: 7.w, vertical: 1.3.h),
+                          contentPadding: EdgeInsets.symmetric(horizontal: 7.w , vertical: 1.3.h ),
                           border: InputBorder.none,
                           hintText: 'search',
-                          suffixIcon: Icon(Icons.search)),
+                          hintStyle:  AppTheme.k_search_text_style
+
+
+
+
+
+                      ),
                       keyboardType: TextInputType.name,
                     ),
                   ),
