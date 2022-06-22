@@ -322,12 +322,7 @@ class _State extends State<Patient> {
                                 MaterialPageRoute(
                                     builder: (context) =>
                                         DocumentScreen(patient_data: patient_data_tile,))).then((value) {
-                                          if(value == null)
-                                            {
-                                              patient_data();
-
-                                            }
-                                          else if (value == 'change')
+                                           if (value == 'save')
                                             {
                                               patient_data();
 

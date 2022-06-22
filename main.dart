@@ -75,7 +75,7 @@ class MyApp extends StatelessWidget {
         'Login' : (context) => LoginScreen(),
         'ForgotPassword':(context)=>ForgotPasswordScreen(),
         'AddPatient' : (context)=>AddPatient(),
-        'LaodingScreen' : (context)=>LoadingScreen()
+
 
 
 

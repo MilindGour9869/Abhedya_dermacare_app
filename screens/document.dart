@@ -17,6 +17,7 @@ import 'package:printing/printing.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:open_file/open_file.dart';
 import 'package:flutter_app/custom_widgets/loading_indicator.dart';
+import 'package:flutter_app/custom_widgets/loading_screen.dart';
 
 import '../default.dart';
 
@@ -52,7 +53,7 @@ class _DocumentScreenState extends State<DocumentScreen> {
 
 
   File profile_file;
-  String profile_name;
+  String profile_name="Null";
   String profile_link;
 
 
@@ -119,6 +120,9 @@ class _DocumentScreenState extends State<DocumentScreen> {
     return 'change';
   }
 
+
+
+
   Future imagepicker_receipt(ImageSource source) async {
 
 
@@ -145,6 +149,9 @@ class _DocumentScreenState extends State<DocumentScreen> {
           .ref('Patient/${widget.patient_data.doc_id}/Profile/');
 
       await r.listAll().then((value) async {
+
+        print(profile_name);
+
 
         profile_name =  value.items.first.name;
         profile_cloud_data = await value.items.first.getData();
@@ -268,7 +275,7 @@ class _DocumentScreenState extends State<DocumentScreen> {
               onPressed: (){
                 if(ischange)
                   {
-                    Navigator.pop(context , 'change');
+                    Navigator.pop(context , 'save');
                   }
                 else
                   {
@@ -288,7 +295,8 @@ class _DocumentScreenState extends State<DocumentScreen> {
                         if(ischange)
                         {
 
-                          showDialog(context: context, builder: (context)=>Center(child: LoadingIndicator()));
+                         SnackOn(context: context , msg: 'Saving Document....');
+
 
                           if(other_doc_file_map.isNotEmpty)
                           {
@@ -359,7 +367,10 @@ class _DocumentScreenState extends State<DocumentScreen> {
 
                             }
 
-                          Navigator.popUntil(context,(route)=>route.isFirst);
+                         SnackOff(context: context);
+
+                          Navigator.pop(context , 'save');
+
 
 
 
@@ -419,13 +430,19 @@ class _DocumentScreenState extends State<DocumentScreen> {
                           print(snapshot.hasData);
 
                           if (profile_cloud_data != null) {
+
+                            SnackOn(context: context , msg: 'Opening File...');
                             final tempDir = await getTemporaryDirectory();
 
                             print(tempDir.path);
 
-                            File f = await File('${tempDir.path}/profile.png')
+
+
+                            File f = await File('${tempDir.path}/${profile_name}')
                                 .create();
                             f.writeAsBytesSync(profile_cloud_data);
+
+                            SnackOff(context: context);
 
                             OpenFile.open(f.path);
                           } else if (profile_file != null) {
@@ -440,7 +457,7 @@ class _DocumentScreenState extends State<DocumentScreen> {
                               children: [
                                 Icon(Icons.person_outline),
                                 SizedBox(width: 2.w),
-                                Text(profile_name==null?'Profile':profile_name),
+                                Text(profile_name),
                               ],
                             ),
                             trailing: IconButton(
@@ -459,7 +476,12 @@ class _DocumentScreenState extends State<DocumentScreen> {
                                           {
                                             if(profile_link.isNotEmpty)
                                               {
-                                                 FirebaseStorage.instance.refFromURL(profile_link).delete();
+                                                SnackOn(context: context, msg: 'Deleting Profile');
+
+                                                 await FirebaseStorage.instance.refFromURL(profile_link).delete();
+
+                                                 SnackOff(context: context);
+
 
                                               }
                                           }
@@ -598,19 +620,9 @@ class _DocumentScreenState extends State<DocumentScreen> {
 
                                       print(e.name);
 
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(
-
-                                            content: Text('Opening File....'),
-                                            duration: Duration(
-                                              minutes: 2
-                                            ),
-                                          backgroundColor: AppTheme.green,
+                                    SnackOn(context : context , msg: 'Opening File....');
 
 
-                                        )
-
-                                      );
 
 
 
@@ -619,7 +631,8 @@ class _DocumentScreenState extends State<DocumentScreen> {
                                           .create();
                                       f.writeAsBytesSync(await e.getData());
 
-                                      ScaffoldMessenger.of(context)..removeCurrentSnackBar();
+                                      SnackOff(context: context);
+
 
 
 
@@ -634,12 +647,20 @@ class _DocumentScreenState extends State<DocumentScreen> {
                                     },
                                     trailing: IconButton(
                                       onPressed: ()async {
+
+                                        SnackOn(context: context, msg: 'Deleting File...');
+
+                                        await FirebaseStorage.instance.refFromURL(await e.getDownloadURL()).delete();
+                                        ischange = true;
+
                                         setState(() {
                                           prescript.remove(e);
                                         });
 
-                                         await FirebaseStorage.instance.refFromURL(await e.getDownloadURL()).delete();
-                                         ischange = true;
+                                        SnackOff(context: context);
+
+
+
                                       },
                                       icon: Icon(
                                         Icons.delete_outline_outlined,
@@ -724,6 +745,9 @@ class _DocumentScreenState extends State<DocumentScreen> {
                                   print(e.name);
 
 
+                                  SnackOn(context: context , msg: 'Opening File...');
+
+
 
 
                                   File f =
@@ -731,15 +755,25 @@ class _DocumentScreenState extends State<DocumentScreen> {
                                       .create();
                                   f.writeAsBytesSync(await e.getData());
 
+                                  SnackOff(context: context);
+
                                   OpenFile.open(f.path);
                                 },
                                 trailing: IconButton(
                                   onPressed: () async{
+
+                                    SnackOn(context: context , msg: 'Deleting File');
+
+                                    await FirebaseStorage.instance.refFromURL(await e.getDownloadURL()).delete();
+                                    ischange = true;
+
                                     setState(() {
                                       receipt_list.remove(e);
                                     });
-                                    await FirebaseStorage.instance.refFromURL(await e.getDownloadURL()).delete();
-                                    ischange = true;
+
+
+                                    SnackOff(context: context);
+
                                   },
                                   icon: Icon(
                                     Icons.delete_outline_outlined,
@@ -1073,6 +1107,8 @@ class _DocumentScreenState extends State<DocumentScreen> {
 
                                   print(e.name);
 
+                                  SnackOn(context: context , msg: 'Opening File...');
+
 
 
 
@@ -1081,15 +1117,25 @@ class _DocumentScreenState extends State<DocumentScreen> {
                                       .create();
                                   f.writeAsBytesSync(await e.getData());
 
+                                  SnackOff(context: context);
+
+
                                   OpenFile.open(f.path);
                                 },
                                 trailing: IconButton(
                                   onPressed: () async{
+
+                                    SnackOn(context: context , msg: 'Deleting File...');
+
+                                    await FirebaseStorage.instance.refFromURL(await e.getDownloadURL()).delete();
+                                    ischange = true;
+
                                     setState(() {
                                       other_doc_list.remove(e);
                                     });
-                                    await FirebaseStorage.instance.refFromURL(await e.getDownloadURL()).delete();
-                                    ischange = true;
+
+
+                                    SnackOff(context: context);
                                   },
                                   icon: Icon(
                                     Icons.delete_outline_outlined,

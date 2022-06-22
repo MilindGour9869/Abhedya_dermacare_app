@@ -3,6 +3,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_app/custom_widgets/loading_screen.dart';
 import 'package:flutter_app/default.dart';
 import 'package:flutter_app/list_search/blood_group_list_search.dart';
 
@@ -77,13 +78,13 @@ class _AddPatientState extends State<AddPatient> {
 
 
 
-
-
-
-
-
-
-
+ String getFileExtension(String fileName) {
+   try {
+     return "." + fileName.split('.').last;
+   } catch(e){
+     return null;
+   }
+ }
  Future imagepicker(ImageSource source) async{
 
 
@@ -298,7 +299,8 @@ class _AddPatientState extends State<AddPatient> {
                          {
                            print('show dialogue ');
 
-                         showDialog(context: context, builder: (context)=>Center(child: CircularProgressIndicator()));
+                          SnackOn(context: context , msg: 'Saving Patient Details...');
+
 
 
 
@@ -359,6 +361,7 @@ class _AddPatientState extends State<AddPatient> {
                                var link = Cloud_Storage.Patient_Profile_Image_Upload(
                                  doc_id:  doc.id,
                                  file: file,
+                                 file_name: "Profile"+ getFileExtension(file.path)
                                );
 
                                final snapshot =   await link.whenComplete((){});
@@ -391,17 +394,19 @@ class _AddPatientState extends State<AddPatient> {
                              {
 
                                if(file!=null)
-                               { print('file no null');
+                               {
+
+                                 print('file no null');
 
                                var link = Cloud_Storage.Patient_Profile_Image_Upload(
                                  doc_id: widget.patient_data.doc_id ,
                                  file: file,
+                                 file_name: "Profile"+getFileExtension(file.path)
                                );
 
 
-                               final snapshot = await link.whenComplete((){});
+                               profile_link = await link.whenComplete((){});
 
-                               profile_link = await snapshot.ref.getDownloadURL();
 
 
 
@@ -434,7 +439,10 @@ class _AddPatientState extends State<AddPatient> {
                              }
 
 
-                         Navigator.popUntil(context,(route)=>route.isFirst);
+                         SnackOff(context: context);
+
+                             Navigator.pop(context);
+
 
 
 

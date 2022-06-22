@@ -1,15 +1,38 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/custom_widgets/loading_indicator.dart';
 
-class LoadingScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: Center(child: SizedBox(
-          height: 70,
-          width: 70,
-          child: LoadingIndicator())),
+import '../default.dart';
+
+class SnackOn{
+
+  BuildContext context;
+  String msg ;
+
+
+  SnackOn({@required this.context , @required this.msg}){
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+
+          content: Text(msg),
+          duration: Duration(
+              minutes: 2
+          ),
+          backgroundColor: AppTheme.green,
+
+
+        )
+
     );
   }
+}
+
+class SnackOff{
+
+  BuildContext context;
+
+  SnackOff({@required this.context }){
+    ScaffoldMessenger.of(context)..removeCurrentSnackBar();
+  }
+
+
+
 }

@@ -46,6 +46,13 @@ class Cloud_Storage {
 
      await  ref.putFile(file);
 
+     print('bgdvff');
+
+
+
+     print(ref.getDownloadURL());
+
+
 
 
 
