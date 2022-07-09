@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter_app/default.dart';
-import 'package:flutter_app/screens/document.dart';
-import 'package:flutter_app/screens/payment.dart';
-import '../widgets/add_visits.dart';
+import 'document.dart';
+import 'payment.dart';
+import 'add_visits.dart';
 import 'package:flutter_app/classes/Patient_name_list.dart';
 
 import 'package:date_format/date_format.dart';

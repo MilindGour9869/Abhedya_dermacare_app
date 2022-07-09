@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/default.dart';
 import 'package:flutter_app/main.dart';
-import 'package:flutter_app/screens/login_screen.dart';
-import 'package:flutter_app/widgets/user_administration.dart';
+import 'login_screen.dart';
+import 'user_administration.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-import '../storage/storage.dart';
+import '../../storage/storage.dart';
 
 class SignUpScreen extends StatefulWidget {
 
@@ -195,7 +195,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
               GestureDetector(
                 onTap: (){
-                  print('ddd');
+                  widget.f();
 
                 },
                 child: Container(
@@ -208,17 +208,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         )
                     ),
 
-                    child:GestureDetector(
-                      onTap: (){
-                        widget.f();
-                      },
-                      child: Padding(
-                        padding:  EdgeInsets.symmetric(vertical: 3.w , horizontal: 6.w),
-                        child: Text('Sign In' , style: TextStyle(
-                          color: AppTheme.white ,
-                          fontWeight: FontWeight.w900,
-                        ),),
-                      ),
+                    child:Padding(
+                      padding:  EdgeInsets.symmetric(vertical: 3.w , horizontal: 6.w),
+                      child: Text('Sign In' , style: TextStyle(
+                        color: AppTheme.white ,
+                        fontWeight: FontWeight.w900,
+                      ),),
                     )
                 ),
               ),

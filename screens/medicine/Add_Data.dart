@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/list_search/list_search.dart';
+import 'package:flutter_app/storage/storage.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-import '../list_search/add_info_list_search.dart';
-import '../default.dart';
+import '../../list_search/add_info_list_search.dart';
+import '../../default.dart';
 
 class AddData extends StatefulWidget {
 
@@ -536,7 +538,9 @@ class _AddDataState extends State<AddData> {
 
                           showDialog(context: context, builder: (context)=>Padding(
                             padding:  EdgeInsets.symmetric(horizontal: 7.w , vertical: 8.h),
-                            child: Add_Info_List_Search(result: all_data_english_list,),
+
+                            child: List_Search(result: all_data_english_list,  get: Storage.get, set: Storage.set, group: 'add_info', Group: 'Add_Info', one_select: false, ky: Storage.add_info),
+
                           )).then((value) {
 
                             if(value != null)

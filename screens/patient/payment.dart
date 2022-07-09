@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_app/classes/Patient_name_list.dart';
 import 'package:flutter_app/default.dart';
-import 'package:flutter_app/widgets/service_search_list.dart';
+import '../services/service_search_list.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 class Payment extends StatefulWidget {
 

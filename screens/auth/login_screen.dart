@@ -3,11 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/default.dart';
 import 'package:flutter_app/main.dart';
-import 'package:flutter_app/screens/sign_up_screen.dart';
-import 'package:flutter_app/widgets/user_administration.dart';
+import 'sign_up_screen.dart';
+import 'user_administration.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-import '../storage/storage.dart';
+import '../../storage/storage.dart';
 
 class LoginScreen extends StatefulWidget {
 

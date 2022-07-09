@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/screens/login_screen.dart';
-import 'package:flutter_app/screens/sign_up_screen.dart';
+import '../screens/auth/login_screen.dart';
+import '../screens/auth/sign_up_screen.dart';
 
 
 class AuthPage extends StatefulWidget {

@@ -9,8 +9,10 @@ import 'package:flutter_app/list_search/blood_group_list_search.dart';
 
 
 import 'package:email_validator/email_validator.dart';
+import 'package:flutter_app/list_search/list_search.dart';
 import 'package:flutter_app/storage/cloud_storage.dart';
-import 'package:flutter_app/widgets/stream_builder.dart';
+import 'package:flutter_app/storage/storage.dart';
+
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -53,6 +55,9 @@ class _AddPatientState extends State<AddPatient> {
  Patient_name_data_list data;
  List patient_list ;
  bool icon_tap = false;
+
+ List Blood_Group = [];
+
 
 
 
@@ -304,43 +309,31 @@ class _AddPatientState extends State<AddPatient> {
 
 
 
+
+
                              if(email_edit.text.isNotEmpty)
                              {
                                if(!EmailValidator.validate(email_edit.text))
                                {
-                                 showDialog(context: context, builder: (context)=>AlertDialog(
-                                   title: Text('Invalid Email ID'),
-                                   actions: [
-                                     TextButton(onPressed: (){
-                                       Navigator.pop(context);
+                                 ShowDialogue(context: context, Alertmsg: 'Invalid Email Address');
 
-                                     }, child: Text('OK' , textScaleFactor: AppTheme.alert,))
-                                   ],
-                                 ));
 
                                }
                              }
-                             if(mobile_edit.text.isNotEmpty){
 
-                               print('in else if');
+                             if(mobile_edit.text.isEmpty)
+                             {
+                               ShowDialogue(context: context, Alertmsg: ' Mobile no. is Compulsory');
+
+                             }
 
 
                                if(mobile_edit.text.length!=10)
                                {
-                                 showDialog(context: context, builder: (context)=>AlertDialog(
-                                   title: Text('Invalid Mobile No.' ,  textScaleFactor: AppTheme.alert,),
-                                   actions: [
-                                     TextButton(onPressed: (){
-                                       Navigator.pop(context);
-
-                                     }, child: Text('OK' , textScaleFactor: AppTheme.alert,))
-                                   ],
-                                 ));
+                                 ShowDialogue(context: context, Alertmsg: 'Invalid Mobile no.');
 
                                }
 
-
-                             }
 
 
 
@@ -735,6 +728,7 @@ class _AddPatientState extends State<AddPatient> {
                           setState(() {
                             blood_group_edit.text ="";
 
+
                           });
 
 
@@ -746,15 +740,13 @@ class _AddPatientState extends State<AddPatient> {
 
                             print(blood_group_edit.text);
 
+                            Blood_Group[0]=blood_group_edit.text;
 
                             return   showDialog(
                                 context: context,
                                 builder: (context) => Padding(
                                   padding:  EdgeInsets.all(4.w),
-                                  child: Blood_Group_List_Search(
-                                    result: [one_result
-                                    ],
-                                  ),
+                                  child: List_Search(result: Blood_Group, get: Storage.get, set:  Storage.set, group: 'blood_group', Group: 'Blood_Group', one_select: true, ky: Storage.blood_group),
                                 )).then((value){
                               print('ff');
 
@@ -762,11 +754,14 @@ class _AddPatientState extends State<AddPatient> {
                                 {
                                   if(value.isNotEmpty)
                                     {
-                                      print('dvfbabfds');
+                                     
 
                                       setState(() {
+
                                         blood_group_edit.text = value[0];
                                         one_result = value[0];
+
+
 
 
 

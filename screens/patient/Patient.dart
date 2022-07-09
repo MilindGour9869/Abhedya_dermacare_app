@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/screens/document.dart';
-import 'package:flutter_app/screens/visits_date.dart';
+import 'document.dart';
+import 'visits_date.dart';
 import 'package:flutter_app/storage/cloud_storage.dart';
 import 'package:flutter_app/storage/storage.dart';
-import 'package:flutter_app/widgets/add_patient.dart';
+import 'add_patient.dart';
 import 'package:flutter_app/default.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -261,7 +261,7 @@ class _State extends State<Patient> {
                     height: 1.h,
                   ),
                   Text(
-                    'last visited on : ${formatDate(patient_data_tile.recent_visit.toDate(), [ dd, '-', mm, '-', yyyy])}',
+                    'last visited on : ${patient_data_tile==null?formatDate(patient_data_tile.recent_visit.toDate(), [ dd, '-', mm, '-', yyyy]):''}',
 
                     style: TextStyle(
                       fontStyle: FontStyle.italic

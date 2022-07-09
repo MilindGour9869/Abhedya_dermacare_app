@@ -3,6 +3,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_app/custom_widgets/loading_screen.dart';
 import 'package:flutter_app/default.dart';
 import 'package:flutter_app/list_search/blood_group_list_search.dart';
 
@@ -19,7 +20,7 @@ import 'dart:io';
 
 import 'package:flutter_app/classes/Patient_name_list.dart';
 
-import '../storage/storage.dart';
+import '../../storage/storage.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -83,7 +84,7 @@ class _ProfileState extends State<Profile> {
             },
           ),
           title: Text(
-            'Admin',
+            'Profile',
             textScaleFactor: 1,
           ),
           actions: [
@@ -91,6 +92,11 @@ class _ProfileState extends State<Profile> {
               padding: EdgeInsets.only(right: 2.w),
               child: IconButton(
                 onPressed: () async {
+
+
+                  SnackOn(context: context, msg: 'Saving Details...');
+
+
                   if (name_edit.text != null && name_edit.text.isNotEmpty) {
                     if (email_edit.text.isNotEmpty) {
                       if (!EmailValidator.validate(email_edit.text)) {
@@ -148,19 +154,46 @@ class _ProfileState extends State<Profile> {
                       profile_link = await snapshot.ref.getDownloadURL();
                     }
 
-                    final json = {
+            ;
+
+                    final dr_json= {
                       'name': name_edit.text,
                       'username': username_edit.text,
-                      'address': address_edit.text,
-                      'clinic_contact_no': mobile_edit.text,
-                      'clinic_email': email_edit.text,
+                      'password' : password_edit.text,
+                      'practice1' : select_practice_edit.text,
+                      'practice2' : display_practice.text ,
+
+
+
+
                       'profile_link': profile_link == null ? "" : profile_link,
                     };
 
+                    final clinic_json ={
+                      'clinic_address': address_edit.text,
+                      'clinic_contact_no': mobile_edit.text,
+                      'clinic_email': email_edit.text,
+                      'clinic_pincode' : pincode_edit.text,
+                    };
+
+
+
+
+
+
+
                     await FirebaseFirestore.instance
-                        .collection('Administration')
-                        .doc('Admin')
-                        .update(json);
+                        .collection('Dr_Profile')
+                        .doc('Doctor')
+                        .set(dr_json , SetOptions(merge : true));
+
+
+                    await FirebaseFirestore.instance
+                        .collection('Dr_Profile')
+                        .doc('Clinic')
+                        .set(clinic_json , SetOptions(merge : true));
+
+
                   }
                   else
                   {
@@ -176,6 +209,9 @@ class _ProfileState extends State<Profile> {
                     ));
 
                   }
+
+                  SnackOff(context: context);
+
 
                   return Navigator.pop(context, 'save');
                 },

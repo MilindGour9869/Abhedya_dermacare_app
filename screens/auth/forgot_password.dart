@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/default.dart';
 import 'package:flutter_app/main.dart';
-import 'package:flutter_app/screens/sign_up_screen.dart';
+import 'sign_up_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {

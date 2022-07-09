@@ -1,11 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_app/classes/Patient_name_list.dart';
+
 import 'package:flutter_app/storage/storage.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 
-import '../default.dart';
+import '../../default.dart';
 
 
 class Service_Search_List extends StatefulWidget {

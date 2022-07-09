@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_app/git/screens/app_theme.dart';
+
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 
@@ -137,6 +137,11 @@ class Storage {
   }
 
 
+
+
+
+  //USER
+
   static Future set_guest_true()async{
 
     user_map['is_guest']=true;
@@ -151,18 +156,21 @@ class Storage {
 
   }
 
-  static Future get_guest()async{
+  static Future<bool> get_guest()async{
     var result = await storage.read(key: guest);
 
 
     if(result =='true')
       {
-        user_map['is_guest']=true;
+
+        return true;
+
 
       }
     else
       {
-        user_map['is_guest']=false;
+        return false;
+
 
       }
 
@@ -182,23 +190,20 @@ class Storage {
     await storage.write(key: admin, value: 'false');
   }
 
-  static Future get_admin()async{
+  static Future<bool> get_admin()async{
     var result = await storage.read(key: admin);
-
-    print('ggg');
-
-
-    print(result);
-
 
     if(result =='true')
     {
-      user_map['is_admin']=true;
+
+      return true;
+
 
     }
     else
     {
-      user_map['is_admin']=false;
+      return false;
+
 
     }
 
@@ -219,22 +224,51 @@ class Storage {
     await storage.write(key: reception, value: 'false');
   }
 
-  static Future get_reception()async{
+  static Future<bool> get_reception()async{
     var result = await storage.read(key: reception);
-
 
     if(result =='true')
     {
-      user_map['is_reception']=true;
+
+      return true;
+
 
     }
     else
     {
-      user_map['is_reception']=false;
+      return false;
+
 
     }
 
+
   }
+
+
+  static Future<String> get_user()async{
+
+
+    if(await get_guest() )
+      {
+        return 'guest';
+      }
+    else if( await get_admin() )
+      {
+       return  'admin';
+      }
+    else if(await get_reception() )
+      {
+        return 'reception';
+
+      }
+
+
+  }
+
+
+
+
+
 
 
   static Future get_all_cloud_data()async{

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/classes/service_dialogue.dart';
-import 'package:flutter_app/classes/services_update.dart';
+
 import 'package:flutter_app/default.dart';
 import 'package:flutter_app/storage/storage.dart';
 
@@ -29,7 +29,7 @@ class _State extends State<Services> {
   bool vacination = false;
   bool by_you = false;
 
-  Services_data_update s;
+
 
   var service_edit = TextEditingController();
   var charges_edit = TextEditingController();
@@ -47,7 +47,7 @@ class _State extends State<Services> {
 
   List search_service_list = [];
 
-  Services_data_update data;
+
 
   int services_length;
 

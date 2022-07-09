@@ -6,18 +6,18 @@ import 'package:flutter_app/default.dart';
 import 'package:flutter_app/list_search/list_search.dart';
 import 'package:flutter_app/list_search/notes_list_search.dart';
 import 'package:flutter_app/storage/storage.dart';
-import 'package:flutter_app/widgets/Printer_Select_list.dart';
-import 'package:flutter_app/widgets/Tile.dart';
+import '../printer/Printer_Select_list.dart';
+
 import 'package:responsive_sizer/responsive_sizer.dart';
-import '../list_search/vital_list_search.dart';
-import 'package:flutter_app/widgets/list_search.dart';
+import '../../list_search/vital_list_search.dart';
+
 import 'package:flutter_app/classes/Patient_name_list.dart';
 
 import 'package:date_format/date_format.dart';
-import 'package:flutter_app/widgets/service_search_list.dart';
+import '../services/service_search_list.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../screens/Medicines.dart';
+import '../medicine/Medicines.dart';
 
 class AddVisits extends StatefulWidget {
   Patient_name_data_list patient_data;

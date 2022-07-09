@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/default.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-import '../main.dart';
-import '../storage/storage.dart';
+import '../../main.dart';
+import '../../storage/storage.dart';
 
 class UserAdministration extends StatefulWidget {
 

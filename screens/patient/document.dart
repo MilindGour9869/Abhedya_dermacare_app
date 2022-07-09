@@ -19,7 +19,7 @@ import 'package:open_file/open_file.dart';
 import 'package:flutter_app/custom_widgets/loading_indicator.dart';
 import 'package:flutter_app/custom_widgets/loading_screen.dart';
 
-import '../default.dart';
+import '../../default.dart';
 
 class DocumentScreen extends StatefulWidget {
   Patient_name_data_list patient_data;

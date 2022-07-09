@@ -12,7 +12,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 
-import '../list_search/tab_list_search.dart';
+import '../../list_search/tab_list_search.dart';
 
 class AddMedicine extends StatefulWidget {
 
