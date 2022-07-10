@@ -1,18 +1,24 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'document.dart';
-import 'visits_date.dart';
+
+
+// Storage
 import 'package:flutter_app/storage/cloud_storage.dart';
 import 'package:flutter_app/storage/storage.dart';
-import 'add_patient.dart';
-import 'package:flutter_app/default.dart';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+// Screens
+import 'add_patient.dart';  // Add patient
+import 'package:flutter_app/default.dart'; // Color theme
+import 'document.dart'; // Document Screen
+import 'visits_date.dart'; // Visit date
 
+// model
 import 'package:flutter_app/classes/Patient_name_list.dart';
 
+// Cloud
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+// Other Lib
 import 'package:date_format/date_format.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 
@@ -28,15 +34,19 @@ class _State extends State<Patient> {
 
 
   bool today = true;
+  bool all = false;
+
 
   Future f;
 
   List<Patient_name_data_list> patient_instance_list = [];
-  List all_patient_name_list = [];
-  List search_patient_list = [];
+
+  List<String> all_patient_name_list = [];
+  List<String> search_patient_list = [];
+
   Map<String, Patient_name_data_list> map_name_patientInstance_list = {};
 
-  var textcontroller = TextEditingController();
+  var search_text_controller = TextEditingController();
 
   Future PatientDataDelete(@required String doc_Id) async {
     final doc =
@@ -141,7 +151,7 @@ class _State extends State<Patient> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    patient_data_tile.name == null ? "?" : '${patient_data_tile.name[0].toUpperCase()+patient_data_tile.name.substring(1)}',
+                    patient_data_tile.name == null ? "" : '${patient_data_tile.name[0].toUpperCase()+patient_data_tile.name.substring(1)}',
 
 
                   ),
@@ -607,7 +617,7 @@ class _State extends State<Patient> {
                                   borderRadius: BorderRadius.circular(10)),
                               child: TextField(
 
-                                controller: textcontroller,
+                                controller: search_text_controller,
 
 
 

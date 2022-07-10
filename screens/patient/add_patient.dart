@@ -2,14 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+
 import 'package:flutter_app/custom_widgets/loading_screen.dart';
 import 'package:flutter_app/default.dart';
 import 'package:flutter_app/list_search/blood_group_list_search.dart';
 
 
 import 'package:email_validator/email_validator.dart';
+
 import 'package:flutter_app/list_search/list_search.dart';
+
 import 'package:flutter_app/storage/cloud_storage.dart';
 import 'package:flutter_app/storage/storage.dart';
 
@@ -72,7 +74,7 @@ class _AddPatientState extends State<AddPatient> {
  var group_edit = TextEditingController();
  var blood_group_edit=TextEditingController();
 
- String profile_link ;
+ String profile_link ='' ;
 
  bool profile_img_delete = false;
 
@@ -328,6 +330,8 @@ class _AddPatientState extends State<AddPatient> {
                              }
 
 
+
+
                                if(mobile_edit.text.length!=10)
                                {
                                  ShowDialogue(context: context, Alertmsg: 'Invalid Mobile no.');
@@ -345,7 +349,7 @@ class _AddPatientState extends State<AddPatient> {
                                if(file!=null)
                                {
 
-                                 print('file no null');
+                                 print('file new file is selected null');
 
 
 
@@ -368,17 +372,33 @@ class _AddPatientState extends State<AddPatient> {
 
                                final json = {
                                  'name':name_edit.text,
-                                 'age' : age_edit.text,
-                                 'gender':male==true?'Male':female==true?'Female':"",
-                                 'address': address_edit.text,
                                  'mobile':mobile_edit.text,
-                                 'email':email_edit.text,
                                  'doc_id' : doc.id,
-                                 'blood_group':blood_group_edit.text,
-                                 'profile_link' : profile_link==null?"":profile_link,
-
-
                                };
+
+                               male==true?json['gender']='Male':female==true?json['gender']='Female':null;
+
+                               if(age_edit.text.isNotEmpty)
+                                 {
+                                   json['age'] = age_edit.text;
+                                 }
+                               if(address_edit.text.isNotEmpty)
+                               {
+                                 json['address'] = address_edit.text;
+                               }
+                               if(email_edit.text.isNotEmpty)
+                               {
+                                 json['email'] = email_edit.text;
+                               }
+                               if(blood_group_edit.text.isNotEmpty)
+                               {
+                                 json['blood_group'] = blood_group_edit.text;
+                               }
+                               if(profile_link.isNotEmpty)
+                               {
+                                 json['profile_link'] = profile_link;
+                               }
+
 
                                doc.set(json);
                              }
@@ -399,34 +419,42 @@ class _AddPatientState extends State<AddPatient> {
 
                                profile_link = await link.whenComplete((){});
 
+                               }
 
+                               final json = {
 
+                                 'name':name_edit.text,
+                                 'mobile':mobile_edit.text,
+                               };
 
+                               male==true?json['gender']='Male':female==true?json['gender']='Female':null;
 
+                               if(age_edit.text.isNotEmpty)
+                               {
+                                 json['age'] = age_edit.text;
+                               }
 
-
-
-
+                               if(address_edit.text.isNotEmpty)
+                               {
+                                 json['address'] = address_edit.text;
+                               }
+                               if(email_edit.text.isNotEmpty)
+                               {
+                                 json['email'] = email_edit.text;
+                               }
+                               if(blood_group_edit.text.isNotEmpty)
+                               {
+                                 json['blood_group'] = blood_group_edit.text;
+                               }
+                               if(profile_link.isNotEmpty)
+                               {
+                                 json['profile_link'] = profile_link;
                                }
 
 
 
                                await FirebaseFirestore.instance.collection('Patient').doc(widget.patient_data.doc_id).update(
-                                   {
-                                     'name':name_edit.text,
-                                     'age' : age_edit.text,
-                                     'gender':male==true?'Male':female==true?'Female':"",
-                                     'address': address_edit.text,
-                                     'mobile':mobile_edit.text,
-                                     'email':email_edit.text,
-                                     'blood_group':blood_group_edit.text,
-                                     'profile_link' : profile_link==null?"":profile_link,
-
-
-
-
-
-                                   });
+                               json);
                              }
 
 

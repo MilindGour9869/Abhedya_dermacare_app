@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter_app/default.dart';
-import 'document.dart';
+
 import 'payment.dart';
 import 'add_visits.dart';
 import 'package:flutter_app/classes/Patient_name_list.dart';
