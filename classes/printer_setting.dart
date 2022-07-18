@@ -15,16 +15,13 @@ class PdfInvoiceApi {
 
   static Future<Uint8List> generatePdf( {
 
-    String visit_date ,Map<String,dynamic> patient_detail , String patient_uid ,
+    String? visit_date , Map<String,dynamic>? patient_detail , String? patient_uid ,
 
-    List notes , List diagnosis , List advice  , List allergies , List group , List complaint , List clinical_finding , List investigation , List blood_group ,
+    List? notes , List? diagnosis , List? advice  , List? allergies , List? group , List? complaint , List? clinical_finding , List? investigation , List? blood_group ,
 
-    Map<String,Map<String,dynamic>> medicine_map , Map<String,Map<String,dynamic>> vitals ,
+    Map<String,Map<String,dynamic?>>? medicine_map , Map<String,Map<String,dynamic>>? vitals ,
 
-    String follow_up_date , bool hindi_dosage = true , bool hindi_duration = false
-
-
-
+    String? follow_up_date , bool hindi_dosage = true , bool hindi_duration = false
 
   }) async {
     final pdf = pw.Document(version: PdfVersion.pdf_1_5 , compress: true);
@@ -139,7 +136,7 @@ class PdfInvoiceApi {
       );
     }
 
-    pw.TableRow Patient_detail({@required Map<String,dynamic>patient_detail}){
+    pw.TableRow Patient_detail( Map<String,dynamic> patient_detail){
       return pw.TableRow(
           children: [
             pw.Container(
@@ -155,31 +152,13 @@ class PdfInvoiceApi {
 
                     ),
                     pw.Row(
-                      children: [
+                      children: patient_detail.keys.map<pw.Widget>((key){
 
-                        pw.Text('${patient_detail['patient_name'].toString()} / ', style: pw.TextStyle(
-                            fontSize: three,
-                        ),),
-
-                        pw.Text('${patient_detail['patient_gender'].toString()} / ', style: pw.TextStyle(
+                        return  pw.Text('${patient_detail[key].toString()} / ', style: pw.TextStyle(
                           fontSize: three,
-                        ),),
-
-                        pw.Text('${patient_detail['patient_age'].toString()} / ', style: pw.TextStyle(
-                          fontSize: three,
-                        ),),
-
-                        pw.Text('${patient_detail['patient_mobile'].toString()} / ', style: pw.TextStyle(
-                          fontSize: three,
-                        ),),
-
-                        pw.Text('${patient_detail['patient_blood_group'].toString()}', style: pw.TextStyle(
-                          fontSize: three,
-                        ),),
-
-
-
-                      ]
+                        ),);
+                      }
+                      ).toList(),
                     )
 
 
@@ -519,7 +498,7 @@ class PdfInvoiceApi {
 
 
    //Middle Table
-    pw.TableRow MainTable({ Map<String , dynamic> map , List time , List add_info , String medicine_name , int sr_no} ){
+    pw.TableRow MainTable({ Map<String , dynamic>? map ,  String? medicine_name , int? sr_no} ){
 
 
 
@@ -544,20 +523,18 @@ class PdfInvoiceApi {
 
             pw.Container(
 
-              child:  pw.Text(medicine_name , style: pw.TextStyle(
+              child:  pw.Text(medicine_name??'' , style: pw.TextStyle(
                   fontSize: three,
 
               )),),
 
             pw.Container(
-
-
-
               child:  pw.Column(
                 crossAxisAlignment: pw.CrossAxisAlignment.start,
                 children: [
                   pw.Row(
-                    children: time.map((e) {
+                    children: map!['at_what_time'].isNotEmpty?map['at_what_time'].map<pw.Widget>((e) {
+
                       if(e.toString()=='Morning')
                         {
                           return hindi_dosage?pw.Text('सुबह ' , style: pw.TextStyle(
@@ -603,17 +580,14 @@ class PdfInvoiceApi {
 
                       }
 
-                    }).toList()
+                    }).toList():[]
                   ),
                   pw.Wrap(
                     spacing: one,
 
-                    children: add_info.map((e) {
+                    children: map['add_info'].map((e) {
                       return pw.Text('${e} , ', style: pw.TextStyle(
                         fontSize: three,
-
-
-
                       ),
                         maxLines: 1
 
@@ -624,34 +598,27 @@ class PdfInvoiceApi {
                 ]
               ),),
 
-            map['tenure'].isNotEmpty?pw.Container(
+            map['tenure']['d/w/m'].isNotEmpty?pw.Container(
 
 
               child:  pw.Row(
                 children: [
-                  pw.Text( map['tenure'].toString(), style: pw.TextStyle(
+                  pw.Text( map['tenure']['d/w/m'].toString(), style: pw.TextStyle(
                       fontSize: three,
 
                   )),
 
 
-                  hindi_duration?pw.Text( map['duration'].toString()=='Days'?' दिन':
-                  map['duration'].toString()=='Weeks'?' सप्ताह':
-                  map['duration'].toString()=='Months'?' महीना':''
-
-
-
-
-
+                  hindi_duration?pw.Text( map['tenure']['d/w/m'].toString()=='Days'?' दिन':
+                  map['tenure']['d/w/m'].toString()=='Weeks'?' सप्ताह':
+                  map['tenure']['d/w/m'].toString()=='Months'?' महीना':''
 
                       , style: pw.TextStyle(
                       fontSize: three,
 
                         font: hindiFont
                   )):
-      pw.Text( map['duration'].toString()=='Days'?' Days':
-      map['duration'].toString()=='Weeks'?' Weeks':
-      map['duration'].toString()=='Months'?' Months':''
+      pw.Text( map['tenure']['d/w/m']??''
 
 
 
@@ -776,55 +743,13 @@ class PdfInvoiceApi {
     ];
 
    if(medicine_map!=null)
-     { print('\n');
-
-       print(medicine_map.length);
+     {
 
      int n=0;
 
-
-
-
      medicine_map.forEach((key, value) {
 
-       print(key);
-
-       String duration ;
-       List dosage;
-
-       String add_info='';
-
-
-
-
-
-       duration = medicine_map[key]['duration']['tenure'].toString();
-       dosage  =  medicine_map[key]['add_info'];
-
-
-
-
-
-
-
-
-       Map<String , dynamic> Duration={
-         'tenure' : medicine_map[key]['duration']['tenure'].toString(),
-         'duration' : medicine_map[key]['duration']['Duration'].toString()
-
-
-
-       };
-
-       print(Duration);
-
-
-
-
-
-
-
-       Abc.add(MainTable( map:  Duration  , time: medicine_map[key]['time'] , add_info :  medicine_map[key]['add_info'] , sr_no:n , medicine_name: key ));
+       Abc.add(MainTable( map:  medicine_map[key] ,  sr_no:n , medicine_name: key ));
 
        Abc.add(MainDivider());
 
@@ -1743,7 +1668,7 @@ class PdfInvoiceApi {
                                                  patient_uid!=null?Patient_UID(patient_uid):Box_null(),
                                                  patient_uid!=null?Box():Box_null(),
 
-                                                 patient_detail!=null?Patient_detail(patient_detail:patient_detail):Box_null(),
+                                                 patient_detail!=null?Patient_detail(patient_detail):Box_null(),
 
                                                  patient_detail!=null?Patient_Address(patient_detail['address']):Box_null(),
 

@@ -1,857 +1,583 @@
+import 'package:flutter/material.dart';
+
+//Firestore
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-import 'package:flutter/material.dart';
-
-import 'package:flutter_app/custom_widgets/loading_screen.dart';
-import 'package:flutter_app/default.dart';
-import 'package:flutter_app/list_search/blood_group_list_search.dart';
-
-
+//Other
 import 'package:email_validator/email_validator.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
+import 'dart:io';
 
+//Apptheme
+import 'package:flutter_app/default.dart';
+
+//Widgets
+import 'package:flutter_app/custom_widgets/loading_screen.dart';
 import 'package:flutter_app/list_search/list_search.dart';
 
+//Storage
 import 'package:flutter_app/storage/cloud_storage.dart';
 import 'package:flutter_app/storage/storage.dart';
 
-
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
-import 'package:image_picker/image_picker.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
-
-import 'dart:io';
-
-
-
+//Model
 import 'package:flutter_app/classes/Patient_name_list.dart';
 
-
-
-
 class AddPatient extends StatefulWidget {
+  Patient_name_data_list? patient_data;
 
-  Patient_name_data_list patient_data;
+  List<String> all_patient_name_list;
 
-  List all_patient_name_list=[];
+  bool icon_tap;
 
-  bool icon_tap = false ;
-
-
-  AddPatient({this.patient_data , this.all_patient_name_list , this.icon_tap = false });
-
-
-
+  AddPatient(this.all_patient_name_list, this.icon_tap, {this.patient_data});
 
   @override
   _AddPatientState createState() => _AddPatientState();
 }
 
 class _AddPatientState extends State<AddPatient> {
+  File? file;
 
- File file;
+  Patient_name_data_list? patient_instace;
 
- String name='';
+  late List<String> patient_name_list;
 
- Patient_name_data_list data;
- List patient_list ;
- bool icon_tap = false;
+  List<String> Blood_Group = [];
 
- List Blood_Group = [];
+  bool is_saving= false;
 
 
+  var name_edit = TextEditingController();
+  var age_edit = TextEditingController();
+  var address_edit = TextEditingController();
+  var email_edit = TextEditingController();
+  var mobile_edit = TextEditingController();
+  var group_edit = TextEditingController();
+  var blood_group_edit = TextEditingController();
 
+  String? profile_link = '';
 
+  bool profile_img_delete = false;
 
+  bool male = false, female = false;
 
+  String? getFileExtension(String fileName) {
+    try {
+      return "." + fileName.split('.').last;
+    } catch (e) {
+      return null;
+    }
+  }
+  Future<void> imagepicker(ImageSource source) async {
+    final image =
+        await ImagePicker().pickImage(source: source, imageQuality: 50);
 
- var name_edit = TextEditingController();
- var age_edit = TextEditingController();
- var address_edit = TextEditingController();
- var email_edit = TextEditingController();
- var mobile_edit = TextEditingController();
- var group_edit = TextEditingController();
- var blood_group_edit=TextEditingController();
+    if (image == null) return null;
 
- String profile_link ='' ;
+    setState(() {
+      this.file = File(image.path);
+      profile_link = "";
+    });
 
- bool profile_img_delete = false;
+    return;
+  }
 
- String one_result;
+  void init_start() {
 
- bool circle = true;
+    if (widget.patient_data != null) {
+      setState(() {
+        final x = widget.patient_data!;
 
+        name_edit.text = x.name;
 
+        mobile_edit.text = x.mobile.toString();
 
+        age_edit.text = x.age ?? '';
 
- String getFileExtension(String fileName) {
-   try {
-     return "." + fileName.split('.').last;
-   } catch(e){
-     return null;
-   }
- }
- Future imagepicker(ImageSource source) async{
+        Blood_Group.add(x.blood_group ?? "");
 
+        x.gender == "Male"
+            ? male = true
+            : x.gender == "Female"
+                ? female = true
+                : null;
 
+        profile_link = x.profile_link ?? '';
+      });
+    }
+  }
 
-   final image = await ImagePicker().pickImage(source: source , imageQuality: 50);
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    init_start();
+  }
 
-   if(image==null)
-     return null;
-
-   setState(() {
-
-
-     this.file = File(image.path);
-     profile_link = "";
-
-   });
-
-   return 'change';
-
-
-
- }
-
-
-
-
-
-
- bool male = false , female = false;
-
-
- @override
- void initState() {
-   // TODO: implement initState
-   super.initState();
-
-   print('gbfgf');
-
-
-
-   print(widget.all_patient_name_list);
-   print(icon_tap);
-
-   patient_list= widget.all_patient_name_list;
-   icon_tap= widget.icon_tap;
-
-   print('bgf');
-   
-
-   print(patient_list);
-
-
-   if(widget.patient_data!=null)
-   {
-     name = widget.patient_data.name;
-
-     print('hhh');
-
-     print(widget.patient_data.profile_link.toString());
-
-
-     setState(() {
-
-       print('vb vbvb');
-
-
-       print(widget.patient_data.age);
-
-
-       age_edit.text=widget.patient_data.age==0?"":widget.patient_data.age.toString();
-       name_edit.text=widget.patient_data.name.toString();
-       mobile_edit.text=widget.patient_data.mobile==0?"":widget.patient_data.mobile.toString();
-
-
-
-       if(widget.patient_data.blood_group != null)
-         {
-           print('data.bloodgroup not emtpy');
-
-           blood_group_edit.text  = widget.patient_data.blood_group.isNotEmpty?widget.patient_data.blood_group:"Blood Group";
-           one_result =widget.patient_data.blood_group;
-
-         }
-
-       if(widget.patient_data.gender != null)
-         {
-           print(widget.patient_data.gender);
-
-           if(widget.patient_data.gender == "Male")
-            {
-
-              male=true;}
-           else if(widget.patient_data.gender == "Female")
-             {
-
-               female = true;
-             }
-
-         }
-
-       if(widget.patient_data.profile_link !=null)
-         {
-           profile_link = widget.patient_data.profile_link.isEmpty?null:widget.patient_data.profile_link ;
-
-
-
-         }
-
-
-
-
-     });
-
-
-   }
-
-
-
- }
-
-
-
-
-
-
-
- @override
+  @override
   Widget build(BuildContext context) {
-
-
-
-
-
-
-
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: AppTheme.teal,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back ,),
-            onPressed: (){
-              Navigator.pop(context , 'back');
-            },
-          ),
+      child: WillPopScope(
+        onWillPop: ()async{
 
+          if(is_saving);
+          else
+            {
+              Navigator.pop(context   , 'back');
+            }
 
-
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('Patient'),
-              IconButton(
+          return true;
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: AppTheme.teal,
+            leading: IconButton(
+              icon: Icon(
+                Icons.arrow_back,
+              ),
+              onPressed: () {
+                if(is_saving);
+                else
+                {
+                  Navigator.pop(context   , 'back');
+                }
+              },
+            ),
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Patient'),
+                IconButton(
                   onPressed: () async {
 
-                    print(Timestamp.now());
-                    print(icon_tap);
+                    is_saving = true;
 
-                    print(age_edit.text);
+                    if (name_edit.text != null && name_edit.text.isNotEmpty) {
+
+                      bool isSame = false;
+
+                      if (widget.icon_tap) {
+
+                        for (int i = 0; i < patient_name_list.length; i++) {
+                          if (name_edit.text == patient_name_list[i]) {
+                            isSame = true;
+                            break;
+                          }
+                        }
+                      }
+                      if (isSame && widget.icon_tap) {
+                        ShowDialogue(context,
+                            'Name is similar to another patient\nPlease change the name');
+                      } else {
+
+                        SnackOn(context, 'Saving Patient Details...');
+
+                        if (email_edit.text.isNotEmpty) {
+                          if (!EmailValidator.validate(email_edit.text)) {
+                            ShowDialogue(context, 'Invalid Email Address');
+                          }
+                        }
+
+                        if (mobile_edit.text.isEmpty) {
+                          ShowDialogue(context, ' Mobile no. is Compulsory');
+                        }
+
+                        if (mobile_edit.text.length != 10) {
+                          ShowDialogue(context, 'Invalid Mobile no.');
+                        }
+
+                        Map<String,dynamic>  json={};
+                        male == true
+                            ? json['gender'] = 'Male'
+                            : female == true
+                            ? json['gender'] = 'Female'
+                            : null;
+
+                        if (age_edit.text.isNotEmpty) {
+                          json['age'] = age_edit.text;
+                        }
+                        if (address_edit.text.isNotEmpty) {
+                          json['address'] = address_edit.text;
+                        }
+                        if (email_edit.text.isNotEmpty) {
+                          json['email'] = email_edit.text;
+                        }
+                        if (blood_group_edit.text.isNotEmpty) {
+                          json['blood_group'] = blood_group_edit.text;
+                        }
+                        if (profile_link != null) {
+                          profile_link!.isNotEmpty
+                              ? json['profile_link'] = profile_link!
+                              : null;
+                        }
 
 
 
+                        if (widget.icon_tap) {
 
+                          final doc = await FirebaseFirestore.instance
+                              .collection('Patient')
+                              .doc();
 
+                          if (file != null) {
+                            if (getFileExtension(file!.path) != null) {
+                              var link =
+                                  Cloud_Storage.Patient_Profile_Image_Upload(
+                                      doc_id: doc.id,
+                                      file: file!,
+                                      file_name: "Profile" +
+                                          getFileExtension(file!.path)!);
 
-                    if(name_edit.text!=null && name_edit.text.isNotEmpty)
-                      {
-                        bool isSame = false ;
-
-                        if(icon_tap)
-                          {
-                            for(int i =0 ;i<patient_list.length ;i++)
-                            {
-                              if(name_edit.text == patient_list[i])
-                              {
-                                isSame = true;
-
-                                print('\nisa same is trueee');
-
-                                break;
-                              }
-
+                              final snapshot = await link.whenComplete(() {});
+                              profile_link = await snapshot.ref.getDownloadURL();
                             }
                           }
 
-                        print(isSame);
+                         json = {
+                            'name': name_edit.text,
+                            'mobile': mobile_edit.text,
+                            'doc_id': doc.id,
+                          };
 
 
 
+                          doc.set(json);
+                        }
 
+                        else if (widget.icon_tap == false) {
 
-                         if(isSame && icon_tap)
-                           {
-                             print('in if ');
+                          if (file != null) {
+                            if (getFileExtension(file!.path) != null) {
+                              var link =
+                                  Cloud_Storage.Patient_Profile_Image_Upload(
+                                      doc_id: widget.patient_data!.doc_id,
+                                      file: file!,
+                                      file_name: "Profile" +
+                                          getFileExtension(file!.path)!);
 
+                              final snapshot = await link.whenComplete(() {});
+                              profile_link = await snapshot.ref.getDownloadURL();
+                            }
+                          }
 
-                            return  showDialog(context: context , builder: (context)=>AlertDialog(
-                               title: Text('Name is similar to another patient\nPlease change the name'  ),
-                               actions: [
-                                 TextButton(onPressed: (){
-                                   Navigator.pop(context);
+                          json = {
+                            'name': name_edit.text,
+                            'mobile': mobile_edit.text,
+                          };
 
-                                 }, child: Text('OK' ,  textScaleFactor: AppTheme.alert,))
-                               ],
 
-                             ));
-                           }
 
+                          await FirebaseFirestore.instance
+                              .collection('Patient')
+                              .doc(widget.patient_data!.doc_id)
+                              .update(json);
+                        }
 
-                         else
-                         {
-                           print('show dialogue ');
+                        SnackOff(context: context);
 
-                          SnackOn(context: context , msg: 'Saving Patient Details...');
-
-
-
-
-
-
-                             if(email_edit.text.isNotEmpty)
-                             {
-                               if(!EmailValidator.validate(email_edit.text))
-                               {
-                                 ShowDialogue(context: context, Alertmsg: 'Invalid Email Address');
-
-
-                               }
-                             }
-
-                             if(mobile_edit.text.isEmpty)
-                             {
-                               ShowDialogue(context: context, Alertmsg: ' Mobile no. is Compulsory');
-
-                             }
-
-
-
-
-                               if(mobile_edit.text.length!=10)
-                               {
-                                 ShowDialogue(context: context, Alertmsg: 'Invalid Mobile no.');
-
-                               }
-
-
-
-
-
-
-                             if(icon_tap)
-                             {
-                               var doc = await FirebaseFirestore.instance.collection('Patient').doc();
-                               if(file!=null)
-                               {
-
-                                 print('file new file is selected null');
-
-
-
-
-
-                               var link = Cloud_Storage.Patient_Profile_Image_Upload(
-                                 doc_id:  doc.id,
-                                 file: file,
-                                 file_name: "Profile"+ getFileExtension(file.path)
-                               );
-
-                               final snapshot =   await link.whenComplete((){});
-
-
-
-                               profile_link =  await snapshot.ref.getDownloadURL();
-
-                               }
-
-
-                               final json = {
-                                 'name':name_edit.text,
-                                 'mobile':mobile_edit.text,
-                                 'doc_id' : doc.id,
-                               };
-
-                               male==true?json['gender']='Male':female==true?json['gender']='Female':null;
-
-                               if(age_edit.text.isNotEmpty)
-                                 {
-                                   json['age'] = age_edit.text;
-                                 }
-                               if(address_edit.text.isNotEmpty)
-                               {
-                                 json['address'] = address_edit.text;
-                               }
-                               if(email_edit.text.isNotEmpty)
-                               {
-                                 json['email'] = email_edit.text;
-                               }
-                               if(blood_group_edit.text.isNotEmpty)
-                               {
-                                 json['blood_group'] = blood_group_edit.text;
-                               }
-                               if(profile_link.isNotEmpty)
-                               {
-                                 json['profile_link'] = profile_link;
-                               }
-
-
-                               doc.set(json);
-                             }
-                             else if(icon_tap == false)
-                             {
-
-                               if(file!=null)
-                               {
-
-                                 print('file no null');
-
-                               var link = Cloud_Storage.Patient_Profile_Image_Upload(
-                                 doc_id: widget.patient_data.doc_id ,
-                                 file: file,
-                                 file_name: "Profile"+getFileExtension(file.path)
-                               );
-
-
-                               profile_link = await link.whenComplete((){});
-
-                               }
-
-                               final json = {
-
-                                 'name':name_edit.text,
-                                 'mobile':mobile_edit.text,
-                               };
-
-                               male==true?json['gender']='Male':female==true?json['gender']='Female':null;
-
-                               if(age_edit.text.isNotEmpty)
-                               {
-                                 json['age'] = age_edit.text;
-                               }
-
-                               if(address_edit.text.isNotEmpty)
-                               {
-                                 json['address'] = address_edit.text;
-                               }
-                               if(email_edit.text.isNotEmpty)
-                               {
-                                 json['email'] = email_edit.text;
-                               }
-                               if(blood_group_edit.text.isNotEmpty)
-                               {
-                                 json['blood_group'] = blood_group_edit.text;
-                               }
-                               if(profile_link.isNotEmpty)
-                               {
-                                 json['profile_link'] = profile_link;
-                               }
-
-
-
-                               await FirebaseFirestore.instance.collection('Patient').doc(widget.patient_data.doc_id).update(
-                               json);
-                             }
-
-
-                         SnackOff(context: context);
-
-                             Navigator.pop(context);
-
-
-
-
-
-
-
-
-                         }
-
-
+                        Navigator.pop(context);
                       }
-                    else
-                      {
-                        return showDialog(context: context , builder: (context)=>AlertDialog(
+                    }
 
-                          title: Text('Name is Compulsory\nPlease write the name'  , textScaleFactor: AppTheme.alert,),
-                          actions: [
-                            TextButton(onPressed: (){
-                              Navigator.pop(context);
+                    else {
+                      ShowDialogue(
+                          context, 'Name is Compulsory\nPlease write the name');
+                    }
 
-                            }, child: Text('OK' ,  textScaleFactor: AppTheme.alert,))
-                          ],
-                        ));
-
-                      }
+                    is_saving = false;
 
                   },
                   icon: Icon(
                     Icons.save,
                     color: Colors.white,
-
                   ),
-              )
-            ],
-          ),
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-
-
-
-            children: [
-
-          Container(
-          margin: EdgeInsets.symmetric(vertical: 2.h),
-          child: GestureDetector(
-            onTap: () {
-              showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                    title: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        TextButton.icon(
-                            icon: Icon(FontAwesomeIcons.cameraRetro , color: AppTheme.green, ),
-                            onPressed: () {
-
-
-                              imagepicker(ImageSource.camera);
-                              Navigator.pop(context);
-                            },
-                            label: Text(' Camera' ,style: AppTheme.Black,)),
-                        TextButton.icon(
-                            icon: Icon(FontAwesomeIcons.photoFilm  , color: AppTheme.green, ),
-                            onPressed: () {
-
-                              imagepicker(ImageSource.gallery);
-                              Navigator.pop(context);
-                            },
-                            label: Text(' Gallery' ,style: AppTheme.Black, ))
-                      ],
-                    )),
-              );
-            },
-
-            onDoubleTap: (){
-              setState(() {
-                profile_img_delete = !profile_img_delete;
-
-              });
-            },
-
-
-            child: ClipOval(
-              child: profile_link == null
-                  ? CircleAvatar(
-                backgroundColor: AppTheme.grey,
-                radius: 20.w,
-                child: Icon(
-                  Icons.person_add_outlined,
-                  color: Colors.white,
-                ),
-              )
-                  :  file!=null?Image.file(
-                file,
-                fit: BoxFit.cover,
-                height: 40.w,
-                width: 40.w,
-
-              ):Image.network(
-                profile_link ,
-                height: 40.w,
-                width: 40.w,
-                fit: BoxFit.fill,
-                loadingBuilder: (BuildContext context, Widget child,
-                    ImageChunkEvent loadingProgress) {
-                  if (loadingProgress == null) return child;
-                  return Center(
-                    child: CircleAvatar(
-                      radius: 20.w,
-                      backgroundColor: Colors.white70,
-                      child: Center(
-                        child: CircularProgressIndicator(
-                          value: loadingProgress.expectedTotalBytes != null
-                              ? loadingProgress.cumulativeBytesLoaded /
-                              loadingProgress.expectedTotalBytes
-                              : null,
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
+                )
+              ],
             ),
           ),
-        ),
-
-              Visibility(
-                visible: profile_img_delete,
-                child: CircleAvatar(
-                  backgroundColor: AppTheme.white,
-                  child: IconButton(
-                    onPressed: (){
-
-                      setState(() {
-
-                        profile_link.isNotEmpty?FirebaseStorage.instance.refFromURL(profile_link).delete():null;
-
-                        profile_link=null;
-                        file=null;
-                        profile_img_delete=false;
-
-
-                      });
-
-
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 2.h),
+                  child: GestureDetector(
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                            title: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            TextButton.icon(
+                                icon: Icon(
+                                  FontAwesomeIcons.cameraRetro,
+                                  color: AppTheme.green,
+                                ),
+                                onPressed: () {
+                                  imagepicker(ImageSource.camera);
+                                  Navigator.pop(context);
+                                },
+                                label: Text(
+                                  ' Camera',
+                                  style: AppTheme.Black,
+                                )),
+                            TextButton.icon(
+                                icon: Icon(
+                                  FontAwesomeIcons.photoFilm,
+                                  color: AppTheme.green,
+                                ),
+                                onPressed: () {
+                                  imagepicker(ImageSource.gallery);
+                                  Navigator.pop(context);
+                                },
+                                label: Text(
+                                  ' Gallery',
+                                  style: AppTheme.Black,
+                                ))
+                          ],
+                        )),
+                      );
                     },
-                    icon: Icon(Icons.delete_outline_outlined ,color: Colors.red,),
+                    onDoubleTap: () {
+                      setState(() {
+                        profile_img_delete = !profile_img_delete;
+                      });
+                    },
+                    child: ClipOval(
+                      child: file != null
+                          ? Image.file(
+                              file!,
+                              fit: BoxFit.cover,
+                              height: 40.w,
+                              width: 40.w,
+                            )
+                          : profile_link != null
+                              ? Image.network(
+                                  profile_link!,
+                                  height: 40.w,
+                                  width: 40.w,
+                                  fit: BoxFit.fill,
+                                  loadingBuilder: (BuildContext context,
+                                      Widget child,
+                                      ImageChunkEvent? loadingProgress) {
+                                    if (loadingProgress == null) return child;
+                                    return Center(
+                                      child: CircleAvatar(
+                                        radius: 20.w,
+                                        backgroundColor: Colors.white70,
+                                        child: const Center(
+                                          child: CircularProgressIndicator(),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                )
+                              : CircleAvatar(
+                                  backgroundColor: AppTheme.grey,
+                                  radius: 20.w,
+                                  child: Icon(
+                                    Icons.person_add_outlined,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                    ),
                   ),
                 ),
-              ),
 
+                Visibility(
+                  visible: profile_img_delete,
+                  child: CircleAvatar(
+                    backgroundColor: AppTheme.white,
+                    child: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          profile_link != null
+                              ? profile_link!.isNotEmpty
+                                  ? FirebaseStorage.instance
+                                      .refFromURL(profile_link!)
+                                      .delete()
+                                  : null
+                              : null;
 
+                          profile_link = null;
+                          file = null;
+                          profile_img_delete = false;
+                        });
+                      },
+                      icon: Icon(
+                        Icons.delete_outline_outlined,
+                        color: Colors.red,
+                      ),
+                    ),
+                  ),
+                ),
 
+                txtfield(
+                  name_edit,
+                  "Name",
+                  TextInputType.text,
+                  Icon(Icons.person_outline),
+                ),
 
-              txtfield(text_edit: name_edit, hint: "Name", keyboard: TextInputType.text , icon: Icon(Icons.person_outline),),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ChoiceChip(label: Text('Male'), selected:male,selectedColor: Colors.teal,onSelected: (bool selected){
-                    setState(() {
-                      male=true;
-                      female=false;
-
-
-
-                    });
-
-                  }, ),
-
-                  ChoiceChip(label: Text('Female' , ), selected:female ,selectedColor: Colors.teal,onSelected: (bool a){
-                    setState(() {
-                      male=false;
-                      female=true;
-
-                    });
-                  }, ),
-
-                  Container(
-                    width: 39.w,
-
-
-                      child: TextField(
-                        controller: age_edit,
-
-                        decoration: InputDecoration(
-
-
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ChoiceChip(
+                      label: Text('Male'),
+                      selected: male,
+                      selectedColor: Colors.teal,
+                      onSelected: (bool selected) {
+                        setState(() {
+                          male = true;
+                          female = false;
+                        });
+                      },
+                    ),
+                    ChoiceChip(
+                      label: Text(
+                        'Female',
+                      ),
+                      selected: female,
+                      selectedColor: Colors.teal,
+                      onSelected: (bool a) {
+                        setState(() {
+                          male = false;
+                          female = true;
+                        });
+                      },
+                    ),
+                    Container(
+                        width: 39.w,
+                        child: TextField(
+                          controller: age_edit,
+                          decoration: InputDecoration(
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
                                 color: Colors.grey,
-                                width: 2,),
-                              borderRadius: BorderRadius.circular(10),),
-
+                                width: 2,
+                              ),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
                                 color: Colors.teal,
-                                width: 2,),
-                              borderRadius: BorderRadius.circular(10),),
-
+                                width: 2,
+                              ),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
                             hintText: "Age",
                             prefixIcon: Icon(Icons.cake_outlined),
-
-
-
-
-
-
-
-                      )
-                      ,
-                        keyboardType: TextInputType.number,
-                      )
-
-                  ),
-
-
-                ],
-              ),
-
-
-              txtfield(text_edit: address_edit, hint: "Address", keyboard: TextInputType.text , icon: Icon(Icons.place_outlined), ),
-              txtfield(text_edit: email_edit, hint: "Email", keyboard:TextInputType.emailAddress , icon: Icon(Icons.email),),
-              Padding(
-                padding:  EdgeInsets.symmetric(horizontal: 6.w , vertical: 1.h),
-                child: TextField(
-                  controller: mobile_edit,
-
-                  decoration: InputDecoration(
-
-
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.grey,
-                          width: 2,),
-                        borderRadius: BorderRadius.circular(10),),
-
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.teal,
-                          width: 2,),
-                        borderRadius: BorderRadius.circular(10),),
-
-                      labelText: 'Mobile no.',
-                      prefixIcon: Icon(Icons.call)),
-
-
-                  keyboardType: TextInputType.number,
-                  maxLength: 10,
-
-
-
-
-
-
-
-
+                          ),
+                          keyboardType: TextInputType.number,
+                        )),
+                  ],
                 ),
-              ),
 
-
-              Padding(
-                  padding:  EdgeInsets.symmetric(vertical: 1.h , horizontal: 6.w),
-                  child:TextField(
-                    controller: blood_group_edit,
-                    autofocus: false,
-
-                    readOnly: true,
-
+                txtfield(
+                  address_edit,
+                  "Address",
+                  TextInputType.text,
+                  Icon(Icons.place_outlined),
+                ),
+                txtfield(
+                  email_edit,
+                  "Email",
+                  TextInputType.emailAddress,
+                  Icon(Icons.email),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 1.h),
+                  child: TextField(
+                    controller: mobile_edit,
                     decoration: InputDecoration(
-
-
-
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(
                             color: Colors.grey,
-                            width: 2,),
-                          borderRadius: BorderRadius.circular(10),),
-
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(
                             color: Colors.teal,
-                            width: 2,),
-                          borderRadius: BorderRadius.circular(10),),
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        labelText: 'Mobile no.',
+                        prefixIcon: Icon(Icons.call)),
+                    keyboardType: TextInputType.number,
+                    maxLength: 10,
+                  ),
+                ),
 
-                        labelText: "Blood Group",
-                        prefixIcon: Icon(Icons.medication),
-                        // ignore: void_checks
-                        suffixIcon: IconButton(icon: Icon(Icons.arrow_drop_down_circle_outlined),onPressed: (){
+                Padding(
+                    padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 6.w),
+                    child: TextField(
+                      controller: blood_group_edit,
+                      autofocus: false,
+                      readOnly: true,
+                      decoration: InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.grey,
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.teal,
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          labelText: "Blood Group",
+                          prefixIcon: Icon(Icons.medication),
+                          // ignore: void_checks
+                          suffixIcon: IconButton(
+                            icon: Icon(Icons.arrow_drop_down_circle_outlined),
+                            onPressed: () {
+                              setState(() {
+                                blood_group_edit.text = "";
+                              });
 
-                          setState(() {
-                            blood_group_edit.text ="";
+
+                                Blood_Group[0] = blood_group_edit.text;
+
+                                showDialog(
+                                    context: context,
+                                    builder: (context) => List_Search(
+                                        result: Blood_Group,
+                                        get: Storage.get,
+                                        set: Storage.set,
+                                        group: 'blood_group',
+                                        Group: 'Blood_Group',
+                                        one_select: true,
+                                        ky: Storage.blood_group)).then((value) {
 
 
-                          });
-
-
-
-                          if(name_edit!=null && name_edit.text.isNotEmpty)
-                          {
-                            print('fff');
-
-
-                            print(blood_group_edit.text);
-
-                            Blood_Group[0]=blood_group_edit.text;
-
-                            return   showDialog(
-                                context: context,
-                                builder: (context) => Padding(
-                                  padding:  EdgeInsets.all(4.w),
-                                  child: List_Search(result: Blood_Group, get: Storage.get, set:  Storage.set, group: 'blood_group', Group: 'Blood_Group', one_select: true, ky: Storage.blood_group),
-                                )).then((value){
-                              print('ff');
-
-                              if(value!=null)
-                                {
-                                  if(value.isNotEmpty)
-                                    {
-                                     
 
                                       setState(() {
-
                                         blood_group_edit.text = value[0];
-                                        one_result = value[0];
-
-
-
-
-
-
+                                        if(value.isEmpty)
+                                          {
+                                            blood_group_edit.text='';
+                                          }
                                       });
-                                    }
-                                }
 
 
+                                });
 
-
-                            });
-                          }
-                          else
-                          {
-                            return showDialog(
-                                context: context,
-                                builder: (context) =>AlertDialog(
-                                  title: Text('Please enter Name of Patient'  , textScaleFactor: AppTheme.alert,),
-                                  actions: [
-                                    TextButton(onPressed: (){
-                                      Navigator.pop(context);
-
-                                    }, child: Text('OK' ,  textScaleFactor: AppTheme.alert,))
-                                  ],
-                                ));
-                          }
-                        },)
-                    ),
-
-
-
-
-
-
-
-
-
-
-                  )
-              ),
-
-
-
-
-
-
-
-
-
-
-//            SizedBox(height: 5,),
-//            Padding(
-//              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-//              child: Divider( color: Colors.grey,thickness: 0.5,),
-//            ),
-
-
-
-
-
-            ],
+                            },
+                          )),
+                    )),
+              ],
+            ),
           ),
         ),
       ),
@@ -860,21 +586,17 @@ class _AddPatientState extends State<AddPatient> {
 }
 
 class txtfield extends StatefulWidget {
-   txtfield({
-    Key key,
-    @required this.text_edit,
-    @required this.hint,
-    @required this.keyboard,
-     @required this.icon,
-
-  }) : super(key: key);
+  txtfield(
+    this.text_edit,
+    this.hint,
+    this.keyboard,
+    this.icon,
+  );
 
   TextEditingController text_edit;
   String hint;
   TextInputType keyboard;
   Icon icon;
-
-
 
   @override
   State<txtfield> createState() => _txtfieldState();
@@ -884,42 +606,28 @@ class _txtfieldState extends State<txtfield> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding:  EdgeInsets.symmetric(vertical: 1.h, horizontal:  6.w),
+      padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 6.w),
       child: TextField(
         controller: widget.text_edit,
-
-          decoration: InputDecoration(
-
-
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: Colors.grey,
-                  width: 2,),
-                borderRadius: BorderRadius.circular(10),),
-
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: Colors.teal,
-                  width: 2,),
-                borderRadius: BorderRadius.circular(10),),
-
-              labelText: widget.hint,
-          prefixIcon: widget.icon),
-
-
-        keyboardType: widget.keyboard ,
-
-
-
-
-
-
-
+        decoration: InputDecoration(
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.grey,
+                width: 2,
+              ),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.teal,
+                width: 2,
+              ),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            labelText: widget.hint,
+            prefixIcon: widget.icon),
+        keyboardType: widget.keyboard,
       ),
     );
   }
 }
-
-
-
-

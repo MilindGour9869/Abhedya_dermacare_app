@@ -1,15 +1,18 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-
+//firebase
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_app/custom_widgets/loading_screen.dart';
 
-import 'package:flutter_app/default.dart';
-
+//screens
 import 'payment.dart';
 import 'add_visits.dart';
-import 'package:flutter_app/classes/Patient_name_list.dart';
 
+//models
+import 'package:flutter_app/classes/Patient_name_list.dart';
+import 'package:flutter_app/default.dart';
+
+//External libs
 import 'package:date_format/date_format.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
@@ -20,15 +23,7 @@ class VisitsDate extends StatefulWidget {
   Patient_name_data_list patient_data;
   String path ;
 
-
-
-
-
-
-
-
-
-  VisitsDate({@required this.patient_data , @required this.path});
+  VisitsDate( this.patient_data , this.path, {Key? key}) : super(key: key);
 
   @override
   _VisitsDateState createState() => _VisitsDateState();
@@ -36,89 +31,47 @@ class VisitsDate extends StatefulWidget {
 
 class _VisitsDateState extends State<VisitsDate> {
 
-  Future f;
+  late Future f;
 
+  late List<String> visit_dates;
 
+  bool is_patient_instance_updated = false;
 
-  List<String> visit_dates=[];
-
-  String did_update = 'back';
-
-
-  Map<String , Timestamp> date_map={};
-
+  late Map<String,Timestamp> date_timestamp_map;
 
   bool delete = false;
 
 
-
-
-
-
-
-
-
-  Future<dynamic> visit_date()async{
+  Future<void> visit_date()async{
 
     visit_dates=[];
 
-    print('ddddfewewe');
+    if(widget.patient_data.visits_mapData_list!=null)
+      {
+        if(widget.patient_data.visits_mapData_list!.isNotEmpty)
+          {
+            widget.patient_data.visits_mapData_list!.forEach((key, value) {
+
+              date_timestamp_map[key]= value['visit_date'];
+              visit_dates.add(key);
 
 
-    print(widget.patient_data.hashCode);
+            });
+
+            setState(() {
+              visit_dates=visit_dates;
+
+            });
+          }
+      }
+  }
 
 
-    widget.patient_data.visits_mapData_list.forEach((key, value) {
-
-
-
-      visit_dates.add(formatDate(value['visit_date'].toDate(), [ dd, '-', mm, '-', yyyy]).toString());
-      date_map[formatDate(value['visit_date'].toDate(), [ dd, '-', mm, '-', yyyy]).toString()] =value['visit_date'];
-
-
-
-
-    });
-
-
-
-
-      setState(() {
-       visit_dates=visit_dates;
-
-     });
-
-
-
-
-
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  @override
+    @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
-    print(widget.patient_data.doc_id);
     f=visit_date();
 
   }
@@ -127,8 +80,10 @@ class _VisitsDateState extends State<VisitsDate> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: (){
-        Navigator.pop(context , did_update);
+      onWillPop: ()async{
+        Navigator.pop(context , is_patient_instance_updated);
+        return true;
+
       },
       child: MediaQuery(
         data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
@@ -137,7 +92,7 @@ class _VisitsDateState extends State<VisitsDate> {
           appBar: AppBar(
             leading: IconButton(
               onPressed: (){
-                Navigator.pop(context , did_update);
+                Navigator.pop(context , is_patient_instance_updated);
               },
               icon: Icon(Icons.arrow_back , size: AppTheme.aspectRatio*40),
             ),
@@ -165,13 +120,13 @@ class _VisitsDateState extends State<VisitsDate> {
 
                 if(snapshot.connectionState==ConnectionState.waiting)
                   {
-                    return CircularProgressIndicator();
+                    return const Center(child: CircularProgressIndicator());
 
                   }
 
                 if(visit_dates.isEmpty)
                   {
-                    return Center(child: Text('loading' ));
+                    return const Center(child: Text('loading..' ));
 
                   }
 
@@ -189,13 +144,6 @@ class _VisitsDateState extends State<VisitsDate> {
 
                             children:visit_dates.map((date) {
 
-                              print(date);
-
-
-
-
-
-
                               return SizedBox(
 
                                   child: GestureDetector(
@@ -204,19 +152,17 @@ class _VisitsDateState extends State<VisitsDate> {
                                         {
                                           Navigator.push(context , MaterialPageRoute(builder: (context)=>AddVisits(
 
-                                            visit_date: date_map[date],
+                                            widget.patient_data,
+                                            false,
+                                            date_timestamp_map[date]!,
 
-                                            icon_tap: false,
-
-                                            patient_data: widget.patient_data,
-
-                                            map: widget.patient_data.visits_mapData_list[date.toString()],
+                                            patient_visit_date_map: widget.patient_data.visits_mapData_list![date]!,
 
                                           ))).then((value) {
 
                                             if(value == 'save')
                                               {
-                                                did_update = 'save';
+                                                is_patient_instance_updated = true;
 
                                               }
 
@@ -228,18 +174,18 @@ class _VisitsDateState extends State<VisitsDate> {
                                         {
                                           Navigator.push(context , MaterialPageRoute(builder: (context)=>Payment(
 
-                                            visit_date: date_map[date],
+                                            visit_date: date,
 
                                             icon_tap: false,
 
                                             patient_data: widget.patient_data,
 
-                                            map: widget.patient_data.visits_mapData_list[date.toString()],
+                                            map: widget.patient_data.visits_mapData_list![date.toString()]!,
 
                                           ))).then((value) {
                                             if(value == 'save')
                                             {
-                                              did_update = 'save';
+                                              is_patient_instance_updated = true;
 
                                             }
 
@@ -271,14 +217,23 @@ class _VisitsDateState extends State<VisitsDate> {
                                             backgroundColor: AppTheme.white,
                                             child: IconButton(onPressed: ()async{
 
-                                              widget.patient_data.visits_mapData_list.remove(date);
-                                              setState(() {
-                                                visit_dates.remove(date);
+                                              bool result = ShowDialogue.f(context, 'Are You Sure ..?');
 
-                                              });
+                                              if(result)
+                                                {
+                                                  SnackOn(context, 'Deleting the selected visit date...');
+
+                                                  widget.patient_data.visits_mapData_list!.remove(date);
+                                                  setState(() {
+                                                    visit_dates.remove(date);
+
+                                                  });
 
 
-                                              await FirebaseFirestore.instance.collection('Patient').doc(widget.patient_data.doc_id).collection('visits').doc(date).delete();
+                                                  await FirebaseFirestore.instance.collection('Patient').doc(widget.patient_data.doc_id).collection('visits').doc(date).delete();
+
+                                                  SnackOff(context);
+                                                }
 
 
 

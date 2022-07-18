@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+
+//screens
 import 'package:flutter_app/list_search/list_search.dart';
+
+//Local Storage
 import 'package:flutter_app/storage/storage.dart';
+
+//External libs
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-import '../../list_search/add_info_list_search.dart';
+//App Theme
 import '../../default.dart';
 
 class AddData extends StatefulWidget {
@@ -16,7 +22,7 @@ class AddData extends StatefulWidget {
   Color color;
 
 
-  AddData({this.medicine_name  , this.color , this.map , this.result_map });
+  AddData(this.medicine_name  , this.color , this.map , this.result_map );
 
   @override
   _AddDataState createState() => _AddDataState();
@@ -35,10 +41,11 @@ class _AddDataState extends State<AddData> {
 
 
   void pop(){
+
     List<String> time =[] ;
     String duration;
 
-    print(result_map['aa']);
+
 
     map2.forEach((key, v) {
       if(v)
@@ -54,8 +61,8 @@ class _AddDataState extends State<AddData> {
     map3.forEach((key, v) {
       if(v)
       {
-        tenure['tenure'] =  duration ;
-        tenure['Duration'] = key;
+        tenure['no_of_days'] =  duration ; //int -> string
+        tenure['d/w/m'] = key; // string
       }
     });
 
@@ -63,17 +70,9 @@ class _AddDataState extends State<AddData> {
 
     if(time !=null && duration !=null)
     {
-      result_map['time'] = time;
-
-
-      result_map['duration'] = tenure;
-
-      result_map['add_info'] = all_data_english_list;
-
-      print(result_map);
-
-
-
+      result_map['at_what_time'] = time; //list
+      result_map['tenure'] = tenure; //map
+      result_map['add_info'] = all_data_english_list; //list
       Navigator.pop(context , result_map);
     }
     else{
@@ -215,11 +214,9 @@ class _AddDataState extends State<AddData> {
 
       },
       child: WillPopScope(
-        onWillPop: (){
+        onWillPop: ()async{
          pop();
-
-
-          return;
+         return  true;
         },
         child: Container(
           color: Colors.transparent,

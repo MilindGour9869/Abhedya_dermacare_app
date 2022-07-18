@@ -33,7 +33,7 @@ class _Blood_Group_List_SearchState extends State<Blood_Group_List_Search> {
 
   List group_search_data_list = [];
 
-  Map<String, bool> select = {};
+  late Map<String, bool> select = {};
 
 
 
@@ -217,8 +217,7 @@ class _Blood_Group_List_SearchState extends State<Blood_Group_List_Search> {
 
         pop();
 
-
-      },
+        },
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
@@ -279,7 +278,7 @@ class _Blood_Group_List_SearchState extends State<Blood_Group_List_Search> {
 
 
 
-                            select[e] = !select[e];
+                            select[e] = !select[e]!;
 
 
 
@@ -292,16 +291,16 @@ class _Blood_Group_List_SearchState extends State<Blood_Group_List_Search> {
                               group_updated_result.add(e);
 
                             }
-                            if (select[e] == false) {
+                            else if (select[e] == false) {
                               group_updated_result = [];
 
                             }
 
                             setState(() {
 
-                              select[e]= select[e];
+                              select[e]= select[e]!;
 
-                              print(select[e]);
+
 
 
 
@@ -316,7 +315,7 @@ class _Blood_Group_List_SearchState extends State<Blood_Group_List_Search> {
 
                           leading: CircleAvatar(
                             backgroundColor:
-                            select[e] ? AppTheme.teal : AppTheme.light_black,
+                            select[e]! ? AppTheme.teal : AppTheme.light_black,
                             child: Icon(
                               Icons.done,
                               color: AppTheme.white,
@@ -339,7 +338,7 @@ class _Blood_Group_List_SearchState extends State<Blood_Group_List_Search> {
                                 onPressed: (){
                                   setState(() {
 
-                                    String s;
+                                    late String s;
 
 
                                     all_data_map.forEach((key, value) {

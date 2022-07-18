@@ -8,7 +8,7 @@ import '../services/service_search_list.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 class Payment extends StatefulWidget {
 
-  Timestamp visit_date;
+  String visit_date;
   Patient_name_data_list patient_data;
   bool icon_tap;
   Map<String, dynamic> map;
@@ -49,10 +49,12 @@ class _PaymentState extends State<Payment> {
     super.initState();
 
     visit_date = formatDate(widget.visit_date.toDate(), [ dd, '-', mm, '-', yyyy]).toString();
-   // print(widget.patient_data.visits_mapData_list[visit_date]['service']);
+
     service_result = widget.patient_data.visits_mapData_list[visit_date]!=null?Map<String, Map<String, dynamic>>.from(widget.patient_data.visits_mapData_list[visit_date]['service']):{};
     if(service_result.isNotEmpty)
       {
+        print(widget.patient_data.visits_mapData_list[visit_date]['service']);
+
         Services = service_result.keys.toList();
         service_result.forEach((key, value) {
 

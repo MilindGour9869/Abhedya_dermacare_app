@@ -12,8 +12,8 @@ import 'package:flutter/services.dart';
 
 class Company_name_List_Search extends StatefulWidget {
 
-  List result;
-  Company_name_List_Search({this.result});
+  late List result;
+  Company_name_List_Search(this.result);
 
   @override
   _Company_name_List_SearchState createState() => _Company_name_List_SearchState();

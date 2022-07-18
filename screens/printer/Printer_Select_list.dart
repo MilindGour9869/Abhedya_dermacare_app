@@ -11,14 +11,13 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 
 import 'dart:io';
 
-import 'package:open_file/open_file.dart';
-import 'package:path_provider/path_provider.dart';
+
 
 import '../../default.dart';
 
 class Printer_Select_List extends StatefulWidget {
 
-  Map<String , dynamic> map_list = {};
+  Map<String , dynamic?> map_list = {};
 
   String doc_id;
 
@@ -27,8 +26,7 @@ class Printer_Select_List extends StatefulWidget {
 
 
 
-  Printer_Select_List({this.map_list , this.doc_id});
-
+  Printer_Select_List(this.map_list , this.doc_id);
   @override
   _Printer_Select_ListState createState() => _Printer_Select_ListState();
 }
@@ -135,7 +133,7 @@ class _Printer_Select_ListState extends State<Printer_Select_List> {
                               title: Text(key),
                               onTap: (){
                                 setState(() {
-                                  map_bool[key] = !map_bool[key];
+                                  map_bool[key] != map_bool[key];
 
 
 

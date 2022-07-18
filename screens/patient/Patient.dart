@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 
-
 // Storage
 import 'package:flutter_app/storage/cloud_storage.dart';
 import 'package:flutter_app/storage/storage.dart';
 
 // Screens
-import 'add_patient.dart';  // Add patient
-import 'package:flutter_app/default.dart'; // Color theme
-import 'document.dart'; // Document Screen
-import 'visits_date.dart'; // Visit date
+import 'add_patient.dart';
+import 'package:flutter_app/default.dart';
+import 'document.dart';
+import 'visits_date.dart';
 
 // model
 import 'package:flutter_app/classes/Patient_name_list.dart';
@@ -21,90 +20,98 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-
-
-
-
 class Patient extends StatefulWidget {
   @override
   _State createState() => _State();
 }
 
 class _State extends State<Patient> {
-
-
   bool today = true;
   bool all = false;
 
+  late Future f;
 
-  Future f;
+  late List<Patient_name_data_list> patient_instance_list;
 
-  List<Patient_name_data_list> patient_instance_list = [];
+  late List<String> all_patient_name_list;
+  late List<String> search_patient_list;
 
-  List<String> all_patient_name_list = [];
-  List<String> search_patient_list = [];
-
-  Map<String, Patient_name_data_list> map_name_patientInstance_list = {};
+  late Map<String, Patient_name_data_list> map_name_patientInstance_list;
 
   var search_text_controller = TextEditingController();
 
-  Future PatientDataDelete(@required String doc_Id) async {
+  // Create , Read , Update
+  Future<void> patient_detail() async {
+    patient_instance_list = [];
+    all_patient_name_list = [];
+    search_patient_list = [];
+    map_name_patientInstance_list = {};
+    int i = 0;
+
+    await FirebaseFirestore.instance
+        .collection('Patient')
+        .snapshots()
+        .forEach((snapshot) => snapshot.docs.forEach((element) async {
+
+      Patient_name_data_list patient_class_instance = Patient_name_data_list();
+
+
+
+             patient_instance_list.add(patient_class_instance.from_Json_to_Patient_Instance(element.data()));
+
+              await PatientVisitData(patient_instance_list[i], element.id);
+              i++;
+            }));
+
+    setState(() {
+      all_patient_name_list = patient_instance_list.map((e) => e.name).toList();
+
+      int n = all_patient_name_list.length;
+
+      for (int i = 0; i < n; i++) {
+        map_name_patientInstance_list[all_patient_name_list[i]] =
+            patient_instance_list[i];
+      }
+
+      search_patient_list = all_patient_name_list;
+    });
+  }
+
+  Future<void> PatientVisitData(
+      Patient_name_data_list patient_instance, String docId) async {
+    await FirebaseFirestore.instance
+        .collection('Patient')
+        .doc(docId)
+        .collection('visits')
+        .snapshots()
+        .forEach((snapshot) {
+      snapshot.docs.forEach((element) {
+        Map<String, dynamic> map = element.data();
+
+        patient_instance.Visit_Map_Data(
+            element.data(),
+            formatDate(map['visit_date'].toDate(), [dd, '-', mm, '-', yyyy])
+                .toString());
+      });
+    });
+  }
+
+  //Delete
+  Future PatientDataDelete(String docId) async {
     final doc =
-        await FirebaseFirestore.instance.collection('Patient').doc(doc_Id);
+        await FirebaseFirestore.instance.collection('Patient').doc(docId);
 
-    doc.collection('visits').get().then((value) => value.docs.forEach((element) { element.reference.delete();
-    }));
-
-
+    doc
+        .collection('visits')
+        .get()
+        .then((value) => value.docs.forEach((element) {
+              element.reference.delete();
+            }));
 
     doc.delete();
   }
 
-  Future PatientVisitData({@required Patient_name_data_list p , @required String doc_id }) async{
-
-
-
-    await FirebaseFirestore.instance.collection('Patient').doc(doc_id).collection('visits').get().then((QuerySnapshot querySnapshot){
-
-
-
-
-
-
-      querySnapshot.docs.forEach((element) {
-
-
-        print('cccc');
-
-
-
-        print(element.data());
-
-        //visits_instance_list.add(Patient_name_data_list.visits(element.data()));
-
-        Map<String,dynamic> map = element.data();
-
-        print(p.hashCode);
-
-
-        print(map['visit_date']);
-
-
-
-
-        p.Visit_Map_Data(map: element.data() , visit_date:formatDate(map['visit_date'].toDate(), [ dd, '-', mm, '-', yyyy]).toString()  );
-
-
-
-
-
-
-
-      });
-  });
-
-  }
-
+  //other
   String greeting() {
     var hour = DateTime.now().hour;
     if (hour < 12) {
@@ -116,25 +123,31 @@ class _State extends State<Patient> {
     return 'good evening ,';
   }
 
-  Widget Tile(Patient_name_data_list patient_data_tile) => GestureDetector(
+  onItemChanged(String value) {
+    setState(() {
+      search_patient_list = all_patient_name_list
+          .where((string) => string.toLowerCase().contains(value.toLowerCase()))
+          .toList();
+      if (search_patient_list.isEmpty) {
+        search_patient_list = [];
+      }
+    });
+  }
+
+  // Func Widget
+  Widget Tile(Patient_name_data_list patient_instance) => GestureDetector(
         onTap: () {
           Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => AddPatient(
-                        patient_data: patient_data_tile,
-                        all_patient_name_list: all_patient_name_list,
-                        icon_tap: false,
+                        all_patient_name_list,
+                        false,
+                        patient_data: patient_instance,
                       ))).then((value) {
-            print('\n\nka boom ');
-
-            print(value);
-
-            if (value !='back') {
-
-              patient_data();
+            if (value != 'back') {
+              patient_detail();
             }
-
           });
         },
         child: Container(
@@ -151,9 +164,8 @@ class _State extends State<Patient> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    patient_data_tile.name == null ? "" : '${patient_data_tile.name[0].toUpperCase()+patient_data_tile.name.substring(1)}',
-
-
+                    // Name is Compulsory , so no need to check null safety...
+                    '${patient_instance.name[0].toUpperCase() + patient_instance.name.substring(1)}',
                   ),
                   IconButton(
                       onPressed: () {
@@ -161,39 +173,42 @@ class _State extends State<Patient> {
                             context: context,
                             builder: (context) => AlertDialog(
                                   titlePadding: EdgeInsets.all(0),
-                                  title:
-                                      Center(child: Text('Are you Sure ?' ,textScaleFactor: AppTheme.list_tile_subtile,)),
+                                  title: Center(
+                                      child: Text(
+                                    'Are you Sure ?',
+                                    textScaleFactor: AppTheme.list_tile_subtile,
+                                  )),
                                   actions: [
                                     Row(
                                       children: [
                                         Container(
                                           child: TextButton(
-                                              onPressed: () async{
+                                              onPressed: () async {
                                                 setState(() {
                                                   patient_instance_list
-                                                      .remove(patient_data_tile);
-                                                  all_patient_name_list
-                                                      .remove(patient_data_tile.name);
-                                                  search_patient_list
-                                                      .remove(patient_data_tile.name);
+                                                      .remove(patient_instance);
+                                                  all_patient_name_list.remove(
+                                                      patient_instance.name);
+                                                  search_patient_list.remove(
+                                                      patient_instance.name);
                                                   map_name_patientInstance_list
-                                                      .remove(patient_data_tile.name);
+                                                      .remove(patient_instance
+                                                          .name);
                                                   PatientDataDelete(
-                                                      patient_data_tile.doc_id);
-
-
-
+                                                      patient_instance.doc_id);
                                                 });
 
-                                                  await Cloud_Storage.Patient_Cloud_Data_Delete(
-                                                    doc_id: patient_data_tile.doc_id
-                                                );
+                                                await Cloud_Storage
+                                                    .Patient_Cloud_Data_Delete(
+                                                        doc_id: patient_instance
+                                                            .doc_id);
 
                                                 Navigator.pop(context);
                                               },
                                               child: Text(
                                                 'yes',
-                                                textScaleFactor: AppTheme.list_tile_subtile,
+                                                textScaleFactor:
+                                                    AppTheme.list_tile_subtile,
                                                 style: TextStyle(
                                                     color: Colors.white),
                                               )),
@@ -205,19 +220,16 @@ class _State extends State<Patient> {
                                         ),
                                         Container(
                                           child: TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              child: Text(
-                                                'no',
-
-                                                style: TextStyle(
-                                                    color: Colors.white),
-
-                                                textScaleFactor: AppTheme.list_tile_subtile,
-                                              ),
-
-
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: Text(
+                                              'no',
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                              textScaleFactor:
+                                                  AppTheme.list_tile_subtile,
+                                            ),
                                           ),
                                           decoration: BoxDecoration(
                                             borderRadius:
@@ -245,104 +257,103 @@ class _State extends State<Patient> {
                       Icon(
                         Icons.cake_outlined,
                         color: Colors.grey,
-
                       ),
                       SizedBox(
                         width: 1.w,
                       ),
-                      Text(patient_data_tile.age == null ? "?" : patient_data_tile.age.toString() , style: AppTheme.CGrey,),
+                      Text(
+                        patient_instance.age == null
+                            ? "?"
+                            : patient_instance.age.toString(),
+                        style: AppTheme.CGrey,
+                      ),
                       SizedBox(
                         width: 2.w,
                       ),
                       Icon(
                         Icons.call,
                         color: Colors.grey,
-
                       ),
                       SizedBox(
                         width: 1.w,
                       ),
-                      Text(patient_data_tile.mobile == null
-                          ? "?"
-                          : patient_data_tile.mobile.toString() , style: AppTheme.CGrey,)
+                      Text(
+                        patient_instance.mobile == null
+                            ? "?"
+                            : patient_instance.mobile.toString(),
+                        style: AppTheme.CGrey,
+                      )
                     ],
                   ),
                   SizedBox(
                     height: 1.h,
                   ),
                   Text(
-                    'last visited on : ${patient_data_tile==null?formatDate(patient_data_tile.recent_visit.toDate(), [ dd, '-', mm, '-', yyyy]):''}',
-
-                    style: TextStyle(
-                      fontStyle: FontStyle.italic
-                    ),
+                    'last visited on : ${patient_instance.recent_visit == null ? '' : formatDate(patient_instance.recent_visit!.toDate(), [
+                            dd,
+                            '-',
+                            mm,
+                            '-',
+                            yyyy
+                          ])}',
+                    style: TextStyle(fontStyle: FontStyle.italic),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        VisitsDate(patient_data: patient_data_tile, path: 'visit',))).then((value) {
-                              if(value == 'save')
-                              {
-                                patient_data();
-
-                              }
-                            });
-                          },
-                          child: Text(
-                            'Visits',
-
-
-
-                            style: AppTheme.k_list_tile_subtile,
-
-                          ),
-
-
-
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => VisitsDate(
+                                        patient_instance,
+                                        'visit',
+                                      ))).then((value) {
+                            if (value == 'save') {
+                              patient_detail();
+                            }
+                          });
+                        },
+                        child: Text(
+                          'Visits',
+                          style: AppTheme.k_list_tile_subtile,
+                        ),
                       ),
                       TextButton(
                           onPressed: () {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        VisitsDate(patient_data: patient_data_tile, path: 'payment',))).then((value) {
-                                          if(value == 'save')
-                                            {
-                                              patient_data();
-
-                                            }
+                                    builder: (context) => VisitsDate(
+                                          patient_instance,
+                                          'payment',
+                                        ))).then((value) {
+                              if (value == 'save') {
+                                patient_detail();
+                              }
                             });
                           },
                           child: Text(
                             'Payment',
                             style: AppTheme.k_list_tile_subtile,
-
                           )),
                       TextButton(
                           onPressed: () {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        DocumentScreen(patient_data: patient_data_tile,))).then((value) {
-                                           if (value == 'save')
-                                            {
-                                              patient_data();
-
-                                            }
+                                    builder: (context) => DocumentScreen(
+                                          patient_data: patient_instance,
+                                        ))).then((value) {
+                              if (value == 'save') {
+                                patient_detail();
+                              }
                             });
                           },
                           child: Text(
                             'Documents',
                             style: AppTheme.k_list_tile_subtile,
-
                           )),
                     ],
                   )
@@ -350,8 +361,10 @@ class _State extends State<Patient> {
               ),
               leading: CircleAvatar(
                 child: Text(
-                  patient_data_tile.name == null ? "?" : patient_data_tile.name[0].toUpperCase(),
-                  style: TextStyle(fontSize: 17.sp , color: Colors.white),
+                  patient_instance.name == null
+                      ? "?"
+                      : patient_instance.name[0].toUpperCase(),
+                  style: TextStyle(fontSize: 17.sp, color: Colors.white),
                 ),
                 backgroundColor: AppTheme.teal,
               ),
@@ -360,116 +373,11 @@ class _State extends State<Patient> {
         ),
       );
 
-  Future<dynamic> patient_data() async => await FirebaseFirestore.instance
-          .collection('Patient')
-          .get()
-          .then((QuerySnapshot querySnapshot)async {
-
-
-
-
-
-
-    patient_instance_list = [];
-    all_patient_name_list = [];
-    search_patient_list = [];
-    map_name_patientInstance_list = {};
-    int i=0;
-
-    // admin status
-    await  Storage.get_admin();
-    await  Storage.get_reception();
-    await  Storage.get_guest();
-
-
-    print(Storage.user_map);
-
-
-        querySnapshot.docs.forEach((element)async {
-
-
-
-
-
-
-
-          print(element.data());
-
-          Patient_name_data_list p = new Patient_name_data_list();
-
-
-         await  patient_instance_list
-              .add(p.fromJson(element.data()));
-
-          print('aa');
-
-
-          await PatientVisitData(p: patient_instance_list[i], doc_id: element.id);
-          i++;
-
-        });
-
-
-
-        patient_instance_list.forEach((element) {
-          print(element.hashCode);
-        });
-
-
-        setState(() {
-          all_patient_name_list =
-              patient_instance_list.map((e) => e.name).toList();
-
-          int n = all_patient_name_list.length;
-
-          for (int i = 0; i < n; i++) {
-            map_name_patientInstance_list[all_patient_name_list[i]] =
-                patient_instance_list[i];
-          }
-
-          print('rgg');
-
-          print(all_patient_name_list);
-
-          search_patient_list = all_patient_name_list;
-        });
-
-        var q;
-
-        return q;
-      });
-
-  onItemChanged(String value) {
-    setState(() {
-      search_patient_list = all_patient_name_list
-          .where((string) => string.toLowerCase().contains(value.toLowerCase()))
-          .toList();
-      if (search_patient_list.isEmpty) {
-        search_patient_list = [];
-      }
-    });
-  }
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
-
-
-     print('\ninit\n');
-
-
-
-
-
-
-
-
-
-
-
-    f = patient_data();
+    f = patient_detail();
   }
 
   @override
@@ -484,18 +392,6 @@ class _State extends State<Patient> {
 
   @override
   Widget build(BuildContext context) {
-
-    //print(100.h/100.w);
-    print('\n');
-    print(MediaQuery.of(context).textScaleFactor);
-
-
-
-
-
-    // print('builder');
-
-
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1.1),
       child: SafeArea(
@@ -511,69 +407,61 @@ class _State extends State<Patient> {
                       bottomRight: Radius.circular(30),
                       bottomLeft: Radius.circular(30),
                     )),
-
                 child: Column(
-
-                 // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  // mainAxisAlignment: MainAxisAlignment.spaceAround,
 
                   children: [
-
-
                     Flexible(
                       flex: 1,
                       child: Container(
-
                         padding: EdgeInsets.symmetric(horizontal: 2.w),
-
-
-
-
-
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-
                             IconButton(
                               onPressed: () {
                                 Scaffold.of(context).openDrawer();
                               },
-                              icon: Icon(Icons.menu , color: AppTheme.black,),
+                              icon: Icon(
+                                Icons.menu,
+                                color: AppTheme.black,
+                              ),
                             ),
-
-
-
                             ChoiceChip(
                               backgroundColor: AppTheme.offwhite,
-                              label: today?Text('Today' , textScaleFactor: AppTheme.list_tile_subtile,
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-
-                              ),):Text('All' , textScaleFactor: AppTheme.list_tile_subtile ,style: TextStyle(
-                                fontWeight: FontWeight.bold,
-
-                              ), ),
+                              label: today
+                                  ? Text(
+                                      'Today',
+                                      textScaleFactor:
+                                          AppTheme.list_tile_subtile,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    )
+                                  : Text(
+                                      'All',
+                                      textScaleFactor:
+                                          AppTheme.list_tile_subtile,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                               selected: false,
                               selectedColor: Colors.teal,
                               onSelected: (bool selected) {
                                 setState(() {
-                                  today=!today;
-
+                                  today = !today;
                                 });
                               },
                             ),
-
                           ],
-                        ) ,
+                        ),
                       ),
                     ),
-
-
-
                     Flexible(
                       flex: 4,
                       child: Container(
-
-                        margin:  EdgeInsets.symmetric(horizontal: 10.w ),
+                        margin: EdgeInsets.symmetric(horizontal: 10.w),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -584,66 +472,38 @@ class _State extends State<Patient> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                      greeting(),
+                                    greeting(),
                                     style: TextStyle(
-                                      fontWeight: FontWeight.normal
-                                    ),
-
+                                        fontWeight: FontWeight.normal),
                                   ),
-
-                                  Text(
-                                    'Dr. Mahi Ram Bishnoi',
-                                    textScaleFactor: 1.7,
-                                    style:TextStyle(
-                                      fontFamily: 'RobotoSlab-Medium',
-
-                                    )
-
-
-                                  ),
+                                  Text('Dr. Mahi Ram Bishnoi',
+                                      textScaleFactor: 1.7,
+                                      style: TextStyle(
+                                        fontFamily: 'RobotoSlab-Medium',
+                                      )),
                                 ],
                               ),
                             ),
-
-
-
                             Container(
                               margin: EdgeInsets.only(bottom: 3.h),
-
                               height: 6.h,
-
                               decoration: BoxDecoration(
                                   color: AppTheme.notWhite,
                                   borderRadius: BorderRadius.circular(10)),
                               child: TextField(
-
                                 controller: search_text_controller,
-
-
-
                                 onChanged: onItemChanged,
                                 decoration: InputDecoration(
                                     isDense: true,
                                     isCollapsed: true,
-                                    contentPadding: EdgeInsets.symmetric(horizontal: 7.w , vertical: 1.3.h ),
+                                    contentPadding: EdgeInsets.symmetric(
+                                        horizontal: 7.w, vertical: 1.3.h),
                                     border: InputBorder.none,
                                     hintText: 'search',
-                                    hintStyle:  AppTheme.k_search_text_style
-
-
-
-
-
-                                   ),
+                                    hintStyle: AppTheme.k_search_text_style),
                                 keyboardType: TextInputType.name,
                               ),
                             ),
-
-
-
-
-
-
                           ],
                         ),
                       ),
@@ -662,43 +522,41 @@ class _State extends State<Patient> {
                       child: FutureBuilder(
                           future: f,
                           builder: (context, snapshot) {
-                             print('ttrr');
 
                             if (search_patient_list.isEmpty) {
                               return Center(
                                   child: Card(
                                       color: AppTheme.notWhite,
                                       child: Padding(
-                                        padding:  EdgeInsets.all(5.w),
-                                        child: Text('loading',),
+                                        padding: EdgeInsets.all(5.w),
+                                        child: Text(
+                                          'loading',
+                                        ),
                                       )));
                             }
 
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
-                              return Center(
-                                  child: CircularProgressIndicator());
+                              return Center(child: CircularProgressIndicator());
                             }
 
                             if (snapshot.hasError) {
-                              return  Center(
+                              return Center(
                                   child: Text('Something Went Wrong'));
                             }
 
                             return Container(
-                              height:
-                                 65.h,
 
-                           //   color: Colors.red,
+                              height: 65.h,
 
                               child: RefreshIndicator(
-                                onRefresh: patient_data,
+                                onRefresh: patient_detail,
                                 color: AppTheme.teal,
                                 child: ListView(
                                   scrollDirection: Axis.vertical,
                                   children: search_patient_list
                                       .map<Widget>((e) => Tile(
-                                          map_name_patientInstance_list[e]))
+                                          map_name_patientInstance_list[e]!))
                                       .toList(),
                                 ),
                               ),
@@ -710,31 +568,23 @@ class _State extends State<Patient> {
           ),
           floatingActionButton: FloatingActionButton.extended(
               elevation: 15,
-
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)
-              ),
+                  borderRadius: BorderRadius.circular(10)),
               onPressed: () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => AddPatient(
-                              all_patient_name_list: all_patient_name_list,
-                              icon_tap: true,
+                              all_patient_name_list,
+                              true,
                             ))).then((value) {
-                  print('\n\nka boom ');
-
-                  print(value);
-
-                  if (value !='back') {
-
-                    patient_data();
+                  if (value != 'back') {
+                    patient_detail();
                   }
                 });
               },
               icon: Icon(Icons.add),
               label: Text('Add Patient'),
-
               backgroundColor: AppTheme.teal),
           bottomNavigationBar: BottomAppBar(
             color: AppTheme.white,
@@ -749,5 +599,3 @@ class _State extends State<Patient> {
     );
   }
 }
-
-

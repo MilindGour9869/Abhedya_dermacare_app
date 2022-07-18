@@ -6,7 +6,7 @@ class SnackOn {
   BuildContext context;
   String msg;
 
-  SnackOn({@required this.context, @required this.msg}) {
+  SnackOn( this.context ,  this.msg) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(msg),
       duration: Duration(minutes: 2),
@@ -18,16 +18,20 @@ class SnackOn {
 class SnackOff {
   BuildContext context;
 
-  SnackOff({@required this.context}) {
+  SnackOff( this.context) {
     ScaffoldMessenger.of(context)..removeCurrentSnackBar();
   }
 }
 
 class ShowDialogue {
+
   BuildContext context;
   String Alertmsg;
 
-  ShowDialogue({@required this.context , @required this.Alertmsg}) {
+
+   ShowDialogue( this.context ,  this.Alertmsg  ) {
+
+
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -35,13 +39,62 @@ class ShowDialogue {
               actions: [
                 TextButton(
                     onPressed: () {
-                      Navigator.pop(context);
+                      Navigator.pop(context , );
                     },
                     child: Text(
                       'OK',
                       textScaleFactor: AppTheme.alert,
-                    ))
+                    )),
               ],
             ));
+
+
+  }
+
+
+  static bool  f (   BuildContext context , String Alertmsg , ) {
+
+     late bool response;
+
+
+     showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(Alertmsg),
+          actions: [
+
+            TextButton(
+                onPressed: () {
+                   response = false;
+                  Navigator.pop(context );
+
+                },
+                child: Text(
+                  'Cancel',
+                  textScaleFactor: AppTheme.alert,
+                )),
+
+
+
+
+            TextButton(
+                onPressed: () {
+                  response = true;
+
+                  Navigator.pop(context );
+                },
+                child: Text(
+                  'OK',
+                  textScaleFactor: AppTheme.alert,
+                )),
+
+          ],
+        ));
+
+     return response!;
+
+
+
+
   }
 }

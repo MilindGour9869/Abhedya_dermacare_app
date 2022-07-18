@@ -1,28 +1,29 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-
+//App Theme
 import 'package:flutter_app/default.dart';
+
+//Local Storage
 import 'package:flutter_app/storage/storage.dart';
 
+//screen
 import 'Add_Data.dart';
 import 'add_medicines.dart';
 
-
-
-import 'dart:math' as math;
-
+//External Libs
+import 'dart:math' as math; // for color of medicine
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class Medicines extends StatefulWidget {
-  bool delete, select;
-
-  List<String> name;
-  Map<String , Map<String , dynamic>> result_map={};
-
+  
+  
+  bool? to_add_medicne = false , to_select_medicine = false;
 
 
-  Medicines({this.delete, this.select , this.name ,this.result_map});
+  
+  Map<String , Map<String , dynamic>>? result_map={};
+
+  Medicines({ required this.to_add_medicne, required this.to_select_medicine  , this.result_map});
 
 
 
@@ -31,20 +32,18 @@ class Medicines extends StatefulWidget {
 }
 
 class _State extends State<Medicines> {
+  
   var textcontroller = TextEditingController();
 
-  Future f;
+  late Future f;
 
   List all_medicine_map_list = [];
   List search_medicine_list = [];
 
-  List medicine_name = [];
-
-  Map<String , Map<String , dynamic >> all_data_doc_id_map={};
-  Map<String , Map<String , dynamic >> all_data_name_map={};
+  late  Map<String , Map<String , dynamic >> all_data_doc_id_map;
+  late  Map<String , Map<String , dynamic >> all_data_name_map;
 
   bool updated = false;
-
 
   List<Color> color = [];
 
@@ -56,48 +55,29 @@ class _State extends State<Medicines> {
   bool delete = true;
 //  bool select = false;
 
-  Future getMedicineData() async {
+  Future<void> getMedicineData() async {
 
+    color = [];
 
-          color = [];
+    all_medicine_map_list = [];
+    search_medicine_list = [];
 
-          medicine_name = [];
+    c = -1;
 
-          all_medicine_map_list = [];
-          search_medicine_list = [];
+    final a = await Storage.get(key: 'medicine');
 
-           c = -1;
+    all_data_doc_id_map = a==null?{}:a;
 
-
-
-
-      var a = await Storage.get_medicine();
-
-      print('\nssss');
-      print(a);
-
-
-      all_data_doc_id_map = a==null?{}:a;
-
-      print('fssv');
-
-
-      print(all_data_doc_id_map);
-
-
-      all_data_doc_id_map.forEach((key, value) {
+    
+    all_data_doc_id_map.forEach((key, value) {
 
         print('Nor errcsdwq');
 
         value['select'] = false;
 
+        all_data_name_map[value['medicine_name'].toString()] = value;
 
-
-
-       all_data_name_map[value['medicine_name'].toString()] = value;
-
-
-       medicine_name.add(value['medicine_name']);
+        medicine_name.add(value['medicine_name']);
      });
 
      setState(() {
@@ -184,7 +164,7 @@ class _State extends State<Medicines> {
 
 
 
-    if (widget.delete == false) {
+    if (widget.to_add_medicne == false) {
       setState(() {
         delete = false;
 
@@ -193,13 +173,11 @@ class _State extends State<Medicines> {
 
     if(widget.result_map != null)
       {
-        print('\n init ');
-
-        print(result_map);
+        
 
         result_map = widget.result_map;
 
-        print(result_map);
+       
 
 
       }

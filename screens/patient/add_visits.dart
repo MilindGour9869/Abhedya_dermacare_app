@@ -1,41 +1,55 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+//firestore
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_app/custom_widgets/loading_screen.dart';
+
+//App theme
 import 'package:flutter_app/default.dart';
 
+//screens
 import 'package:flutter_app/list_search/list_search.dart';
-import 'package:flutter_app/list_search/notes_list_search.dart';
-import 'package:flutter_app/storage/storage.dart';
 import '../printer/Printer_Select_list.dart';
-
-import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../list_search/vital_list_search.dart';
-
-import 'package:flutter_app/classes/Patient_name_list.dart';
-
-import 'package:date_format/date_format.dart';
 import '../services/service_search_list.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
 import '../medicine/Medicines.dart';
 
+//local storage
+import 'package:flutter_app/storage/storage.dart';
+
+//External lib
+import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:date_format/date_format.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+//model
+import 'package:flutter_app/classes/Patient_name_list.dart';
+
+
+
+
+
 class AddVisits extends StatefulWidget {
+
   Patient_name_data_list patient_data;
-
-  Timestamp visit_date;
-
-  Map<String, dynamic> map;
-
   bool icon_tap;
 
+  Timestamp visit_date;
+  Map<String, dynamic>? patient_visit_date_map;
+
+
+
   AddVisits(
-      {this.map, this.visit_date, this.icon_tap = false, this.patient_data});
+
+  this.patient_data , this.icon_tap , this.visit_date , {this.patient_visit_date_map});
 
   @override
   _AddVisitsState createState() => _AddVisitsState();
 }
 
 class _AddVisitsState extends State<AddVisits> {
+
+  //11
   String complaints = "Complaints";
   String diagnosis = "Diagnosis";
   String advices = "Advices";
@@ -43,14 +57,17 @@ class _AddVisitsState extends State<AddVisits> {
   String allergies = "Allergies";
   String clinical_finding = "Clinical Finding";
   String group = "Group";
-
   String service = "Services";
   String medicine = "Medicine";
   String vital = "Vitals";
   String notes = 'Notes';
 
-  String blood_group = "";
+  String? blood_group ;
 
+  bool is_blood_group_updated = false;
+
+
+  //Icon_Image_Path
   String img_complaint = 'images/complaint_color.webp';
   String img_clinical_finding_color = 'images/clinical_finding_color.png';
   String img_diagnosis = 'images/diagnosis.webp';
@@ -59,31 +76,32 @@ class _AddVisitsState extends State<AddVisits> {
   String img_investigation_color = 'images/investigation_color.webp';
 
   //10
-  List Complaint = [];
-  List Diagnosis = [];
-  List Advices = [];
-  List Investigation = [];
-  List Allergies = [];
-  List Clinical_finding = [];
-  List Group = [];
-
-  List Services = [];
-  List<String> Medicine = [];
-  List Notes = [];
-
-
-  Map<String, Map<String, dynamic>> medicine_result = {};
-  Map<String, Map<String, dynamic>> service_result = {};
-  Map<String, Map<String, dynamic>> vital_result = {};
-
-  Map<String, dynamic> map;
-
-  String visit_date;
-  String follow_up_date;
-  Timestamp followUp_date;
+  List<String>? Complaint ;
+  List<String>? Diagnosis ;
+  List<String>? Advices ;
+  List<String>? Investigation ;
+  List<String>? Allergies ;
+  List<String>? Clinical_finding ;
+  List<String>? Group ;
+  List<String>? Services ;
+  List<String>? Medicine ;
+  List<String>? Notes ;
 
 
-  Timestamp date;
+  Map<String, Map<String, dynamic>>? medicine_result ;
+  Map<String, Map<String, dynamic>>? service_result ;
+  Map<String, Map<String, dynamic>>? vital_result ;
+
+
+
+
+  String? follow_up_date;
+  Timestamp? followUp_date;
+
+  late Timestamp visit_date;
+
+
+
 
 
   int total_charge = 0;
@@ -106,75 +124,41 @@ class _AddVisitsState extends State<AddVisits> {
 
 
 
-
-  void Prnt() {
-    print(Complaint);
-    print(Clinical_finding);
-  }
-
-
-
-  void setdata() {
+  void init_start() {
     setState(() {
       // Complaint = map['complaint'];
 
-      if (map['complaint'] != null) {
+      visit_date = widget.visit_date;
+
+      if (widget.patient_data.blood_group != null) {
+        blood_group = widget.patient_data.blood_group;
+      }
+
+      if(widget.patient_visit_date_map !=null)
+      {
+        Map<String, dynamic> map = widget.patient_visit_date_map!;
+
         Complaint = map['complaint'];
-      }
-
-      if (map['notes'] != null) {
         Notes = map['notes'];
-      }
-
-      if (map['investigation'] != null) {
         Investigation = map['investigation'];
-      }
-      if (map['diagnosis'] != null) {
         Diagnosis = map['diagnosis'];
-      }
-      if (map['advices'] != null) {
         Advices = map['advices'];
-      }
-      if (map['group'] != null) {
         Group = map['group'];
-      }
-
-      if (map['allergies'] != null) {
         Allergies = map['allergies'];
-      }
-      if (map['service'] != null) {
+        Clinical_finding = map['clinical_finding'];
+
         Services = map['service'].keys.toList();
         service_result = Map<String, Map<String, dynamic>>.from(map['service']);
 
-
-
-      }
-      if (map['clinical_finding'] != null) {
-        Clinical_finding = map['clinical_finding'];
-      }
-      if (map['medicine'] != null) {
-        print('in medicine');
-
         medicine_result = Map<String, Map<String, dynamic>>.from(map['medicine']);
 
-
-      }
-      if (map['vitals'] != null) {
         vital_result = map['vitals'];
+
+        followUp_date = map['follow_up_date'];
+
+        total_charge = map['total_charge'];
+
       }
-
-      if(map['follow_up_date'] != null)
-        {
-          followUp_date = map['follow_up_date'];
-          follow_up_date = formatDate(followUp_date.toDate(), [ dd, '-', mm, '-', yyyy]).toString();
-
-        }
-
-      if(map['total_charge'] !=null)
-        {
-          total_charge = map['total_charge'];
-
-        }
 
     });
   }
@@ -183,28 +167,8 @@ class _AddVisitsState extends State<AddVisits> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    init_start();
 
-    if (widget.patient_data.blood_group != null) {
-      blood_group = widget.patient_data.blood_group;
-    }
-
-    print(widget.patient_data.hashCode);
-
-    if (widget.map != null) {
-      print(widget.map);
-
-      map = widget.map;
-
-      print('\ninit');
-
-      print(map);
-
-      setdata();
-    } else {
-      print('add visit init else ');
-    }
-
-    visit_date = formatDate(widget.visit_date.toDate(), [ dd, '-', mm, '-', yyyy]).toString();
   }
 
   @override
@@ -231,10 +195,11 @@ class _AddVisitsState extends State<AddVisits> {
             IconButton(
                 onPressed: () {
                   Map<String, dynamic> patient_detail = {
+
                     'patient_name': widget.patient_data.name,
                     'patient_gender': widget.patient_data.gender == null
                         ? ""
-                        : widget.patient_data.gender.isNotEmpty
+                        : widget.patient_data.gender!.isNotEmpty
                             ? widget.patient_data.gender
                             : "",
                     'patient_age': widget.patient_data.age == null
@@ -245,13 +210,13 @@ class _AddVisitsState extends State<AddVisits> {
                         : widget.patient_data.mobile.toString(),
                     'address': widget.patient_data.address == null
                         ? ""
-                        : widget.patient_data.address.isNotEmpty
+                        : widget.patient_data.address!.isNotEmpty
                             ? widget.patient_data.address
                             : "",
                     'patient_blood_group':
                         widget.patient_data.blood_group == null
                             ? ""
-                            : widget.patient_data.blood_group.isNotEmpty
+                            : widget.patient_data.blood_group!.isNotEmpty
                                 ? widget.patient_data.blood_group
                                 : "",
                   };
@@ -260,8 +225,8 @@ class _AddVisitsState extends State<AddVisits> {
                       context: context,
                       builder: (context) {
                         return Printer_Select_List(
-                          map_list: {
-                            'Visit Date': visit_date,
+                           {
+                            'Visit Date': formatDate(visit_date.toDate(), [ dd, '-', mm, '-', yyyy]).toString(),
                             'UID': widget.patient_data.uid,
                             'Patient Detail': patient_detail,
                             'Vitals': vital_result,
@@ -276,112 +241,71 @@ class _AddVisitsState extends State<AddVisits> {
                             'Medicine': medicine_result,
                             'Follow up date': follow_up_date,
                           },
-                          doc_id: widget.patient_data.doc_id,
+                         widget.patient_data.doc_id,
                         );
                       });
-                  Prnt();
+
                 },
                 icon: Icon(Icons.print_outlined)),
             Padding(
               padding: EdgeInsets.only(right: 1.w),
               child: IconButton(
                   onPressed: () {
-                    var visit_doc = FirebaseFirestore.instance
-                        .collection('Patient')
-                        .doc(widget.patient_data.doc_id)
-                        .collection('visits')
-                        .doc(visit_date);
-                    var patient_doc = FirebaseFirestore.instance
-                        .collection('Patient')
-                        .doc(widget.patient_data.doc_id);
 
-                    Map<String, dynamic> map = {};
+                    SnackOn(context, 'Saving ....');
 
-                    print('ffffeergre');
+                    Map<String, dynamic?> map;
 
+                    map = {
+                      'Complaint': Complaint,
+                      'Notes':Notes,
+                      'Investigation':Investigation,
+                      'Diagnosis' : Diagnosis,
+                      'Medicine':medicine_result,
+                      'Service':service_result,
+                      'Allergies':Allergies,
+                      'Advices':Advices,
+                      'Group':Group,
+                      'Clinical_finding':Clinical_finding,
+                      'Vital':vital_result,
+                      'follow_up_date':followUp_date,
+                      'Total_Charge':total_charge,
+                      'visit_date':visit_date,
+                   };
 
-                    print(Complaint);
+                    Map<String,dynamic> json = widget.patient_data.set_visit_date(map, widget.patient_data , formatDate(visit_date.toDate(), [ dd, '-', mm, '-', yyyy]).toString() );
 
-
-                    if (Complaint.isNotEmpty) {
-                      map['complaint'] = Complaint;
-                    }
-                    if(Notes.isNotEmpty)
+                    if(widget.icon_tap == true)
                       {
-                        map['notes'] = Notes;
+                        final doc_id = FirebaseFirestore.instance.collection('Patient').doc();
+                        doc_id.set(json);
                       }
-                    if (Investigation.isNotEmpty) {
-                      map['investigation'] = Investigation;
-                    }
-                    if (Diagnosis.isNotEmpty) {
-                      map['diagnosis'] = Diagnosis;
-                    }
-                    if (Advices.isNotEmpty) {
-                      map['advices'] = Advices;
-                    }
-                    if (Group.isNotEmpty) {
-                      map['group'] = Group;
-                    }
-
-                    if (Allergies.isNotEmpty) {
-                      map['allergies'] = Allergies;
-                    }
-                    if (service_result.isNotEmpty) {
-                      map['service'] = service_result;
-                    }
-                    if (Clinical_finding.isNotEmpty) {
-                      map['clinical_finding'] = Clinical_finding;
-                    }
-                    if(medicine_result.isNotEmpty)
+                    else if(widget.icon_tap == false)
                       {
-                        map['medicine']=medicine_result;
+                        final doc_id = FirebaseFirestore.instance.collection('Patient').doc(widget.patient_data.doc_id).collection('visits').doc(formatDate(widget.visit_date.toDate(), [ dd, '-', mm, '-', yyyy]).toString());
+                        doc_id.update(json);
                       }
-                    if(vital_result.isNotEmpty)
-                      {
-                        map['vitals'] = vital_result;
-
-                      }
-                    if(followUp_date != null)
-                      {
-                        map['follow_up_date'] = followUp_date;
-                      }
-                    map['total_charge'] = total_charge;
-
-
-
-
-                    widget.patient_data.visits_mapData_list[visit_date] = map;
-
-                    if (widget.icon_tap==true) {
-                      map['visit_date'] =  Timestamp.now();
-                      patient_doc.update({
-                        'recent_visit': Timestamp.now(),
-                        'blood_group':
-                            blood_group == 'Blood Group' ? "" : blood_group
-                      });
-
-                      if(blood_group != 'Blood Group')
-                        {
-                          widget.patient_data.blood_group = blood_group;
-
-                        }
-                    }
                     else
                       {
-                        map['visit_date'] = widget.visit_date;
-                        patient_doc.update({
-                          'recent_visit': widget.visit_date,
-                          'blood_group':
-                          blood_group == 'Blood Group' ? "" : blood_group
-                        });
-                        if(blood_group != 'Blood Group')
-                        {
-                          widget.patient_data.blood_group = blood_group;
-
-                        }
+                        print('error');
+                        ShowDialogue(context, 'error');
                       }
 
-                    visit_doc.set(map);
+                    Map<String,dynamic> patient_json={};
+                    final patient_ref=FirebaseFirestore.instance.collection('Patient').doc(widget.patient_data.doc_id);
+
+                    if(blood_group != null && blood_group!.isNotEmpty && is_blood_group_updated)
+                    {
+                      patient_json['blood_group']=blood_group;
+                    }
+
+                    patient_json['recent_visit']=visit_date;
+
+                    patient_ref.update(patient_json);
+
+                    SnackOff(context: context);
+
+
 
                     Navigator.pop(context, 'save');
                   },
@@ -417,14 +341,15 @@ class _AddVisitsState extends State<AddVisits> {
                                   firstDate: DateTime(1947),
                                   lastDate: DateTime(2050))
                               .then((value) {
-                            print(value);
-                            setState(() {
-                              date = Timestamp.fromDate(value);
 
-                              visit_date = formatDate(
-                                  Timestamp.fromDate(value).toDate(),
-                                  [dd, '-', mm, '-', yyyy]).toString();
-                            });
+                                if(value != null)
+                                  {
+                                    setState(() {
+                                      visit_date = Timestamp.fromDate(value!);
+                                    });
+                                  }
+
+
                           });
                         },
                       )))), //date
@@ -1189,7 +1114,7 @@ class _AddVisitsState extends State<AddVisits> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => Medicines(
-                                            delete: false,
+                                            to_add_medicne: false,
                                             name: Medicine,
                                             result_map: medicine_result,
                                           ))).then((value) {
