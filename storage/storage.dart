@@ -244,6 +244,9 @@ class Storage {
 
      value = Map<String, Map<String, dynamic>>.from(value);
 
+     //Format
+     //{ doc_id1 :{'name':'xxx' , '} , doc_id2:{'name':} , }
+
      return value == null ? null : value;
 
    }

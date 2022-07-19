@@ -1,12 +1,8 @@
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter_app/default.dart';
-
-
 
 import 'package:flutter/services.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -37,24 +33,17 @@ class List_Search extends StatefulWidget {
 
 class _List_SearchState extends State<List_Search> {
 
+  //state var
+  late List<String>  group_all_data_list ; //{'name1', 'name2'....}
+  late List<String>  group_search_data_list ; //{'name1', 'name2'....}
+  late Map<String, bool> select ;
 
-  List group_all_data_list =[] ;
-
-  List group_updated_result = [];
-
-  Map<String , Map<String , dynamic >> all_data_map={};
-
-  bool updated = false;
-
-
-  List group_search_data_list = [];
-
-  Map<String, bool> select = {};
-
+  //info var
+  Set<String>? group_updated_result= {} ;
+  Map<String , Map<String , dynamic >>? all_data_map ={}; //{ doc_id1 :{'name':'xxx' , '} , doc_id2:{'name':} , }
 
 
   late Future f;
-
 
   var search_edit = TextEditingController();
 
@@ -63,80 +52,69 @@ class _List_SearchState extends State<List_Search> {
   Future<void> get() async {
 
 
-    group_updated_result=[];
+    group_updated_result={};
     group_search_data_list=[];
     group_all_data_list=[];
     all_data_map={};
 
 
+    final a = await widget.get(key:widget.ky);
 
-    var a = await widget.get(key:widget.ky);
+    if(a!=null)
+      {
+        all_data_map = a;
 
-    print(a);
+        setState(() {
 
-    all_data_map = a==null?{}:a;
-
-    print(all_data_map);
-
-
-    setState(() {
-
-      all_data_map = all_data_map;
-
-
-      all_data_map.forEach((key, value) {
-        group_all_data_list.add(value[widget.group].toString());
-      });
-      group_search_data_list=group_all_data_list;
-
-      group_all_data_list.forEach((element) {
-        select[element] = false;
-      });
-
-    });
-
-    if(widget.result !=null && widget.result!.isNotEmpty)
-    {
-      setState(() {
-        widget.result!.forEach((element) {
-
-          print(group_updated_result);
-
-
-          group_all_data_list.forEach((e) {
-
-            if(e==element)
-            {
-              select[e] = true;
-              group_updated_result.add(e);
-
-
-            }
+          all_data_map!.forEach((key, value) {
+            group_all_data_list.add(value[widget.group].toString());
           });
+          group_search_data_list=group_all_data_list;
+
+          group_all_data_list.forEach((element) {
+            select[element] = false;
+          });
+
         });
 
-      });
+        if(widget.result !=null && widget.result!.isNotEmpty)
+        {
 
-      //Bug Appeared & Removed !!
 
-      group_updated_result.forEach((e) {
-        group_search_data_list.remove(e);
+            widget.result!.forEach((element) {
 
-      });
+              group_all_data_list.forEach((e) {
 
-      group_updated_result.forEach((e) {
-        group_search_data_list.add(e);
+                if(e==element)
+                {
+                  select[e] = true;
+                  group_updated_result!.add(e);
+                }
+              });
+            });
 
-      });
 
-      group_search_data_list=group_search_data_list.reversed.toList();
 
-      setState(() {
+          //Bug Appeared & Removed !!
+            group_updated_result!.forEach((e) {
+            group_search_data_list.remove(e);
 
-        group_search_data_list=group_search_data_list;
-      });
+          });
+          group_updated_result!.forEach((e) {
+            group_search_data_list.add(e);
 
-    }
+          });
+          group_search_data_list=group_search_data_list.reversed.toList();
+
+          //State update
+          setState(() {
+            group_search_data_list=group_search_data_list;
+            select=select;
+
+          });
+
+        }
+      }
 
 
 
@@ -145,27 +123,18 @@ class _List_SearchState extends State<List_Search> {
 
   void set() async {
 
-    print('aassd');
-
-
-
-
-    print(all_data_map);
-
-
-
-
-
-
-
-
-
-
-    await widget.set(value: all_data_map , updated:  updated , key : widget.ky );
+   await widget.set(value: all_data_map , key : widget.ky );
   }
 
   void pop(){
-    Navigator.pop(context, group_updated_result);
+   if(group_updated_result!=null)
+     {
+       Navigator.pop(context, group_updated_result!.toList());
+     }
+   else{
+     Navigator.pop(context);
+
+   }
   }
 
   void onChange(String s){
@@ -177,12 +146,9 @@ class _List_SearchState extends State<List_Search> {
 
   onItemChanged(String value) {
     setState(() {
-      if(group_all_data_list != null)
-      {
-        group_search_data_list = group_all_data_list
-            .where((string) => string.toLowerCase().contains(value.toLowerCase()))
-            .toList();
-      }
+      group_search_data_list = group_all_data_list
+          .where((string) => string.toLowerCase().contains(value.toLowerCase()))
+          .toList();
       if (group_search_data_list.isEmpty) {
         group_search_data_list = [];
       }
@@ -204,7 +170,7 @@ class _List_SearchState extends State<List_Search> {
     super.dispose();
     set();
 
-    group_updated_result=[];
+    group_updated_result={};
     group_search_data_list=[];
     group_all_data_list=[];
     all_data_map={};
@@ -215,9 +181,11 @@ class _List_SearchState extends State<List_Search> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: (){
+      onWillPop: ()async{
 
         pop();
+        return true;
+
 
 
       },
@@ -283,60 +251,45 @@ class _List_SearchState extends State<List_Search> {
 
                                 if(widget.one_select)
                                   {
-                                    print('one select true');
-
-                                    select[e] = !select[e];
+                                    select[e] = !select[e]!;
 
                                     select.forEach((key, value) {
                                       if(key!=e)
                                         {
                                           select[key]=false;
-
                                         }
                                     });
 
-
-
-                                    group_updated_result=[];
-
-
-
+                                    group_updated_result={};
 
                                     if (select[e] == true) {
-                                      group_updated_result.add(e);
+                                      group_updated_result!.add(e);
 
                                     }
                                     if (select[e] == false) {
-                                      group_updated_result = [];
+                                      group_updated_result = {};
 
                                     }
 
                                     setState(() {
-
-                                      select[e]= select[e];
-
-                                      print(select[e]);
+                                      select[e]= select[e]!;
                                     });
                                   }
                                 else
                                   {
-                                    select[e] = !select[e];
+                                    select[e] = !select[e]!;
 
                                     if (select[e] == true) {
-                                      group_updated_result.add(e);
-                                      print(group_updated_result);
-
-
-
+                                      group_updated_result!.add(e);
                                     }
                                     if (select[e] == false) {
-                                      group_updated_result.remove(e);
-                                      print(group_updated_result);
+                                      group_updated_result!.remove(e);
+
                                     }
 
                                     setState(() {
 
-                                      select[e]= select[e];
+                                      select[e]= select[e]!;
 
 
                                     });
@@ -357,7 +310,7 @@ class _List_SearchState extends State<List_Search> {
 
                               leading: CircleAvatar(
                                 backgroundColor:
-                                select[e] ? AppTheme.teal : AppTheme.light_black,
+                                select[e]! ? AppTheme.teal : AppTheme.light_black,
                                 child: Icon(
                                   Icons.done,
                                   color: AppTheme.white,
@@ -380,25 +333,28 @@ class _List_SearchState extends State<List_Search> {
                                     onPressed: (){
                                       setState(() {
 
-                                        String s;
+                                        late String s;
 
 
-                                        all_data_map.forEach((key, value) {
-                                          if(value[widget.group] ==e)
+                                        all_data_map!.forEach((key, value) {
+
+                                          if(value[widget.group] == e)
                                           {
                                             s=key;
 
                                           }
                                         });
 
-                                        all_data_map.remove(s);
+                                        if(s!=null)
+                                          {
+                                            all_data_map!.remove(s);
+                                          }
 
-                                        updated=true;
 
 
                                         group_all_data_list.remove(e);
                                         group_search_data_list.remove(e);
-                                        group_updated_result.remove(e);
+                                        group_updated_result!.remove(e);
 
 
 
@@ -421,8 +377,7 @@ class _List_SearchState extends State<List_Search> {
                     child: TextButton.icon(
                         onPressed: ()async {
 
-                          var doc = await FirebaseFirestore.instance.collection(widget.Group).doc();
-
+                          var doc = await FirebaseFirestore.instance.collection(widget.Group).doc(); //no net needed !! 🤯
 
                           setState(() {
 
@@ -431,38 +386,22 @@ class _List_SearchState extends State<List_Search> {
                             map['doc_id'] = doc.id;
                             map[widget.group] = search_edit.text;
 
-                            updated=true;
-
-
-
-                            all_data_map[doc.id]=map;
-
-
-
+                            all_data_map![doc.id]=map;
                             onChange(search_edit.text);
-
-                            ('ggg');
-
 
                             group_search_data_list
                                 .add(search_edit.text);
-
-
-
-
 
                           });
 
                           search_edit.clear();
                           onItemChanged('');
 
-
-
-
-
-                        },
-                        icon: Icon(Icons.add),
-                        label: Text(search_edit.text)),
+                          },
+                        icon: Icon(Icons.add , color: AppTheme.teal,),
+                        label: Text(search_edit.text ,style: TextStyle(
+                          color: AppTheme.teal
+                        ), )),
                   );
 
 
@@ -470,7 +409,9 @@ class _List_SearchState extends State<List_Search> {
                 else{
                   ('in future builder , else');
 
-                  return Center(child:CircularProgressIndicator() );
+                  return Center(child:CircularProgressIndicator(
+                    color: AppTheme.teal,
+                  ) );
                 }
 
               },
