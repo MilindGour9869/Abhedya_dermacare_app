@@ -18,7 +18,7 @@ class SnackOn {
 class SnackOff {
   BuildContext context;
 
-  SnackOff( this.context) {
+  SnackOff( {required this.context}) {
     ScaffoldMessenger.of(context)..removeCurrentSnackBar();
   }
 }
