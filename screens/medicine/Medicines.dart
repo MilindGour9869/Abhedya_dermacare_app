@@ -40,8 +40,8 @@ class _State extends State<Medicines> {
   List all_medicine_map_list = [];
   List search_medicine_list = [];
 
-  late  Map<String , Map<String , dynamic >> all_data_doc_id_map;
-  late  Map<String , Map<String , dynamic >> all_data_name_map;
+  late  Map<String , Map<String , dynamic >> all_medicine_data_doc_id_map;
+  late  Map<String , Map<String , dynamic >> all_medicine_data_name_map;
 
   bool updated = false;
 
@@ -66,69 +66,74 @@ class _State extends State<Medicines> {
 
     final a = await Storage.get(key: 'medicine');
 
-    all_data_doc_id_map = a==null?{}:a;
-
-    
-    all_data_doc_id_map.forEach((key, value) {
-
-        print('Nor errcsdwq');
-
-        value['select'] = false;
-
-        all_data_name_map[value['medicine_name'].toString()] = value;
-
-        medicine_name.add(value['medicine_name']);
-     });
-
-     setState(() {
-       medicine_name=medicine_name;
-
-       search_medicine_list = medicine_name;
-     });
-
-          color.length = medicine_name.length;
-
-
-          for (int i = 0; i < color.length; i++) {
-            color[i] =
-            Colors.primaries[math.Random().nextInt(Colors.primaries.length)];
-          }
-
-          print('ffff');
-
-
-
-          print(all_data_doc_id_map);
-
-
-
-
-    if(widget.result_map != null)
+    if(a!=null)
       {
-        List a = widget.result_map.keys.toList();
-        print('result map is not null');
-
-        print(a);
-
-        a.forEach((element) {
-          all_data_name_map[element].forEach((key, value) {
-            if(key == 'select')
-              all_data_name_map[element]['select'] = true;
+        all_medicine_data_doc_id_map = a;
+        all_medicine_data_doc_id_map.forEach((key, value) {
 
 
+          value['select'] = false;
 
+          all_medicine_data_name_map[value['medicine_name'].toString()] = value;
 
-          });
+          medicine_name.add(value['medicine_name']);
         });
 
         setState(() {
-          all_data_name_map = all_data_name_map;
-          print('fddbf');
-          print(all_data_name_map);
+          medicine_name=medicine_name;
 
-
+          search_medicine_list = medicine_name;
         });
+
+        color.length = medicine_name.length;
+
+
+        for (int i = 0; i < color.length; i++) {
+          color[i] =
+          Colors.primaries[math.Random().nextInt(Colors.primaries.length)];
+        }
+
+        print('ffff');
+
+
+
+        print(all_medicine_data_doc_id_map);
+
+
+
+
+        if(widget.result_map != null)
+        {
+          List a = widget.result_map.keys.toList();
+          print('result map is not null');
+
+          print(a);
+
+          a.forEach((element) {
+            all_medicine_data_name_map[element].forEach((key, value) {
+              if(key == 'select')
+                all_medicine_data_name_map[element]['select'] = true;
+
+
+
+
+            });
+          });
+
+          setState(() {
+            all_medicine_data_name_map = all_medicine_data_name_map;
+            print('fddbf');
+            print(all_medicine_data_name_map);
+
+
+          });
+        }
+
       }
+
+
+
+    
 
 
 
@@ -136,7 +141,7 @@ class _State extends State<Medicines> {
   }
 
   void set(){
-    Storage.set_medicine(value: all_data_doc_id_map, updated: updated);
+    Storage.set_medicine(value: all_medicine_data_doc_id_map, updated: updated);
   }
 
   onItemChanged(String value) {
@@ -247,15 +252,10 @@ class _State extends State<Medicines> {
                  context: context,
                  builder: (context) => AddMedicine(
 
-
-                     medicine_map: map[name],
-
-                     doc_id: map[name]['doc_id'],
-
-                     medicine_name: name,
-                     medicine_name_list: medicine_name,
-                     result: all_data_doc_id_map,
-                     add_icon_tap: false,
+                     single_medicine_map: map[name],
+                     medicine_name_list: all_medicine_data_name_map.keys.toList(),
+                     all_medicine_data_doc_id_map: all_medicine_data_doc_id_map,
+                     is_add_icon_tap: false,
 
                    ),
                  ).then((value) {
@@ -335,14 +335,14 @@ class _State extends State<Medicines> {
                     ? IconButton(
                         onPressed: () async {
 
-                          all_data_doc_id_map.remove(map[name]['doc_id'].toString());
+                          all_medicine_data_doc_id_map.remove(map[name]['doc_id'].toString());
                           updated=true;
 
-                          all_data_name_map.remove(name);
+                          all_medicine_data_name_map.remove(name);
                           search_medicine_list.remove(name);
 
                           setState(() {
-                            all_data_name_map = all_data_name_map;
+                            all_medicine_data_name_map = all_medicine_data_name_map;
 
                           });
 
@@ -534,7 +534,7 @@ class _State extends State<Medicines> {
                           c++;
 
                           return Tile(
-                              map: all_data_name_map,
+                              map: all_medicine_data_name_map,
                               name: e.toString(),
                               color: color[c]);
                         }).toList(),
@@ -556,9 +556,9 @@ class _State extends State<Medicines> {
                 context: context,
                 builder: (context) => AddMedicine(
 
-                  result: all_data_doc_id_map,
+                  result: all_medicine_data_doc_id_map,
                   medicine_name_list: medicine_name,
-                  add_icon_tap: true,
+                  is_add_icon_tap: true,
                 )).then((value) {
 
                       print('dd');

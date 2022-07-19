@@ -209,8 +209,30 @@ class Storage {
   static Future<void> set({required String key, required Map<String,  Map<String, dynamic>> value}) async
   {
     final str = jsonEncode(value);
-
     await storage.write(key: key, value: str);
+  }
+  static Future<void> update({required String key, required Map<String,  Map<String, dynamic>> value}) async
+  {
+    // value is of lenght = 1;
+
+   final updated_result = await get(key: key);
+
+   if(updated_result!=null)
+     {
+
+       updated_result.keys.forEach((element) {
+
+            //doc_id==doc_id
+         if(element == value.keys.toString())
+           {
+             updated_result[element]= value[element]!;
+           }
+       });
+
+       set(key: key, value: updated_result);
+
+     }
+
   }
 
   static Future< Map<String, Map<String, dynamic>>? > get({required String key}) async

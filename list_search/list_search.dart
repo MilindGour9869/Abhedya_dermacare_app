@@ -7,17 +7,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_app/default.dart';
 
 
-import 'package:flutter_app/storage/storage.dart';
+
 import 'package:flutter/services.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class List_Search extends StatefulWidget {
 
-  List result;
+  List? result;
 
   Function get;
   Function set;
-  Function delete;
+  Function? delete;
 
   String ky ;
 
@@ -29,7 +29,7 @@ class List_Search extends StatefulWidget {
 
 
 
-  List_Search({@required this.result , @required this.get , @required this.set , this.delete ,  @required this.group ,  @required this.Group  ,  @required  this.one_select , @required this.ky});
+  List_Search({  this.result , required this.get , required this.set , this.delete ,  required this.group ,  required this.Group  ,  required  this.one_select , required this.ky});
 
   @override
   _List_SearchState createState() => _List_SearchState();
@@ -39,7 +39,9 @@ class _List_SearchState extends State<List_Search> {
 
 
   List group_all_data_list =[] ;
+
   List group_updated_result = [];
+
   Map<String , Map<String , dynamic >> all_data_map={};
 
   bool updated = false;
@@ -51,7 +53,7 @@ class _List_SearchState extends State<List_Search> {
 
 
 
-  Future f;
+  late Future f;
 
 
   var search_edit = TextEditingController();
@@ -93,17 +95,10 @@ class _List_SearchState extends State<List_Search> {
 
     });
 
-    if(widget.result.isNotEmpty)
+    if(widget.result !=null && widget.result!.isNotEmpty)
     {
-
-      print('\n Widget.result ');
-      print(widget.result);
-
-
-
-
       setState(() {
-        widget.result.forEach((element) {
+        widget.result!.forEach((element) {
 
           print(group_updated_result);
 
@@ -112,15 +107,8 @@ class _List_SearchState extends State<List_Search> {
 
             if(e==element)
             {
-
-
               select[e] = true;
               group_updated_result.add(e);
-
-
-
-
-
 
 
             }
