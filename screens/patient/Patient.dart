@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 // Storage
 import 'package:flutter_app/storage/cloud_storage.dart';
-import 'package:flutter_app/storage/storage.dart';
 
 // Screens
 import 'add_patient.dart';
@@ -26,6 +25,7 @@ class Patient extends StatefulWidget {
 }
 
 class _State extends State<Patient> {
+
   bool today = true;
   bool all = false;
 
@@ -42,6 +42,7 @@ class _State extends State<Patient> {
 
   // Create , Read , Update
   Future<void> patient_detail() async {
+
     patient_instance_list = [];
     all_patient_name_list = [];
     search_patient_list = [];
@@ -78,7 +79,9 @@ class _State extends State<Patient> {
   }
 
   Future<void> PatientVisitData(
+
       Patient_name_data_list patient_instance, String docId) async {
+
     await FirebaseFirestore.instance
         .collection('Patient')
         .doc(docId)
@@ -94,6 +97,7 @@ class _State extends State<Patient> {
                 .toString());
       });
     });
+
   }
 
   //Delete
@@ -141,9 +145,11 @@ class _State extends State<Patient> {
               context,
               MaterialPageRoute(
                   builder: (context) => AddPatient(
-                        all_patient_name_list,
-                        false,
+
                         patient_data: patient_instance,
+                        all_patient_name_list: all_patient_name_list,
+                        icon_tap: false,
+
                       ))).then((value) {
             if (value != 'back') {
               patient_detail();
@@ -575,8 +581,9 @@ class _State extends State<Patient> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => AddPatient(
-                              all_patient_name_list,
-                              true,
+
+                              icon_tap: true,
+                              all_patient_name_list:  all_patient_name_list,
                             ))).then((value) {
                   if (value != 'back') {
                     patient_detail();

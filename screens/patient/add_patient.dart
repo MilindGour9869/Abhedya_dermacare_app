@@ -32,7 +32,7 @@ class AddPatient extends StatefulWidget {
 
   bool icon_tap;
 
-  AddPatient(this.all_patient_name_list, this.icon_tap, {this.patient_data});
+  AddPatient( { required this.all_patient_name_list, required this.icon_tap, this.patient_data});
 
   @override
   _AddPatientState createState() => _AddPatientState();

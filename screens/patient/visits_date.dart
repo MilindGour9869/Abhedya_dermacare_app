@@ -60,7 +60,6 @@ class _VisitsDateState extends State<VisitsDate> {
 
             setState(() {
               visit_dates=visit_dates;
-
             });
           }
       }
@@ -232,7 +231,7 @@ class _VisitsDateState extends State<VisitsDate> {
 
                                                   await FirebaseFirestore.instance.collection('Patient').doc(widget.patient_data.doc_id).collection('visits').doc(date).delete();
 
-                                                  SnackOff(context);
+                                                  SnackOff(context: context);
                                                 }
 
 

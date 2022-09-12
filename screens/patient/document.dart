@@ -1,37 +1,44 @@
+import 'package:flutter/material.dart';
+
+//dart libs
 import 'dart:io';
 import 'dart:typed_data';
 
+//Firestore
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:date_format/date_format.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+
+//storage
+import 'package:flutter_app/storage/cloud_storage.dart';
+
+//screens
 import 'package:flutter_app/classes/Patient_name_list.dart';
 import 'package:flutter_app/custom_widgets/loading_screen.dart';
-import 'package:flutter_app/storage/cloud_storage.dart';
+
+//External Libs
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:pdf/pdf.dart';
-import 'package:printing/printing.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:open_file/open_file.dart';
 import 'package:flutter_app/custom_widgets/loading_indicator.dart';
-import 'package:flutter_app/custom_widgets/loading_screen.dart';
 
+//App theme
 import '../../default.dart';
 
 class DocumentScreen extends StatefulWidget {
+
   Patient_name_data_list patient_data;
 
-  DocumentScreen({@required this.patient_data});
+  DocumentScreen({required this.patient_data});
 
   @override
   _DocumentScreenState createState() => _DocumentScreenState();
 }
 
 class _DocumentScreenState extends State<DocumentScreen> {
-  String visit_date;
+
+
 
   bool isprofile = false;
   bool isprescription = false;
@@ -44,22 +51,16 @@ class _DocumentScreenState extends State<DocumentScreen> {
   var other_doc_file_rename = TextEditingController();
   var receipt_file_rename = TextEditingController();
 
-
+  List prescript = [];
 
   Future fprescription;
   Future fother_doc;
   Future fprofile;
   Future freceipt ;
 
-
   File profile_file;
   String profile_name="Null";
-  String profile_link;
-
-
-  List prescript = [];
-
-
+  String? profile_link;
 
   File other_doc_file ;
   Map<String , dynamic> other_doc_file_map ={};
@@ -68,8 +69,6 @@ class _DocumentScreenState extends State<DocumentScreen> {
   File receipt_file ;
   Map<String , dynamic> receipt_file_map ={};
   List receipt_list = [];
-
-
 
   bool ischange = false;
 
@@ -87,17 +86,20 @@ class _DocumentScreenState extends State<DocumentScreen> {
 
     setState(() {
       this.profile_file = File(image.path);
-      profile_name = 'Profile'+ getFileExtension(profile_file.path);
 
+      var a = getFileExtension(profile_file.path);
+      if(a!=null)
+     {
+       profile_name = 'Profile'+ a;
+     }
+      else{
+        profile_name = 'Profile'+ ".png";
+      }
 
-
-
-      print(profile_file.path);
     });
 
     return 'change';
   }
-
 
   Future imagepicker_other_doc(ImageSource source) async {
 
@@ -110,22 +112,12 @@ class _DocumentScreenState extends State<DocumentScreen> {
 
     setState(() {
       other_doc_file = File(image.path);
-
-      print(other_doc_file.path);
-
-
-
     });
 
     return 'change';
   }
 
-
-
-
   Future imagepicker_receipt(ImageSource source) async {
-
-
     ischange = true;
 
     final image =
@@ -135,9 +127,6 @@ class _DocumentScreenState extends State<DocumentScreen> {
 
     setState(() {
       receipt_file = File(image.path);
-
-
-
     });
 
     return 'change';
@@ -150,23 +139,15 @@ class _DocumentScreenState extends State<DocumentScreen> {
 
       await r.listAll().then((value) async {
 
-        print(profile_name);
-
-
         profile_name =  value.items.first.name;
-        profile_cloud_data = await value.items.first.getData();
+        var a  = await value.items.first.getData();
+        if(a!=null)
+          {
+            profile_cloud_data  = a!;
+          }
         profile_link = await value.items.first.getDownloadURL();
 
-
       });
-
-
-
-
-
-
-
-
       return r.name;
     } catch (e) {
       print(e);
@@ -178,15 +159,8 @@ class _DocumentScreenState extends State<DocumentScreen> {
       var ref = await FirebaseStorage.instance
           .ref('Patient/${widget.patient_data.doc_id}/OtherDocument/');
 
-
       var result = await ref.listAll();
-
-
       other_doc_list = await result.items;
-
-
-
-
 
       return 'DataArrived';
     } catch (e) {
@@ -199,15 +173,8 @@ class _DocumentScreenState extends State<DocumentScreen> {
       var ref = await FirebaseStorage.instance
           .ref('Patient/${widget.patient_data.doc_id}/Receipt/');
 
-
       var result = await ref.listAll();
-
-
       receipt_list = await result.items;
-
-
-
-
 
       return 'DataArrived';
     } catch (e) {
@@ -215,27 +182,20 @@ class _DocumentScreenState extends State<DocumentScreen> {
     }
   }
 
-
-
   Future f_prescription() async {
     var ref = await FirebaseStorage.instance
         .ref('Patient/${widget.patient_data.doc_id}/Prescription/');
 
-    print('ger');
-
-    print(ref.fullPath);
-
     var result = await ref.listAll();
 
-
-   prescript = await result.items;
+    prescript = await result.items;
 
     return 'Data arrived';
   }
 
   bool hasdata = false;
 
-  String getFileExtension(String fileName) {
+  String? getFileExtension(String fileName) {
     try {
       return "." + fileName.split('.').last;
     } catch(e){
@@ -247,17 +207,11 @@ class _DocumentScreenState extends State<DocumentScreen> {
   @override
   void initState() {
     // TODO: implement initState
-
-    print('cddcddsaas');
-
     fprofile = f_profile();
     fprescription = f_prescription();
     fother_doc = f_other_doc();
     freceipt = f_receipt();
     profile_link = widget.patient_data.profile_link;
-
-
-
   }
 
   @override
@@ -301,14 +255,7 @@ class _DocumentScreenState extends State<DocumentScreen> {
                           if(other_doc_file_map.isNotEmpty)
                           {
 
-
-
-
-
-
-
                             await Future.wait(other_doc_file_map.keys.map((key)async {
-
 
                               await Cloud_Storage.Patient_Other_Document_Upload(
                                 doc_id: widget.patient_data.doc_id,
@@ -316,25 +263,11 @@ class _DocumentScreenState extends State<DocumentScreen> {
                                 file_name: key,
 
                               );
-
-
-
-
                             }));
-
-
                           }
                           if(receipt_file_map.isNotEmpty)
                           {
-
-
-
-
-
-
-
                             await Future.wait(receipt_file_map.keys.map((key)async {
-
 
                               await Cloud_Storage.Patient_Receipt_Upload(
                                 doc_id: widget.patient_data.doc_id,
@@ -343,11 +276,7 @@ class _DocumentScreenState extends State<DocumentScreen> {
 
                               );
 
-
-
-
                             }));
-
 
                           }
                           if(profile_file !=null)
@@ -358,27 +287,17 @@ class _DocumentScreenState extends State<DocumentScreen> {
                                 file_name: profile_name
                               ).then((value) async{
                                 await FirebaseFirestore.instance.collection('Patient').doc(widget.patient_data.doc_id).update({
-
                                   'profile_link' : value
                                 });
                               });
-
-
-
                             }
-
-                         SnackOff(context: context);
+                          SnackOff(context: context);
 
                           Navigator.pop(context , 'save');
-
-
-
-
                         }
                         else
                         {
                           Navigator.pop(context , 'back');
-
                         }
 
 
