@@ -128,7 +128,7 @@ class _Printer_Select_ListState extends State<Printer_Select_List> {
                               leading: CircleAvatar(
 
                                 child: Icon(Icons.done , color: Colors.white,),
-                                backgroundColor: map_bool[key]?AppTheme.teal:Colors.grey,
+                                backgroundColor: map_bool[key]!?AppTheme.teal:Colors.grey,
                               ),
                               title: Text(key),
                               onTap: (){
@@ -206,39 +206,39 @@ class _Printer_Select_ListState extends State<Printer_Select_List> {
 
                             pdf =  PdfInvoiceApi.generatePdf(
 
-                              visit_date: map_bool['Visit Date']?widget.map_list['Visit Date']:null ,
+                              visit_date: map_bool['Visit Date']!?widget.map_list['Visit Date']:null ,
 
-                              patient_detail: map_bool['Patient Detail']?widget.map_list['Patient Detail']:null ,
+                              patient_detail: map_bool['Patient Detail']!?widget.map_list['Patient Detail']:null ,
 
-                              patient_uid: map_bool['UID']?widget.map_list['UID']:null ,
+                              patient_uid: map_bool['UID']!?widget.map_list['UID']:null ,
 
-                              medicine_map: map_bool['Medicine']?widget.map_list['Medicine'].isEmpty?null:widget.map_list['Medicine']:null ,
+                              medicine_map: map_bool['Medicine']!?widget.map_list['Medicine'].isEmpty?null:widget.map_list['Medicine']:null ,
 
-                              vitals: map_bool['Vitals']?widget.map_list['Vitals'].isEmpty?null:widget.map_list['Vitals']:null ,
+                              vitals: map_bool['Vitals']!?widget.map_list['Vitals'].isEmpty?null:widget.map_list['Vitals']:null ,
 
 
 
-                              notes: map_bool['Notes']?widget.map_list['Notes'].isEmpty?null:widget.map_list['Notes']:null ,
+                              notes: map_bool['Notes']!?widget.map_list['Notes'].isEmpty?null:widget.map_list['Notes']:null ,
 
-                              diagnosis: map_bool['Diagnosis']?widget.map_list['Diagnosis'].isEmpty?null:widget.map_list['Diagnosis']:null ,
+                              diagnosis: map_bool['Diagnosis']!?widget.map_list['Diagnosis'].isEmpty?null:widget.map_list['Diagnosis']:null ,
 
-                              advice: map_bool['Advices']?widget.map_list['Advices'].isEmpty?null:widget.map_list['Advices']:null ,
+                              advice: map_bool['Advices']!?widget.map_list['Advices'].isEmpty?null:widget.map_list['Advices']:null ,
 
-                              allergies: map_bool['Allergies']?widget.map_list['Allergies'].isEmpty?null:widget.map_list['Allergies']:null ,
+                              allergies: map_bool['Allergies']!?widget.map_list['Allergies'].isEmpty?null:widget.map_list['Allergies']:null ,
 
-                              clinical_finding: map_bool['Clinical Finding']?widget.map_list['Clinical Finding'].isEmpty?null:widget.map_list['Clinical Finding']:null ,
+                              clinical_finding: map_bool['Clinical Finding']!?widget.map_list['Clinical Finding'].isEmpty?null:widget.map_list['Clinical Finding']:null ,
 
-                              complaint: map_bool['Complaint']?widget.map_list['Complaint'].isEmpty?null:widget.map_list['Complaint']:null ,
+                              complaint: map_bool['Complaint']!?widget.map_list['Complaint'].isEmpty?null:widget.map_list['Complaint']:null ,
 
                               //  blood_group: map_bool['Blood group']?widget.map_list['Blood group'].isEmpty?null:widget.map_list['Blood group']:null ,
 
-                              group: map_bool['Group']?widget.map_list['Group'].isEmpty?null:widget.map_list['Group']:null ,
+                              group: map_bool['Group']!?widget.map_list['Group'].isEmpty?null:widget.map_list['Group']:null ,
 
-                              investigation: map_bool['Investigation']?widget.map_list['Investigation'].isEmpty?null:widget.map_list['Investigation']:null ,
+                              investigation: map_bool['Investigation']!?widget.map_list['Investigation'].isEmpty?null:widget.map_list['Investigation']:null ,
 
 
 
-                              follow_up_date: map_bool['Follow up date']?widget.map_list['Follow up date']:null ,
+                              follow_up_date: map_bool['Follow up date']!?widget.map_list['Follow up date']:null ,
 
 
                             );

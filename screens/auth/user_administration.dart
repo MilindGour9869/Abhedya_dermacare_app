@@ -28,7 +28,7 @@ class _UserAdministrationState extends State<UserAdministration> {
 
 
 
-  Widget User({@required String user}){
+  Widget User({required String user}){
     return Row(
 
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -54,14 +54,14 @@ class _UserAdministrationState extends State<UserAdministration> {
                         width: 2
                     ),
                     borderRadius: BorderRadius.circular(5),
-                    color: map3['Admin']?Colors.grey:Colors.transparent
+                    color: map3['Admin']!?Colors.grey:Colors.transparent
 
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all( 1.0),
                   child: Text('Admin' , style: TextStyle(
 
-                      color: map3['Admin']?Colors.white:Colors.grey
+                      color: map3['Admin']!?Colors.white:Colors.grey
                   ),
                     textScaleFactor: AppTheme.list_tile_subtile,
 
@@ -94,14 +94,14 @@ class _UserAdministrationState extends State<UserAdministration> {
                         width: 2
                     ),
                     borderRadius: BorderRadius.circular(5),
-                    color: map3['Reception']?Colors.grey:Colors.transparent
+                    color: map3['Reception']!?Colors.grey:Colors.transparent
 
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(1.0),
                   child: Text('Reception' , style: TextStyle(
 
-                      color: map3['Reception']?Colors.white:Colors.grey
+                      color: map3['Reception']!?Colors.white:Colors.grey
                   ),
                     textScaleFactor: AppTheme.list_tile_subtile,
                   ),
@@ -130,14 +130,14 @@ class _UserAdministrationState extends State<UserAdministration> {
                         width: 2
                     ),
                     borderRadius: BorderRadius.circular(5),
-                    color: map3['Guest']?Colors.grey:Colors.transparent
+                    color: map3['Guest']!?Colors.grey:Colors.transparent
 
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(1.0),
                   child: Text('Guest' , style: TextStyle(
 
-                      color: map3['Guest']?Colors.white:Colors.grey
+                      color: map3['Guest']!?Colors.white:Colors.grey
                   ),
 
                     textScaleFactor: AppTheme.list_tile_subtile,
@@ -192,13 +192,13 @@ class _UserAdministrationState extends State<UserAdministration> {
                             ),
                           ),
 
-                          Padding(
-                            padding:  EdgeInsets.symmetric(vertical: 2.w),
-                            child: User(),
-                          ),
+//                          Padding(
+//                            padding:  EdgeInsets.symmetric(vertical: 2.w),
+//                            child: User(),
+//                          ),
 
                           Visibility(
-                            visible:!map3['Guest'] ,
+                            visible:map3['Guest']! ,
                             child: Padding(
                               padding:  EdgeInsets.symmetric(vertical: 2.w),
                               child: Center(
@@ -254,7 +254,7 @@ class _UserAdministrationState extends State<UserAdministration> {
 
 
 
-                                if(map3['Guest'])
+                                if(map3['Guest']!)
                                   {
                                     await Storage.set_guest_true();
                                     Navigator.pop(context , 'guest');
@@ -265,7 +265,7 @@ class _UserAdministrationState extends State<UserAdministration> {
                                      {
 
 
-                                       String collection ;
+                                       late String collection ;
                                        map3.forEach((key, value) async{
                                          if(value)
                                            {

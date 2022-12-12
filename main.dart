@@ -150,7 +150,7 @@ class NavigationDrawer extends StatefulWidget {
 }
 
 class _NavigationDrawerState extends State<NavigationDrawer> {
-  File file;
+  File? file;
 
   Future imagepicker(ImageSource source) async {
     final image = await ImagePicker().pickImage(source: source);
@@ -188,7 +188,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                     ),
                         )
                         : Image.file(
-                      file,
+                      file!,
                       height: 40.w,
                       width: 40.w,
                       fit: BoxFit.cover,
@@ -209,19 +209,15 @@ Widget Menu(BuildContext context) {
   return Wrap(
     runSpacing: 2.w,
     children: [
-      GestureDetector(
-        onTap: (){
 
+      ListTile(
+        title: Text('Profile'),
+        leading: Icon(FontAwesomeIcons.userDoctor , color: AppTheme.green,),
+        onTap: () {
+
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => Profile()));
         },
-        child: ListTile(
-          title: Text('Profile'),
-          leading: Icon(FontAwesomeIcons.userDoctor , color: AppTheme.green,),
-          onTap: () {
-
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => Profile()));
-          },
-        ),
       ), // Profile
 
       Dividerr(),
@@ -238,7 +234,7 @@ Widget Menu(BuildContext context) {
         leading: Icon(FontAwesomeIcons.capsules , color: AppTheme.teal ),
         onTap: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => Medicines()));
+              context, MaterialPageRoute(builder: (context) => Medicines(to_add_medicne: true, to_select_medicine: false)));
         },
       ), // Medicine
       ListTile(
@@ -303,9 +299,7 @@ Widget Menu(BuildContext context) {
 }
 
 class Dividerr extends StatelessWidget {
-  const Dividerr({
-    Key key,
-  }) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {

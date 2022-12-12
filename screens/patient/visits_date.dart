@@ -151,9 +151,9 @@ class _VisitsDateState extends State<VisitsDate> {
                                         {
                                           Navigator.push(context , MaterialPageRoute(builder: (context)=>AddVisits(
 
-                                            widget.patient_data,
-                                            false,
-                                            date_timestamp_map[date]!,
+                                            patient_data :  widget.patient_data,
+                                            icon_tap : false,
+                                            visit_date :  date_timestamp_map[date]!,
 
                                             patient_visit_date_map: widget.patient_data.visits_mapData_list![date]!,
 
@@ -220,7 +220,7 @@ class _VisitsDateState extends State<VisitsDate> {
 
                                               if(result)
                                                 {
-                                                  SnackOn(context, 'Deleting the selected visit date...');
+                                                  SnackOn(context : context, msg : 'Deleting the selected visit date...');
 
                                                   widget.patient_data.visits_mapData_list!.remove(date);
                                                   setState(() {
@@ -299,7 +299,7 @@ class _VisitsDateState extends State<VisitsDate> {
 
                     patient_data: widget.patient_data,
 
-                    visit_date: Timestamp.now(),
+                    visit_date: formatDate(Timestamp.now().toDate(), [ dd, '-', mm, '-', yyyy]).toString(),
 
 
 

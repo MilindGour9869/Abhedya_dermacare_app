@@ -16,7 +16,7 @@ class SignUpScreen extends StatefulWidget {
 
   Function f;
 
-  SignUpScreen({this.f});
+  SignUpScreen({required this.f});
   @override
   _SignUpScreenState createState() => _SignUpScreenState();
 }
@@ -133,7 +133,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                         await Storage.get_all_cloud_data();
                                       }
                                       await FirebaseAuth.instance.createUserWithEmailAndPassword(email: username_edit.text, password: password_edit.text);
-                                      navigatorKey.currentState.popUntil( (route) => route.isFirst);
+                                      navigatorKey.currentState!.popUntil( (route) => route.isFirst);
                                     }
 
 
@@ -195,7 +195,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
               GestureDetector(
                 onTap: (){
-                  widget.f();
+                  widget.f!();
 
                 },
                 child: Container(
@@ -233,19 +233,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
 class txtfield extends StatefulWidget {
   txtfield({
-    Key key,
+
     @required this.text_edit,
     @required this.hint,
     @required this.keyboard,
     @required this.icon,
     @required this.obsecure
-  }) : super(key: key);
+  }) ;
 
-  TextEditingController text_edit;
-  String hint;
-  TextInputType keyboard;
-  Icon icon;
-  bool obsecure;
+  TextEditingController? text_edit;
+  String? hint;
+  TextInputType? keyboard;
+  Icon? icon;
+  bool? obsecure;
 
   @override
   State<txtfield> createState() => _txtfieldState();
@@ -258,7 +258,7 @@ class _txtfieldState extends State<txtfield> {
       padding: EdgeInsets.symmetric(vertical: 1.5.h),
       child: Material(
         child: TextField(
-          obscureText: widget.obsecure ,
+          obscureText: widget.obsecure! ,
 
           controller: widget.text_edit,
 
@@ -276,7 +276,7 @@ class _txtfieldState extends State<txtfield> {
             enabledBorder: OutlineInputBorder(
 
               borderSide: BorderSide(
-                color: widget.text_edit.text.isEmpty?Colors.grey.shade300:AppTheme.green,
+                color: widget.text_edit!.text.isEmpty?Colors.grey.shade300:AppTheme.green,
 
                 width: 2,
               ),

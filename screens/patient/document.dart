@@ -46,27 +46,27 @@ class _DocumentScreenState extends State<DocumentScreen> {
   bool is_other_doc = false;
 
 
-  Uint8List profile_cloud_data;
+  Uint8List? profile_cloud_data;
 
   var other_doc_file_rename = TextEditingController();
   var receipt_file_rename = TextEditingController();
 
   List prescript = [];
 
-  Future fprescription;
-  Future fother_doc;
-  Future fprofile;
-  Future freceipt ;
+  Future? fprescription;
+  Future? fother_doc;
+  Future? fprofile;
+  Future? freceipt ;
 
-  File profile_file;
+  File? profile_file;
   String profile_name="Null";
   String? profile_link;
 
-  File other_doc_file ;
+  File? other_doc_file ;
   Map<String , dynamic> other_doc_file_map ={};
   List other_doc_list = [];
 
-  File receipt_file ;
+  File? receipt_file ;
   Map<String , dynamic> receipt_file_map ={};
   List receipt_list = [];
 
@@ -87,7 +87,7 @@ class _DocumentScreenState extends State<DocumentScreen> {
     setState(() {
       this.profile_file = File(image.path);
 
-      var a = getFileExtension(profile_file.path);
+      var a = getFileExtension(profile_file!.path);
       if(a!=null)
      {
        profile_name = 'Profile'+ a;
@@ -283,7 +283,7 @@ class _DocumentScreenState extends State<DocumentScreen> {
                             {
                               await Cloud_Storage.Patient_Profile_Image_Upload(
                                 doc_id: widget.patient_data.doc_id,
-                                file: profile_file,
+                                file: profile_file!,
                                 file_name: profile_name
                               ).then((value) async{
                                 await FirebaseFirestore.instance.collection('Patient').doc(widget.patient_data.doc_id).update({
@@ -359,7 +359,7 @@ class _DocumentScreenState extends State<DocumentScreen> {
 
                             File f = await File('${tempDir.path}/${profile_name}')
                                 .create();
-                            f.writeAsBytesSync(profile_cloud_data);
+                            f.writeAsBytesSync(profile_cloud_data!);
 
                             SnackOff(context: context);
 
@@ -367,7 +367,7 @@ class _DocumentScreenState extends State<DocumentScreen> {
                           } else if (profile_file != null) {
 
 
-                            OpenFile.open(profile_file.path);
+                            OpenFile.open(profile_file!.path);
                           }
                         },
                         child: Card(
@@ -393,11 +393,11 @@ class _DocumentScreenState extends State<DocumentScreen> {
 
                                         if(profile_link != null )
                                           {
-                                            if(profile_link.isNotEmpty)
+                                            if(profile_link!.isNotEmpty)
                                               {
                                                 SnackOn(context: context, msg: 'Deleting Profile');
 
-                                                 await FirebaseStorage.instance.refFromURL(profile_link).delete();
+                                                 await FirebaseStorage.instance.refFromURL(profile_link!).delete();
 
                                                  SnackOff(context: context);
 
@@ -790,7 +790,7 @@ class _DocumentScreenState extends State<DocumentScreen> {
 
 
                                             showDialog(context: context, builder: (context)=>WillPopScope(
-                                              onWillPop: (){
+                                              onWillPop: ()async{
                                                 if(receipt_file_rename.text.isNotEmpty)
                                                 {
                                                   Navigator.pop(context , receipt_file_rename.text);
@@ -812,6 +812,9 @@ class _DocumentScreenState extends State<DocumentScreen> {
 
 
                                                 }
+
+                                             return true;
+
 
                                               },
                                               child: GestureDetector(
@@ -931,7 +934,7 @@ class _DocumentScreenState extends State<DocumentScreen> {
                                               {
                                                 setState(() {
 
-                                                  value = value + getFileExtension(receipt_file.path);
+                                                  value = value + getFileExtension(receipt_file!.path);
 
                                                   receipt_file_map[value] = receipt_file;
 
@@ -1152,7 +1155,7 @@ class _DocumentScreenState extends State<DocumentScreen> {
 
 
                                               showDialog(context: context, builder: (context)=>WillPopScope(
-                                                onWillPop: (){
+                                                onWillPop: ()async{
                                                   if(other_doc_file_rename.text.isNotEmpty)
                                                   {
                                                     Navigator.pop(context , other_doc_file_rename.text);
@@ -1174,6 +1177,8 @@ class _DocumentScreenState extends State<DocumentScreen> {
 
 
                                                   }
+
+                                                  return true;
 
                                                 },
                                                 child: GestureDetector(
@@ -1293,7 +1298,7 @@ class _DocumentScreenState extends State<DocumentScreen> {
                                                   {
                                                     setState(() {
 
-                                                      value = value + getFileExtension(other_doc_file.path);
+                                                      value = value + getFileExtension(other_doc_file!.path);
 
 
                                                       other_doc_file_map[value] = other_doc_file;

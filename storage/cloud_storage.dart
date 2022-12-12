@@ -8,7 +8,7 @@ import 'package:flutter/cupertino.dart';
 class Cloud_Storage {
 
 
-  static Future Patient_Prescription_Upload( {String doc_id  , String visit_date, Uint8List data})async{
+  static Future Patient_Prescription_Upload( {required String doc_id  , required String visit_date, required Uint8List data})async{
 
     try{
 
@@ -30,8 +30,8 @@ class Cloud_Storage {
 
   }
 
-  static Future Patient_Cloud_Data_Delete({String doc_id}){
-    FirebaseStorage.instance.ref('Patient/${doc_id}/').delete();
+  static Future Patient_Cloud_Data_Delete({required String doc_id})async{
+   await FirebaseStorage.instance.ref('Patient/${doc_id}/').delete();
   }
 
 
@@ -40,7 +40,7 @@ class Cloud_Storage {
 
 
 
-  static Future Patient_Profile_Image_Upload( {@required String doc_id ,@required File file , @required String file_name})async{
+  static Future Patient_Profile_Image_Upload( {required String doc_id ,required File file , required String file_name})async{
     try{
       final ref = await FirebaseStorage.instance.ref('Patient/${doc_id}/Profile/${file_name}');
 
@@ -73,7 +73,7 @@ class Cloud_Storage {
 
 
 
-  static Future Admin_Profile_Image_Upload( {String username , File file})async{
+  static Future Admin_Profile_Image_Upload( {required String username , required File file})async{
     try{
       final ref = await FirebaseStorage.instance.ref('Administration/Admin/${username}/Profile');
 
@@ -86,7 +86,7 @@ class Cloud_Storage {
     }
   }
 
-  static Future Patient_Other_Document_Upload( {@required String doc_id , @required File file , @required String file_name})async{
+  static Future Patient_Other_Document_Upload( {required String doc_id , required File file , required String file_name})async{
     try{
       final ref = await FirebaseStorage.instance.ref('Patient/${doc_id}/OtherDocument/${file_name}');
 
@@ -99,7 +99,7 @@ class Cloud_Storage {
     }
   }
 
-  static Future Patient_Receipt_Upload( {@required String doc_id , @required File file , @required String file_name})async{
+  static Future Patient_Receipt_Upload( {required String doc_id , required File file , required String file_name})async{
     try{
       final ref = await FirebaseStorage.instance.ref('Patient/${doc_id}/Receipt/${file_name}');
 

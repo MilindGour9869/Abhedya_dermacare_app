@@ -8,7 +8,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import '../default.dart';
 
 
-  File file;
+  File? file;
 
 
   Future imagepicker(ImageSource source) async{
@@ -34,13 +34,13 @@ import '../default.dart';
 
 
 
-Widget SelectImage ({BuildContext context}){
+Widget SelectImage ({BuildContext? context}){
   return  Container(
     margin: EdgeInsets.symmetric(vertical: 2.h),
     child: GestureDetector(
       onTap: () {
         showDialog(
-          context: context,
+          context: context!,
           builder: (context) => AlertDialog(
               title: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -79,7 +79,7 @@ Widget SelectImage ({BuildContext context}){
             color: Colors.white,
           )
               : Image.file(
-            file,
+            file!,
             fit: BoxFit.fill,
           ),
           backgroundColor: AppTheme.offwhite,

@@ -204,7 +204,7 @@ class PdfInvoiceApi {
       );
     }
 
-    pw.TableRow Vitals({@required Map<String,dynamic> vitals}){
+    pw.TableRow Vitals({@required Map<String,dynamic>? vitals}){
       return pw.TableRow(
           children: [
             pw.Container(
@@ -220,7 +220,7 @@ class PdfInvoiceApi {
 
                       ),
                       pw.Row(
-                          children: vitals.keys.map((e) {
+                          children: vitals!.keys.map((e) {
                             return pw.Text('${vitals[e]['vital_name'].toString()} : ${vitals[e]['value'].toString() + ' ' +  vitals[e]['vital_unit']} / ', style: pw.TextStyle(
                               fontSize: three,
                             ),);

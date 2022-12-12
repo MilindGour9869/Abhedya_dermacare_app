@@ -26,8 +26,7 @@ class Patient extends StatefulWidget {
 
 class _State extends State<Patient> {
 
-  bool today = true;
-  bool all = false;
+  bool today = true , all = false;
 
   late Future f;
 

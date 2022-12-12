@@ -11,9 +11,9 @@ class Payment extends StatefulWidget {
   String visit_date;
   Patient_name_data_list patient_data;
   bool icon_tap;
-  Map<String, dynamic> map;
+  Map<String, dynamic>? map;
 
-  Payment({@required this.visit_date , @required this.patient_data , @required this.map , @required this.icon_tap});
+  Payment({required this.visit_date , required this.patient_data ,  this.map , required this.icon_tap});
 
   @override
   _PaymentState createState() => _PaymentState();
@@ -22,24 +22,17 @@ class Payment extends StatefulWidget {
 class _PaymentState extends State<Payment> {
 
 
-  String visit_date;
+  late String visit_date;
   Map<String , Map<String,dynamic>> service_result ={};
 
   List Services =[];
 
-  int total_charge=0;
+  num total_charge=0;
 
 
 
 
 
-
-  Future f (){
-
-
-
-
-  }
 
 
 
@@ -48,12 +41,13 @@ class _PaymentState extends State<Payment> {
     // TODO: implement initState
     super.initState();
 
-    visit_date = formatDate(widget.visit_date.toDate(), [ dd, '-', mm, '-', yyyy]).toString();
+ //  visit_date = formatDate(widget.visit_date.toDate(), [ dd, '-', mm, '-', yyyy]).toString();
+      visit_date = widget.visit_date;
 
-    service_result = widget.patient_data.visits_mapData_list[visit_date]!=null?Map<String, Map<String, dynamic>>.from(widget.patient_data.visits_mapData_list[visit_date]['service']):{};
+    service_result = widget.patient_data.visits_mapData_list![visit_date]!=null?Map<String, Map<String, dynamic>>.from(widget.patient_data.visits_mapData_list![visit_date]!['service']):{};
     if(service_result.isNotEmpty)
       {
-        print(widget.patient_data.visits_mapData_list[visit_date]['service']);
+        print(widget.patient_data.visits_mapData_list![visit_date]!['service']);
 
         Services = service_result.keys.toList();
         service_result.forEach((key, value) {
@@ -144,7 +138,7 @@ class _PaymentState extends State<Payment> {
 
 
                       visit_date = formatDate(
-                          Timestamp.fromDate(value).toDate(),
+                          Timestamp.fromDate(value!).toDate(),
                           [dd, '-', mm, '-', yyyy]).toString();
 
 
@@ -176,7 +170,7 @@ class _PaymentState extends State<Payment> {
 
 
                           visit_date = formatDate(
-                              Timestamp.fromDate(value).toDate(),
+                              Timestamp.fromDate(value!).toDate(),
                               [dd, '-', mm, '-', yyyy]).toString();
 
 
@@ -213,7 +207,7 @@ class _PaymentState extends State<Payment> {
                             Text(e),
                           ],
                         ),
-                        trailing:  Text('₹ ${service_result[e]['charge'].toString()}' ),
+                        trailing:  Text('₹ ${service_result[e]!['charge'].toString()}' ),
                       ),
                     ),
                   );

@@ -17,12 +17,12 @@ class AddData extends StatefulWidget {
   String medicine_name ;
 
   Map<String , Map<String , dynamic>> map;
-  Map<String , dynamic>result_map;
+  Map<String , dynamic>?  result_map;
 
   Color color;
 
 
-  AddData(this.medicine_name  , this.color , this.map , this.result_map );
+  AddData({required this.medicine_name  , required this.color , required this.map , this.result_map} );
 
   @override
   _AddDataState createState() => _AddDataState();
@@ -30,9 +30,9 @@ class AddData extends StatefulWidget {
 
 class _AddDataState extends State<AddData> {
 
-  Map<String , Map<String , dynamic>> map;
-  String name;
-  Color color;
+  late  Map<String , Map<String , dynamic>> map;
+  late String name;
+  late Color color;
 
   Map<String , dynamic> result_map={
 
@@ -110,7 +110,7 @@ class _AddDataState extends State<AddData> {
 
 
 
-  String value;
+ // String value;
 
 
 
@@ -131,14 +131,14 @@ class _AddDataState extends State<AddData> {
 
       if(widget.result_map != null)
       {
-        print('sssss');
 
 
 
-        if(widget.result_map['time'] != null )
+
+        if(widget.result_map!['time'] != null )
         {
-          print('gggg');
-          widget.result_map['time'].forEach((e){
+
+          widget.result_map!['time'].forEach((e){
 
             map2[e] = true;
 
@@ -148,22 +148,22 @@ class _AddDataState extends State<AddData> {
 
 
         }
-        if(widget.result_map['duration'] != null)
+        if(widget.result_map!['duration'] != null)
 
         {
 
 
-          duration_edit.text = widget.result_map['duration']['tenure'];
+          duration_edit.text = widget.result_map!['duration']['tenure'];
           map3.forEach((key, value) {
             map3[key] = false;
 
           });
-          map3[widget.result_map['duration']['Duration']]=true;
+          map3[widget.result_map!['duration']['Duration']]=true;
 
         }
-        if(widget.result_map['add_info'] != null)
+        if(widget.result_map!['add_info'] != null)
         {
-          all_data_english_list = widget.result_map['add_info'];
+          all_data_english_list = widget.result_map!['add_info'];
 
 
         }
@@ -184,22 +184,22 @@ class _AddDataState extends State<AddData> {
     String tab="" , composition ="" , company_name = "";
 
 
-    tab=map[name]['tab']==null?"":map[name]['tab'];
+    tab=map[name]!['tab']==null?"":map[name]!['tab'];
 
-    List b = map[name]['composition'];
+    List b = map[name]!['composition'];
     if(b != null) {
       b.forEach((element) {
         composition = element.toString() + ' , ';
       });
     }
 
-    print(map[name]['company_name']);
 
 
 
 
 
-    company_name=map[name]['company_name']==null?"":map[name]['company_name'];
+
+    company_name=map[name]!['company_name']==null?"":map[name]!['company_name'];
 
 
 
@@ -277,7 +277,7 @@ class _AddDataState extends State<AddData> {
 
 
 
-                                map2[e] = !map2[e];
+                                map2[e] = map2[e]!;
 
 
 
@@ -289,7 +289,7 @@ class _AddDataState extends State<AddData> {
 
                             },
                             child: CircleAvatar(
-                              backgroundColor: map2[e]?AppTheme.teal:Colors.grey,
+                              backgroundColor: map2[e]!?AppTheme.teal:Colors.grey,
                               child: Text(e[0] , style: TextStyle(color: Colors.white), textScaleFactor: AppTheme.list_tile_subtile,),
                             ),
                           ), ).toList()
@@ -337,9 +337,9 @@ class _AddDataState extends State<AddData> {
                                       labelText: 'Duration',
 
                                       prefixIcon: Icon(Icons.access_time),
-                                      suffix: Text(map3['Days']?'Days' :
+                                      suffix: Text(map3['Days']!?'Days' :
 
-                                      map3['Weeks']?'Weeks' :
+                                      map3['Weeks']!?'Weeks' :
                                       'Months'
                                       )
 
@@ -380,14 +380,14 @@ class _AddDataState extends State<AddData> {
                                           width: 2
                                       ),
                                       borderRadius: BorderRadius.circular(5),
-                                      color: map3['Days']?Colors.grey:Colors.transparent
+                                      color: map3['Days']!?Colors.grey:Colors.transparent
 
                                   ),
                                   child: Padding(
                                     padding: const EdgeInsets.all( 1.0),
                                     child: Text('Days' , style: TextStyle(
 
-                                        color: map3['Days']?Colors.white:Colors.grey
+                                        color: map3['Days']!?Colors.white:Colors.grey
                                     ),
                                       textScaleFactor: AppTheme.list_tile_subtile,
 
@@ -420,14 +420,14 @@ class _AddDataState extends State<AddData> {
                                           width: 2
                                       ),
                                       borderRadius: BorderRadius.circular(5),
-                                      color: map3['Weeks']?Colors.grey:Colors.transparent
+                                      color: map3['Weeks']!?Colors.grey:Colors.transparent
 
                                   ),
                                   child: Padding(
                                     padding: const EdgeInsets.all(1.0),
                                     child: Text('Weeks' , style: TextStyle(
 
-                                        color: map3['Weeks']?Colors.white:Colors.grey
+                                        color: map3['Weeks']!?Colors.white:Colors.grey
                                     ),
                                       textScaleFactor: AppTheme.list_tile_subtile,
                                     ),
@@ -456,14 +456,14 @@ class _AddDataState extends State<AddData> {
                                           width: 2
                                       ),
                                       borderRadius: BorderRadius.circular(5),
-                                      color: map3['Months']?Colors.grey:Colors.transparent
+                                      color: map3['Months']!?Colors.grey:Colors.transparent
 
                                   ),
                                   child: Padding(
                                     padding: const EdgeInsets.all(1.0),
                                     child: Text('Months' , style: TextStyle(
 
-                                        color: map3['Months']?Colors.white:Colors.grey
+                                        color: map3['Months']!?Colors.white:Colors.grey
                                     ),
 
                                       textScaleFactor: AppTheme.list_tile_subtile,
@@ -497,10 +497,6 @@ class _AddDataState extends State<AddData> {
 
                       height: 2.h,
                     ),
-
-
-
-
 
                     Material(
                       child: Container(

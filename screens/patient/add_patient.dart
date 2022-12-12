@@ -26,6 +26,7 @@ import 'package:flutter_app/storage/storage.dart';
 import 'package:flutter_app/classes/Patient_name_list.dart';
 
 class AddPatient extends StatefulWidget {
+
   Patient_name_data_list? patient_data;
 
   List<String> all_patient_name_list;
@@ -39,9 +40,10 @@ class AddPatient extends StatefulWidget {
 }
 
 class _AddPatientState extends State<AddPatient> {
+
   File? file;
 
-  Patient_name_data_list? patient_instace;
+  Patient_name_data_list? patient_instance;
 
   late List<String> patient_name_list;
 
@@ -58,7 +60,7 @@ class _AddPatientState extends State<AddPatient> {
   var group_edit = TextEditingController();
   var blood_group_edit = TextEditingController();
 
-  String? profile_link = '';
+  String? profile_link ;
 
   bool profile_img_delete = false;
 
@@ -174,7 +176,7 @@ class _AddPatientState extends State<AddPatient> {
                             'Name is similar to another patient\nPlease change the name');
                       } else {
 
-                        SnackOn(context, 'Saving Patient Details...');
+                        SnackOn(context : context, msg :'Saving Patient Details...');
 
                         if (email_edit.text.isNotEmpty) {
                           if (!EmailValidator.validate(email_edit.text)) {

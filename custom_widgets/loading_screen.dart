@@ -6,7 +6,7 @@ class SnackOn {
   BuildContext context;
   String msg;
 
-  SnackOn( this.context ,  this.msg) {
+  SnackOn( {required this.context ,  required this.msg}) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(msg),
       duration: Duration(minutes: 2),

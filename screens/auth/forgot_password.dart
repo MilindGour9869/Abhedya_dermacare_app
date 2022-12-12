@@ -11,7 +11,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 class ForgotPasswordScreen extends StatefulWidget {
 
   Function f;
-  ForgotPasswordScreen({this.f});
+  ForgotPasswordScreen({required this.f});
   @override
   _ForgotPasswordScreenState createState() => _ForgotPasswordScreenState();
 }
@@ -174,12 +174,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
 class txtfield extends StatefulWidget {
   txtfield({
-    Key key,
-    @required this.text_edit,
-    @required this.hint,
-    @required this.keyboard,
-    @required this.icon,
-  }) : super(key: key);
+
+    required this.text_edit,
+    required this.hint,
+    required this.keyboard,
+    required this.icon,
+  }) ;
 
   TextEditingController text_edit;
   String hint;

@@ -12,7 +12,7 @@ import '../../storage/storage.dart';
 class LoginScreen extends StatefulWidget {
 
   Function f;
-  LoginScreen({this.f});
+  LoginScreen({ required this.f});
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -30,15 +30,15 @@ class _LoginScreenState extends State<LoginScreen> {
   'Guest' :false,
 };
 
-  Widget User({@required String user}){
+  Widget User({@required String? user}){
     return TextButton.icon(onPressed: (){
       setState(() {
 
-        map[user]=!map[user];
+        map[user!] = map[user]!;
 
 
       });
-    }, icon: Icon(Icons.adjust , color: map[user]?AppTheme.green:Colors.grey,), label: Text(user , style: TextStyle(color: map[user]?AppTheme.green:Colors.black),));
+    }, icon: Icon(Icons.adjust , color: map[user]!?AppTheme.green:Colors.grey,), label: Text(user! , style: TextStyle(color: map[user]!?AppTheme.green:Colors.black),));
   }
 
   @override
@@ -146,7 +146,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                                   await FirebaseAuth.instance.signInWithEmailAndPassword(email: username_edit.text, password: password_edit.text);
 
-                                  navigatorKey.currentState.popUntil( (route) => route.isFirst);
+                                  navigatorKey.currentState!.popUntil( (route) => route.isFirst);
                                 }
 
 
@@ -213,7 +213,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child:GestureDetector(
                     onTap: (){
 
-                      widget.f();
+                      widget.f!();
 
 
                     },
@@ -243,7 +243,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
 class txtfield extends StatefulWidget {
   txtfield({
-    Key key,
+
     @required this.text_edit,
     @required this.hint,
     @required this.keyboard,
@@ -252,14 +252,14 @@ class txtfield extends StatefulWidget {
     @required this.suffix,
 
 
-  }) : super(key: key);
+  }) ;
 
-  TextEditingController text_edit;
-  String hint;
-  TextInputType keyboard;
-  Icon icon;
-  bool obsecure;
-  bool suffix;
+  TextEditingController? text_edit;
+  String? hint;
+  TextInputType? keyboard;
+  Icon? icon;
+  bool? obsecure;
+  bool? suffix;
 
   @override
   State<txtfield> createState() => _txtfieldState();
@@ -273,7 +273,7 @@ class _txtfieldState extends State<txtfield> {
       child: TextField(
 
         controller: widget.text_edit,
-        obscureText: widget.obsecure,
+        obscureText: widget.obsecure!,
 
         decoration: InputDecoration(
             contentPadding: EdgeInsets.symmetric(horizontal: 7.w , vertical: 2.7.h ),
@@ -289,7 +289,7 @@ class _txtfieldState extends State<txtfield> {
             enabledBorder: OutlineInputBorder(
 
               borderSide: BorderSide(
-                color: widget.text_edit.text.isEmpty?Colors.grey.shade300:AppTheme.green,
+                color: widget.text_edit!.text.isEmpty?Colors.grey.shade300:AppTheme.green,
                   
                 width: 2,
               ),

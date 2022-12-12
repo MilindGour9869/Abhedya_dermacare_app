@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/custom_widgets/loading_screen.dart';
 import 'package:flutter_app/default.dart';
-import 'package:flutter_app/list_search/blood_group_list_search.dart';
+//import 'package:flutter_app/list_search/blood_group_list_search.dart';
 
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter_app/list_search/list_search.dart';
-import 'package:flutter_app/list_search/select_practice_list_search.dart';
+//import 'package:flutter_app/list_search/select_practice_list_search.dart';
 import 'package:flutter_app/storage/cloud_storage.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -28,7 +28,7 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  File file;
+  File? file;
 
   var name_edit = TextEditingController();
   var password_edit = TextEditingController();
@@ -40,7 +40,7 @@ class _ProfileState extends State<Profile> {
   var display_practice = TextEditingController();
   var select_practice_edit = TextEditingController();
 
-  String profile_link;
+  String? profile_link;
 
   bool profile_img_delete = false;
 
@@ -145,9 +145,7 @@ class _ProfileState extends State<Profile> {
                     if (file != null) {
                       print('file no null');
 
-                      var link = Cloud_Storage.Patient_Profile_Image_Upload(
-                        file: file,
-                      );
+                      var link = Cloud_Storage.Admin_Profile_Image_Upload(username: name_edit.text, file: file!);
 
                       final snapshot = await link.whenComplete(() {});
 
@@ -283,10 +281,10 @@ class _ProfileState extends State<Profile> {
                               )
                             : file != null
                                 ? Image.file(
-                                    file,
+                                    file!,
                                     fit: BoxFit.fill,
                                   )
-                                : Image.network(profile_link),
+                                : Image.network(profile_link!),
                         backgroundColor: AppTheme.offwhite,
                       ),
                     ),
@@ -299,9 +297,9 @@ class _ProfileState extends State<Profile> {
                     child: IconButton(
                       onPressed: () {
                         setState(() {
-                          profile_link.isNotEmpty
+                          profile_link!.isNotEmpty
                               ? FirebaseStorage.instance
-                                  .refFromURL(profile_link)
+                                  .refFromURL(profile_link!)
                                   .delete()
                               : null;
 
@@ -352,40 +350,45 @@ class _ProfileState extends State<Profile> {
                           ),
                           labelText: "Select Practice",
                           prefixIcon: Icon(Icons.medication),
+
+
                           // ignore: void_checks
-                          suffixIcon: IconButton(
-                            icon: Icon(Icons.arrow_drop_down_circle_outlined),
-                            onPressed: () {
-                              setState(() {
-                                select_practice_edit.text = "";
-                              });
+//                          suffixIcon: IconButton(
+//                            icon: Icon(Icons.arrow_drop_down_circle_outlined),
+//                            onPressed: () {
+//                              setState(() {
+//                                select_practice_edit.text = "";
+//                              });
+//
+//                              return showDialog(
+//                                  context: context,
+//                                  builder: (context) => List_Search(
+//                                        result: [result],
+//                                        one_select: true,
+//                                        group: 'select_practice',
+//                                        get: Storage.get_select_practice,
+//                                        set: Storage.set_select_practice,
+//                                        Group: 'Select_Practice',
+//                                      )).then((value) {
+//                                print('ff');
+//
+//                                if (value != null) {
+//                                  if (value.isNotEmpty) {
+//                                    setState(() {
+//                                      select_practice_edit.text = value[0];
+//                                      result = value[0];
+//                                    });
+//                                  } else
+//                                    result = null;
+//                                } else {
+//                                  result = null;
+//                                }
+//                              });
+//                            },
+//                          )
 
-                              return showDialog(
-                                  context: context,
-                                  builder: (context) => List_Search(
-                                        result: [result],
-                                        one_select: true,
-                                        group: 'select_practice',
-                                        get: Storage.get_select_practice,
-                                        set: Storage.set_select_practice,
-                                        Group: 'Select_Practice',
-                                      )).then((value) {
-                                print('ff');
 
-                                if (value != null) {
-                                  if (value.isNotEmpty) {
-                                    setState(() {
-                                      select_practice_edit.text = value[0];
-                                      result = value[0];
-                                    });
-                                  } else
-                                    result = null;
-                                } else {
-                                  result = null;
-                                }
-                              });
-                            },
-                          )),
+                      ),
                     )),
                 txtfield(
                   text_edit: display_practice,
@@ -503,12 +506,12 @@ class _ProfileState extends State<Profile> {
 
 class txtfield extends StatefulWidget {
   txtfield({
-    Key key,
-    @required this.text_edit,
-    @required this.hint,
-    @required this.keyboard,
-    @required this.icon,
-  }) : super(key: key);
+
+    required this.text_edit,
+    required this.hint,
+    required this.keyboard,
+    required this.icon,
+  }) ;
 
   TextEditingController text_edit;
   String hint;

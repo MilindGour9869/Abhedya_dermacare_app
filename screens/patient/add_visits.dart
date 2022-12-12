@@ -40,8 +40,9 @@ class AddVisits extends StatefulWidget {
 
 
   AddVisits(
+      {
 
-  this.patient_data , this.icon_tap , this.visit_date , {this.patient_visit_date_map});
+  required this.patient_data , required this.icon_tap ,required  this.visit_date , this.patient_visit_date_map});
 
   @override
   _AddVisitsState createState() => _AddVisitsState();
@@ -76,16 +77,16 @@ class _AddVisitsState extends State<AddVisits> {
   String img_investigation_color = 'images/investigation_color.webp';
 
   //10
-  List<String>? Complaint ;
-  List<String>? Diagnosis ;
-  List<String>? Advices ;
-  List<String>? Investigation ;
-  List<String>? Allergies ;
-  List<String>? Clinical_finding ;
-  List<String>? Group ;
-  List<String>? Services ;
-  List<String>? Medicine ;
-  List<String>? Notes ;
+  List<String>? Complaint = [] ;
+  List<String>? Diagnosis = [];
+  List<String>? Advices = [];
+  List<String>? Investigation = [];
+  List<String>? Allergies = [] ;
+  List<String>? Clinical_finding = [] ;
+  List<String>? Group = [] ;
+  List<String>? Services = [] ;
+  List<String>? Medicine  = [];
+  List<String>? Notes = [] ;
 
 
   Map<String, Map<String, dynamic>>? medicine_result ;
@@ -104,7 +105,7 @@ class _AddVisitsState extends State<AddVisits> {
 
 
 
-  int total_charge = 0;
+  num total_charge = 0;
 
 
   dynamic set(List<String> list, Map<String, dynamic> map, String name) {
@@ -252,7 +253,7 @@ class _AddVisitsState extends State<AddVisits> {
               child: IconButton(
                   onPressed: () {
 
-                    SnackOn(context, 'Saving ....');
+                    SnackOn(context : context, msg : 'Saving ....');
 
                     Map<String, dynamic?> map;
 
@@ -374,9 +375,7 @@ class _AddVisitsState extends State<AddVisits> {
                                       color: Colors.red,
                                     ),
                                     label: Text(
-                                      blood_group.isEmpty
-                                          ? "Blood Group"
-                                          : blood_group,
+                                      blood_group ?? "Blood Group",
                                       style: TextStyle(color: Colors.black),
                                     ),
                                     onPressed: () {
@@ -409,9 +408,7 @@ class _AddVisitsState extends State<AddVisits> {
                                       child: TextButton.icon(
                                     icon: Icon(Icons.timelapse_rounded),
                                     label: Text(
-                                      follow_up_date == null
-                                          ? 'Follow Up Date'
-                                          : follow_up_date,
+                                      follow_up_date ?? 'Follow Up Date',
                                       style: TextStyle(color: Colors.black),
                                     ),
                                     onPressed: () {
@@ -426,7 +423,7 @@ class _AddVisitsState extends State<AddVisits> {
 
 
                                           follow_up_date = formatDate(
-                                                  Timestamp.fromDate(value)
+                                                  Timestamp.fromDate(value!)
                                                       .toDate(),
                                                   [dd, '-', mm, '-', yyyy])
                                               .toString();
@@ -500,7 +497,7 @@ class _AddVisitsState extends State<AddVisits> {
 
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: Complaint.map<Widget>((e)=>DropDown(e) ).toList(),
+                              children: Complaint!.map<Widget>((e)=>DropDown(e) ).toList(),
                             ),
                           ),
                         ),
@@ -527,7 +524,7 @@ class _AddVisitsState extends State<AddVisits> {
 
 
 
-                          print(widget.patient_data.visits_mapData_list);
+
 
 
                           showDialog(
@@ -572,7 +569,7 @@ class _AddVisitsState extends State<AddVisits> {
 
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: Notes.map<Widget>((e)=>DropDown(e) ).toList(),
+                              children: Notes!.map<Widget>((e)=>DropDown(e) ).toList(),
                             ),
                           ),
                         ),
@@ -608,7 +605,7 @@ class _AddVisitsState extends State<AddVisits> {
                           print('ddd');
 
 
-                          print(widget.patient_data.visits_mapData_list[visit_date]);
+
 
 
 
@@ -650,7 +647,7 @@ class _AddVisitsState extends State<AddVisits> {
 
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: Clinical_finding.map<Widget>((e)=>DropDown(e) ).toList(),
+                              children: Clinical_finding!.map<Widget>((e)=>DropDown(e) ).toList(),
                             ),
                           ),
                         ),
@@ -722,7 +719,7 @@ class _AddVisitsState extends State<AddVisits> {
 
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: Diagnosis.map<Widget>((e)=>DropDown(e) ).toList(),
+                              children: Diagnosis!.map<Widget>((e)=>DropDown(e) ).toList(),
                             ),
                           ),
                         ),
@@ -794,7 +791,7 @@ class _AddVisitsState extends State<AddVisits> {
 
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: Investigation.map<Widget>((e)=>DropDown(e) ).toList(),
+                              children: Investigation!.map<Widget>((e)=>DropDown(e) ).toList(),
                             ),
                           ),
                         ),
@@ -863,7 +860,7 @@ class _AddVisitsState extends State<AddVisits> {
 
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: Allergies.map<Widget>((e)=>DropDown(e) ).toList(),
+                              children: Allergies!.map<Widget>((e)=>DropDown(e) ).toList(),
                             ),
                           ),
                         ),
@@ -932,7 +929,7 @@ class _AddVisitsState extends State<AddVisits> {
 
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: Advices.map<Widget>((e)=>DropDown(e) ).toList(),
+                              children: Advices!.map<Widget>((e)=>DropDown(e) ).toList(),
                             ),
                           ),
                         ),
@@ -980,7 +977,7 @@ class _AddVisitsState extends State<AddVisits> {
                           child: Container(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: Group.map<Widget>((e) => DropDown(e))
+                              children: Group!.map<Widget>((e) => DropDown(e))
                                   .toList(),
                             ),
                           ),
@@ -1010,7 +1007,7 @@ class _AddVisitsState extends State<AddVisits> {
                                   context: context,
                                   builder: (context) {
                                     return Service_Search_List(
-                                      result: Services,
+                                      result: Services!,
                                     );
                                   }).then((value) async {
 
@@ -1026,16 +1023,10 @@ class _AddVisitsState extends State<AddVisits> {
                                    total_charge = 0;
 
 
-                                   service_result.forEach((key, value) {
+                                   service_result!.forEach((key, value) {
 
 
                                      print(total_charge);
-
-
-
-
-
-
 
                                      total_charge += value['charge'];
 
@@ -1062,13 +1053,13 @@ class _AddVisitsState extends State<AddVisits> {
                               children: [
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: service_result.keys.map((e) {
+                                  children: service_result!.keys.map((e) {
                                     return Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(e[0].toUpperCase() + e.substring(1)),
 
-                                        Text('₹ ${service_result[e]['charge'].toString()}' )
+                                        Text('₹ ${service_result![e]!['charge'].toString()}' )
                                       ],
                                     );
                                   }).toList(),
@@ -1115,7 +1106,7 @@ class _AddVisitsState extends State<AddVisits> {
                                   MaterialPageRoute(
                                       builder: (context) => Medicines(
                                             to_add_medicne: false,
-                                            name: Medicine,
+                                            to_select_medicine: true,
                                             result_map: medicine_result,
                                           ))).then((value) {
                                 print('ccc');
@@ -1127,7 +1118,7 @@ class _AddVisitsState extends State<AddVisits> {
                                   medicine_result = value;
 
                                   setState(() {
-                                    Medicine = medicine_result.keys.toList();
+                                    Medicine = medicine_result!.keys.toList();
                                   });
 
                                   print(Medicine);
@@ -1143,7 +1134,7 @@ class _AddVisitsState extends State<AddVisits> {
                           child: Container(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: medicine_result.keys.map<Widget>((e) {
+                              children: medicine_result!.keys.map<Widget>((e) {
                                 return DropDown(e);
                               }).toList(),
                             ),
@@ -1177,7 +1168,7 @@ class _AddVisitsState extends State<AddVisits> {
                                   context: context,
                                   builder: (context) {
                                     return Vital_List_Search(
-                                      result: vital_result,
+                                      result: vital_result!,
                                     );
                                   }).then((value) async {
                                 print('dsdsds');
@@ -1200,13 +1191,13 @@ class _AddVisitsState extends State<AddVisits> {
                           child: Container(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: vital_result.keys.map<Widget>((e) {
+                              children: vital_result!.keys.map<Widget>((e) {
                                 return Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      vital_result[e]['vital_name'],
+                                      vital_result![e]!['vital_name'],
                                       textScaleFactor:
                                           AppTheme.list_tile_subtile,
                                     ),
@@ -1214,7 +1205,7 @@ class _AddVisitsState extends State<AddVisits> {
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         Text(
-                                          vital_result[e]['value'],
+                                          vital_result![e]!['value'],
                                           textScaleFactor:
                                               AppTheme.list_tile_subtile,
                                         ),
@@ -1222,7 +1213,7 @@ class _AddVisitsState extends State<AddVisits> {
                                           width: 0.5.w,
                                         ),
                                         Text(
-                                          vital_result[e]['vital_unit'],
+                                          vital_result![e]!['vital_unit'],
                                           textScaleFactor:
                                               AppTheme.list_tile_subtile,
                                         ),

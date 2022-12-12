@@ -7,7 +7,7 @@ class Patient_name_data_list{
 
   //basic
 
-   late String name , mobile , doc_id ; // Non nullable & compulsory
+  late String name , mobile , doc_id ; // Non nullable & compulsory
 
 
   String?  DOB , gender , email , address   , image  , blood_group , profile_link;
@@ -29,39 +29,33 @@ class Patient_name_data_list{
 
   Patient_name_data_list.setPatientData(
 
-      this.name , this.mobile , this.doc_id  ,
+      { required this.name , required  this.mobile , required this.doc_id  ,
 
-      { this.age , this.gender , this.email , this.DOB , this.recent_visit ,   this.address  , this.blood_group , this.image,
+      this.age , this.gender , this.email , this.DOB , this.recent_visit ,   this.address  , this.blood_group , this.image,
       this.visit_date , this.profile_link }
 
   );
 
-  Patient_name_data_list();
+  Patient_name_data_list(); // default constructor
 
 
  Patient_name_data_list from_Json_to_Patient_Instance(Map<String , dynamic> json){
 
    return Patient_name_data_list.setPatientData(
 
-        json['name']!,
-        json['mobile']!,
-        json['doc_id'],
+     name: json['name']!,
+     mobile:  json['mobile']!,
+     doc_id:  json['doc_id'],
 
 
-      age: json['age'],
-      recent_visit:  json['recent_visit'],
-      gender: json['gender'],
-      email: json['email'],
+     age: json['age'],
+     recent_visit:  json['recent_visit'],
+     gender: json['gender'],
+     email: json['email'],
 
-      blood_group: json['blood_group'],
-      profile_link : json['profile_link'],
-
-
-
-
-
-
-    );
+     blood_group: json['blood_group'],
+     profile_link : json['profile_link']
+   );
   }
 
 

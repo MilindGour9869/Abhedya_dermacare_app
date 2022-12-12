@@ -17,7 +17,7 @@ class Services extends StatefulWidget {
 }
 
 class _State extends State<Services> {
-  Future f;
+  Future? f;
 
   Map<String, Map<String, dynamic>> all_data_map = {};
 
@@ -49,7 +49,7 @@ class _State extends State<Services> {
 
 
 
-  int services_length;
+  int? services_length;
 
   Map<String, dynamic> map = {};
 
@@ -63,7 +63,7 @@ class _State extends State<Services> {
     By_You = {};
     service_list = {};
 
-    var a = await Storage.get_services();
+    var a = await Storage.get(key: 'services');
 
     all_data_map = a == null ? {} : a;
 
@@ -102,10 +102,11 @@ class _State extends State<Services> {
     });
   }
 
-  Future set() {
+  Future set() async{
 
     print('set called');
-    Storage.set_services(updated: updated, value: all_data_map);
+    await Storage.set(key: 'services', value: all_data_map);
+
   }
 
   @override
@@ -233,7 +234,7 @@ class _State extends State<Services> {
                                                   service: service_edit,
                                                   charges: charges_edit,
                                                   context: context,
-                                                  size: services_length))
+                                                  size: services_length!))
                                           .then((value) {
 
 
@@ -262,10 +263,10 @@ class _State extends State<Services> {
                                   ListView(
                                     shrinkWrap: true,
                                     children: Consulation.keys.map((e) {
-                                      List a = Consulation[e].keys.toList();
+                                      List a = Consulation[e]!.keys.toList();
                                       String s = a[0].toString();
 
-                                      List b = Consulation[e].values.toList();
+                                      List b = Consulation[e]!.values.toList();
                                       String c = b[0].toString();
 
                                       return GestureDetector(
@@ -424,7 +425,7 @@ class _State extends State<Services> {
                                                   service: service_edit,
                                                   charges: charges_edit,
                                                   context: context,
-                                                  size: services_length))
+                                                  size: services_length!))
                                           .then((value) {
                                         if (value != null) {
                                           all_data_map.addAll(value);
@@ -448,10 +449,10 @@ class _State extends State<Services> {
                                   ListView(
                                     shrinkWrap: true,
                                     children: Nursing.keys.map((e) {
-                                      List a = Nursing[e].keys.toList();
+                                      List a = Nursing[e]!.keys.toList();
                                       String s = a[0].toString();
 
-                                      List b = Nursing[e].values.toList();
+                                      List b = Nursing[e]!.values.toList();
                                       String c = b[0].toString();
 
                                       return GestureDetector(
@@ -608,7 +609,7 @@ class _State extends State<Services> {
                                                   service: service_edit,
                                                   charges: charges_edit,
                                                   context: context,
-                                                  size: services_length))
+                                                  size: services_length!))
                                           .then((value) {
                                         if (value != null) {
                                           all_data_map.addAll(value);
@@ -632,10 +633,10 @@ class _State extends State<Services> {
                                   ListView(
                                     shrinkWrap: true,
                                     children: Procedures.keys.map((e) {
-                                      List a = Procedures[e].keys.toList();
+                                      List a = Procedures[e]!.keys.toList();
                                       String s = a[0].toString();
 
-                                      List b = Procedures[e].values.toList();
+                                      List b = Procedures[e]!.values.toList();
                                       String c = b[0].toString();
 
                                       return GestureDetector(
@@ -793,7 +794,7 @@ class _State extends State<Services> {
                                                   service: service_edit,
                                                   charges: charges_edit,
                                                   context: context,
-                                                  size: services_length))
+                                                  size: services_length!))
                                           .then((value) {
                                         if (value != null) {
                                           all_data_map.addAll(value);
@@ -817,10 +818,10 @@ class _State extends State<Services> {
                                   ListView(
                                     shrinkWrap: true,
                                     children: Vaccination.keys.map((e) {
-                                      List a = Vaccination[e].keys.toList();
+                                      List a = Vaccination[e]!.keys.toList();
                                       String s = a[0].toString();
 
-                                      List b = Vaccination[e].values.toList();
+                                      List b = Vaccination[e]!.values.toList();
                                       String c = b[0].toString();
 
                                       return GestureDetector(
@@ -977,7 +978,7 @@ class _State extends State<Services> {
                                                   service: service_edit,
                                                   charges: charges_edit,
                                                   context: context,
-                                                  size: services_length))
+                                                  size: services_length!))
                                           .then((value) {
                                         if (value != null) {
                                           all_data_map.addAll(value);
@@ -1001,10 +1002,10 @@ class _State extends State<Services> {
                                   ListView(
                                     shrinkWrap: true,
                                     children: By_You.keys.map((e) {
-                                      List a = By_You[e].keys.toList();
+                                      List a = By_You[e]!.keys.toList();
                                       String s = a[0].toString();
 
-                                      List b = By_You[e].values.toList();
+                                      List b = By_You[e]!.values.toList();
                                       String c = b[0].toString();
 
                                       return GestureDetector(
@@ -1138,26 +1139,26 @@ class _State extends State<Services> {
                           child: SingleChildScrollView(
                             child: Column(
                               children: search_service_list.map<Widget>((e) {
-                                List a = service_list[e].keys.toList();
-                                List b = service_list[e].values.toList();
-                                List c;
+                                List a = service_list[e]!.keys.toList();
+                                List b = service_list[e]!.values.toList();
+                                late List c;
 
                                 service.text = e.toString();
 
                                 if (b[0] == "Consultation") {
-                                  c = Consulation[a[0].toString()]
+                                  c = Consulation[a[0].toString()]!
                                       .values
                                       .toList();
                                 } else if (b[0] == "Nursing") {
-                                  c = Nursing[a[0].toString()].values.toList();
+                                  c = Nursing[a[0].toString()]!.values.toList();
                                 } else if (b[0] == "Procedures") {
-                                  c = Procedures[a[0].toString()].values.toList();
+                                  c = Procedures[a[0].toString()]!.values.toList();
                                 } else if (b[0] == "Vaccination") {
                                   c = Vaccination[a[0].toString()]
-                                      .values
+                                      !.values
                                       .toList();
                                 } else if (b[0] == "By_You") {
-                                  c = By_You[a[0].toString()].values.toList();
+                                  c = By_You[a[0].toString()]!.values.toList();
                                 }
 
                                 charge.text = c[0].toString();
@@ -1286,11 +1287,12 @@ class _State extends State<Services> {
 }
 
 Widget Dialogue(
-    {String service_name,
-    TextEditingController service,
-    TextEditingController charges,
-    BuildContext context,
-    int size}) {
+    {
+      required String service_name,
+   required  TextEditingController service,
+    required TextEditingController charges,
+   required BuildContext context,
+    required int size}) {
   return Scaffold(
     backgroundColor: Colors.transparent,
 

@@ -38,7 +38,10 @@ class _State extends State<Medicines> {
   late Future f;
 
   List all_medicine_map_list = [];
-  List search_medicine_list = [];
+  List<String> search_medicine_list = [];
+  List<String> medicine_name = [];
+
+
 
   late  Map<String , Map<String , dynamic >> all_medicine_data_doc_id_map;
   late  Map<String , Map<String , dynamic >> all_medicine_data_name_map;
@@ -93,26 +96,20 @@ class _State extends State<Medicines> {
           Colors.primaries[math.Random().nextInt(Colors.primaries.length)];
         }
 
-        print('ffff');
-
-
-
-        print(all_medicine_data_doc_id_map);
-
 
 
 
         if(widget.result_map != null)
         {
-          List a = widget.result_map.keys.toList();
+          List a = widget.result_map!.keys.toList();
           print('result map is not null');
 
           print(a);
 
           a.forEach((element) {
-            all_medicine_data_name_map[element].forEach((key, value) {
+            all_medicine_data_name_map[element]!.forEach((key, value) {
               if(key == 'select')
-                all_medicine_data_name_map[element]['select'] = true;
+                all_medicine_data_name_map[element]!['select'] = true;
 
 
 
@@ -141,7 +138,7 @@ class _State extends State<Medicines> {
   }
 
   void set(){
-    Storage.set_medicine(value: all_medicine_data_doc_id_map, updated: updated);
+    Storage.set(key: 'medicine', value: all_medicine_data_doc_id_map);
   }
 
   onItemChanged(String value) {
@@ -180,7 +177,7 @@ class _State extends State<Medicines> {
       {
         
 
-        result_map = widget.result_map;
+        result_map = widget!.result_map!;
 
        
 
@@ -195,42 +192,30 @@ class _State extends State<Medicines> {
   }
 
   Widget Tile(
-      {Map<String, Map<String, dynamic>> map, String name, Color color}) {
+      {required Map<String, Map<String, dynamic>> map, required String name, required Color color}) {
 
-    print(map);
 
 
     String tab="" , composition ="" , company_name = "";
 
-    String a = map[name]['tab'];
+    String a = map[name]!['tab'];
     tab=a==null?"":a;
 
-    List b = map[name]['composition']==null?[]:map[name]['composition'];
-
-    print(map[name]['compositon']);
-
-
-    print(b);
-
-
-    print('\ncds');
+    List b = map[name]!['composition']==null?[]:map[name]!['composition'];
 
     if(b != null && b.isNotEmpty) {
       b.forEach((element) {
-
-        print('sss');
-
 
         composition = element.toString() + ' , ';
       });
     }
 
-    print(map[name]['company_name']);
 
 
 
 
-    company_name=map[name]['company_name']==null?"": map[name]['company_name'];
+
+    company_name=map[name]!['company_name']==null?"": map[name]!['company_name'];
 
 
 
@@ -277,7 +262,7 @@ class _State extends State<Medicines> {
                  color: color,
                  map: map,
                  medicine_name: name,
-                 result_map : result_map[name]
+                 result_map : result_map[name]!
                ),
              ).then((value) {
 
@@ -335,7 +320,7 @@ class _State extends State<Medicines> {
                     ? IconButton(
                         onPressed: () async {
 
-                          all_medicine_data_doc_id_map.remove(map[name]['doc_id'].toString());
+                          all_medicine_data_doc_id_map.remove(map[name]!['doc_id'].toString());
                           updated=true;
 
                           all_medicine_data_name_map.remove(name);
@@ -359,20 +344,14 @@ class _State extends State<Medicines> {
 
 
                           setState(() {
-                            map[name]['select'] = !map[name]['select'];
+                            map[name]!['select'] = map[name]!['select'];
 
                           });
 
 
 
-                          if(map[name]['select'])
+                          if(map[name]!['select'])
                             {
-
-
-                              print(result_map);
-
-
-
 
                               showDialog(context: context, builder: (context){
 
@@ -383,8 +362,6 @@ class _State extends State<Medicines> {
                                 );
                               }).then((value) {
 
-                                print('rtttt');
-                                print(value);
 
 
                                if(value != null)
@@ -392,22 +369,17 @@ class _State extends State<Medicines> {
                                    result_map[name]  = value;
                                  }
 
-                               print(result_map[name]);
+
 
 
 
                               });
 
                             }
-                          else if(!map[name]['select'])
+                          else if(!map[name]!['select'])
                             {
-                              print('\n in else if');
-                              print(map[name]);
 
                               result_map.remove(name);
-
-
-                              print(result_map);
 
 
                             }
@@ -417,7 +389,7 @@ class _State extends State<Medicines> {
 
                         },
                         icon: CircleAvatar(
-                          backgroundColor: map[name]['select']?AppTheme.green:Colors.grey,
+                          backgroundColor: map[name]!['select']?AppTheme.green:Colors.grey,
                             child: Icon(
                           Icons.done,
                           color: Colors.white,
@@ -556,8 +528,8 @@ class _State extends State<Medicines> {
                 context: context,
                 builder: (context) => AddMedicine(
 
-                  result: all_medicine_data_doc_id_map,
-                  medicine_name_list: medicine_name,
+                  all_medicine_data_doc_id_map : all_medicine_data_doc_id_map,
+                  medicine_name_list: medicine_name!,
                   is_add_icon_tap: true,
                 )).then((value) {
 

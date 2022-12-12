@@ -8,7 +8,7 @@ import 'package:pdf/widgets.dart';
 
 class PdfApi {
   static Future<File> saveDocument({
-     String name,
+     String? name,
      var pdf,
   }) async {
   //  final bytes = await pdf.save();

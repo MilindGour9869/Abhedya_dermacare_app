@@ -13,7 +13,7 @@ import 'package:flutter/services.dart';
 class Add_Info_List_Search extends StatefulWidget {
 
   List result;
-  Add_Info_List_Search({this.result});
+  Add_Info_List_Search({required this.result});
 
   @override
   _Add_Info_List_SearchState createState() => _Add_Info_List_SearchState();

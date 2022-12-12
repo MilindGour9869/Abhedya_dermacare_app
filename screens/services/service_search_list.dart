@@ -15,7 +15,7 @@ class Service_Search_List extends StatefulWidget {
 
 
 
-  Service_Search_List({this.result });
+  Service_Search_List({required this.result });
 
   @override
   _Service_Search_ListState createState() => _Service_Search_ListState();
@@ -47,7 +47,7 @@ class _Service_Search_ListState extends State<Service_Search_List> {
   Future getServiceData()async{
 
 
-       var a = await Storage.get_services();
+       var a = await Storage.get(key: 'services');
 
        all_data_map = a==null?{}:a;
 
@@ -73,7 +73,7 @@ class _Service_Search_ListState extends State<Service_Search_List> {
 
                  if(service_list.containsKey(element))
                    {
-                     service_list[element]['color'] = true;
+                     service_list[element]!['color'] = true;
                      group_updated_result.add(element);
 
                    }
@@ -162,7 +162,7 @@ class _Service_Search_ListState extends State<Service_Search_List> {
               print(group_updated_result);
               Map<String , Map<String,dynamic>> result_map={};
               group_updated_result.forEach((e) {
-                result_map[e]=service_list[e];
+                result_map[e]=service_list[e]!;
               });
 
               print(result_map);
@@ -227,7 +227,7 @@ class _Service_Search_ListState extends State<Service_Search_List> {
 
 
 
-                      Map<String,dynamic> m = service_list[e];
+                      Map<String,dynamic> m = service_list[e]!;
 
                       print(m);
 

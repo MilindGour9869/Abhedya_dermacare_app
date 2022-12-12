@@ -10,7 +10,7 @@ class ServiceDialogue {
 
 
 
-  static Widget Dialogue ({String service_name , TextEditingController service , TextEditingController charges , BuildContext context , String doc_id }){
+  static Widget Dialogue ({ required String service_name , required TextEditingController service , required TextEditingController charges ,required  BuildContext context , required String doc_id }){
 
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
