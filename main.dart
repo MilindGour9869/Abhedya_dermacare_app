@@ -74,7 +74,7 @@ class MyApp extends StatelessWidget {
         'Home' : (context)=>HomePage(),
         'LoginScreen' : (context) => LoginScreen(),
         'ForgotPassword':(context)=>ForgotPasswordScreen(),
-        'AddPatient' : (context)=>AddPatient(),
+        'AddPatient' : (context)=>AddPatient(all_patient_name_list: [], icon_tap: false,),
         'ProfileScreen' : (context) => Profile(),
 
 
@@ -108,9 +108,9 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
 
-    return StreamBuilder<User>(
-
+    return StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges(),
+
       builder: (context,snapshot){
 
         if(snapshot.hasData)

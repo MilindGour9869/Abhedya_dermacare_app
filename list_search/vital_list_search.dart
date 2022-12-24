@@ -14,7 +14,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 class Vital_List_Search extends StatefulWidget {
 
   Map<String , Map<String , dynamic >> result;
-  Vital_List_Search({this.result});
+  Vital_List_Search({required this.result});
 
   @override
   _Vital_List_SearchState createState() => _Vital_List_SearchState();
@@ -50,7 +50,7 @@ class _Vital_List_SearchState extends State<Vital_List_Search> {
 
 
 
-  Future f;
+  late Future f;
 
 
   var search_edit = TextEditingController();
@@ -70,7 +70,7 @@ class _Vital_List_SearchState extends State<Vital_List_Search> {
 
 
 
-    var a = await Storage.get_vital();
+    var a = await Storage.get(key: Storage.vital);
 
     print(a);
 
@@ -108,7 +108,7 @@ class _Vital_List_SearchState extends State<Vital_List_Search> {
       {
         result_map = widget.result;
 
-       String s =  widget.result['Blood Pressure']['value'];
+       String s =  widget.result['Blood Pressure']!['value'];
        List a = s.split('/');
        bp_v1_edit.text=a[0];
        bp_v2_edit.text=a[1];
@@ -139,7 +139,7 @@ class _Vital_List_SearchState extends State<Vital_List_Search> {
 
 
 
-    await Storage.set_vital(value: all_data_map , updated:  updated );
+    await Storage.set(key: Storage.vital, value: all_data_map);
   }
 
   void pop(){
@@ -165,8 +165,8 @@ class _Vital_List_SearchState extends State<Vital_List_Search> {
       if(value.text.isNotEmpty)
         {
           OnComplete(
-            vital_name: all_data_map[key]['vital_name'],
-            vital_unit: all_data_map[key]['vital_unit'],
+            vital_name: all_data_map[key]!['vital_name'],
+            vital_unit: all_data_map[key]!['vital_unit'],
             value: value.text
           );
 
@@ -186,7 +186,7 @@ class _Vital_List_SearchState extends State<Vital_List_Search> {
 
 
 
-  OnComplete({String vital_name , String value , String vital_unit , String value2})
+  OnComplete({required  String vital_name , required String value ,required  String vital_unit ,  String? value2 } )
   {
     print(value);
 
@@ -196,7 +196,7 @@ class _Vital_List_SearchState extends State<Vital_List_Search> {
          {
            Map<String,dynamic> map ={};
            map['vital_name'] = vital_name;
-           map['value'] = value + '/' + value2;
+           map['value'] = value + '/' + value2!;
            map['vital_unit'] = vital_unit;
 
            result_map[vital_name] = map;
@@ -256,9 +256,10 @@ class _Vital_List_SearchState extends State<Vital_List_Search> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: (){
+      onWillPop: ()async{
 
         pop();
+        return true;
 
 
       },
@@ -411,16 +412,16 @@ class _Vital_List_SearchState extends State<Vital_List_Search> {
                             print(all_data_map);
 
 
-                            String s = all_data_name_map[e];
+                            String s = all_data_name_map[e]!;
 
 
-                            String name =  all_data_map[s]['vital_name'];
-                            String unit = all_data_map[s]['vital_unit'];
+                            String name =  all_data_map[s]!['vital_name'];
+                            String unit = all_data_map[s]!['vital_unit'];
 
                             if(widget.result.isNotEmpty)
                               {
 
-                                 edit_map[s].text = widget.result[e]['value'];
+                                 edit_map[s].text = widget.result[e]!['value'];
 
 
 
@@ -518,9 +519,9 @@ class _Vital_List_SearchState extends State<Vital_List_Search> {
 
 Widget Dialogue(
     {
-      TextEditingController vital_name,
-      TextEditingController vital_unit,
-      BuildContext context,
+      required TextEditingController vital_name,
+      required TextEditingController vital_unit,
+      required BuildContext context,
     }) {
   return MediaQuery(
     data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),

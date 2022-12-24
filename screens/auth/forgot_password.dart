@@ -10,8 +10,8 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
 
-  Function f;
-  ForgotPasswordScreen({required this.f});
+  Function? f;
+  ForgotPasswordScreen({ this.f});
   @override
   _ForgotPasswordScreenState createState() => _ForgotPasswordScreenState();
 }

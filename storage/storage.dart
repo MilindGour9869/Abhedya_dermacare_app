@@ -25,7 +25,7 @@ class Storage {
 
   static const services = 'services';
 
-  static const vital = 'services';
+  static const vital = 'vital';
 
   static const notes = 'notes';
 

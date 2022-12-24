@@ -42,7 +42,7 @@ class AddVisits extends StatefulWidget {
   AddVisits(
       {
 
-  required this.patient_data , required this.icon_tap ,required  this.visit_date , this.patient_visit_date_map});
+   required this.patient_data , required this.icon_tap ,required  this.visit_date , this.patient_visit_date_map});
 
   @override
   _AddVisitsState createState() => _AddVisitsState();

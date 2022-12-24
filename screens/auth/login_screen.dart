@@ -11,8 +11,8 @@ import '../../storage/storage.dart';
 
 class LoginScreen extends StatefulWidget {
 
-  Function f;
-  LoginScreen({ required this.f});
+  Function? f;
+  LoginScreen({  this.f});
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }

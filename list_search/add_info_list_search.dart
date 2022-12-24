@@ -35,7 +35,7 @@ class _Add_Info_List_SearchState extends State<Add_Info_List_Search> {
 
 
 
-  Future f;
+  late Future f;
 
 
   var search_edit = TextEditingController();
@@ -52,8 +52,8 @@ class _Add_Info_List_SearchState extends State<Add_Info_List_Search> {
 
 
 
-    var a = await Storage.get(
-    );
+    var a = await Storage.get(key: 'add_info');
+
 
     print(a);
 
@@ -158,7 +158,7 @@ class _Add_Info_List_SearchState extends State<Add_Info_List_Search> {
 
 
 
-    await Storage.set(value: all_data_map , updated:  updated , key: Storage.add_info );
+    await Storage.set(key: Storage.add_info, value: all_data_map);
   }
 
   void pop(){
@@ -212,9 +212,11 @@ class _Add_Info_List_SearchState extends State<Add_Info_List_Search> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: (){
+      onWillPop: ()async{
 
-        pop();
+         pop();
+
+         return true;
 
 
       },
@@ -273,7 +275,7 @@ class _Add_Info_List_SearchState extends State<Add_Info_List_Search> {
 
                           onTap: (){
 
-                            select[e] = !select[e];
+                            select[e] = select[e]!;
 
                             if (select[e] == true) {
                               group_updated_result.add(e);
@@ -289,7 +291,7 @@ class _Add_Info_List_SearchState extends State<Add_Info_List_Search> {
 
                             setState(() {
 
-                              select[e]= select[e];
+                              select[e]= select[e]!;
 
 
                             });
@@ -302,7 +304,7 @@ class _Add_Info_List_SearchState extends State<Add_Info_List_Search> {
 
                           leading: CircleAvatar(
                             backgroundColor:
-                            select[e] ? AppTheme.teal : AppTheme.light_black,
+                            select[e]! ? AppTheme.teal : AppTheme.light_black,
                             child: Icon(
                               Icons.done,
                               color: AppTheme.white,
@@ -325,7 +327,7 @@ class _Add_Info_List_SearchState extends State<Add_Info_List_Search> {
                                 onPressed: (){
                                   setState(() {
 
-                                    String s;
+                                    late String s;
 
 
                                     all_data_map.forEach((key, value) {

@@ -198,7 +198,7 @@ class _UserAdministrationState extends State<UserAdministration> {
 //                          ),
 
                           Visibility(
-                            visible:map3['Guest']! ,
+                            visible:map3['Guest'] ?? true ,
                             child: Padding(
                               padding:  EdgeInsets.symmetric(vertical: 2.w),
                               child: Center(

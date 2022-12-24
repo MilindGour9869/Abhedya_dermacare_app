@@ -353,7 +353,7 @@ class _DocumentScreenState extends State<DocumentScreen> {
                             SnackOn(context: context , msg: 'Opening File...');
                             final tempDir = await getTemporaryDirectory();
 
-                            print(tempDir.path);
+
 
 
 

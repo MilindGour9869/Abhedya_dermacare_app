@@ -333,7 +333,7 @@ class _List_SearchState extends State<List_Search> {
                                     onPressed: (){
                                       setState(() {
 
-                                        late String s;
+                                         String s;
 
 
                                         all_data_map!.forEach((key, value) {
@@ -377,7 +377,7 @@ class _List_SearchState extends State<List_Search> {
                     child: TextButton.icon(
                         onPressed: ()async {
 
-                          var doc = await FirebaseFirestore.instance.collection(widget.Group).doc(); //no net needed !! 🤯
+                          var doc =  FirebaseFirestore.instance.collection(widget.Group).doc(); //no net needed !! 🤯
 
                           setState(() {
 
